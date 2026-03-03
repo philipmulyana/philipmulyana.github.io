@@ -1,44 +1,44 @@
 [
   {
-    "name": "Rina Hartono",
-    "role": "Ibu Rumah Tangga",
-    "text": "Sebelum konsultasi dengan Philip, saya sama sekali nggak paham soal asuransi. Sekarang keluarga saya sudah punya proteksi yang tepat dan saya bisa tidur tenang.",
+    "name": "Aprilia",
+    "text": "Ga maksa nawarin, tapi mengedukasi. Jadi kita beli asuransi itu karena kesadaran. Memberikan opsi yang sesuai kebutuhan. Tim juga membantu mengawal sampai polis terbit dan layanan after sales yang baik. Semua sudah tersistem.",
+    "rating": 5,
     "type": "consultation",
-    "date": "2025-11-20"
+    "date": "2025-09-26"
   },
   {
-    "name": "Budi Santoso",
-    "role": "Software Engineer, Tokopedia",
-    "text": "Philip menjelaskan semuanya dengan bahasa yang mudah dipahami. Nggak ada tekanan untuk beli, cuma edukasi yang jelas dan actionable. Highly recommended!",
+    "name": "Dwicky Syafroza Putra",
+    "text": "Penjelasan yang diberikan Ko Phillip sangat gamblang tanpa ada sesuatu yang disembunyikan. Worst case dijelaskan sebaik mungkin, dan tidak ada sugar coating nya.",
+    "rating": 5,
     "type": "consultation",
-    "date": "2025-10-15"
+    "date": "2025-12-14"
   },
   {
-    "name": "Dewi Anggraeni",
-    "role": "HR Manager, PT Maju Bersama",
-    "text": "Workshop financial wellness yang Philip bawakan untuk karyawan kami sangat impactful. Feedback dari tim sangat positif dan banyak yang mulai atur keuangan mereka.",
-    "type": "speaking",
-    "date": "2025-09-08"
-  },
-  {
-    "name": "Ahmad Faisal",
-    "role": "Freelance Designer",
-    "text": "Sebagai freelancer, saya pikir asuransi itu cuma untuk karyawan kantoran. Philip buka mata saya bahwa proteksi itu justru lebih penting buat yang income-nya nggak tetap.",
+    "name": "Fina",
+    "text": "Ko Philip tdk jualan asuransi, tapi Koko memberikan saya informasi produk asuransi yg saya butuhkan dengan cara yg baik, informatif, komunikatif dan mudah dipahami.",
+    "rating": 5,
     "type": "consultation",
-    "date": "2025-08-22"
+    "date": "2025-08-27"
   },
   {
-    "name": "Lisa Permata",
-    "role": "Event Organizer, Jakarta Convention Center",
-    "text": "Philip adalah salah satu speaker favorit kami. Materi selalu relevan, delivery engaging, dan audience selalu kasih rating tinggi. Sudah 3x kami undang.",
-    "type": "speaking",
-    "date": "2025-07-10"
-  },
-  {
-    "name": "Hendri Wijaya",
-    "role": "Small Business Owner",
-    "text": "Financial Health Quiz di website ini bikin saya sadar masih banyak yang harus diperbaiki. Setelah konsultasi, sekarang bisnis saya sudah punya proteksi yang proper.",
+    "name": "Rendy Aries Fajrin",
+    "text": "Ko Philip sincerely bantu orang. Saya sangat bisa sensing orang niat jualan produk saja atau juga membantu. Thanks Ko!",
+    "rating": 5,
     "type": "consultation",
-    "date": "2025-06-30"
+    "date": "2025-12-19"
+  },
+  {
+    "name": "Susi Saliah",
+    "text": "Dijelaskan secara detail dan dipandu sedetail mungkin. Diberi kesempatan untuk konsultasi sampai jelas.",
+    "rating": 5,
+    "type": "consultation",
+    "date": "2025-12-19"
+  },
+  {
+    "name": "Desi",
+    "text": "Ko Philip bantu jelasin lebih details biar bisa milih asuransi yg tepat sesuai kebutuhan.",
+    "rating": 5,
+    "type": "consultation",
+    "date": "2025-08-28"
   }
 ]

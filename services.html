@@ -17,6 +17,8 @@
     <style>
         .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-white text-black font-sans antialiased">
@@ -36,8 +38,8 @@
     <section class="px-6 pb-16 fade-up">
         <div class="max-w-5xl mx-auto">
             <h2 class="text-2xl font-black uppercase tracking-tight text-center mb-8">What Clients Say</h2>
-            <div id="testimonials-services" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Rendered by testimonials.js -->
+            <div id="testimonials-services">
+                <!-- Rendered by testimonials.js (horizontal scroll) -->
             </div>
         </div>
     </section>
@@ -192,7 +194,7 @@
     <script src="js/testimonials.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            loadTestimonials('testimonials-services', { type: 'consultation' });
+            loadTestimonials('testimonials-services', { type: 'consultation', layout: 'scroll' });
         });
     </script>
 </body>
