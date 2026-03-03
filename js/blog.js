@@ -123,7 +123,7 @@ function renderPostCard(post) {
     const postUrl = `post.html?slug=${post.slug}`;
 
     return `
-        <article class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black">
+        <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">
             <div class="flex items-center gap-2 mb-3">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">Artikel</span>
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${post.categoryLabel}</span>
@@ -132,14 +132,13 @@ function renderPostCard(post) {
             <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${post.excerpt}</p>
             <div class="flex items-center justify-between">
-                <a href="${postUrl}"
-                    class="inline-flex items-center text-sm font-medium text-black hover:text-gray-600 transition-colors">
+                <span class="inline-flex items-center text-sm font-medium text-black">
                     Baca selengkapnya
                     <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
+                </span>
                 <span class="text-xs text-gray-400">${post.readingTime}</span>
             </div>
-        </article>
+        </a>
     `;
 }
 
