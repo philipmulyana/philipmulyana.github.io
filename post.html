@@ -96,6 +96,12 @@
         personal_finance: 'bg-green-100 text-green-700',
         economy: 'bg-orange-100 text-orange-700'
     };
+    const categoryLabels = {
+        insurance: 'Insurance',
+        investment: 'Investment',
+        personal_finance: 'Personal Finance',
+        economy: 'Economy'
+    };
 
     function formatDate(dateStr) {
         if (!dateStr) return '';
@@ -126,9 +132,15 @@
             document.title = `${post.title} — Philip Mulyana`;
             document.querySelector('meta[name="description"]').content = post.excerpt || '';
 
-            // Badge
-            const badgeColor = post.categoryLabel.includes('News') ? 'bg-red-100 text-red-700' : (categoryColors[post.category] || 'bg-gray-100 text-gray-700');
-            document.getElementById('post-badge').innerHTML = `<span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeColor}">${post.categoryLabel}</span>`;
+            // Badge — show content type + topic category
+            const isNewsInsight = post.categoryLabel === 'News Insight';
+            const typeBadge = isNewsInsight ? 'News Insight' : 'Artikel';
+            const topicColor = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
+            const topicLabel = categoryLabels[post.category] || post.categoryLabel;
+            document.getElementById('post-badge').innerHTML = `
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${topicColor}">${topicLabel}</span>
+            `;
 
             // Title
             document.getElementById('post-title').textContent = post.title;
@@ -152,11 +164,17 @@
             // Baca Juga — other approved articles
             const others = (data.posts || []).filter(p => p.slug !== slug).slice(0, 2);
             document.getElementById('baca-juga').innerHTML = others.map(o => {
-                const color = categoryColors[o.category] || 'bg-gray-100 text-gray-700';
+                const oIsNews = o.categoryLabel === 'News Insight';
+                const oType = oIsNews ? 'News Insight' : 'Artikel';
+                const oColor = categoryColors[o.category] || 'bg-gray-100 text-gray-700';
+                const oTopic = categoryLabels[o.category] || o.categoryLabel;
                 return `
                     <a href="post.html?slug=${o.slug}" class="bg-gray-50 rounded-2xl p-5 hover:shadow-lg transition-shadow duration-300 block">
-                        <span class="text-xs font-medium px-2.5 py-1 rounded-full ${color}">${o.categoryLabel}</span>
-                        <h3 class="font-bold mt-3 leading-snug">${o.title}</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${oType}</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-full ${oColor}">${oTopic}</span>
+                        </div>
+                        <h3 class="font-bold mt-1 leading-snug">${o.title}</h3>
                         <p class="text-sm text-gray-500 mt-2">${o.readingTime}</p>
                     </a>
                 `;

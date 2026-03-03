@@ -118,15 +118,24 @@ function renderPostCard(post) {
         personal_finance: 'bg-green-100 text-green-700',
         economy: 'bg-orange-100 text-orange-700'
     };
+    const categoryLabels = {
+        insurance: 'Insurance',
+        investment: 'Investment',
+        personal_finance: 'Personal Finance',
+        economy: 'Economy'
+    };
     const badgeClass = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
+    const isNewsInsight = post.categoryLabel === 'News Insight';
+    const typeBadge = isNewsInsight ? 'News Insight' : 'Artikel';
+    const topicLabel = categoryLabels[post.category] || post.categoryLabel;
     const formattedDate = formatDate(post.date);
     const postUrl = `post.html?slug=${post.slug}`;
 
     return `
         <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">
             <div class="flex items-center gap-2 mb-3">
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">Artikel</span>
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${post.categoryLabel}</span>
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
+                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${topicLabel}</span>
                 <span class="text-xs text-gray-400">${formattedDate}</span>
             </div>
             <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
