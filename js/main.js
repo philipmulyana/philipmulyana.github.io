@@ -42,6 +42,7 @@ function highlightActiveLink() {
     const navMap = {
         'index.html': 'home',
         'consultation.html': 'services',
+        'speaking.html': 'services',
         'tools.html': 'tools',
         'tool-calculator.html': 'tools',
         'tool-quiz.html': 'tools',
