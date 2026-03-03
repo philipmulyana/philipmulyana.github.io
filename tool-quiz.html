@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Health Quiz — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Breadcrumb + Header -->
+    <section class="pt-28 pb-8 px-6">
+        <div class="max-w-2xl mx-auto">
+            <a href="tools.html" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                All Tools
+            </a>
+            <span class="text-xs text-orange-600 font-medium uppercase tracking-wider block">Assessment</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Financial Health Quiz</h1>
+            <p class="text-gray-500 text-sm mt-3">Answer 8 questions to get a personalized assessment of your financial readiness with actionable recommendations.</p>
+        </div>
+    </section>
+
+    <!-- Quiz -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gray-50 rounded-3xl p-8 md:p-10">
+                <div id="quiz-container">
+                    <div id="quiz-questions"></div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="quiz-results" class="hidden mt-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-10"></div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Needs Calculator — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Breadcrumb + Header -->
+    <section class="pt-28 pb-8 px-6">
+        <div class="max-w-2xl mx-auto">
+            <a href="tools.html" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                All Tools
+            </a>
+            <span class="text-xs text-purple-600 font-medium uppercase tracking-wider block">Calculator</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Insurance Needs Calculator</h1>
+            <p class="text-gray-500 text-sm mt-3">Based on the DIME method — find out how much life insurance coverage you need to protect your family.</p>
+        </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gray-50 rounded-3xl p-8 md:p-10">
+                <div class="space-y-5">
+                    <div>
+                        <label for="calc-income" class="block text-sm font-medium text-gray-700 mb-1">Monthly Income (IDR)</label>
+                        <input type="number" id="calc-income" placeholder="e.g. 15000000"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <div>
+                        <label for="calc-dependents" class="block text-sm font-medium text-gray-700 mb-1">Number of Dependents</label>
+                        <input type="number" id="calc-dependents" min="0" max="20" placeholder="e.g. 2"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <div>
+                        <label for="calc-debt" class="block text-sm font-medium text-gray-700 mb-1">Total Debt / Outstanding Loans (IDR)</label>
+                        <input type="number" id="calc-debt" placeholder="e.g. 500000000"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <div>
+                        <label for="calc-savings" class="block text-sm font-medium text-gray-700 mb-1">Current Savings & Investments (IDR)</label>
+                        <input type="number" id="calc-savings" placeholder="e.g. 200000000"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <div>
+                        <label for="calc-coverage" class="block text-sm font-medium text-gray-700 mb-1">Current Life Insurance Coverage (IDR)</label>
+                        <input type="number" id="calc-coverage" placeholder="e.g. 1000000000"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <button onclick="calculateInsuranceNeeds()"
+                        class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-2">
+                        Calculate My Needs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="calc-results" class="hidden mt-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-10"></div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+</html>

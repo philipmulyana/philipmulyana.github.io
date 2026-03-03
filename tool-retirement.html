@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Dana Pensiun — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Breadcrumb + Header -->
+    <section class="pt-28 pb-8 px-6">
+        <div class="max-w-2xl mx-auto">
+            <a href="tools.html" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                All Tools
+            </a>
+            <span class="text-xs text-emerald-600 font-medium uppercase tracking-wider block">Calculator</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Kalkulator Dana Pensiun</h1>
+            <p class="text-gray-500 text-sm mt-3">Isi beberapa pertanyaan singkat, dan kamu akan langsung dapat gambaran berapa dana pensiun yang kamu butuhkan.</p>
+        </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gray-50 rounded-3xl p-8 md:p-10">
+                <div class="space-y-5">
+                    <!-- Agent filter (first question) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Apakah kamu agen asuransi? *</label>
+                        <div class="flex gap-3">
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="ret-is-agent" value="no" class="peer hidden" checked>
+                                <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border border-gray-200 text-sm font-medium transition-colors">
+                                    Bukan
+                                </div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="ret-is-agent" value="yes" class="peer hidden">
+                                <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border border-gray-200 text-sm font-medium transition-colors">
+                                    Ya, saya agen
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="ret-monthly-cost" class="block text-sm font-medium text-gray-700 mb-1">Estimasi Biaya Hidup Bulanan Sekarang *</label>
+                        <p class="text-xs text-gray-400 mb-2">Termasuk makan, transportasi, cicilan, hiburan, dll. Kalau belum tau pasti, cukup perkirakan saja.</p>
+                        <input type="text" id="ret-monthly-cost" inputmode="numeric" placeholder="e.g. 10,000,000"
+                            class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <div>
+                        <label for="ret-age" class="block text-sm font-medium text-gray-700 mb-1">Usia Sekarang *</label>
+                        <input type="number" id="ret-age" min="18" max="54" placeholder="e.g. 30"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                    </div>
+                    <button onclick="calculateRetirement()"
+                        class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-2">
+                        Hitung Kebutuhan Pensiun
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="ret-results" class="hidden mt-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-10"></div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/retirement.js?v=7"></script>
+</body>
+</html>

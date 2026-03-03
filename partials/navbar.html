@@ -1,0 +1,32 @@
+<nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <span class="text-lg font-bold tracking-tight text-gray-300 cursor-not-allowed">
+                PM
+            </span>
+            <div class="hidden md:flex items-center space-x-8">
+                <span data-nav="home" class="nav-link text-sm text-gray-300 cursor-not-allowed">Home</span>
+                <span data-nav="services" class="nav-link text-sm text-gray-300 cursor-not-allowed">Services</span>
+                <span data-nav="tools" class="nav-link text-sm text-gray-300 cursor-not-allowed">Tools</span>
+                <span data-nav="blog" class="nav-link text-sm text-gray-300 cursor-not-allowed">Blog</span>
+                <span data-nav="about" class="nav-link text-sm text-gray-300 cursor-not-allowed">About</span>
+                <span data-nav="contact" class="nav-link text-sm text-gray-300 bg-gray-200 px-5 py-2 rounded-full cursor-not-allowed">Contact</span>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+                <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
+        <div class="px-6 py-4 space-y-1">
+            <span data-nav="home" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">Home</span>
+            <span data-nav="services" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">Services</span>
+            <span data-nav="tools" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">Tools</span>
+            <span data-nav="blog" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">Blog</span>
+            <span data-nav="about" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">About</span>
+            <span data-nav="contact" class="nav-link block px-3 py-2 rounded-lg text-gray-300 cursor-not-allowed">Contact</span>
+        </div>
+    </div>
+</nav>

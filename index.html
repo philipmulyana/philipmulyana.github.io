@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philip Mulyana — Public Speaker & Insurance Consultant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #fda085 100%);
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-up.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .bento-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <!-- Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-sm text-gray-500 mb-6 tracking-wide uppercase">Howdy! Meet your trusted insurance consultant<br>& public speaker for financial empowerment</p>
+            <div class="gradient-hero rounded-3xl p-8 md:p-16 mb-8">
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none">
+                    PHILIP<br>MULYANA
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By / Brand Logos -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-xs text-gray-400 uppercase tracking-wider mb-8">Trusted by leading organizations</p>
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-8 items-center justify-items-center opacity-60">
+                <!-- Replace with real brand logos -->
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 1</div>
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 2</div>
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 3</div>
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 4</div>
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 5</div>
+                <div class="h-8 w-24 bg-gray-200 rounded flex items-center justify-center text-[10px] text-gray-400">Brand 6</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Latest Work / What I Do — Bento Grid -->
+    <section class="px-6 pb-20">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-center mb-12 fade-up">My Latest Work</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 fade-up">
+                <!-- Card 1: Speaking Event (large) -->
+                <div class="bento-card lg:col-span-2 bg-gray-50 rounded-2xl overflow-hidden">
+                    <img src="https://placehold.co/800x400/667eea/ffffff?text=Speaking+at+Financial+Summit+2025" alt="Speaking Event" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Speaking Event</span>
+                        <h3 class="text-lg font-bold mt-1">Financial Literacy Summit 2025</h3>
+                        <p class="text-gray-500 text-sm mt-1">Keynote speaker on building financial resilience through smart insurance planning</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Insurance Tool -->
+                <div class="bento-card bg-gradient-to-br from-purple-100 to-pink-50 rounded-2xl p-6 flex flex-col justify-between min-h-[280px]">
+                    <div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Interactive Tool</span>
+                        <h3 class="text-lg font-bold mt-1">Insurance Needs Calculator</h3>
+                        <p class="text-gray-500 text-sm mt-2">Find out how much coverage you really need</p>
+                    </div>
+                    <a href="tool-calculator.html" class="inline-flex items-center text-sm font-medium text-purple-600 hover:text-purple-800 mt-4">
+                        Try it now
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+
+                <!-- Card 3: Speaking Event 2 -->
+                <div class="bento-card bg-gray-50 rounded-2xl overflow-hidden">
+                    <img src="https://placehold.co/400x250/f5576c/ffffff?text=Corporate+Workshop" alt="Workshop" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Workshop</span>
+                        <h3 class="text-lg font-bold mt-1">Corporate Financial Wellness</h3>
+                        <p class="text-gray-500 text-sm mt-1">Half-day workshop for 200+ employees</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Financial Health Quiz -->
+                <div class="bento-card bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 flex flex-col justify-between min-h-[280px]">
+                    <div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Assessment</span>
+                        <h3 class="text-lg font-bold mt-1">Financial Health Quiz</h3>
+                        <p class="text-gray-500 text-sm mt-2">8 questions to evaluate your financial readiness</p>
+                    </div>
+                    <a href="tool-quiz.html" class="inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-800 mt-4">
+                        Take the quiz
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+
+                <!-- Card 5: Speaking Event 3 -->
+                <div class="bento-card bg-gray-50 rounded-2xl overflow-hidden">
+                    <img src="https://placehold.co/400x250/764ba2/ffffff?text=University+Seminar" alt="Seminar" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Seminar</span>
+                        <h3 class="text-lg font-bold mt-1">University Guest Lecture</h3>
+                        <p class="text-gray-500 text-sm mt-1">Insurance career paths for finance students</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Stats / Highlight (wide) -->
+                <div class="bento-card lg:col-span-2 bg-black text-white rounded-2xl p-8 flex flex-col md:flex-row items-center justify-around min-h-[180px]">
+                    <div class="text-center md:text-left mb-6 md:mb-0">
+                        <p class="text-4xl font-black">50+</p>
+                        <p class="text-gray-400 text-sm mt-1">Speaking Events</p>
+                    </div>
+                    <div class="text-center md:text-left mb-6 md:mb-0">
+                        <p class="text-4xl font-black">10K+</p>
+                        <p class="text-gray-400 text-sm mt-1">Audience Reached</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <p class="text-4xl font-black">5+</p>
+                        <p class="text-gray-400 text-sm mt-1">Years Experience</p>
+                    </div>
+                </div>
+
+                <!-- Card 7: Speaking Event 4 -->
+                <div class="bento-card bg-gray-50 rounded-2xl overflow-hidden">
+                    <img src="https://placehold.co/400x250/fda085/000000?text=Community+Outreach" alt="Community" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 uppercase tracking-wider">Community</span>
+                        <h3 class="text-lg font-bold mt-1">Financial Literacy Outreach</h3>
+                        <p class="text-gray-500 text-sm mt-1">Free community sessions on insurance basics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-center mb-8">What People Say</h2>
+            <div id="testimonials-home" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Rendered by testimonials.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-2xl md:text-3xl font-bold mb-6">Ready to take control of your financial future?</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="services.html#consultation" class="bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Book a Consultation
+                </a>
+                <a href="services.html#speaking" class="border border-gray-300 text-black px-8 py-3 rounded-full text-sm font-medium hover:border-black transition-colors">
+                    Book a Speaking Engagement
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/testimonials.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTestimonials('testimonials-home', { limit: 3 });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-up.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <!-- Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Header -->
+    <section class="pt-32 pb-12 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight">Let's Connect</h1>
+            <p class="text-gray-500 mt-4">For speaking engagements and insurance consultations, visit the <a href="services.html" class="underline hover:text-black">Services page</a>. For everything else, reach out below.</p>
+        </div>
+    </section>
+
+    <!-- Contact Form + Info -->
+    <section class="px-6 pb-20">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+                <!-- Contact Form (3 cols) -->
+                <div class="lg:col-span-3 fade-up">
+                    <div class="bg-gray-50 rounded-3xl p-8 md:p-10">
+                        <h2 class="text-xl font-bold mb-6">Send a Message</h2>
+                        <form id="contact-form" class="space-y-5">
+                            <div>
+                                <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input type="text" id="contact-name" placeholder="Your full name" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                            </div>
+                            <div>
+                                <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="contact-email" placeholder="your@email.com" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                            </div>
+                            <div>
+                                <label for="contact-subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                                <select id="contact-subject"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm text-gray-700">
+                                    <option value="general">General Inquiry</option>
+                                    <option value="collaboration">Collaboration</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                                <textarea id="contact-message" rows="5" placeholder="Tell me what you need..." required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm resize-none"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info (2 cols) -->
+                <div class="lg:col-span-2 space-y-4 fade-up">
+                    <!-- Email -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Email</h3>
+                                <p class="text-gray-500 text-sm mt-1">hello@philipmulyana.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Phone</h3>
+                                <p class="text-gray-500 text-sm mt-1">+62 812 XXXX XXXX</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LinkedIn -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">LinkedIn</h3>
+                                <p class="text-gray-500 text-sm mt-1">linkedin.com/in/philipmulyana</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Location</h3>
+                                <p class="text-gray-500 text-sm mt-1">Jakarta, Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Services shortcut -->
+                    <a href="services.html" class="block bg-black text-white rounded-2xl p-6 hover:bg-gray-800 transition-colors">
+                        <h3 class="font-bold text-sm">Looking for Services?</h3>
+                        <p class="text-gray-400 text-sm mt-2">Book an insurance consultation or speaking engagement on the Services page.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Contact form → mailto handler
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+
+            const subjectMap = {
+                general: 'General Inquiry',
+                collaboration: 'Collaboration Inquiry',
+                feedback: 'Feedback',
+                other: 'Other Inquiry'
+            };
+
+            const body = `Hi Philip,\n\nMy name is ${name} (${email}).\n\n${message}\n\nBest regards,\n${name}`;
+            const mailtoUrl = `mailto:hello@philipmulyana.com?subject=${encodeURIComponent(subjectMap[subject] || subject)}&body=${encodeURIComponent(body)}`;
+
+            window.location.href = mailtoUrl;
+        });
+    </script>
+</body>
+</html>

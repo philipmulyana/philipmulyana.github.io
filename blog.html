@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Header -->
+    <section class="pt-32 pb-8 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight">Blog & Insights</h1>
+            <p class="text-gray-500 mt-4">Artikel edukasi keuangan dan berita terkini dengan analisis untuk kehidupan sehari-hari</p>
+        </div>
+    </section>
+
+    <!-- Content Type Toggle -->
+    <section class="px-6 pb-4">
+        <div class="max-w-5xl mx-auto flex flex-wrap gap-2 justify-center">
+            <button onclick="filterType('all')" data-type="all" class="type-btn px-5 py-2 rounded-full text-sm font-medium transition-colors bg-black text-white">Semua</button>
+            <button onclick="filterType('original')" data-type="original" class="type-btn px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Artikel Kami</button>
+            <button onclick="filterType('news')" data-type="news" class="type-btn px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Berita Keuangan</button>
+        </div>
+    </section>
+
+    <!-- Category Filters -->
+    <section class="px-6 pb-8">
+        <div class="max-w-5xl mx-auto flex flex-wrap gap-2 justify-center">
+            <button onclick="filterCategory('all')" data-category="all" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-black text-white">All</button>
+            <button onclick="filterCategory('insurance')" data-category="insurance" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Insurance</button>
+            <button onclick="filterCategory('investment')" data-category="investment" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Investment</button>
+            <button onclick="filterCategory('personal_finance')" data-category="personal_finance" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Personal Finance</button>
+            <button onclick="filterCategory('economy')" data-category="economy" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600">Economy</button>
+        </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="px-6 pb-20 fade-up">
+        <div id="blog-grid" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Rendered by blog.js -->
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/blog.js"></script>
+</body>
+</html>
