@@ -4,6 +4,10 @@ let activeType = 'all';
 
 const MODAL_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
 
+function assignType(post) {
+    return post.categoryLabel === 'News Insight' ? 'news' : 'original';
+}
+
 async function loadBlog() {
     // 1. Load from static JSON first (instant)
     try {
@@ -14,13 +18,13 @@ async function loadBlog() {
 
         if (newsRes.ok) {
             const newsData = await newsRes.json();
-            const newsItems = (newsData.articles || []).map(a => ({ ...a, type: 'news' }));
+            const newsItems = (newsData.articles || []).map(a => ({ ...a, type: 'news', source: 'blog_json' }));
             allItems.push(...newsItems);
         }
 
         if (postsRes.ok) {
             const postsData = await postsRes.json();
-            const postItems = (postsData.posts || []).map(p => ({ ...p, type: 'original' }));
+            const postItems = (postsData.posts || []).map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
             allItems.push(...postItems);
         }
 
@@ -34,11 +38,11 @@ async function loadBlog() {
         const res = await fetch(MODAL_API);
         if (res.ok) {
             const data = await res.json();
-            const apiPosts = (data.posts || []).map(p => ({ ...p, type: 'original' }));
+            const apiPosts = (data.posts || []).map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
 
-            // Merge: keep news items, replace original posts with API data
-            const newsOnly = allItems.filter(i => i.type === 'news');
-            allItems = [...newsOnly, ...apiPosts];
+            // Merge: keep blog.json news, replace airtable posts with API data
+            const blogJsonOnly = allItems.filter(i => i.source === 'blog_json');
+            allItems = [...blogJsonOnly, ...apiPosts];
             sortAndRender();
         }
     } catch (err) {
@@ -47,10 +51,7 @@ async function loadBlog() {
 }
 
 function sortAndRender() {
-    allItems.sort((a, b) => {
-        if (a.type !== b.type) return a.type === 'original' ? -1 : 1;
-        return new Date(b.date) - new Date(a.date);
-    });
+    allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
     renderItems();
 }
 
@@ -107,7 +108,8 @@ function renderItems() {
     }
 
     grid.innerHTML = filtered.map(item => {
-        return item.type === 'original' ? renderPostCard(item) : renderNewsCard(item);
+        // blog.json external news → renderNewsCard; Airtable articles → renderPostCard
+        return item.source === 'blog_json' ? renderNewsCard(item) : renderPostCard(item);
     }).join('');
 }
 
@@ -126,7 +128,7 @@ function renderPostCard(post) {
     };
     const badgeClass = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
     const isNewsInsight = post.categoryLabel === 'News Insight';
-    const typeBadge = isNewsInsight ? 'News Insight' : 'Artikel';
+    const typeBadge = isNewsInsight ? 'Berita Keuangan' : 'Artikel Kami';
     const topicLabel = categoryLabels[post.category] || post.categoryLabel;
     const formattedDate = formatDate(post.date);
     const postUrl = `post.html?slug=${post.slug}`;

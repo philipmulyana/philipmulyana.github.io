@@ -134,7 +134,7 @@
 
             // Badge — show content type + topic category
             const isNewsInsight = post.categoryLabel === 'News Insight';
-            const typeBadge = isNewsInsight ? 'News Insight' : 'Artikel';
+            const typeBadge = isNewsInsight ? 'Berita Keuangan' : 'Artikel Kami';
             const topicColor = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
             const topicLabel = categoryLabels[post.category] || post.categoryLabel;
             document.getElementById('post-badge').innerHTML = `
@@ -165,7 +165,7 @@
             const others = (data.posts || []).filter(p => p.slug !== slug).slice(0, 2);
             document.getElementById('baca-juga').innerHTML = others.map(o => {
                 const oIsNews = o.categoryLabel === 'News Insight';
-                const oType = oIsNews ? 'News Insight' : 'Artikel';
+                const oType = oIsNews ? 'Berita Keuangan' : 'Artikel Kami';
                 const oColor = categoryColors[o.category] || 'bg-gray-100 text-gray-700';
                 const oTopic = categoryLabels[o.category] || o.categoryLabel;
                 return `
