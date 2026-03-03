@@ -153,7 +153,7 @@ function renderNewsCard(article) {
     const formattedDate = formatDate(article.date);
 
     return `
-        <article class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
+        <a href="${article.url}" target="_blank" rel="noopener" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
             <div class="flex items-center gap-2 mb-3">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${article.categoryLabel}</span>
                 <span class="text-xs text-gray-400">${formattedDate}</span>
@@ -162,24 +162,13 @@ function renderNewsCard(article) {
             </div>
             <h3 class="font-bold text-lg leading-snug mb-3">${article.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${article.hook}</p>
-            <details class="group mb-4">
-                <summary class="text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-black transition-colors">
-                    Why it matters
-                </summary>
-                <p class="text-sm text-gray-500 mt-2 leading-relaxed">${article.whyMatters}</p>
-            </details>
-            ${article.takeaway ? `
-            <div class="bg-white rounded-xl p-3 mb-4 border border-gray-200">
-                <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Key Takeaway</p>
-                <p class="text-sm text-gray-700">${article.takeaway}</p>
+            <div class="flex items-center justify-between">
+                <span class="inline-flex items-center text-sm font-medium text-gray-500">
+                    Read full article
+                    <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </span>
             </div>
-            ` : ''}
-            <a href="${article.url}" target="_blank" rel="noopener"
-                class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-black transition-colors">
-                Read full article
-                <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-        </article>
+        </a>
     `;
 }
 
