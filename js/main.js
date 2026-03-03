@@ -41,8 +41,8 @@ function highlightActiveLink() {
     const page = window.location.pathname.split('/').pop() || 'index.html';
     const navMap = {
         'index.html': 'home',
-        'consultation.html': 'services',
-        'speaking.html': 'services',
+        'consultation.html': 'contact',
+        'speaking.html': 'contact',
         'tools.html': 'tools',
         'tool-calculator.html': 'tools',
         'tool-quiz.html': 'tools',
