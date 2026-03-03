@@ -54,14 +54,18 @@ function renderScrollTestimonials(containerId, testimonials) {
     if (!track || !track.firstElementChild) return;
 
     let timer = null;
-    let cardIndex = 0;
-    const totalCards = testimonials.length;
+    let idx = 0;
+    const total = testimonials.length;
 
     function scrollNext() {
-        cardIndex = (cardIndex + 1) % totalCards;
-        const card = track.children[cardIndex];
-        if (card) {
-            track.scrollTo({ left: card.offsetLeft - track.offsetLeft - 24, behavior: 'smooth' });
+        idx = (idx + 1) % total;
+        if (idx === 0) {
+            // Loop back to start
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            // Scroll by one card width + gap
+            const cardW = track.firstElementChild.offsetWidth + 16;
+            track.scrollTo({ left: cardW * idx, behavior: 'smooth' });
         }
     }
 
@@ -74,7 +78,8 @@ function renderScrollTestimonials(containerId, testimonials) {
         if (timer) { clearInterval(timer); timer = null; }
     }
 
-    start();
+    // Start after a short delay to ensure layout is ready
+    setTimeout(start, 1000);
 
     // Pause on interaction
     track.addEventListener('touchstart', stop, { passive: true });

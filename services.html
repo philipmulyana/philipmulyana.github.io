@@ -64,16 +64,16 @@
         <div class="max-w-3xl mx-auto">
             <div class="bg-black text-white rounded-3xl p-8 flex flex-col md:flex-row items-center justify-around gap-6">
                 <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black">200+</p>
+                    <p class="text-3xl md:text-4xl font-black">100+</p>
                     <p class="text-gray-400 text-sm mt-1">Klien Terlayani</p>
                 </div>
                 <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black">5+</p>
-                    <p class="text-gray-400 text-sm mt-1">Tahun Pengalaman</p>
+                    <p class="text-3xl md:text-4xl font-black" id="stat-financial-services"></p>
+                    <p class="text-gray-400 text-sm mt-1">Tahun di Financial Services</p>
                 </div>
                 <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black">--</p>
-                    <p class="text-gray-400 text-sm mt-1">Coming Soon</p>
+                    <p class="text-3xl md:text-4xl font-black" id="stat-financial-advisor"></p>
+                    <p class="text-gray-400 text-sm mt-1">Tahun sebagai Financial Advisor</p>
                 </div>
             </div>
         </div>
@@ -195,6 +195,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             loadTestimonials('testimonials-services', { type: 'consultation', layout: 'scroll' });
+
+            // Dynamic experience years
+            const year = new Date().getFullYear();
+            document.getElementById('stat-financial-services').textContent = (year - 2008) + '+';
+            document.getElementById('stat-financial-advisor').textContent = (year - 2015) + '+';
         });
     </script>
 </body>
