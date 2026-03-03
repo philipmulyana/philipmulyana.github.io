@@ -296,7 +296,7 @@ function showResults() {
                 <a href="tool-retirement.html" class="flex-1 text-center border border-gray-200 text-black px-6 py-3 rounded-full text-sm font-medium hover:border-black transition-colors">
                     Hitung Target Pensiun
                 </a>
-                <a href="services.html#consultation" class="flex-1 text-center bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                <a href="consultation.html#consultation" class="flex-1 text-center bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
                     Book a Call
                 </a>
             </div>
