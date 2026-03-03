@@ -2,12 +2,21 @@ let allItems = [];
 let activeCategory = 'all';
 let activeType = 'all';
 
+const POSTS_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
+
 async function loadBlog() {
     try {
-        const [newsRes, postsRes] = await Promise.all([
-            fetch('data/blog.json').catch(() => ({ ok: false })),
-            fetch('data/posts.json').catch(() => ({ ok: false }))
-        ]);
+        // Fetch news from local JSON
+        const newsRes = await fetch('data/blog.json').catch(() => ({ ok: false }));
+
+        // Fetch approved posts from Modal API (live from Airtable)
+        let postsRes;
+        try {
+            postsRes = await fetch(POSTS_API);
+        } catch (e) {
+            console.warn('Modal API failed, falling back to local posts.json:', e);
+            postsRes = await fetch('data/posts.json').catch(() => ({ ok: false }));
+        }
 
         if (newsRes.ok) {
             const newsData = await newsRes.json();
@@ -17,8 +26,11 @@ async function loadBlog() {
 
         if (postsRes.ok) {
             const postsData = await postsRes.json();
+            console.log('Posts loaded:', postsData);
             const postItems = (postsData.posts || []).map(p => ({ ...p, type: 'original' }));
             allItems.push(...postItems);
+        } else {
+            console.warn('Posts fetch failed, status:', postsRes.status);
         }
 
         // Sort: original posts first, then by date descending
