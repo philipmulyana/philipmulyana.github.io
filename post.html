@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading... — Philip Mulyana</title>
+    <meta name="description" content="">
+    <script src="js/pixel.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+        .article-content p { color: #4b5563; line-height: 1.75; margin-bottom: 1rem; font-size: 1.0625rem; }
+        .article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; color: #000; }
+        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #4b5563; }
+        .article-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; color: #4b5563; }
+        .article-content li { margin-bottom: 0.5rem; line-height: 1.75; font-size: 1.0625rem; }
+        .article-content blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; margin: 1.5rem 0; color: #6b7280; font-style: italic; }
+        .article-content strong { color: #111827; font-weight: 600; }
+        .skeleton { background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 0.5rem; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Breadcrumb + Header -->
+    <section class="pt-28 pb-8 px-6">
+        <div class="max-w-3xl mx-auto">
+            <a href="blog.html" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-6">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Blog
+            </a>
+            <div id="post-badge" class="flex items-center gap-2 mb-3">
+                <div class="skeleton h-6 w-24"></div>
+            </div>
+            <h1 id="post-title" class="text-3xl md:text-4xl font-black leading-tight">
+                <div class="skeleton h-10 w-3/4 mb-2"></div>
+                <div class="skeleton h-10 w-1/2"></div>
+            </h1>
+            <div id="post-meta" class="flex items-center gap-3 mt-4 text-sm text-gray-400">
+                <div class="skeleton h-4 w-48"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <section class="px-6 pb-16 fade-up">
+        <div id="post-content" class="max-w-3xl mx-auto article-content">
+            <div class="skeleton h-4 w-full mb-3"></div>
+            <div class="skeleton h-4 w-5/6 mb-3"></div>
+            <div class="skeleton h-4 w-4/6 mb-6"></div>
+            <div class="skeleton h-6 w-2/5 mb-3"></div>
+            <div class="skeleton h-4 w-full mb-3"></div>
+            <div class="skeleton h-4 w-3/4 mb-3"></div>
+        </div>
+    </section>
+
+    <!-- Baca Juga -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-xl font-bold mb-6">Baca Juga</h2>
+            <div id="baca-juga" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-3xl mx-auto text-center">
+            <p class="text-xl font-bold mb-4">Ada pertanyaan tentang keuangan?</p>
+            <a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                DM Saya di Instagram
+            </a>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="js/main.js"></script>
+    <script>
+    const MODAL_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
+    const categoryColors = {
+        insurance: 'bg-purple-100 text-purple-700',
+        investment: 'bg-blue-100 text-blue-700',
+        personal_finance: 'bg-green-100 text-green-700',
+        economy: 'bg-orange-100 text-orange-700'
+    };
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    async function loadPost() {
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        if (!slug) {
+            document.getElementById('post-title').textContent = 'Artikel tidak ditemukan';
+            return;
+        }
+
+        try {
+            const res = await fetch(MODAL_API);
+            if (!res.ok) throw new Error('API error');
+            const data = await res.json();
+            const post = (data.posts || []).find(p => p.slug === slug);
+
+            if (!post) {
+                document.getElementById('post-title').textContent = 'Artikel tidak ditemukan';
+                document.getElementById('post-content').innerHTML = '<p>Artikel ini tidak tersedia atau belum diapprove.</p>';
+                return;
+            }
+
+            // Update page title and meta
+            document.title = `${post.title} — Philip Mulyana`;
+            document.querySelector('meta[name="description"]').content = post.excerpt || '';
+
+            // Badge
+            const badgeColor = post.categoryLabel.includes('News') ? 'bg-red-100 text-red-700' : (categoryColors[post.category] || 'bg-gray-100 text-gray-700');
+            document.getElementById('post-badge').innerHTML = `<span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeColor}">${post.categoryLabel}</span>`;
+
+            // Title
+            document.getElementById('post-title').textContent = post.title;
+
+            // Meta
+            document.getElementById('post-meta').innerHTML = `
+                <span>${formatDate(post.date)}</span>
+                <span>&middot;</span>
+                <span>${post.readingTime}</span>
+                <span>&middot;</span>
+                <span>${post.author}</span>
+            `;
+
+            // Content — render markdown
+            if (post.content) {
+                document.getElementById('post-content').innerHTML = marked.parse(post.content);
+            } else {
+                document.getElementById('post-content').innerHTML = '<p>Konten artikel belum tersedia.</p>';
+            }
+
+            // Baca Juga — other approved articles
+            const others = (data.posts || []).filter(p => p.slug !== slug).slice(0, 2);
+            document.getElementById('baca-juga').innerHTML = others.map(o => {
+                const color = categoryColors[o.category] || 'bg-gray-100 text-gray-700';
+                return `
+                    <a href="post.html?slug=${o.slug}" class="bg-gray-50 rounded-2xl p-5 hover:shadow-lg transition-shadow duration-300 block">
+                        <span class="text-xs font-medium px-2.5 py-1 rounded-full ${color}">${o.categoryLabel}</span>
+                        <h3 class="font-bold mt-3 leading-snug">${o.title}</h3>
+                        <p class="text-sm text-gray-500 mt-2">${o.readingTime}</p>
+                    </a>
+                `;
+            }).join('');
+
+        } catch (err) {
+            document.getElementById('post-title').textContent = 'Gagal memuat artikel';
+            document.getElementById('post-content').innerHTML = '<p>Coba refresh halaman ini.</p>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPost);
+    </script>
+</body>
+</html>

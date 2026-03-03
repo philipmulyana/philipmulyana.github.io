@@ -2,7 +2,10 @@ let allItems = [];
 let activeCategory = 'all';
 let activeType = 'all';
 
+const MODAL_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
+
 async function loadBlog() {
+    // 1. Load from static JSON first (instant)
     try {
         const [newsRes, postsRes] = await Promise.all([
             fetch('data/blog.json').catch(() => ({ ok: false })),
@@ -21,21 +24,34 @@ async function loadBlog() {
             allItems.push(...postItems);
         }
 
-        // Sort: original posts first, then by date descending
-        allItems.sort((a, b) => {
-            if (a.type !== b.type) return a.type === 'original' ? -1 : 1;
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        renderItems();
+        sortAndRender();
     } catch (err) {
-        document.getElementById('blog-grid').innerHTML = `
-            <div class="col-span-full text-center py-12 text-gray-400">
-                <p class="text-lg font-medium">No articles yet</p>
-                <p class="text-sm mt-2">Check back soon for new content.</p>
-            </div>
-        `;
+        // Static files failed, will rely on Modal API below
     }
+
+    // 2. Fetch from Modal API in background (always up-to-date)
+    try {
+        const res = await fetch(MODAL_API);
+        if (res.ok) {
+            const data = await res.json();
+            const apiPosts = (data.posts || []).map(p => ({ ...p, type: 'original' }));
+
+            // Merge: keep news items, replace original posts with API data
+            const newsOnly = allItems.filter(i => i.type === 'news');
+            allItems = [...newsOnly, ...apiPosts];
+            sortAndRender();
+        }
+    } catch (err) {
+        // Modal API unavailable, static data is already shown
+    }
+}
+
+function sortAndRender() {
+    allItems.sort((a, b) => {
+        if (a.type !== b.type) return a.type === 'original' ? -1 : 1;
+        return new Date(b.date) - new Date(a.date);
+    });
+    renderItems();
 }
 
 function filterType(type) {
@@ -104,6 +120,7 @@ function renderPostCard(post) {
     };
     const badgeClass = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
     const formattedDate = formatDate(post.date);
+    const postUrl = `post.html?slug=${post.slug}`;
 
     return `
         <article class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black">
@@ -115,7 +132,7 @@ function renderPostCard(post) {
             <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${post.excerpt}</p>
             <div class="flex items-center justify-between">
-                <a href="post-${post.slug}.html"
+                <a href="${postUrl}"
                     class="inline-flex items-center text-sm font-medium text-black hover:text-gray-600 transition-colors">
                     Baca selengkapnya
                     <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
