@@ -51,27 +51,36 @@ function renderScrollTestimonials(containerId, testimonials) {
 
     // Auto-scroll
     const track = document.getElementById(`${containerId}-track`);
-    let interval = null;
+    if (!track || !track.firstElementChild) return;
 
-    function startAutoScroll() {
-        interval = setInterval(() => {
-            const cardWidth = track.firstElementChild.offsetWidth + 16; // card + gap
-            const maxScroll = track.scrollWidth - track.clientWidth;
-            if (track.scrollLeft >= maxScroll - 10) {
-                track.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-                track.scrollBy({ left: cardWidth, behavior: 'smooth' });
-            }
-        }, 4000);
+    let timer = null;
+    let cardIndex = 0;
+    const totalCards = testimonials.length;
+
+    function scrollNext() {
+        cardIndex = (cardIndex + 1) % totalCards;
+        const card = track.children[cardIndex];
+        if (card) {
+            track.scrollTo({ left: card.offsetLeft - track.offsetLeft - 24, behavior: 'smooth' });
+        }
     }
 
-    function stopAutoScroll() { clearInterval(interval); }
+    function start() {
+        stop();
+        timer = setInterval(scrollNext, 4000);
+    }
 
-    startAutoScroll();
-    track.addEventListener('pointerdown', stopAutoScroll);
-    track.addEventListener('pointerup', () => { startAutoScroll(); });
-    track.addEventListener('mouseenter', stopAutoScroll);
-    track.addEventListener('mouseleave', () => { startAutoScroll(); });
+    function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    start();
+
+    // Pause on interaction
+    track.addEventListener('touchstart', stop, { passive: true });
+    track.addEventListener('touchend', () => setTimeout(start, 3000), { passive: true });
+    track.addEventListener('mouseenter', stop);
+    track.addEventListener('mouseleave', start);
 }
 
 function renderTestimonials(containerId, testimonials) {
