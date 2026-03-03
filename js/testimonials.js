@@ -44,10 +44,34 @@ function renderScrollTestimonials(containerId, testimonials) {
     `).join('');
 
     container.innerHTML = `
-        <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-6 no-scrollbar">
+        <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-6 no-scrollbar" id="${containerId}-track">
             ${cards}
         </div>
     `;
+
+    // Auto-scroll
+    const track = document.getElementById(`${containerId}-track`);
+    let interval = null;
+
+    function startAutoScroll() {
+        interval = setInterval(() => {
+            const cardWidth = track.firstElementChild.offsetWidth + 16; // card + gap
+            const maxScroll = track.scrollWidth - track.clientWidth;
+            if (track.scrollLeft >= maxScroll - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+            }
+        }, 4000);
+    }
+
+    function stopAutoScroll() { clearInterval(interval); }
+
+    startAutoScroll();
+    track.addEventListener('pointerdown', stopAutoScroll);
+    track.addEventListener('pointerup', () => { startAutoScroll(); });
+    track.addEventListener('mouseenter', stopAutoScroll);
+    track.addEventListener('mouseleave', () => { startAutoScroll(); });
 }
 
 function renderTestimonials(containerId, testimonials) {
