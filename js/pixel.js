@@ -13,14 +13,12 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1408957391027533');
 fbq('track', 'PageView');
 
-// noscript fallback
-(function() {
-    var noscript = document.createElement('noscript');
+// noscript fallback — wait for body to exist
+document.addEventListener('DOMContentLoaded', function() {
     var img = document.createElement('img');
     img.height = 1;
     img.width = 1;
     img.style.display = 'none';
     img.src = 'https://www.facebook.com/tr?id=1408957391027533&ev=PageView&noscript=1';
-    noscript.appendChild(img);
-    document.body.appendChild(noscript);
-})();
+    document.body.appendChild(img);
+});

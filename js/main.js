@@ -4,12 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const footerPlaceholder = document.getElementById('footer-placeholder');
 
     if (navPlaceholder) {
-        fetch('partials/navbar.html')
+        fetch('partials/navbar.html?v=' + Date.now())
             .then(r => r.text())
             .then(html => {
                 navPlaceholder.innerHTML = html;
                 highlightActiveLink();
                 initMobileMenu();
+                initCtaHover();
             });
     }
 
@@ -86,6 +87,14 @@ function initMobileMenu() {
             : 'M6 18L18 6M6 6l12 12'
         );
     });
+}
+
+function initCtaHover() {
+    var el = document.getElementById('navbar-placeholder');
+    if (!el) return;
+    var s = document.createElement('style');
+    s.textContent = 'a.rounded-full[data-nav="contact"]:hover{background-color:#facc15!important;color:#000!important}';
+    el.appendChild(s);
 }
 
 function initScrollAnimations() {
