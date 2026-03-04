@@ -135,7 +135,7 @@ function renderPostCard(post) {
 
     return `
         <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">
-            <div class="badge-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;justify-content:center">
+            <div style="text-align:center;margin-bottom:0.75rem">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${topicLabel}</span>
                 <span class="text-xs text-gray-400">${formattedDate}</span>
@@ -165,7 +165,7 @@ function renderNewsCard(article) {
 
     return `
         <a href="${article.url}" target="_blank" rel="noopener" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-            <div class="badge-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;justify-content:center">
+            <div style="text-align:center;margin-bottom:0.75rem">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${article.categoryLabel}</span>
                 <span class="text-xs text-gray-400">${formattedDate}</span>
                 <span class="text-xs text-gray-300">|</span>
