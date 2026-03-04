@@ -135,11 +135,11 @@ function renderPostCard(post) {
 
     return `
         <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">
-            <div style="text-align:center;margin-bottom:0.75rem">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${topicLabel}</span>
-                <br><span class="text-xs text-gray-400">${formattedDate}</span>
             </div>
+            <div class="text-xs text-gray-400 mb-3">${formattedDate}</div>
             <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${post.excerpt}</p>
             <div class="flex items-center justify-between">
@@ -165,10 +165,10 @@ function renderNewsCard(article) {
 
     return `
         <a href="${article.url}" target="_blank" rel="noopener" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-            <div style="text-align:center;margin-bottom:0.75rem">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${article.categoryLabel}</span>
-                <br><span class="text-xs text-gray-400">${formattedDate} · ${article.source}</span>
             </div>
+            <div class="text-xs text-gray-400 mb-3">${formattedDate} · ${article.source}</div>
             <h3 class="font-bold text-lg leading-snug mb-3">${article.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${article.hook}</p>
             <div class="flex items-center justify-between">
