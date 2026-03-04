@@ -138,7 +138,7 @@ function renderPostCard(post) {
             <div style="text-align:center;margin-bottom:0.75rem">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${topicLabel}</span>
-                <div class="text-xs text-gray-400 mt-2">${formattedDate}</div>
+                <br><span class="text-xs text-gray-400">${formattedDate}</span>
             </div>
             <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${post.excerpt}</p>
@@ -167,7 +167,7 @@ function renderNewsCard(article) {
         <a href="${article.url}" target="_blank" rel="noopener" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
             <div style="text-align:center;margin-bottom:0.75rem">
                 <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${article.categoryLabel}</span>
-                <div class="text-xs text-gray-400 mt-2">${formattedDate} · ${article.source}</div>
+                <br><span class="text-xs text-gray-400">${formattedDate} · ${article.source}</span>
             </div>
             <h3 class="font-bold text-lg leading-snug mb-3">${article.title}</h3>
             <p class="text-sm text-gray-600 leading-relaxed mb-4">${article.hook}</p>
