@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webinar Registration — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/pixel.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero -->
+    <section class="pt-32 pb-12 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs text-gray-400 uppercase tracking-wider">Invitation Only</span>
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Webinar Registration</h1>
+            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Maksimal 5 peserta per kelas, supaya bisa diskusi lebih dalam. Daftar sekarang sebelum penuh.</p>
+            <div class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-4">Registrasi GRATIS — bayar saat hadir</div>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-xl mx-auto">
+            <form id="webinar-form" class="space-y-5">
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium mb-1.5">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
+                        placeholder="Nama lengkap Anda">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium mb-1.5">Email</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
+                        placeholder="email@example.com">
+                </div>
+
+                <!-- WhatsApp -->
+                <div>
+                    <label for="whatsapp" class="block text-sm font-medium mb-1.5">Nomor WhatsApp</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
+                        placeholder="08xxxxxxxxxx">
+                </div>
+
+                <!-- Webinar Schedule -->
+                <div>
+                    <label class="block text-sm font-medium mb-1.5">Pilih Kelas</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 cursor-pointer hover:border-black transition-colors">
+                            <input type="radio" name="webinar" value="Asuransi 101 — 14 April 2026, 20:00 WIB" required class="w-4 h-4 accent-black">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Asuransi 101</span>
+                                    <span class="text-sm font-bold">Rp 100.000</span>
+                                </div>
+                                <span class="text-xs text-gray-400">Senin, 14 April 2026 — 20:00 WIB</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 cursor-pointer hover:border-black transition-colors">
+                            <input type="radio" name="webinar" value="Repricing — 15 April 2026, 20:00 WIB" class="w-4 h-4 accent-black">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Repricing</span>
+                                    <span class="text-sm font-bold">Rp 100.000</span>
+                                </div>
+                                <span class="text-xs text-gray-400">Selasa, 15 April 2026 — 20:00 WIB</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Agent or Not -->
+                <div>
+                    <label class="block text-sm font-medium mb-1.5">Apakah Anda seorang agen asuransi?</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="is_agent" value="Ya" required class="w-4 h-4 accent-black">
+                            <span class="text-sm">Ya</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="is_agent" value="Bukan" class="w-4 h-4 accent-black">
+                            <span class="text-sm">Bukan</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Monthly Income -->
+                <div>
+                    <label for="income" class="block text-sm font-medium mb-1.5">Penghasilan per Bulan</label>
+                    <select id="income" name="income" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
+                        <option value="" disabled selected>Pilih range penghasilan</option>
+                        <option value="< 5 Juta">< 5 Juta</option>
+                        <option value="5 - 10 Juta">5 - 10 Juta</option>
+                        <option value="10 - 20 Juta">10 - 20 Juta</option>
+                        <option value="20 - 50 Juta">20 - 50 Juta</option>
+                        <option value="50 - 100 Juta">50 - 100 Juta</option>
+                        <option value="> 100 Juta">> 100 Juta</option>
+                    </select>
+                </div>
+
+                <!-- Age -->
+                <div>
+                    <label for="age" class="block text-sm font-medium mb-1.5">Usia</label>
+                    <select id="age" name="age" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
+                        <option value="" disabled selected>Pilih range usia</option>
+                        <option value="< 25 tahun">< 25 tahun</option>
+                        <option value="25 - 30 tahun">25 - 30 tahun</option>
+                        <option value="31 - 35 tahun">31 - 35 tahun</option>
+                        <option value="36 - 40 tahun">36 - 40 tahun</option>
+                        <option value="41 - 50 tahun">41 - 50 tahun</option>
+                        <option value="> 50 tahun">> 50 tahun</option>
+                    </select>
+                </div>
+
+                <!-- Has Insurance Policy -->
+                <div>
+                    <label class="block text-sm font-medium mb-1.5">Sudah punya polis asuransi?</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="has_policy" value="Sudah" required class="w-4 h-4 accent-black">
+                            <span class="text-sm">Sudah</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="has_policy" value="Belum" class="w-4 h-4 accent-black">
+                            <span class="text-sm">Belum</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" id="submit-btn"
+                    class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
+                    Daftar Sekarang
+                </button>
+            </form>
+
+            <!-- Success Message (hidden by default) -->
+            <div id="success-msg" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h2 class="text-2xl font-black mb-2">Pendaftaran Berhasil!</h2>
+                <p class="text-gray-500 text-sm">Terima kasih sudah mendaftar. Kami akan mengirim detail webinar ke email dan WhatsApp Anda.</p>
+            </div>
+
+            <!-- Agent Message (hidden by default) -->
+            <div id="agent-msg" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h2 class="text-2xl font-black mb-2">Terima Kasih!</h2>
+                <p class="text-gray-500 text-sm">Webinar ini khusus untuk non-agen. Tapi terima kasih sudah tertarik!</p>
+            </div>
+
+            <!-- Error Message (hidden by default) -->
+            <div id="error-msg" class="hidden text-center py-4">
+                <p class="text-red-500 text-sm">Terjadi kesalahan. Silakan coba lagi.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Webinar registration form handler
+        const AIRTABLE_ENDPOINT = 'https://philipmulyana--ai-website-builder-webinar-register.modal.run';
+
+        document.getElementById('webinar-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submit-btn');
+            const form = this;
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.classList.add('hidden');
+
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = 'Mendaftar...';
+
+            const data = {
+                name: form.name.value.trim(),
+                email: form.email.value.trim(),
+                whatsapp: form.whatsapp.value.trim(),
+                webinar: form.webinar.value,
+                is_agent: form.is_agent.value,
+                income: form.income.value,
+                age: form.age.value,
+                has_policy: form.has_policy.value,
+            };
+
+            try {
+                const resp = await fetch(AIRTABLE_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!resp.ok) throw new Error('Server error');
+
+                const result = await resp.json();
+
+                // Track with Meta Pixel
+                fbq('track', 'CompleteRegistration', {
+                    content_name: 'Webinar Registration',
+                    status: true,
+                });
+
+                // Show success (different message for agents)
+                form.classList.add('hidden');
+                if (result.agent) {
+                    document.getElementById('agent-msg').classList.remove('hidden');
+                } else {
+                    document.getElementById('success-msg').classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Daftar Sekarang';
+            }
+        });
+    </script>
+</body>
+</html>
