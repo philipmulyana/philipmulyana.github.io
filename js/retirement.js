@@ -104,15 +104,17 @@ function calculateRetirement() {
     calcResults = { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, totalNeeded, yearsUntilRetirement, currentAge, isAgent };
 
     // Fire-and-forget: log calculator usage event (top-of-funnel metric)
-    try {
-        const viewPayload = JSON.stringify({
+    fetch(WEBSITE_CALC_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
             action: 'calc_view',
             current_age: currentAge,
             monthly_cost: monthlyCost,
             is_agent: isAgent,
-        });
-        navigator.sendBeacon(WEBSITE_CALC_ENDPOINT, new Blob([viewPayload], { type: 'application/json' }));
-    } catch (e) { /* non-blocking */ }
+        }),
+        keepalive: true,
+    }).catch(() => { /* non-blocking */ });
 
     const heroHTML = `
         <h3 class="text-lg font-bold text-center mb-1">Hasil Perhitungan Dana Pensiun</h3>
@@ -271,13 +273,13 @@ function revealResults() {
         is_agent: false,
     });
 
-    // Use sendBeacon for reliable fire-and-forget (works even if user navigates away)
-    const sent = navigator.sendBeacon(WEBSITE_CALC_ENDPOINT, new Blob([payload], { type: 'application/json' }));
-    if (!sent) {
-        // Fallback: fetch with no-cors
-        fetch(WEBSITE_CALC_ENDPOINT, { method: 'POST', mode: 'no-cors', body: payload }).catch(() => {});
-    }
-    console.log('Lead submitted to backend:', sent ? 'sendBeacon' : 'fetch fallback');
+    // Send to backend (CORS configured server-side)
+    fetch(WEBSITE_CALC_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+    }).catch(() => { /* non-blocking */ });
 
     // Show simple confirmation (don't wait for backend)
     document.getElementById('lead-gate').style.display = 'none';
