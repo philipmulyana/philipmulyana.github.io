@@ -103,6 +103,17 @@ function calculateRetirement() {
     // Store for later reveal
     calcResults = { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, totalNeeded, yearsUntilRetirement, currentAge, isAgent };
 
+    // Fire-and-forget: log calculator usage event (top-of-funnel metric)
+    try {
+        const viewPayload = JSON.stringify({
+            action: 'calc_view',
+            current_age: currentAge,
+            monthly_cost: monthlyCost,
+            is_agent: isAgent,
+        });
+        navigator.sendBeacon(WEBSITE_CALC_ENDPOINT, new Blob([viewPayload], { type: 'application/json' }));
+    } catch (e) { /* non-blocking */ }
+
     const heroHTML = `
         <h3 class="text-lg font-bold text-center mb-1">Hasil Perhitungan Dana Pensiun</h3>
         <p class="text-xs text-gray-400 text-center mb-6">Berdasarkan data yang kamu masukkan</p>
