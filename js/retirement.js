@@ -128,8 +128,8 @@ function calculateRetirement() {
         </div>
     `;
 
-    if (isAgent || currentAge > 45) {
-        // Agent or age > 45: numbers only — no urgency, no persuasion, no CTA
+    if (isAgent || currentAge >= 45) {
+        // Agent or age ≥ 45: numbers only — no urgency, no persuasion, no CTA
         resultsEl.innerHTML = heroHTML + buildBreakdownTableHTML(calcResults) + buildDisclaimerHTML();
     } else {
         // Non-agent: show big number + urgency + consent gate
