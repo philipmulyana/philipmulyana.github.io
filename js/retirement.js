@@ -1,5 +1,5 @@
 // Kalkulator Dana Pensiun — hybrid lead gen version
-const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-campaign-tools.modal.run';
+const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
 const INFLATION_RATE = 0.05;
 const LIFE_EXPECTANCY = 75;
 const RETIREMENT_AGE = 55;
@@ -38,8 +38,8 @@ function getIsAgent() {
     return checked ? checked.value === 'yes' : false;
 }
 
-function buildBreakdownHTML(data) {
-    const { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, totalNeeded, yearsUntilRetirement } = data;
+function buildBreakdownTableHTML(data) {
+    const { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, yearsUntilRetirement } = data;
     return `
         <!-- Breakdown Table -->
         <div class="space-y-0 text-sm mb-6">
@@ -59,29 +59,6 @@ function buildBreakdownHTML(data) {
                 <span class="text-gray-500">Waktu yang tersisa untuk mempersiapkan</span>
                 <span class="font-bold">${yearsUntilRetirement} tahun</span>
             </div>
-        </div>
-
-        <!-- Persuasive Copy -->
-        <div class="mb-6">
-            <p class="text-sm text-gray-600 leading-relaxed mb-3">
-                Angka di atas mungkin terlihat besar, tapi kabar baiknya: dengan perencanaan
-                yang tepat dan strategi yang sesuai, target ini bisa dicapai secara bertahap.
-            </p>
-            <p class="text-sm text-gray-600 leading-relaxed">
-                Pertanyaannya bukan <em>apakah</em> kamu perlu mulai, tapi <strong>bagaimana
-                cara terbaik untuk memulainya</strong>.
-            </p>
-        </div>
-
-        <!-- CTA -->
-        <div class="text-center">
-            <p class="text-sm text-gray-700 font-medium mb-3">Mau tau langkah pertama yang bisa kamu ambil sekarang?</p>
-            <a href="https://calendly.com/philipmulyana/first-call" target="_blank"
-                class="inline-flex items-center bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                Konsultasi Gratis 10 Menit
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-            <p class="text-xs text-gray-400 mt-3">Via WhatsApp call, tanpa biaya, tanpa komitmen.</p>
         </div>
     `;
 }
@@ -124,7 +101,7 @@ function calculateRetirement() {
     const totalNeeded = monthlyCostAtRetirement * 12 * (LIFE_EXPECTANCY - RETIREMENT_AGE);
 
     // Store for later reveal
-    calcResults = { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, totalNeeded, yearsUntilRetirement, isAgent };
+    calcResults = { monthlyCost, monthlyCostAtRetirement, annualCostAtRetirement, totalNeeded, yearsUntilRetirement, currentAge, isAgent };
 
     const heroHTML = `
         <h3 class="text-lg font-bold text-center mb-1">Hasil Perhitungan Dana Pensiun</h3>
@@ -138,26 +115,77 @@ function calculateRetirement() {
         </div>
     `;
 
-    if (isAgent) {
-        // Agent: show everything immediately, no lead capture
-        resultsEl.innerHTML = heroHTML + buildBreakdownHTML(calcResults) + buildDisclaimerHTML();
+    if (isAgent || currentAge > 45) {
+        // Agent or age > 45: numbers only — no urgency, no persuasion, no CTA
+        resultsEl.innerHTML = heroHTML + buildBreakdownTableHTML(calcResults) + buildDisclaimerHTML();
     } else {
-        // Non-agent: show big number + lead capture gate
+        // Non-agent: show big number + urgency + consent gate
         resultsEl.innerHTML = heroHTML + `
             <!-- Lead Capture Gate -->
             <div id="lead-gate" class="bg-gray-50 rounded-2xl p-6">
-                <p class="text-sm font-medium text-gray-700 mb-1 text-center">Mau lihat breakdown lengkapnya?</p>
-                <p class="text-xs text-gray-400 mb-5 text-center">Isi data singkat di bawah untuk melihat detail perhitungan dan langkah selanjutnya.</p>
-                <div class="space-y-3 max-w-md mx-auto">
+                <!-- Urgency message -->
+                <div class="mb-6">
+                    <p class="text-base font-bold text-gray-900 mb-3">Bayangkan ${yearsUntilRetirement} tahun dari sekarang.</p>
+
+                    <!-- Emotional scenario -->
+                    <div class="border-l-4 border-gray-900 pl-4 mb-5">
+                        <p class="text-sm text-gray-800 leading-relaxed mb-3">
+                            Anak yang kamu besarkan dan kamu sekolahkan setinggi-tingginya sudah punya karir. Mungkin sudah berkeluarga, mungkin sudah punya anak sendiri.
+                        </p>
+                        <p class="text-sm text-gray-800 leading-relaxed mb-3">
+                            Tapi setiap bulan, dia harus menyisihkan dari gajinya untuk transfer ke kamu — bukan karena ingin memberikan hadiah, tapi karena harus. Untuk biaya hidup kamu. Untuk obat-obatan kamu.
+                        </p>
+                        <p class="text-sm text-gray-800 leading-relaxed font-medium">
+                            Kamu yang dulu jadi sandaran utama mereka, pelan-pelan jadi beban di samping kebutuhan keluarga mereka sendiri.
+                        </p>
+                    </div>
+
+                    <p class="text-sm text-gray-700 leading-relaxed mb-4">
+                        Ini bukan cerita yang dilebih-lebihkan. Ini realita mayoritas keluarga Indonesia hari ini — dan ada alasan struktural kenapa:
+                    </p>
+
+                    <!-- Compact data backup -->
+                    <div class="bg-gray-100 rounded-xl p-4 mb-2">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-2">
+                            <strong>Sistem tidak akan menyelamatkan.</strong> Singapura mewajibkan kontribusi pensiun <strong>37% dari gaji</strong>. Indonesia hanya <strong>8,7%</strong> lewat BPJS. Selisih hampir 30% itu adalah tanggung jawab pribadi yang harus kamu siapkan sendiri.
+                        </p>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Hasilnya: <strong>kurang dari 15% pekerja Indonesia</strong> benar-benar siap secara finansial untuk pensiun. Sisanya bekerja jauh lebih lama dari yang seharusnya — atau bergantung pada anak.
+                        </p>
+                    </div>
+
+                    <p class="text-[10px] text-gray-400 leading-relaxed mb-5">
+                        Sumber: CPF Board Singapore (2026), BPJS Ketenagakerjaan, Manulife Asia Care Survey 2025, OECD Pensions at a Glance Asia/Pacific 2024.
+                    </p>
+
+                    <!-- Identity closing -->
+                    <p class="text-sm text-gray-900 font-bold leading-relaxed mb-2">
+                        Pertanyaannya bukan "berapa yang harus saya siapkan."
+                    </p>
+                    <p class="text-sm text-gray-900 font-bold leading-relaxed">
+                        Pertanyaannya: orangtua seperti apa yang ingin kamu jadi di mata anakmu nanti?
+                    </p>
+                </div>
+
+                <!-- Consent checkbox -->
+                <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors" id="ret-consent-label">
+                    <input type="checkbox" id="ret-consent" class="mt-0.5 w-5 h-5 accent-black flex-shrink-0" onchange="toggleConsent()">
+                    <span class="text-sm text-gray-700 leading-relaxed">
+                        Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya memulai langkah pertama</strong> — supaya saya <strong>tidak menjadi beban untuk anak saya</strong> di masa pensiun.
+                    </span>
+                </label>
+
+                <!-- Form (disabled until consent) -->
+                <div id="lead-form" class="space-y-3 max-w-md mx-auto opacity-40 pointer-events-none transition-opacity">
                     <input type="text" id="ret-nama" placeholder="Nama kamu"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
                     <input type="email" id="ret-email" placeholder="Email kamu"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
                     <input type="tel" id="ret-whatsapp" placeholder="Nomor WhatsApp (e.g. 081234567890)"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
-                    <button onclick="revealResults()"
+                    <button onclick="revealResults()" id="ret-submit"
                         class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                        Lihat Detail Lengkap
+                        Jadwalkan Konsultasi & Lihat Detail
                     </button>
                 </div>
                 <p id="gate-error" class="text-red-500 text-xs mt-2 text-center hidden"></p>
@@ -176,12 +204,31 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function toggleConsent() {
+    const checked = document.getElementById('ret-consent').checked;
+    const form = document.getElementById('lead-form');
+    if (!form) return;
+    if (checked) {
+        form.classList.remove('opacity-40', 'pointer-events-none');
+    } else {
+        form.classList.add('opacity-40', 'pointer-events-none');
+    }
+}
+
 function revealResults() {
+    const consentEl = document.getElementById('ret-consent');
+    const errorEl = document.getElementById('gate-error');
+
+    if (!consentEl || !consentEl.checked) {
+        errorEl.textContent = 'Mohon centang persetujuan di atas dulu sebelum mengirim data.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
     const nama = document.getElementById('ret-nama').value.trim();
     const email = document.getElementById('ret-email').value.trim();
     const whatsapp = document.getElementById('ret-whatsapp').value.trim();
-    const errorEl = document.getElementById('gate-error');
-    const submitBtn = document.querySelector('#lead-gate button');
+    const submitBtn = document.getElementById('ret-submit');
 
     // Validate
     const errors = [];
@@ -221,13 +268,20 @@ function revealResults() {
     }
     console.log('Lead submitted to backend:', sent ? 'sendBeacon' : 'fetch fallback');
 
-    // Show results immediately (don't wait for backend)
+    // Show simple confirmation (don't wait for backend)
     document.getElementById('lead-gate').style.display = 'none';
 
-    const breakdownEl = document.getElementById('full-breakdown');
-    breakdownEl.innerHTML = buildBreakdownHTML(calcResults);
-    breakdownEl.classList.remove('hidden');
-    breakdownEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const confirmEl = document.getElementById('full-breakdown');
+    confirmEl.innerHTML = `
+        <div class="text-center py-6">
+            <p class="text-base font-bold text-gray-900 mb-2">Terima kasih!</p>
+            <p class="text-sm text-gray-700 leading-relaxed">
+                Philip akan menghubungi kamu via WhatsApp dalam <strong>1×24 jam</strong>.
+            </p>
+        </div>
+    `;
+    confirmEl.classList.remove('hidden');
+    confirmEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 document.addEventListener('DOMContentLoaded', initNumberFormatting);
