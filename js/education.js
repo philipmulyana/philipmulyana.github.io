@@ -1,7 +1,7 @@
 // Kalkulator Dana Kuliah — hybrid lead gen version
 const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
 const EDU_INFLATION = 0.10;
-const KULIAH_START_AGE = 19;
+const KULIAH_START_AGE = 18;
 const KULIAH_DURATION = 4;
 
 // Threshold age for routing — child age 10+ (or agent) shows numbers only, no lead gate
