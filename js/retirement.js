@@ -1,5 +1,31 @@
 // Kalkulator Dana Pensiun — hybrid lead gen version
 const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
+
+// Session tracking for funnel analysis
+function getSessionId() {
+    let sid = sessionStorage.getItem('calc_session_id');
+    if (!sid) {
+        sid = (crypto.randomUUID && crypto.randomUUID()) || (Date.now() + '-' + Math.random().toString(36).slice(2));
+        sessionStorage.setItem('calc_session_id', sid);
+    }
+    return sid;
+}
+
+function fireFunnelEvent(eventName, age, cost, isAgent) {
+    fetch(WEBSITE_CALC_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'funnel_event',
+            calculator: 'pension',
+            event: eventName,
+            session_id: getSessionId(),
+            age, cost, is_agent: isAgent,
+            user_agent: navigator.userAgent.slice(0, 200),
+        }),
+        keepalive: true,
+    }).catch(() => {});
+}
 const INFLATION_RATE = 0.05;
 const LIFE_EXPECTANCY = 75;
 const RETIREMENT_AGE = 55;
@@ -211,6 +237,18 @@ function calculateRetirement() {
 
     resultsEl.classList.remove('hidden');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Track when lead gate enters viewport (= user scrolled to form)
+    const gateEl = document.getElementById('lead-gate');
+    if (gateEl && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fireFunnelEvent('gate_seen', currentAge, monthlyCost, isAgent);
+                obs.disconnect();
+            }
+        }, { threshold: 0.3 });
+        obs.observe(gateEl);
+    }
 }
 
 function isValidEmail(email) {
@@ -223,6 +261,11 @@ function toggleConsent() {
     if (!form) return;
     if (checked) {
         form.classList.remove('opacity-40', 'pointer-events-none');
+        // Fire once per session to avoid spam if they tick/untick
+        if (calcResults && !window._consentFired) {
+            window._consentFired = true;
+            fireFunnelEvent('consent_ticked', calcResults.currentAge, calcResults.monthlyCost, calcResults.isAgent);
+        }
     } else {
         form.classList.add('opacity-40', 'pointer-events-none');
     }
