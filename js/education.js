@@ -92,7 +92,7 @@ function buildHeroHTML(totalNeeded, startAge) {
     `;
 }
 
-function buildLeadGateHTML(currentAge, kuliah) {
+function buildLeadGateHTML(currentAge, kuliah, breakdownHTML) {
     const yearsUntilKuliah = kuliah.yearsUntilStart;
 
     const scenario = `
@@ -144,6 +144,10 @@ function buildLeadGateHTML(currentAge, kuliah) {
                 <p class="text-[10px] text-gray-400 leading-relaxed mb-5">
                     Sumber: BPS, OJK studies on education inflation Indonesia, Manulife Asia Care Survey 2025.
                 </p>
+
+                <div class="rounded-xl overflow-hidden mb-5 border border-gray-200 bg-white">
+                    ${breakdownHTML}
+                </div>
 
                 ${identity}
             </div>
@@ -233,8 +237,7 @@ function calculateEducation() {
     } else {
         resultsEl.innerHTML =
             heroHTML +
-            breakdownHTML +
-            buildLeadGateHTML(childAge, kuliah) +
+            buildLeadGateHTML(childAge, kuliah, breakdownHTML) +
             buildDisclaimerHTML();
     }
 
