@@ -29,6 +29,45 @@ function fireFunnelEvent(eventName, age, cost, isAgent) {
 const INFLATION_RATE = 0.05;
 const LIFE_EXPECTANCY = 75;
 const RETIREMENT_AGE = 55;
+const STORAGE_KEY_PEN = 'calc_pension_state_v1';
+
+// --- Preserve form state across reloads ---
+function savePenState() {
+    try {
+        const state = {
+            cost: document.getElementById('ret-monthly-cost')?.value || '',
+            age: document.getElementById('ret-age')?.value || '',
+            agent: document.querySelector('input[name="ret-is-agent"]:checked')?.value || 'no',
+            nama: document.getElementById('ret-nama')?.value || '',
+            email: document.getElementById('ret-email')?.value || '',
+            wa: document.getElementById('ret-whatsapp')?.value || '',
+        };
+        localStorage.setItem(STORAGE_KEY_PEN, JSON.stringify(state));
+    } catch(e) {}
+}
+
+function restorePenState() {
+    try {
+        const s = JSON.parse(localStorage.getItem(STORAGE_KEY_PEN) || '{}');
+        const setVal = (id, v, fmt) => {
+            const el = document.getElementById(id);
+            if (el && v) { el.value = v; if (fmt) formatNumberInput(el); el.addEventListener('input', savePenState); }
+        };
+        setVal('ret-monthly-cost', s.cost, true);
+        setVal('ret-age', s.age, false);
+        setVal('ret-nama', s.nama);
+        setVal('ret-email', s.email);
+        setVal('ret-whatsapp', s.wa);
+        if (s.agent) {
+            const r = document.querySelector(`input[name="ret-is-agent"][value="${s.agent}"]`);
+            if (r) r.checked = true;
+        }
+    } catch(e) {}
+}
+
+function clearPenState() {
+    try { localStorage.removeItem(STORAGE_KEY_PEN); } catch(e) {}
+}
 
 // --- Comma formatting for number inputs ---
 function formatNumberInput(input) {
@@ -238,6 +277,9 @@ function calculateRetirement() {
     resultsEl.classList.remove('hidden');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+    // Restore lead form fields if user previously typed (and wire up listeners)
+    restorePenState();
+
     // Track when lead gate enters viewport (= user scrolled to form)
     const gateEl = document.getElementById('lead-gate');
     if (gateEl && 'IntersectionObserver' in window) {
@@ -324,6 +366,9 @@ function revealResults() {
         keepalive: true,
     }).catch(() => { /* non-blocking */ });
 
+    // Successful submit — clear preserved state
+    clearPenState();
+
     // Show simple confirmation (don't wait for backend)
     document.getElementById('lead-gate').style.display = 'none';
 
@@ -340,4 +385,13 @@ function revealResults() {
     confirmEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-document.addEventListener('DOMContentLoaded', initNumberFormatting);
+document.addEventListener('DOMContentLoaded', () => {
+    initNumberFormatting();
+    restorePenState();
+    // Hook all calc inputs (initial set) to save on change
+    ['ret-monthly-cost', 'ret-age'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', savePenState);
+    });
+    document.querySelectorAll('input[name="ret-is-agent"]').forEach(r => r.addEventListener('change', savePenState));
+});

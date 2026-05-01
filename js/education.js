@@ -29,9 +29,48 @@ function fireFunnelEvent(eventName, age, cost, isAgent) {
 const EDU_INFLATION = 0.10;
 const KULIAH_START_AGE = 18;
 const KULIAH_DURATION = 4;
+const STORAGE_KEY_EDU = 'calc_education_state_v1';
 
 // Threshold age for routing — child age 10+ (or agent) shows numbers only, no lead gate
 const AGE_TOO_LATE = 10;
+
+// --- Preserve form state across reloads ---
+function saveEduState() {
+    try {
+        const state = {
+            childAge: document.getElementById('edu-child-age')?.value || '',
+            cost: document.getElementById('edu-kuliah-cost')?.value || '',
+            agent: document.querySelector('input[name="edu-is-agent"]:checked')?.value || 'no',
+            nama: document.getElementById('edu-nama')?.value || '',
+            email: document.getElementById('edu-email')?.value || '',
+            wa: document.getElementById('edu-whatsapp')?.value || '',
+        };
+        localStorage.setItem(STORAGE_KEY_EDU, JSON.stringify(state));
+    } catch(e) {}
+}
+
+function restoreEduState() {
+    try {
+        const s = JSON.parse(localStorage.getItem(STORAGE_KEY_EDU) || '{}');
+        const setVal = (id, v, fmt) => {
+            const el = document.getElementById(id);
+            if (el && v) { el.value = v; if (fmt) formatNumberInput(el); el.addEventListener('input', saveEduState); }
+        };
+        setVal('edu-child-age', s.childAge, false);
+        setVal('edu-kuliah-cost', s.cost, true);
+        setVal('edu-nama', s.nama);
+        setVal('edu-email', s.email);
+        setVal('edu-whatsapp', s.wa);
+        if (s.agent) {
+            const r = document.querySelector(`input[name="edu-is-agent"][value="${s.agent}"]`);
+            if (r) r.checked = true;
+        }
+    } catch(e) {}
+}
+
+function clearEduState() {
+    try { localStorage.removeItem(STORAGE_KEY_EDU); } catch(e) {}
+}
 
 // --- Comma formatting ---
 function formatNumberInput(input) {
@@ -270,6 +309,9 @@ function calculateEducation() {
     resultsEl.classList.remove('hidden');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+    // Restore lead form fields if user previously typed (and wire up listeners)
+    restoreEduState();
+
     // Track when lead gate enters viewport (= user scrolled to form)
     const gateEl = document.getElementById('lead-gate');
     if (gateEl && 'IntersectionObserver' in window) {
@@ -354,6 +396,9 @@ function revealResults() {
         keepalive: true,
     }).catch(() => { /* non-blocking */ });
 
+    // Successful submit — clear preserved state
+    clearEduState();
+
     document.getElementById('lead-gate').style.display = 'none';
 
     const confirmEl = document.getElementById('full-breakdown');
@@ -369,4 +414,12 @@ function revealResults() {
     confirmEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-document.addEventListener('DOMContentLoaded', initNumberFormatting);
+document.addEventListener('DOMContentLoaded', () => {
+    initNumberFormatting();
+    restoreEduState();
+    ['edu-child-age', 'edu-kuliah-cost'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', saveEduState);
+    });
+    document.querySelectorAll('input[name="edu-is-agent"]').forEach(r => r.addEventListener('change', saveEduState));
+});
