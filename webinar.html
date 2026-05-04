@@ -34,9 +34,10 @@
     <section class="pt-32 pb-12 px-6">
         <div class="max-w-3xl mx-auto text-center">
             <span class="text-xs text-gray-400 uppercase tracking-wider">Invitation Only</span>
-            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Webinar Registration</h1>
-            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Maksimal 5 peserta per kelas, supaya bisa diskusi lebih dalam. Daftar sekarang sebelum penuh.</p>
-            <div class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-4">Registrasi GRATIS — pembayaran setelah dikonfirmasi</div>
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Asuransi 101</h1>
+            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Sabtu, 9 Mei 2026 — 09:00 WIB</p>
+            <p class="text-gray-500 mt-1 max-w-xl mx-auto">Hanya untuk 5 orang terpilih, supaya bisa diskusi lebih dalam.</p>
+            <div class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-4">GRATIS</div>
         </div>
     </section>
 
@@ -68,32 +69,8 @@
                         placeholder="08xxxxxxxxxx">
                 </div>
 
-                <!-- Webinar Schedule -->
-                <div>
-                    <label class="block text-sm font-medium mb-1.5">Pilih Kelas</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 cursor-pointer hover:border-black transition-colors">
-                            <input type="radio" name="webinar" value="Asuransi 101 — 16 April 2026, 20:00 WIB" required class="w-4 h-4 accent-black">
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium">Asuransi 101</span>
-                                    <span class="text-sm font-bold">Rp 100.000</span>
-                                </div>
-                                <span class="text-xs text-gray-400">Rabu, 16 April 2026 — 20:00 WIB</span>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 cursor-pointer hover:border-black transition-colors">
-                            <input type="radio" name="webinar" value="Repricing — 15 April 2026, 20:00 WIB" class="w-4 h-4 accent-black">
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium">Repricing</span>
-                                    <span class="text-sm font-bold">Rp 100.000</span>
-                                </div>
-                                <span class="text-xs text-gray-400">Selasa, 15 April 2026 — 20:00 WIB</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
+                <!-- Webinar (hidden, hardcoded) -->
+                <input type="hidden" name="webinar" value="Asuransi 101 — 9 Mei 2026, 09:00 WIB">
 
                 <!-- Agent or Not -->
                 <div>
@@ -171,15 +148,6 @@
                 <p class="text-gray-500 text-sm">Terima kasih sudah mendaftar. Kami akan mengirim detail webinar ke email dan WhatsApp Anda.</p>
             </div>
 
-            <!-- Agent Message (hidden by default) -->
-            <div id="agent-msg" class="hidden text-center py-12">
-                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <h2 class="text-2xl font-black mb-2">Terima Kasih!</h2>
-                <p class="text-gray-500 text-sm">Webinar ini khusus untuk non-agen. Tapi terima kasih sudah tertarik!</p>
-            </div>
-
             <!-- Error Message (hidden by default) -->
             <div id="error-msg" class="hidden text-center py-4">
                 <p class="text-red-500 text-sm">Terjadi kesalahan. Silakan coba lagi.</p>
@@ -231,13 +199,9 @@
                     status: true,
                 });
 
-                // Show success (different message for agents)
+                // Show success for everyone (agent status saved to DB but no filtering)
                 form.classList.add('hidden');
-                if (result.agent) {
-                    document.getElementById('agent-msg').classList.remove('hidden');
-                } else {
-                    document.getElementById('success-msg').classList.remove('hidden');
-                }
+                document.getElementById('success-msg').classList.remove('hidden');
             } catch (err) {
                 errorMsg.classList.remove('hidden');
                 btn.disabled = false;
