@@ -33,10 +33,10 @@
     <!-- Hero -->
     <section class="pt-32 pb-12 px-6">
         <div class="max-w-3xl mx-auto text-center">
-            <span class="text-xs text-gray-400 uppercase tracking-wider">Invitation Only</span>
+            <span class="text-xs text-gray-400 uppercase tracking-wider">Waiting List</span>
             <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Asuransi 101</h1>
-            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Sabtu, 9 Mei 2026 — 09:00 WIB</p>
-            <p class="text-gray-500 mt-1 max-w-xl mx-auto">Hanya untuk 5 orang terpilih, supaya bisa diskusi lebih dalam.</p>
+            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Sabtu, 9 Mei 2026 — 10:00 WIB</p>
+            <p class="text-gray-500 mt-1 max-w-xl mx-auto">Hanya 10 orang terpilih, supaya diskusi bisa lebih dalam. Daftar di waiting list — kami akan review & konfirmasi langsung.</p>
             <div class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-4">GRATIS</div>
         </div>
     </section>
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Webinar (hidden, hardcoded) -->
-                <input type="hidden" name="webinar" value="Asuransi 101 — 9 Mei 2026, 09:00 WIB">
+                <input type="hidden" name="webinar" value="Asuransi 101 — 9 Mei 2026, 10:00 WIB">
 
                 <!-- Agent or Not -->
                 <div>
@@ -135,7 +135,7 @@
                 <!-- Submit -->
                 <button type="submit" id="submit-btn"
                     class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
-                    Daftar Sekarang
+                    Daftar Waiting List
                 </button>
             </form>
 
@@ -144,8 +144,8 @@
                 <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
-                <h2 class="text-2xl font-black mb-2">Pendaftaran Berhasil!</h2>
-                <p class="text-gray-500 text-sm">Terima kasih sudah mendaftar. Kami akan mengirim detail webinar ke email dan WhatsApp Anda.</p>
+                <h2 class="text-2xl font-black mb-2">Anda Masuk Waiting List</h2>
+                <p class="text-gray-500 text-sm">Terima kasih sudah mendaftar. Karena kuota terbatas (10 orang), kami akan review pendaftaran Anda dan kirim konfirmasi via email & WhatsApp dalam 1–2 hari.</p>
             </div>
 
             <!-- Error Message (hidden by default) -->
@@ -169,7 +169,7 @@
 
             // Disable button
             btn.disabled = true;
-            btn.textContent = 'Mendaftar...';
+            btn.textContent = 'Mendaftarkan...';
 
             const data = {
                 name: form.name.value.trim(),
@@ -205,7 +205,7 @@
             } catch (err) {
                 errorMsg.classList.remove('hidden');
                 btn.disabled = false;
-                btn.textContent = 'Daftar Sekarang';
+                btn.textContent = 'Daftar Waiting List';
             }
         });
 
