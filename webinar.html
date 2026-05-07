@@ -155,9 +155,22 @@
         </div>
     </section>
 
+    <!-- Testimonials -->
+    <section id="testimonials-section" class="hidden px-6 pb-20 fade-up">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="text-xs text-gray-400 uppercase tracking-wider">Cerita peserta sebelumnya</span>
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight mt-2">Yang mereka rasakan</h2>
+            </div>
+            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </div>
+    </section>
+
     <script>
         // Webinar registration form handler
         const AIRTABLE_ENDPOINT = 'https://philip-mulyana--ai-website-builder-webinar-register.modal.run';
+        const TESTIMONIALS_ENDPOINT = 'https://philip-mulyana--ai-website-builder-testimonials.modal.run';
+        const WEBINAR_TOPIC = 'Asuransi 101';
 
         document.getElementById('webinar-form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -214,6 +227,37 @@
             const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('animate-in'); obs.unobserve(el); } }, { threshold: 0.1 });
             obs.observe(el);
         });
+
+        // Load testimonials
+        function escapeHtml(s) {
+            return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function renderStars(n) {
+            n = Math.max(0, Math.min(5, parseInt(n) || 0));
+            return '★'.repeat(n) + '<span class="text-gray-200">' + '★'.repeat(5 - n) + '</span>';
+        }
+        (async function loadTestimonials() {
+            try {
+                const url = `${TESTIMONIALS_ENDPOINT}?webinar=${encodeURIComponent(WEBINAR_TOPIC)}`;
+                const resp = await fetch(url);
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const items = data.testimonials || [];
+                if (!items.length) return;
+                const grid = document.getElementById('testimonials-grid');
+                grid.innerHTML = items.map(t => `
+                    <div class="border border-gray-200 rounded-2xl p-6 flex flex-col">
+                        <div class="text-yellow-400 text-lg mb-3">${renderStars(t.rating)}</div>
+                        <p class="text-sm text-gray-700 leading-relaxed flex-grow">"${escapeHtml(t.quote)}"</p>
+                        ${t.insight ? `<p class="text-xs text-gray-500 mt-3 italic">Insight: ${escapeHtml(t.insight)}</p>` : ''}
+                        <p class="text-sm font-medium mt-4">— ${escapeHtml(t.name)}</p>
+                    </div>
+                `).join('');
+                document.getElementById('testimonials-section').classList.remove('hidden');
+            } catch (err) {
+                // Fail silently — testimonials are optional social proof
+            }
+        })();
     </script>
 </body>
 </html>
