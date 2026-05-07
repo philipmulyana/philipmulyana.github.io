@@ -91,12 +91,6 @@
                         placeholder="Hal paling berguna yang saya dapat adalah..."></textarea>
                 </div>
 
-                <!-- Consent -->
-                <div class="flex items-start gap-3 pt-1">
-                    <input type="checkbox" id="consent" name="consent" required class="mt-1 w-4 h-4 accent-black">
-                    <label for="consent" class="text-sm text-gray-600">Saya setuju cerita dan nama saya ditampilkan di website Philip Mulyana untuk membantu orang lain.</label>
-                </div>
-
                 <!-- Submit -->
                 <button type="submit" id="submit-btn"
                     class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
@@ -183,7 +177,7 @@
                 quote: form.quote.value.trim(),
                 insight: form.insight.value.trim(),
                 rating: parseInt(ratingInput.value),
-                consent: form.consent.checked,
+                consent: true,
             };
 
             try {
