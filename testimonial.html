@@ -52,12 +52,13 @@
                         placeholder="Nama kamu">
                 </div>
 
-                <!-- Webinar (auto-filled, but visible & editable) -->
+                <!-- Webinar dropdown -->
                 <div>
                     <label for="webinar" class="block text-sm font-medium mb-1.5">Webinar yang kamu ikuti</label>
-                    <input type="text" id="webinar" name="webinar" required readonly
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 outline-none text-sm text-gray-600"
-                        placeholder="Webinar...">
+                    <select id="webinar" name="webinar" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
+                        <option value="" disabled selected>Memuat daftar webinar...</option>
+                    </select>
                 </div>
 
                 <!-- Rating -->
@@ -120,11 +121,23 @@
     </section>
 
     <script>
-        // Pre-fill webinar from URL param ?w=...
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            const w = params.get('w') || params.get('webinar') || '';
-            if (w) document.getElementById('webinar').value = w;
+        // Load webinar list into dropdown (fetched from /testimonials endpoint)
+        const TESTIMONIALS_ENDPOINT = 'https://philip-mulyana--ai-website-builder-testimonials.modal.run';
+        (async function loadWebinars() {
+            const select = document.getElementById('webinar');
+            try {
+                const resp = await fetch(TESTIMONIALS_ENDPOINT);
+                const data = await resp.json();
+                const list = data.webinars || [];
+                if (!list.length) {
+                    select.innerHTML = '<option value="" disabled selected>Belum ada webinar tersedia</option>';
+                    return;
+                }
+                select.innerHTML = '<option value="" disabled selected>Pilih webinar...</option>' +
+                    list.map(w => `<option value="${w.replace(/"/g, '&quot;')}">${w}</option>`).join('');
+            } catch (err) {
+                select.innerHTML = '<option value="" disabled selected>Gagal memuat. Refresh halaman.</option>';
+            }
         })();
 
         // Star rating
