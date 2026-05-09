@@ -42,13 +42,16 @@
     </section>
 
     <!-- Testimonials -->
-    <section id="testimonials-section" class="hidden px-6 pb-16 fade-up">
+    <section id="testimonials-section" class="hidden pb-16 fade-up">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-10">
+            <div class="text-center mb-10 px-6">
                 <span class="text-xs text-gray-400 uppercase tracking-wider">Cerita peserta sebelumnya</span>
                 <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight mt-2">Yang mereka rasakan</h2>
             </div>
-            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            <!-- Mobile: horizontal snap-scroll. Desktop (md+): grid. -->
+            <div id="testimonials-grid"
+                 class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory px-6 pb-4 md:pb-0 scroll-smooth">
+            </div>
         </div>
     </section>
 
@@ -269,7 +272,7 @@
                 if (!items.length) return;
                 const grid = document.getElementById('testimonials-grid');
                 grid.innerHTML = items.map(t => `
-                    <div class="border border-gray-200 rounded-2xl p-6 flex flex-col">
+                    <div class="border border-gray-200 rounded-2xl p-6 flex flex-col flex-shrink-0 w-[82vw] sm:w-[360px] md:w-auto snap-start">
                         <div class="text-yellow-400 text-lg mb-3">${renderStars(t.rating)}</div>
                         ${truncBlock('"' + (t.quote || '') + '"', 220, 'text-sm text-gray-700 leading-relaxed flex-grow')}
                         ${t.insight ? `<div class="mt-3">${truncBlock('Insight: ' + t.insight, 150, 'text-xs text-gray-500 italic')}</div>` : ''}
