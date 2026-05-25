@@ -52,8 +52,7 @@ function saveState() {
                 'parent-pasangan': document.getElementById('parent-pasangan')?.value || '',
                 'anak-nama': document.getElementById('anak-nama')?.value || '',
                 'anak-dob': document.getElementById('anak-dob')?.value || '',
-                'pathway': document.querySelector('input[name=pathway]:checked')?.value || '',
-                'biaya-today': document.getElementById('biaya-today')?.dataset.rawValue || document.getElementById('biaya-today')?.value.replace(/[^0-9]/g, '') || '',
+                'pathways': Array.from(document.querySelectorAll('input[name=pathway]:checked')).map(cb => cb.value),
                 'modal-awal': document.getElementById('modal-awal')?.dataset.rawValue || document.getElementById('modal-awal')?.value.replace(/[^0-9]/g, '') || '',
                 'surplus-bulanan': document.getElementById('surplus-bulanan')?.dataset.rawValue || document.getElementById('surplus-bulanan')?.value.replace(/[^0-9]/g, '') || '',
                 risk1: document.querySelector('input[name=risk1]:checked')?.value || '',
@@ -78,15 +77,22 @@ function restoreState() {
         if (data.currentStep) state.currentStep = Math.min(data.currentStep, TOTAL_STEPS);
 
         for (const [id, val] of Object.entries(data.inputs || {})) {
+            if (id === 'pathways' && Array.isArray(val)) {
+                val.forEach(k => {
+                    const cb = document.querySelector(`input[name=pathway][value="${k}"]`);
+                    if (cb) cb.checked = true;
+                });
+                continue;
+            }
             if (!val) continue;
             const el = document.getElementById(id);
             if (el) {
                 el.value = val;
-                if (el.classList.contains('formatted-number') || id === 'biaya-today' || id === 'modal-awal' || id === 'surplus-bulanan') {
+                if (el.classList.contains('formatted-number') || id === 'modal-awal' || id === 'surplus-bulanan') {
                     formatNumberInput(el);
                 }
             } else {
-                // radio buttons
+                // radio buttons (risk1-5)
                 const radio = document.querySelector(`input[name=${id}][value="${val}"]`);
                 if (radio) radio.checked = true;
             }
@@ -157,25 +163,59 @@ function updateAnakAgeDisplay() {
 }
 
 // ============================================================================
-// Pathway selection
+// Pathway selection — multi-checkbox, max 3 per type (lokal/internasional)
 // ============================================================================
-function handlePathwayChange() {
-    const radio = document.querySelector('input[name=pathway]:checked');
-    if (!radio) return;
-    const preset = PATHWAY_PRESETS[radio.value];
-    if (!preset) return;
+const MAX_PER_TYPE = 3;
 
-    const biayaInput = document.getElementById('biaya-today');
-    if (!biayaInput) return;
-    if (preset.cost > 0) {
-        biayaInput.value = preset.cost.toLocaleString('en-US');
-        biayaInput.dataset.rawValue = String(preset.cost);
-    } else {
-        // Custom — clear so user inputs
-        biayaInput.value = '';
-        biayaInput.dataset.rawValue = '';
+function getSelectedPathways() {
+    return Array.from(document.querySelectorAll('input[name=pathway]:checked')).map(cb => ({
+        key: cb.value,
+        type: cb.dataset.type || 'lokal',
+        cost: parseFloat(cb.dataset.cost) || 0
+    }));
+}
+
+function getSelectedByType() {
+    const all = getSelectedPathways();
+    return {
+        lokal: all.filter(p => p.type === 'lokal'),
+        internasional: all.filter(p => p.type === 'internasional'),
+        all: all
+    };
+}
+
+function handlePathwayChange(evt) {
+    const grouped = getSelectedByType();
+
+    // Enforce max-per-type: if exceeded, uncheck the most recent (the one that triggered event)
+    if (evt && evt.target && evt.target.checked) {
+        const targetType = evt.target.dataset.type;
+        const sameTypeCount = grouped[targetType].length;
+        if (sameTypeCount > MAX_PER_TYPE) {
+            evt.target.checked = false;
+            showError(`Maksimum ${MAX_PER_TYPE} universitas per kelompok ${targetType === 'lokal' ? 'Lokal' : 'Internasional'}. Uncheck salah satu kalau mau pilih yang ini.`);
+            return;
+        }
     }
+
+    clearError();
+    updatePathwaySummary();
     saveState();
+}
+
+function updatePathwaySummary() {
+    const display = document.getElementById('pathway-selection-summary');
+    if (!display) return;
+    const grouped = getSelectedByType();
+    if (grouped.all.length === 0) {
+        display.style.display = 'none';
+        return;
+    }
+    const parts = [];
+    if (grouped.lokal.length > 0) parts.push(`<strong>${grouped.lokal.length}/3 Lokal</strong> dipilih`);
+    if (grouped.internasional.length > 0) parts.push(`<strong>${grouped.internasional.length}/3 Internasional</strong> dipilih`);
+    display.style.display = 'block';
+    display.innerHTML = `✓ ${parts.join(' · ')} (total ${grouped.all.length} universitas)`;
 }
 
 // ============================================================================
@@ -269,35 +309,10 @@ function computeEduplan() {
 }
 
 function renderPreview() {
-    const result = computeEduplan();
+    // Multi-pathway: skip FV/PMT preview (removed per Philip), show simple summary
     const previewBlock = document.getElementById('preview-result');
-    if (!previewBlock) return;
-    if (!result) {
-        previewBlock.style.display = 'none';
-        return;
-    }
-    previewBlock.style.display = 'block';
-
-    document.getElementById('preview-formula').textContent = `Biaya hari ini ${formatRpCompact(result.biayaToday)} × inflasi 10% × ${result.yearsToTarget} tahun`;
-    document.getElementById('preview-fv').textContent = formatRpCompact(result.fvTarget);
-
-    const opt = result.scenarios.find(s => s.scenario === 'optimis');
-    const base = result.base;
-    const pes = result.scenarios.find(s => s.scenario === 'pesimis');
-
-    document.getElementById('preview-pmt-opt').textContent = formatRpCompact(opt.pmt);
-    document.getElementById('preview-pmt-base').textContent = formatRpCompact(base.pmt);
-    document.getElementById('preview-pmt-pes').textContent = formatRpCompact(pes.pmt);
-
-    const realityEl = document.getElementById('reality-check');
-    if (result.surplusEnough) {
-        realityEl.className = 'reality-check good';
-        realityEl.innerHTML = `✓ <strong>Surplus kamu (${formatRpCompact(result.surplus)}/bln) cukup untuk hit goal di base case (butuh ${formatRpCompact(base.pmt)}/bln).</strong> Bahkan ada buffer ${formatRpCompact(result.surplus - base.pmt)}/bln yang bisa redirect ke goal lain.`;
-    } else {
-        const shortBy = base.pmt - result.surplus;
-        realityEl.className = 'reality-check bad';
-        realityEl.innerHTML = `⚠ <strong>Surplus kamu (${formatRpCompact(result.surplus)}/bln) belum cukup untuk goal base case (butuh ${formatRpCompact(base.pmt)}/bln, kurang ${formatRpCompact(shortBy)}/bln).</strong> Pilihan: (1) extend timeline, (2) cut target ke pathway lebih ekonomis, (3) tambah income/redirect cashflow lain. Detail lengkap di PDF.`;
-    }
+    if (previewBlock) previewBlock.style.display = 'none';
+    updatePathwaySummary();
 }
 
 // ============================================================================
@@ -367,9 +382,8 @@ function validateStep(n) {
         }
     }
     if (n === 3) {
-        const pathway = document.querySelector('input[name=pathway]:checked');
-        if (!pathway) { showError('Pilih satu pathway universitas.'); return false; }
-        if (getRawValue('biaya-today') <= 0) { showError('Biaya kuliah harus diisi (atau pilih pathway preset di atas).'); return false; }
+        const selected = getSelectedPathways();
+        if (selected.length === 0) { showError('Pilih minimal 1 universitas (max 3 per kelompok Lokal/Internasional).'); return false; }
     }
     if (n === 4) {
         if (getRawValue('surplus-bulanan') <= 0) { showError('Surplus bulanan harus diisi — required untuk hitung PMT.'); return false; }
@@ -395,12 +409,20 @@ function clearError() { const el = document.getElementById('step-error'); if (el
 async function submitEduplan() {
     if (!validateStep(5)) return;
 
-    const result = computeEduplan();
-    if (!result) { showError('Belum bisa hitung — pastikan semua step terisi.'); return; }
-
     const dobStr = document.getElementById('anak-dob').value;
-    const pathway = document.querySelector('input[name=pathway]:checked')?.value || 'custom';
-    const pathwayPreset = PATHWAY_PRESETS[pathway];
+    const { age: currentAge, targetYear, yearsToTarget } = deriveAgeFromDob(dobStr);
+    const selectedPathways = getSelectedPathways().map(p => {
+        const preset = PATHWAY_PRESETS[p.key] || {};
+        return {
+            key: p.key,
+            type: p.type,
+            name: preset.name || p.key,
+            full_name: preset.full || preset.name || p.key,
+            flag: preset.flag || ''
+        };
+    });
+
+    const profile = deriveRiskProfile();
 
     const payload = {
         lead: {
@@ -412,32 +434,20 @@ async function submitEduplan() {
         anak: {
             nama: document.getElementById('anak-nama').value.trim(),
             dob: dobStr,
-            current_age: result.currentAge,
-            target_year: result.targetYear,
-            years_to_target: result.yearsToTarget
+            current_age: currentAge,
+            target_year: targetYear,
+            years_to_target: yearsToTarget
         },
-        pathway: {
-            key: pathway,
-            name: pathwayPreset.name,
-            full_name: pathwayPreset.full,
-            flag: pathwayPreset.flag,
-            biaya_today: result.biayaToday
-        },
+        pathways: selectedPathways,  // ARRAY now
         cashflow: {
-            modal_awal: result.modalAwal,
-            surplus_bulanan: result.surplus
+            modal_awal: getRawValue('modal-awal'),
+            surplus_bulanan: getRawValue('surplus-bulanan')
         },
-        risk_profile: {
-            name: result.riskProfile.name,
-            return_rate: result.riskProfile.return,
+        risk_profile: profile ? {
+            name: profile.name,
+            return_rate: profile.return,
             score: computeRiskScore()
-        },
-        computed: {
-            fv_target: result.fvTarget,
-            scenarios: result.scenarios,
-            base: result.base,
-            surplus_enough: result.surplusEnough
-        },
+        } : null,
         submitted_at: new Date().toISOString(),
         source: 'philipmulyana.com/education-plan'
     };
@@ -483,8 +493,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOB auto-derive
     document.getElementById('anak-dob')?.addEventListener('change', () => { updateAnakAgeDisplay(); saveState(); renderPreview(); });
 
-    // Pathway change
-    document.querySelectorAll('input[name=pathway]').forEach(r => r.addEventListener('change', () => { handlePathwayChange(); renderPreview(); }));
+    // Pathway change (multi-checkbox)
+    document.querySelectorAll('input[name=pathway]').forEach(r => r.addEventListener('change', (evt) => { handlePathwayChange(evt); renderPreview(); }));
 
     // Risk question change
     for (let i = 1; i <= 5; i++) {
