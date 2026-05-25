@@ -452,7 +452,7 @@ async function submitCheckup() {
             cicilanUtangIdeal: ratios.cicilanUtang.isGood()
         },
         submitted_at: new Date().toISOString(),
-        source: 'philipmulyana.com/master-plan'
+        source: 'philipmulyana.com/financial-checkup'
     };
 
     // Disable submit button
