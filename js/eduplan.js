@@ -8,15 +8,25 @@ const TOTAL_STEPS = 5;
 const INFLASI_PENDIDIKAN = 0.10; // 10% p.a.
 
 // Pathway preset costs (today's value in IDR) — research-based, sourced from
-// vault [[(C) Education Plan SAMPLE - Wijaya Family]]. Tuition + living total 4 thn (3 thn AU).
+// vault [[(C) Data - Biaya Kuliah Indonesia]] (Philip's 2026-05-22 research with
+// empirical CAGR 2020→2025 per universitas) + [[(C) KB - Education Funding]]
+// (overseas all-in cost) + Wijaya Family Education Plan sample.
+//
+// Cost = (tuition_per_yr + living_per_yr) × duration + one_time
 const PATHWAY_PRESETS = {
-    id_ptn:        { name: 'PTN Top Tier (UI/ITB/UGM)',      full: 'PTN Top Tier — UI / ITB / UGM / Unair / IPB',                       flag: '🇮🇩', cost: 360000000  }, // 20jt+60jt × 4 + 10jt
-    id_swasta:     { name: 'Swasta Top (BINUS/UPH/Prasmul)', full: 'Universitas Swasta Top — BINUS / UPH / Prasmul / Atma Jaya',        flag: '🇮🇩', cost: 590000000  }, // 80jt+60jt × 4 + 30jt
-    cn_tsinghua:   { name: 'Tsinghua / PKU',                  full: 'Tsinghua University / Peking University — Beijing',                flag: '🇨🇳', cost: 708000000  }, // 68jt+104jt × 4 + 20jt
-    sg_nus_tgs:    { name: 'NUS/NTU + TGS',                   full: 'NUS / NTU Singapore — dengan beasiswa TGS (3-thn bond)',          flag: '🇸🇬', cost: 2302000000 }, // 257jt+306jt × 4 + 50jt
-    sg_nus_no_tgs: { name: 'NUS/NTU tanpa TGS',               full: 'NUS / NTU Singapore — tanpa beasiswa TGS (full international)',   flag: '🇸🇬', cost: 3550000000 }, // 569jt+306jt × 4 + 50jt
-    au_top:        { name: 'Australia Top',                   full: 'University of Melbourne / Sydney / UNSW (3 thn BCom)',             flag: '🇦🇺', cost: 3285000000 }, // 759jt+316jt × 3 + 60jt
-    custom:        { name: 'Custom',                          full: 'Custom (kamu input sendiri)',                                       flag: '⚙️', cost: 0          }
+    id_ptn_flagship:   { name: 'PTN Flagship',              full: 'PTN Flagship — UI / ITB / UGM / Unair / Unpad',                     flag: '🇮🇩', cost: 490000000  },
+    id_pts_midtier:    { name: 'PTS Mid-Tier',              full: 'PTS Mid-Tier — Trisakti / Untar / UMN / Maranatha / Petra',         flag: '🇮🇩', cost: 535000000  },
+    id_pts_premium:    { name: 'PTS Premium Tier 1',        full: 'PTS Premium Tier 1 — Binus / UPH / Prasmul',                        flag: '🇮🇩', cost: 610000000  },
+    id_kedokteran_ptn: { name: 'Kedokteran PTN Mandiri',    full: 'Kedokteran PTN — UI / UGM / Unair / Unpad / UNDIP / UB (7 thn)',    flag: '🇮🇩', cost: 970000000  },
+    id_kedokteran_pts: { name: 'Kedokteran PTS',            full: 'Kedokteran PTS — UPH / Trisakti / Atma Jaya / Untar (7 thn)',       flag: '🇮🇩', cost: 1340000000 },
+    cn_tsinghua:       { name: 'Tsinghua / PKU',            full: 'Tsinghua University / Peking University — Beijing',                  flag: '🇨🇳', cost: 708000000  },
+    sg_nus_tgs:        { name: 'NUS/NTU + TGS',             full: 'NUS / NTU Singapore — dengan beasiswa TGS (3-thn bond)',            flag: '🇸🇬', cost: 2302000000 },
+    sg_nus_no_tgs:     { name: 'NUS/NTU tanpa TGS',         full: 'NUS / NTU Singapore — tanpa beasiswa TGS (full international)',     flag: '🇸🇬', cost: 3550000000 },
+    au_top:            { name: 'Australia G8',              full: 'Australia G8 — Melbourne / Sydney / UNSW / Monash / ANU (3 thn)',   flag: '🇦🇺', cost: 3285000000 },
+    us_state:          { name: 'USA State Top',             full: 'USA State Top — UCLA / Michigan / UT Austin / Berkeley',            flag: '🇺🇸', cost: 4280000000 },
+    us_ivy:            { name: 'USA Ivy / Top Private',     full: 'USA Ivy League / Top Private — Harvard / Stanford / MIT',           flag: '🇺🇸', cost: 5820000000 },
+    uk_russell:        { name: 'UK Russell Group',          full: 'UK Russell Group — Oxbridge / Imperial / LSE / UCL (3 thn)',        flag: '🇬🇧', cost: 2700000000 },
+    custom:            { name: 'Custom',                    full: 'Custom (kamu input sendiri)',                                        flag: '⚙️', cost: 0          }
 };
 
 // Risk profile → expected return
