@@ -203,6 +203,25 @@ function handlePathwayChange(evt) {
     saveState();
 }
 
+function handleKnowledgeLevelChange() {
+    const level = document.querySelector('input[name=knowledge_level]:checked')?.value || 'generic';
+    const genericPanel = document.getElementById('mode-generic');
+    const specificPanel = document.getElementById('mode-specific');
+    if (level === 'specific') {
+        genericPanel.style.display = 'none';
+        specificPanel.style.display = 'block';
+        // Uncheck all generic-mode pathways when switching to specific
+        document.querySelectorAll('input[name=pathway][data-mode=generic]:checked').forEach(cb => { cb.checked = false; });
+    } else {
+        genericPanel.style.display = 'block';
+        specificPanel.style.display = 'none';
+        // Uncheck all specific-mode pathways when switching back to generic
+        document.querySelectorAll('input[name=pathway][data-mode=specific]:checked').forEach(cb => { cb.checked = false; });
+    }
+    updatePathwaySummary();
+    saveState();
+}
+
 function updatePathwaySummary() {
     const display = document.getElementById('pathway-selection-summary');
     if (!display) return;
@@ -495,6 +514,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pathway change (multi-checkbox)
     document.querySelectorAll('input[name=pathway]').forEach(r => r.addEventListener('change', (evt) => { handlePathwayChange(evt); renderPreview(); }));
+
+    // Knowledge level toggle
+    document.querySelectorAll('input[name=knowledge_level]').forEach(r => r.addEventListener('change', () => { handleKnowledgeLevelChange(); }));
 
     // Risk question change
     for (let i = 1; i <= 5; i++) {

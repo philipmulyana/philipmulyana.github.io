@@ -208,31 +208,97 @@
                 <div class="wizard-step" id="step-3">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Pilih Universitas Target</h2>
-                        <p class="text-sm text-gray-500 mb-4">Pilih sampai <strong>3 universitas per kelompok</strong>. Kamu bisa pilih dari kelompok Lokal saja, Internasional saja, atau kombinasi keduanya. PDF akan show breakdown biaya per universitas yang kamu pilih.</p>
+                        <p class="text-sm text-gray-500 mb-4">Max <strong>3 per kelompok</strong> (Lokal max 3 + Internasional max 3). Kalau kamu pilih kedua kelompok, akan dikirim <strong>2 PDF terpisah</strong> ke email karena framework biaya beda.</p>
 
-                        <div class="subsection">
-                            <h3>🏛️ Kelompok Lokal (Indonesia) — max 3</h3>
-                            <p class="text-xs text-gray-500 mb-3">Breakdown: tuition + uang pangkal + buku/supplies. NO living cost (asumsi commute/kos terpisah).</p>
-                            <div class="pathway-grid">
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="id_ptn_flagship" data-cost="175000000" data-type="lokal"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTN Flagship</span><span class="p-cost">UI / ITB / UGM / Unair · ~Rp 175 jt / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="id_pts_midtier" data-cost="155000000" data-type="lokal"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTS Mid-Tier</span><span class="p-cost">Trisakti / Untar / UMN · ~Rp 155 jt / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="id_pts_premium" data-cost="250000000" data-type="lokal"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTS Premium Tier 1</span><span class="p-cost">Binus / UPH / Prasmul · ~Rp 250 jt / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="id_kedokteran_ptn" data-cost="390000000" data-type="lokal"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Kedokteran PTN Mandiri</span><span class="p-cost">UI / UGM / Unair (7 thn) · ~Rp 390 jt</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="id_kedokteran_pts" data-cost="780000000" data-type="lokal"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Kedokteran PTS</span><span class="p-cost">UPH / Trisakti / Atma Jaya (7 thn) · ~Rp 780 jt</span></div></label>
+                        <!-- Toggle: knowledge level -->
+                        <div class="subsection" style="background: #fef3c7; border: 1.5px solid #fde68a;">
+                            <h3 style="color: #78350f;">📚 Sudah tahu universitas spesifik?</h3>
+                            <div class="flex gap-2" style="margin-top: 6px;">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="knowledge_level" value="generic" class="peer hidden" checked>
+                                    <div class="peer-checked:border-amber-700 peer-checked:bg-amber-700 peer-checked:text-white text-center py-2 rounded-lg border-2 border-amber-200 text-sm font-medium transition-all hover:border-amber-400 select-none">
+                                        Belum, kasih estimasi tier
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="knowledge_level" value="specific" class="peer hidden">
+                                    <div class="peer-checked:border-amber-700 peer-checked:bg-amber-700 peer-checked:text-white text-center py-2 rounded-lg border-2 border-amber-200 text-sm font-medium transition-all hover:border-amber-400 select-none">
+                                        Ya, saya sudah tahu
+                                    </div>
+                                </label>
+                            </div>
+                            <p class="text-xs mt-2" style="color:#78350f;">Generic = tier (PTN Flagship, PTS Premium dll). Spesifik = nama universitas + program (UI Manajemen, ITB SBM, Binus Comp Sci, dll).</p>
+                        </div>
+
+                        <!-- MODE: GENERIC TIER -->
+                        <div id="mode-generic">
+                            <div class="subsection">
+                                <h3>🏛️ Lokal — Generic Tier (max 3)</h3>
+                                <p class="text-xs text-gray-500 mb-3">Breakdown: tuition + uang pangkal + buku/supplies. Living cost tidak masuk.</p>
+                                <div class="pathway-grid">
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="id_ptn_flagship" data-cost="175000000" data-type="lokal" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTN Flagship</span><span class="p-cost">UI / ITB / UGM / Unair · ~Rp 175 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="id_pts_midtier" data-cost="155000000" data-type="lokal" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTS Mid-Tier</span><span class="p-cost">Trisakti / Untar / UMN · ~Rp 155 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="id_pts_premium" data-cost="250000000" data-type="lokal" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">PTS Premium Tier 1</span><span class="p-cost">Binus / UPH / Prasmul · ~Rp 250 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="id_kedokteran_ptn" data-cost="390000000" data-type="lokal" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Kedokteran PTN Mandiri</span><span class="p-cost">UI / UGM / Unair (7 thn) · ~Rp 390 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="id_kedokteran_pts" data-cost="780000000" data-type="lokal" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Kedokteran PTS</span><span class="p-cost">UPH / Trisakti / Atma Jaya (7 thn) · ~Rp 780 jt</span></div></label>
+                                </div>
+                            </div>
+                            <div class="subsection">
+                                <h3>🌏 Internasional — Generic Tier (max 3)</h3>
+                                <p class="text-xs text-gray-500 mb-3">Breakdown: tuition + living cost + visa/admin + FX adjustment.</p>
+                                <div class="pathway-grid">
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="cn_tsinghua" data-cost="705000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇨🇳</span><span class="p-name">Tsinghua / PKU</span><span class="p-cost">Beijing · ~Rp 705 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="sg_nus_tgs" data-cost="2300000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS / NTU + TGS</span><span class="p-cost">Singapore · ~Rp 2,3 M (post-subsidi)</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="sg_nus_no_tgs" data-cost="3550000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS / NTU tanpa TGS</span><span class="p-cost">Singapore · ~Rp 3,55 M</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="au_top" data-cost="3287000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇦🇺</span><span class="p-name">Australia G8</span><span class="p-cost">UMelb / USyd / UNSW · ~Rp 3,29 M / 3 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="us_state" data-cost="4700000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">USA State Top</span><span class="p-cost">UCLA / Michigan · ~Rp 4,7 M</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="us_ivy" data-cost="5842000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">USA Ivy / Top Private</span><span class="p-cost">Harvard / Stanford · ~Rp 5,84 M</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="uk_russell" data-cost="2700000000" data-type="internasional" data-mode="generic"><div class="pathway-inner"><span class="p-flag">🇬🇧</span><span class="p-name">UK Russell Group</span><span class="p-cost">Oxbridge / Imperial / LSE · ~Rp 2,7 M / 3 thn</span></div></label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="subsection">
-                            <h3>🌏 Kelompok Internasional — max 3</h3>
-                            <p class="text-xs text-gray-500 mb-3">Breakdown: tuition + living cost + visa/admin + FX adjustment.</p>
-                            <div class="pathway-grid">
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="cn_tsinghua" data-cost="705000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇨🇳</span><span class="p-name">Tsinghua / PKU</span><span class="p-cost">Beijing · ~Rp 705 jt / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="sg_nus_tgs" data-cost="2300000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS / NTU + TGS</span><span class="p-cost">Singapore · ~Rp 2,3 M (post-subsidi)</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="sg_nus_no_tgs" data-cost="3550000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS / NTU tanpa TGS</span><span class="p-cost">Singapore · ~Rp 3,55 M (full rate)</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="au_top" data-cost="3287000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇦🇺</span><span class="p-name">Australia G8</span><span class="p-cost">UMelb / USyd / UNSW · ~Rp 3,29 M / 3 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="us_state" data-cost="4700000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">USA State Top</span><span class="p-cost">UCLA / Michigan · ~Rp 4,7 M / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="us_ivy" data-cost="5842000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">USA Ivy / Top Private</span><span class="p-cost">Harvard / Stanford · ~Rp 5,84 M / 4 thn</span></div></label>
-                                <label class="pathway-card"><input type="checkbox" name="pathway" value="uk_russell" data-cost="2700000000" data-type="internasional"><div class="pathway-inner"><span class="p-flag">🇬🇧</span><span class="p-name">UK Russell Group</span><span class="p-cost">Oxbridge / Imperial / LSE · ~Rp 2,7 M / 3 thn</span></div></label>
+                        <!-- MODE: SPECIFIC UNIVERSITY -->
+                        <div id="mode-specific" style="display:none;">
+                            <div class="subsection">
+                                <h3>🏛️ Lokal — Universitas Spesifik (max 3)</h3>
+                                <p class="text-xs text-gray-500 mb-3">Pilih max 3 universitas + program spesifik dari KB research Philip.</p>
+                                <div class="pathway-grid">
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ui_manajemen" data-cost="172000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UI Manajemen</span><span class="p-cost">Mandiri · ~Rp 172 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ui_kedokteran" data-cost="340000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UI Kedokteran</span><span class="p-cost">Mandiri · ~Rp 340 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ui_teknik" data-cost="230000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UI Teknik</span><span class="p-cost">Mandiri · ~Rp 230 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="itb_sbm" data-cost="201000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">ITB SBM</span><span class="p-cost">Manajemen Mandiri · ~Rp 201 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="itb_teknik" data-cost="185000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">ITB Teknik</span><span class="p-cost">Mandiri · ~Rp 185 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ugm_manajemen" data-cost="104000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UGM Manajemen</span><span class="p-cost">Mandiri · ~Rp 104 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ugm_kedokteran" data-cost="230000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UGM Kedokteran</span><span class="p-cost">Mandiri · ~Rp 230 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="unair_manajemen" data-cost="140000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Unair Manajemen</span><span class="p-cost">Mandiri · ~Rp 140 jt</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="unair_kedokteran" data-cost="385000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Unair Kedokteran</span><span class="p-cost">Mandiri · ~Rp 385 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="unpad_kedokteran" data-cost="360000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Unpad Kedokteran</span><span class="p-cost">Mandiri · ~Rp 360 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="undip_kedokteran" data-cost="420000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UNDIP Kedokteran</span><span class="p-cost">Mandiri · ~Rp 420 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ub_kedokteran" data-cost="420000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UB Kedokteran</span><span class="p-cost">Mandiri · ~Rp 420 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="binus_manajemen" data-cost="245000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Binus Manajemen</span><span class="p-cost">~Rp 245 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="binus_compsci" data-cost="280000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Binus Computer Science</span><span class="p-cost">~Rp 280 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="uph_manajemen" data-cost="230000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UPH Manajemen</span><span class="p-cost">~Rp 230 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="uph_kedokteran" data-cost="920000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">UPH Kedokteran</span><span class="p-cost">~Rp 920 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="prasmul_bisnis" data-cost="300000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Prasmul Bisnis</span><span class="p-cost">~Rp 300 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="atma_manajemen" data-cost="195000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Atma Jaya Manajemen</span><span class="p-cost">~Rp 195 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="atma_kedokteran" data-cost="940000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Atma Jaya Kedokteran</span><span class="p-cost">~Rp 940 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="trisakti_kedokteran" data-cost="700000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Trisakti Kedokteran</span><span class="p-cost">~Rp 700 jt / 7 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="untar_kedokteran" data-cost="688000000" data-type="lokal" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇮🇩</span><span class="p-name">Untar Kedokteran</span><span class="p-cost">~Rp 688 jt / 7 thn</span></div></label>
+                                </div>
+                            </div>
+                            <div class="subsection">
+                                <h3>🌏 Internasional — Universitas Spesifik (max 3)</h3>
+                                <p class="text-xs text-gray-500 mb-3">Pilih max 3 universitas overseas spesifik.</p>
+                                <div class="pathway-grid">
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="nus_business_tgs" data-cost="2300000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS Business + TGS</span><span class="p-cost">~Rp 2,3 M / 4 thn (post-subsidi)</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="nus_business" data-cost="3550000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇸🇬</span><span class="p-name">NUS Business</span><span class="p-cost">tanpa TGS · ~Rp 3,55 M / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="umelb_bcom" data-cost="3287000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇦🇺</span><span class="p-name">UMelb BCom</span><span class="p-cost">University of Melbourne · ~Rp 3,29 M / 3 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="tsinghua_econ" data-cost="705000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇨🇳</span><span class="p-name">Tsinghua Econ/Mgmt</span><span class="p-cost">~Rp 705 jt / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="harvard_undergrad" data-cost="5842000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">Harvard / Stanford / MIT</span><span class="p-cost">Ivy League · ~Rp 5,84 M / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="ucla_undergrad" data-cost="4700000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇺🇸</span><span class="p-name">UCLA / Michigan / Berkeley</span><span class="p-cost">US State Top · ~Rp 4,7 M / 4 thn</span></div></label>
+                                    <label class="pathway-card"><input type="checkbox" name="pathway" value="oxbridge_undergrad" data-cost="2700000000" data-type="internasional" data-mode="specific"><div class="pathway-inner"><span class="p-flag">🇬🇧</span><span class="p-name">Oxford / Cambridge / Imperial</span><span class="p-cost">~Rp 2,7 M / 3 thn</span></div></label>
+                                </div>
                             </div>
                         </div>
 
