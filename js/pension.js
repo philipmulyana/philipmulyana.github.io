@@ -590,14 +590,6 @@ async function lookupKlien() {
                 bgColor = '#fefce8'; borderColor = '#eab308'; textColor = '#854d0e';
             }
 
-            // Friendly category mapping
-            let categoryHint = '';
-            if (label.includes('Konservatif')) categoryHint = 'Klien profile konservatif — asuransi-led product fit.';
-            else if (label.includes('Moderate-Conservative')) categoryHint = 'Klien moderate-conservative — asuransi heavy + balanced buffer.';
-            else if (label.includes('Moderate') && !label.includes('Conservative')) categoryHint = 'Klien moderate — balanced mix asuransi + investasi.';
-            else if (label.includes('SKILL GAP')) categoryHint = '⭐ Klien punya kapasitas tinggi TAPI waktu/skill rendah — refer ke investment partner.';
-            else if (label.includes('Aggressive')) categoryHint = 'Klien aggressive + skilled — DIY OK, minimal asuransi layer.';
-
             const bar = (score) => {
                 const pct = Math.max(0, Math.min(100, score));
                 return `<div style="display:flex;align-items:center;gap:0.5rem;">
