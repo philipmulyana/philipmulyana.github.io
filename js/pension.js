@@ -286,28 +286,78 @@ async function lookupKlien() {
 
         let rpSection = '';
         if (data.has_risk_profile && rp) {
+            // Color-coded based on label
+            const label = rp.profile_label || '';
+            let bgColor = '#f0fdf4', borderColor = '#10b981', textColor = '#065f46';
+            if (label.includes('SKILL GAP')) {
+                bgColor = '#fef2f2'; borderColor = '#dc2626'; textColor = '#991b1b';
+            } else if (label.includes('Aggressive')) {
+                bgColor = '#eff6ff'; borderColor = '#3b82f6'; textColor = '#1e40af';
+            } else if (label.includes('Moderate')) {
+                bgColor = '#fefce8'; borderColor = '#eab308'; textColor = '#854d0e';
+            }
+
+            // Friendly category mapping
+            let categoryHint = '';
+            if (label.includes('Konservatif')) categoryHint = 'Klien profile konservatif — asuransi-led product fit.';
+            else if (label.includes('Moderate-Conservative')) categoryHint = 'Klien moderate-conservative — asuransi heavy + balanced buffer.';
+            else if (label.includes('Moderate') && !label.includes('Conservative')) categoryHint = 'Klien moderate — balanced mix asuransi + investasi.';
+            else if (label.includes('SKILL GAP')) categoryHint = '⭐ Klien punya kapasitas tinggi TAPI waktu/skill rendah — refer ke investment partner.';
+            else if (label.includes('Aggressive')) categoryHint = 'Klien aggressive + skilled — DIY OK, minimal asuransi layer.';
+
+            const bar = (score) => {
+                const pct = Math.max(0, Math.min(100, score));
+                return `<div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">
+                        <div style="width:${pct}%;height:100%;background:${borderColor};"></div>
+                    </div>
+                    <span style="font-size:0.75rem;font-weight:700;color:${textColor};min-width:2.5rem;text-align:right;">${pct}/100</span>
+                </div>`;
+            };
+
             rpSection = `
-                <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid #d1fae5;">
-                    <div style="font-size:0.75rem;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.25rem;">🧠 Profil Risiko Klien</div>
-                    <div style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.5rem;">Hasil dari Step 4 Financial Checkup yang klien isi sebelumnya.</div>
-                    <div style="font-size:0.8125rem;line-height:1.6;">
-                        <div><strong>${rp.profile_label}</strong></div>
-                        <div style="color:#374151;margin-top:0.25rem;">
-                            Capacity ${rp.capacity_score}/100 ·
-                            Skill+Time ${rp.skill_time_score}/100 ·
-                            Tolerance ${rp.tolerance_score}/100
+                <div style="margin-top:1rem;padding:1rem 1.125rem;border-radius:0.75rem;background:${bgColor};border:2px solid ${borderColor};">
+                    <div style="font-size:0.625rem;font-weight:700;color:${textColor};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem;">🧠 Profil Risiko Klien (dari Financial Checkup)</div>
+
+                    <div style="font-size:1.375rem;font-weight:900;color:${textColor};letter-spacing:-0.02em;line-height:1.2;margin-bottom:0.5rem;">
+                        ${label}
+                    </div>
+
+                    <div style="font-size:0.8125rem;color:${textColor};margin-bottom:0.875rem;font-weight:500;">
+                        ${categoryHint}
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:0.375rem;margin-bottom:0.875rem;">
+                        <div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Capacity (kemampuan finansial)</div>
+                            ${bar(rp.capacity_score)}
                         </div>
-                        <div style="margin-top:0.5rem;padding:0.5rem 0.625rem;background:#f0fdf4;border-radius:0.375rem;font-size:0.75rem;color:#065f46;">
-                            <strong>Sale direction:</strong> ${rp.sale_direction}
+                        <div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Skill + Time (waktu & skill investasi)</div>
+                            ${bar(rp.skill_time_score)}
                         </div>
+                        <div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Tolerance (tahan banting psikologis)</div>
+                            ${bar(rp.tolerance_score)}
+                        </div>
+                    </div>
+
+                    <div style="padding:0.625rem 0.875rem;background:rgba(255,255,255,0.7);border-radius:0.5rem;font-size:0.75rem;color:${textColor};border:1px solid ${borderColor};">
+                        <strong>💡 Sale direction:</strong> ${rp.sale_direction}
                     </div>
                 </div>
             `;
             state.risk_profile_inherited = rp;
         } else {
             rpSection = `
-                <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid #fcd34d;font-size:0.75rem;color:#92400e;">
-                    ⚠️ ${data.message || 'Financial Checkup ada tapi belum ada Risk Profile data — klien re-submit kalau perlu.'}
+                <div style="margin-top:1rem;padding:1rem 1.125rem;border-radius:0.75rem;background:#fef3c7;border:2px solid #f59e0b;">
+                    <div style="font-size:0.625rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem;">⚠️ Risk Profile Belum Ada</div>
+                    <div style="font-size:1rem;font-weight:800;color:#92400e;margin-bottom:0.5rem;">
+                        Klien belum punya Profil Risiko
+                    </div>
+                    <div style="font-size:0.8125rem;color:#78350f;">
+                        ${data.message || 'Klien submit Financial Checkup sebelum Step 4 Profil Risiko ship (2026-05-27). Solusi: minta klien re-submit Financial Checkup di philipmulyana.com/financial-checkup.html supaya isi Step 4.'}
+                    </div>
                 </div>
             `;
             state.risk_profile_inherited = null;
