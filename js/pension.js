@@ -67,9 +67,31 @@ const state = {
         dc_kontribusi_pasangan: '',
         estimasi_manfaat_pasangan: ''
     },
+    f4: {
+        col_ratio_domisili: '',
+        col_ratio_pensiun: '',
+        healthcare_tier: '',
+        notes: ''
+    },
+    f6: {
+        klien_stated: '',
+        anchor_tier: '',
+        anchor_baseline: '',
+        secondary_tier: ''
+    },
     f7: {
         strategy: '',  // bpjs_only / hybrid / swasta_only
         anggota: {}  // {anggota_key: {bpjs_status, bpjs_kelas, asuransi_provider, premi_yr, ci_aktif, ci_provider, ci_sum, disability_rider, kondisi_medical, family_history}}
+    },
+    f10: {
+        inflasi_umum: '3.0',
+        inflasi_healthcare: '12.0',
+        inflasi_lifestyle: '5.0',
+        inflasi_sewa: '4.0',
+        longevity_pemegang: '',
+        longevity_pasangan: '',
+        joint_horizon: '',
+        swr_base: '3.25'
     },
     risk_profile_inherited: null,  // from Financial Checkup lookup
     lookup_email: ''
@@ -249,9 +271,31 @@ function saveState() {
         state.f3.dc_kontribusi_pasangan = val('f3_dc_kontribusi_pasangan');
         state.f3.estimasi_manfaat_pasangan = val('f3_estimasi_manfaat_pasangan');
 
+        // F4 Regional CoL
+        state.f4.col_ratio_domisili = val('f4_col_ratio_domisili');
+        state.f4.col_ratio_pensiun = val('f4_col_ratio_pensiun');
+        state.f4.healthcare_tier = radioVal('f4_healthcare_tier');
+        state.f4.notes = val('f4_notes');
+
+        // F6 Lifestyle Tier
+        state.f6.klien_stated = radioVal('f6_klien_stated');
+        state.f6.anchor_tier = radioVal('f6_anchor_tier');
+        state.f6.anchor_baseline = val('f6_anchor_baseline');
+        state.f6.secondary_tier = radioVal('f6_secondary_tier');
+
         // F7 Healthcare
         state.f7.strategy = radioVal('f7_strategy');
         state.f7.anggota = collectF7Anggota();
+
+        // F10 Assumption Locks
+        state.f10.inflasi_umum = val('f10_inflasi_umum') || '3.0';
+        state.f10.inflasi_healthcare = val('f10_inflasi_healthcare') || '12.0';
+        state.f10.inflasi_lifestyle = val('f10_inflasi_lifestyle') || '5.0';
+        state.f10.inflasi_sewa = val('f10_inflasi_sewa') || '4.0';
+        state.f10.longevity_pemegang = val('f10_longevity_pemegang');
+        state.f10.longevity_pasangan = val('f10_longevity_pasangan');
+        state.f10.joint_horizon = val('f10_joint_horizon');
+        state.f10.swr_base = val('f10_swr_base') || '3.25';
 
         localStorage.setItem(STORAGE_KEY_PEN, JSON.stringify(state));
         showSaveStatus('saved', '✓ Saved');
@@ -313,6 +357,34 @@ function restoreState() {
             setVal('f2_tahun_bpjstk_pasangan', state.f2.tahun_bpjstk_pasangan);
             setVal('f2_jht_balance_pasangan', state.f2.jht_balance_pasangan);
             setRadio('f2_dppk_pasangan', state.f2.dppk_pasangan);
+        }
+
+        // F4 Regional
+        if (state.f4) {
+            setVal('f4_col_ratio_domisili', state.f4.col_ratio_domisili);
+            setVal('f4_col_ratio_pensiun', state.f4.col_ratio_pensiun);
+            setRadio('f4_healthcare_tier', state.f4.healthcare_tier);
+            setVal('f4_notes', state.f4.notes);
+        }
+
+        // F6 Lifestyle Tier
+        if (state.f6) {
+            setRadio('f6_klien_stated', state.f6.klien_stated);
+            setRadio('f6_anchor_tier', state.f6.anchor_tier);
+            setVal('f6_anchor_baseline', state.f6.anchor_baseline);
+            setRadio('f6_secondary_tier', state.f6.secondary_tier);
+        }
+
+        // F10 Assumption Locks
+        if (state.f10) {
+            setVal('f10_inflasi_umum', state.f10.inflasi_umum || '3.0');
+            setVal('f10_inflasi_healthcare', state.f10.inflasi_healthcare || '12.0');
+            setVal('f10_inflasi_lifestyle', state.f10.inflasi_lifestyle || '5.0');
+            setVal('f10_inflasi_sewa', state.f10.inflasi_sewa || '4.0');
+            setVal('f10_longevity_pemegang', state.f10.longevity_pemegang);
+            setVal('f10_longevity_pasangan', state.f10.longevity_pasangan);
+            setVal('f10_joint_horizon', state.f10.joint_horizon);
+            setVal('f10_swr_base', state.f10.swr_base || '3.25');
         }
 
         // F3 DPPK
@@ -411,10 +483,25 @@ function refreshConditionals() {
         updateLayerStatus('f3', validateF3Soft());
     }
 
+    // F4 auto-populate CoL display dari F1 domisili + anchor lokasi
+    renderF4CoLDisplay();
+
+    // F10 conditional: longevity pasangan + joint horizon (couple only)
+    toggleConditional('f10_longevity_pasangan_wrap', marital === 'married');
+    toggleConditional('f10_joint_horizon_wrap', marital === 'married');
+
+    // F10 auto-suggest longevity based on F1 gender (if not yet set)
+    autoSuggestLongevity();
+
     // F7 dynamic anggota render + status pill
     renderF7AnggotaList();
     setRadio('f7_strategy', state.f7?.strategy);
     updateLayerStatus('f7', validateF7Soft());
+
+    // F4 + F6 + F10 status pills
+    updateLayerStatus('f4', validateF4Soft());
+    updateLayerStatus('f6', validateF6Soft());
+    updateLayerStatus('f10', validateF10Soft());
 
     // Status pills
     updateLayerStatus('f1', validateF1Soft());
@@ -911,6 +998,90 @@ function restoreF7AnggotaState(k, data) {
 
 function validateF7Soft() {
     return !!state.f7?.strategy;
+}
+
+function validateF4Soft() {
+    return !!state.f4?.healthcare_tier;
+}
+
+function validateF6Soft() {
+    return !!state.f6?.anchor_tier && !!state.f6?.anchor_baseline;
+}
+
+function validateF10Soft() {
+    return !!state.f10?.inflasi_umum && !!state.f10?.swr_base;
+}
+
+// ============================================================================
+// F4 — CoL display auto-populate dari F1
+// ============================================================================
+const COL_RATIO_MAP = {
+    jakarta: 1.00, tangsel: 0.92, bekasi: 0.90, bandung: 0.75,
+    surabaya: 0.80, semarang: 0.68, yogyakarta: 0.65,
+    denpasar: 0.90, medan: 0.70, makassar: 0.68, batam: 0.85
+};
+const COL_LABEL_MAP = {
+    jakarta: 'Jakarta', tangsel: 'Tangerang Selatan / BSD', bekasi: 'Bekasi',
+    bandung: 'Bandung', surabaya: 'Surabaya', semarang: 'Semarang',
+    yogyakarta: 'Yogyakarta', denpasar: 'Denpasar (Bali)', medan: 'Medan',
+    makassar: 'Makassar', batam: 'Batam', other: 'Lainnya'
+};
+
+function renderF4CoLDisplay() {
+    const display = document.getElementById('f4_col_display');
+    if (!display) return;
+
+    const domisili = val('f1_domisili_kota');
+    const anchorSame = radioVal('f1_anchor_lokasi_same') === 'true';
+    const anchorKota = val('f1_anchor_lokasi_kota');
+    const pensiunKota = anchorSame ? domisili : anchorKota;
+
+    if (!domisili) {
+        display.innerHTML = '<em style="color:#9ca3af;">Set domisili di F1 dulu untuk lihat CoL ratio auto.</em>';
+        return;
+    }
+
+    const ratioDom = COL_RATIO_MAP[domisili];
+    const ratioPen = pensiunKota ? COL_RATIO_MAP[pensiunKota] : null;
+    const labelDom = COL_LABEL_MAP[domisili] || domisili;
+    const labelPen = pensiunKota ? (COL_LABEL_MAP[pensiunKota] || pensiunKota) : '—';
+
+    let html = `<div style="font-size:0.6875rem;color:#9ca3af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">Default CoL ratios (Jakarta = 1.00)</div>`;
+    html += `<div style="display:grid;grid-template-columns:auto 1fr;gap:0.25rem 0.75rem;font-size:0.8125rem;">`;
+    html += `<div>📍 Domisili:</div><div><strong>${labelDom}</strong> · ratio ${ratioDom !== undefined ? ratioDom.toFixed(2) : 'manual'}</div>`;
+    if (anchorSame) {
+        html += `<div>🏖️ Pensiun:</div><div>sama dengan domisili</div>`;
+    } else {
+        html += `<div>🏖️ Pensiun:</div><div><strong>${labelPen}</strong> · ratio ${ratioPen !== undefined ? ratioPen.toFixed(2) : 'manual'}</div>`;
+        if (ratioDom && ratioPen) {
+            const delta = ((ratioPen - ratioDom) / ratioDom * 100).toFixed(0);
+            html += `<div>📊 Delta:</div><div style="color:${delta < 0 ? '#059669' : '#dc2626'};font-weight:700;">${delta}% vs domisili ${delta < 0 ? '(lebih murah)' : '(lebih mahal)'}</div>`;
+        }
+    }
+    html += `</div>`;
+    display.innerHTML = html;
+
+    // Auto-populate input fields kalau kosong
+    const inpDom = document.getElementById('f4_col_ratio_domisili');
+    const inpPen = document.getElementById('f4_col_ratio_pensiun');
+    if (inpDom && !inpDom.value && ratioDom !== undefined) inpDom.value = ratioDom;
+    if (inpPen && !inpPen.value && ratioPen !== undefined) inpPen.value = ratioPen;
+}
+
+function autoSuggestLongevity() {
+    const inpP = document.getElementById('f10_longevity_pemegang');
+    if (inpP && !inpP.value) {
+        const gender = radioVal('f1_gender_pemegang');
+        if (gender === 'F') inpP.placeholder = 'default 88 (Perempuan)';
+        else if (gender === 'M') inpP.placeholder = 'default 85 (Laki-laki)';
+    }
+
+    const inpPas = document.getElementById('f10_longevity_pasangan');
+    if (inpPas && !inpPas.value) {
+        const g = radioVal('f1_gender_pasangan');
+        if (g === 'F') inpPas.placeholder = 'default 88 (Perempuan)';
+        else if (g === 'M') inpPas.placeholder = 'default 85 (Laki-laki)';
+    }
 }
 
 // ============================================================================

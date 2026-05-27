@@ -739,10 +739,44 @@
                     <summary>
                         <span class="layer-num">F4</span>
                         <span class="layer-title">Regional CoL Adjustment</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f4">Pending</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Auto-populate dari F1 domisili + anchor lokasi pensiun. CoL ratio + regional inflasi + healthcare access tier. Spec: <code>(C) Form Spec - Layers 1-4-6-10 Simpler</code></p>
+
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">📍 Cost-of-Living Adjustment</h3>
+                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Auto-populate dari F1 domisili + anchor lokasi pensiun. Default ratios = best-effort proxy (BPS Susenas + IHK regional), Philip override per klien kalau perlu.</p>
+
+                            <div id="f4_col_display" style="padding:0.75rem 0.875rem;background:white;border:1px solid #e5e7eb;border-radius:0.5rem;font-size:0.8125rem;color:#374151;margin-bottom:0.875rem;">
+                                <em style="color:#9ca3af;">Set domisili & anchor lokasi pensiun di F1 dulu untuk lihat CoL ratio auto.</em>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Override CoL ratio domisili (Jakarta=1.00)</label>
+                                <input type="number" id="f4_col_ratio_domisili" min="0.5" max="1.5" step="0.05" placeholder="auto-populate dari F1 domisili">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Override CoL ratio lokasi pensiun (Jakarta=1.00)</label>
+                                <input type="number" id="f4_col_ratio_pensiun" min="0.5" max="1.5" step="0.05" placeholder="auto-populate dari F1 anchor">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Healthcare access tier per lokasi pensiun</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f4_healthcare_tier" value="premium"> Premium (Jakarta CBD, Bali expat, Surabaya elite)</label>
+                                    <label><input type="radio" name="f4_healthcare_tier" value="mid"> Mid (Bandung, Yogya, Semarang)</label>
+                                    <label><input type="radio" name="f4_healthcare_tier" value="limited"> Limited (daerah tier 2-3, BPJS-dependent)</label>
+                                </div>
+                                <div class="hint">Affects F10 default medical inflation assumption (premium 14% / mid 12% / limited 10%).</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Notes regional (opsional)</label>
+                                <input type="text" id="f4_notes" placeholder="contoh: klien pindah ke Bali tapi lifestyle expat = ratio naik">
+                            </div>
+                        </div>
+
                     </div>
                 </details>
 
@@ -761,10 +795,81 @@
                     <summary>
                         <span class="layer-num">F6</span>
                         <span class="layer-title">Lifestyle Tier Anchor</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f6">Pending</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Per Decision #20: auto-derive dari F5 rebased expense + Philip override. Modest / Comfortable / Comfortable+ / Aspirational.</p>
+
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">🎯 Lifestyle Tier untuk Pensiun</h3>
+                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Per Decision #20: auto-derive dari F5 rebased expense (Stage 3 build), Philip override option. Saat ini manual input dulu.</p>
+
+                            <!-- Reference table (collapsible) -->
+                            <details style="margin-bottom:0.875rem;padding:0.625rem 0.875rem;background:white;border:1px solid #e5e7eb;border-radius:0.5rem;">
+                                <summary style="font-size:0.75rem;font-weight:700;cursor:pointer;color:#374151;">📋 Tier reference table (klik untuk expand)</summary>
+                                <div style="margin-top:0.625rem;font-size:0.75rem;color:#374151;">
+                                    <table style="width:100%;border-collapse:collapse;">
+                                        <tr style="border-bottom:1px solid #e5e7eb;">
+                                            <th style="text-align:left;padding:0.375rem;font-weight:700;">Tier</th>
+                                            <th style="text-align:left;padding:0.375rem;font-weight:700;">Rp/bln (today)</th>
+                                            <th style="text-align:left;padding:0.375rem;font-weight:700;">Lifestyle markers</th>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f3f4f6;">
+                                            <td style="padding:0.375rem;">🟢 Modest</td><td style="padding:0.375rem;">Rp 25jt</td><td style="padding:0.375rem;">Hidup tenang, ART part-time, 1 mobil mid-range, jarang travel</td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f3f4f6;">
+                                            <td style="padding:0.375rem;">🟡 Comfortable</td><td style="padding:0.375rem;">Rp 50jt</td><td style="padding:0.375rem;">ART full-time, 1-2 mobil, travel domestik 1-2x/yr</td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f3f4f6;">
+                                            <td style="padding:0.375rem;">🟣 Comfortable+</td><td style="padding:0.375rem;">Rp 60-75jt</td><td style="padding:0.375rem;">ART + driver, 2 mobil 1 premium, travel international 1-2x/yr, healthcare premium</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:0.375rem;">🔴 Aspirational</td><td style="padding:0.375rem;">Rp 90jt+</td><td style="padding:0.375rem;">Household staff full, mobil 2 premium, travel international 2-3x/yr, hobby premium</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </details>
+
+                            <div class="field-row">
+                                <label>Klien-stated tier (captured saat interview)</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f6_klien_stated" value="modest"> 🟢 Modest</label>
+                                    <label><input type="radio" name="f6_klien_stated" value="comfortable"> 🟡 Comfortable</label>
+                                    <label><input type="radio" name="f6_klien_stated" value="comfortable_plus"> 🟣 Comfortable+</label>
+                                    <label><input type="radio" name="f6_klien_stated" value="aspirational"> 🔴 Aspirational</label>
+                                    <label><input type="radio" name="f6_klien_stated" value="unsure"> Klien belum sure</label>
+                                </div>
+                                <div class="hint">Tier yang klien sebut saat interview (kalau ada). Optional.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Locked anchor tier (Philip pilih final) <span class="req">*</span></label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f6_anchor_tier" value="modest"> 🟢 Modest</label>
+                                    <label><input type="radio" name="f6_anchor_tier" value="comfortable"> 🟡 Comfortable</label>
+                                    <label><input type="radio" name="f6_anchor_tier" value="comfortable_plus"> 🟣 Comfortable+</label>
+                                    <label><input type="radio" name="f6_anchor_tier" value="aspirational"> 🔴 Aspirational</label>
+                                </div>
+                                <div class="hint">Tier yang akan dipakai di Section 1 Ringkasan (Baseline Kamu badge).</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Locked anchor baseline (Rp/bln today)</label>
+                                <input type="number" id="f6_anchor_baseline" placeholder="contoh: 63000000">
+                                <div class="hint">Akan auto-derive dari F5 rebased expense saat Stage 3 ready. Sementara manual input dari interview.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Secondary anchor tier (Plan B / fallback)</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f6_secondary_tier" value=""> Tidak ada</label>
+                                    <label><input type="radio" name="f6_secondary_tier" value="modest"> 🟢 Modest</label>
+                                    <label><input type="radio" name="f6_secondary_tier" value="comfortable"> 🟡 Comfortable</label>
+                                    <label><input type="radio" name="f6_secondary_tier" value="comfortable_plus"> 🟣 Comfortable+</label>
+                                </div>
+                                <div class="hint">Tier coast-down kalau pot ternyata kurang. Bahan diskusi konsultasi.</div>
+                            </div>
+                        </div>
+
                     </div>
                 </details>
 
@@ -828,10 +933,83 @@
                     <summary>
                         <span class="layer-num">F10</span>
                         <span class="layer-title">Assumption Locks (revised)</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f10">Pending</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Inflasi (umum/healthcare/lifestyle/sewa) + longevity (M/F/joint) + SWR. Return assumption MANUAL post-interview per Decision #9.</p>
+
+                        <!-- Inflasi -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">📈 Inflasi Assumptions</h3>
+                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Default dari vault KB Retirement Planning Indo. Override per klien kalau perlu (e.g. family history medical → naikkin medical inflation).</p>
+
+                            <div class="field-row">
+                                <label>Inflasi umum CPI (% p.a.)</label>
+                                <input type="number" id="f10_inflasi_umum" min="1" max="8" step="0.1" value="3.0">
+                                <div class="hint">Default 3%. BI target 2.5% ± 1%, historis 10-yr ~3.2%.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Inflasi healthcare (% p.a.)</label>
+                                <input type="number" id="f10_inflasi_healthcare" min="8" max="20" step="0.5" value="12.0">
+                                <div class="hint">Default 12%. Vault range 10-14% (Mercer 2024-2026). Naikkan ke 14-16% kalau family history chronic.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Inflasi lifestyle / travel (% p.a.)</label>
+                                <input type="number" id="f10_inflasi_lifestyle" min="2" max="10" step="0.5" value="5.0">
+                                <div class="hint">Default 5%. Luxury creep adjustment vs CPI umum.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Inflasi sewa rental (% p.a.)</label>
+                                <input type="number" id="f10_inflasi_sewa" min="2" max="8" step="0.5" value="4.0">
+                                <div class="hint">Default 4%. Sewa typically lag CPI sedikit di Indo.</div>
+                            </div>
+                        </div>
+
+                        <!-- Longevity -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">⏳ Longevity (Plan-to Age)</h3>
+                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Default berdasarkan gender (BPS UHH + buffer). Override kalau family longevity history (orangtua hidup 90+).</p>
+
+                            <div class="field-row">
+                                <label>Longevity klien (umur plan-to)</label>
+                                <input type="number" id="f10_longevity_pemegang" min="75" max="100" placeholder="Auto: M=85, F=88">
+                                <div class="hint">Default M=85, F=88 (akan auto-set berdasarkan F1 gender saat fill).</div>
+                            </div>
+
+                            <div class="field-row conditional" id="f10_longevity_pasangan_wrap">
+                                <label>Longevity pasangan klien</label>
+                                <input type="number" id="f10_longevity_pasangan" min="75" max="100" placeholder="Auto sesuai gender pasangan">
+                            </div>
+
+                            <div class="field-row conditional" id="f10_joint_horizon_wrap">
+                                <label>Joint horizon (umur longer-survivor)</label>
+                                <input type="number" id="f10_joint_horizon" min="80" max="100" placeholder="Default max(klien, pasangan)">
+                                <div class="hint">Couple mode only. Plan dana sampai usia longer-survivor (typical: 90+).</div>
+                            </div>
+                        </div>
+
+                        <!-- SWR -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">💧 Safe Withdrawal Rate (SWR)</h3>
+
+                            <div class="field-row">
+                                <label>SWR base (% per tahun)</label>
+                                <input type="number" id="f10_swr_base" min="2.5" max="4.0" step="0.05" value="3.25">
+                                <div class="hint">Default 3.25%. Vault Indo range 3.0-3.5% (Pfau methodology), lebih konservatif dari 4% Trinity US karena IHSG volatility + medical inflation Indo.</div>
+                            </div>
+                        </div>
+
+                        <!-- Return assumption note -->
+                        <div class="subsection" style="background:#fef3c7;border:1px solid #f59e0b;border-radius:0.75rem;padding:1rem 1.25rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#92400e;">⚠️ Return Assumption (IHSG forward)</h3>
+                            <p style="font-size:0.75rem;color:#78350f;line-height:1.5;">
+                                Return assumption (IHSG forward 4-8%) <strong>NOT di F10</strong> per Decision #9. Akan di-decide post-interview based on klien vehicle preference (DCA RD / DIY saham / via investment partner / asuransi-led).
+                                Default rendering PDF: <strong>3-scenario all</strong> (Conservative 4% / Base 6% / Optimistic 8%) per Decision #17.
+                            </p>
+                        </div>
+
                     </div>
                 </details>
 
