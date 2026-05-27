@@ -6,8 +6,15 @@
 // Submit posts to Modal backend (stub for now — will email PDF when backend ready).
 // ============================================================================
 
-const STORAGE_KEY_CHK = 'checkup_state_v1';
-const TOTAL_STEPS = 5;
+const STORAGE_KEY_CHK = 'checkup_state_v2';  // bumped v1→v2 saat add Step 4 Profil Risiko 2026-05-27
+const TOTAL_STEPS = 6;  // was 5 — added Step 4 Profil Risiko, Review moved to 5, Lead Capture to 6
+
+// Risk Profile question IDs (Step 4)
+const RP_EXP_IDS = [
+    'rp_exp_deposito', 'rp_exp_rd', 'rp_exp_saham', 'rp_exp_obligasi',
+    'rp_exp_properti', 'rp_exp_emas', 'rp_exp_crypto', 'rp_exp_derivatif', 'rp_exp_none'
+];
+const RP_SLIDER_IDS = ['rp_skill_rd', 'rp_skill_prospectus', 'rp_skill_saham'];
 
 // --- Item definitions: 17 items, grouped by section ---
 const ITEMS = {
@@ -29,8 +36,76 @@ Object.values(ITEMS).flat().forEach(item => {
 const state = {
     currentStep: 1,
     visitedSteps: new Set([1]),
-    lead: { nama: '', wa: '', email: '' }
+    lead: { nama: '', wa: '', email: '' },
+    riskProfile: {
+        usia: '',
+        experience: [],  // array of selected instrument keys
+        drawdown: '',    // jual / hold / beli / freeze
+        time: '',        // <1 / 1-3 / 3-5 / 5+
+        skill_rd: 1,
+        skill_prospectus: 1,
+        skill_saham: 1,
+        loss_tolerance: '' // 5 / 15 / 30 / 50
+    }
 };
+
+// ============================================================================
+// Risk Profile state collection (Step 4)
+// ============================================================================
+function collectRiskProfile() {
+    const usiaEl = document.getElementById('rp_usia');
+    const experience = [];
+    RP_EXP_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.checked) experience.push(id.replace('rp_exp_', ''));
+    });
+    const drawdownEl = document.querySelector('input[name="rp_drawdown"]:checked');
+    const timeEl = document.querySelector('input[name="rp_time"]:checked');
+    const lossEl = document.querySelector('input[name="rp_loss"]:checked');
+
+    return {
+        usia: usiaEl ? parseInt(usiaEl.value, 10) || '' : '',
+        experience: experience,
+        drawdown: drawdownEl ? drawdownEl.value : '',
+        time: timeEl ? timeEl.value : '',
+        skill_rd: parseInt(document.getElementById('rp_skill_rd')?.value || 1, 10),
+        skill_prospectus: parseInt(document.getElementById('rp_skill_prospectus')?.value || 1, 10),
+        skill_saham: parseInt(document.getElementById('rp_skill_saham')?.value || 1, 10),
+        loss_tolerance: lossEl ? lossEl.value : ''
+    };
+}
+
+function restoreRiskProfile(rp) {
+    if (!rp) return;
+    const usiaEl = document.getElementById('rp_usia');
+    if (usiaEl && rp.usia) usiaEl.value = rp.usia;
+    if (rp.experience && Array.isArray(rp.experience)) {
+        rp.experience.forEach(key => {
+            const el = document.getElementById('rp_exp_' + key);
+            if (el) el.checked = true;
+        });
+    }
+    if (rp.drawdown) {
+        const el = document.querySelector(`input[name="rp_drawdown"][value="${rp.drawdown}"]`);
+        if (el) el.checked = true;
+    }
+    if (rp.time) {
+        const el = document.querySelector(`input[name="rp_time"][value="${rp.time}"]`);
+        if (el) el.checked = true;
+    }
+    if (rp.loss_tolerance) {
+        const el = document.querySelector(`input[name="rp_loss"][value="${rp.loss_tolerance}"]`);
+        if (el) el.checked = true;
+    }
+    RP_SLIDER_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        const valEl = document.getElementById(id + '_val');
+        if (el && rp[id.replace('rp_', '')]) {
+            el.value = rp[id.replace('rp_', '')];
+            if (valEl) valEl.textContent = el.value;
+        }
+    });
+}
 
 // ============================================================================
 // State persistence
@@ -41,7 +116,8 @@ function saveState() {
             inputs: {},
             currentStep: state.currentStep,
             visitedSteps: Array.from(state.visitedSteps),
-            lead: state.lead
+            lead: state.lead,
+            riskProfile: collectRiskProfile()
         };
         ALL_INPUT_IDS.forEach(id => {
             const el = document.getElementById(id);
@@ -81,6 +157,11 @@ function restoreState() {
         if (data.visitedSteps) state.visitedSteps = new Set(data.visitedSteps);
         if (data.currentStep) {
             state.currentStep = Math.min(data.currentStep, TOTAL_STEPS);
+        }
+
+        // Restore Risk Profile (Step 4)
+        if (data.riskProfile) {
+            restoreRiskProfile(data.riskProfile);
         }
     } catch (e) { /* silent */ }
 }
@@ -330,8 +411,8 @@ function showStep(n) {
         if (submitBtn) submitBtn.style.display = 'none';
     }
 
-    // If step 4, re-render results
-    if (n === 4) renderAll();
+    // If step 5 (Review — moved from old step 4), re-render results
+    if (n === 5) renderAll();
 
     // Scroll to top of form
     document.getElementById('checkup-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -373,14 +454,40 @@ function goToStep(n) {
 function validateStep(n) {
     clearError();
 
-    if (n === 5) {
-        // Lead capture validation
+    if (n === 6) {
+        // Lead capture validation (was step 5 pre-Risk Profile)
         const nama = (document.getElementById('lead-nama').value || '').trim();
         const wa = (document.getElementById('lead-wa').value || '').trim();
         const email = (document.getElementById('lead-email').value || '').trim();
         if (!nama || nama.length < 2) { showError('Nama harus diisi.'); return false; }
         if (!wa || wa.replace(/[^0-9]/g, '').length < 8) { showError('Nomor WhatsApp harus diisi (minimal 8 digit).'); return false; }
         if (!email || !email.includes('@') || !email.includes('.')) { showError('Email harus diisi dengan format yang benar.'); return false; }
+        return true;
+    }
+
+    if (n === 4) {
+        // Risk Profile validation — Q1, Q2, Q3, Q4, Q6 required (Q5 sliders default = 1 OK)
+        const rp = collectRiskProfile();
+        if (!rp.usia || rp.usia < 17 || rp.usia > 80) {
+            showError('Isi usia kamu (Q1) — angka antara 17-80.');
+            return false;
+        }
+        if (!rp.experience || rp.experience.length === 0) {
+            showError('Pilih minimal 1 instrumen investasi pengalaman kamu (Q2) — atau pilih "Belum pernah investasi".');
+            return false;
+        }
+        if (!rp.drawdown) {
+            showError('Pilih reaksi kamu kalau portfolio turun -25% (Q3).');
+            return false;
+        }
+        if (!rp.time) {
+            showError('Pilih estimasi waktu kamu untuk monitor investasi (Q4).');
+            return false;
+        }
+        if (!rp.loss_tolerance) {
+            showError('Pilih maksimum % kerugian yang masih bisa kamu hold (Q6).');
+            return false;
+        }
         return true;
     }
 
@@ -417,7 +524,7 @@ function clearError() {
 // Submit
 // ============================================================================
 async function submitCheckup() {
-    if (!validateStep(5)) return;
+    if (!validateStep(6)) return;
 
     // Collect all data
     const inputs = {};
@@ -427,11 +534,15 @@ async function submitCheckup() {
     const netWorth = computeNetWorth(totals);
     const ratios = computeRatios(totals, netWorth);
 
+    // Collect Risk Profile (Step 4)
+    const riskProfile = collectRiskProfile();
+
     state.lead = {
         nama: document.getElementById('lead-nama').value.trim(),
         wa: document.getElementById('lead-wa').value.trim(),
         email: document.getElementById('lead-email').value.trim()
     };
+    state.riskProfile = riskProfile;
     saveState();
 
     const payload = {
@@ -451,6 +562,7 @@ async function submitCheckup() {
             cicilanUtang: ratios.cicilanUtang.value,
             cicilanUtangIdeal: ratios.cicilanUtang.isGood()
         },
+        risk_profile: riskProfile,  // raw inputs — backend computes scores + label
         submitted_at: new Date().toISOString(),
         source: 'philipmulyana.com/financial-checkup'
     };
@@ -517,6 +629,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     wa: document.getElementById('lead-wa').value,
                     email: document.getElementById('lead-email').value
                 };
+                saveState();
+            });
+        }
+    });
+
+    // Risk Profile Step 4 listeners
+    const rpUsiaEl = document.getElementById('rp_usia');
+    if (rpUsiaEl) rpUsiaEl.addEventListener('input', saveState);
+
+    RP_EXP_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', saveState);
+    });
+
+    document.querySelectorAll('input[name="rp_drawdown"], input[name="rp_time"], input[name="rp_loss"]').forEach(el => {
+        el.addEventListener('change', saveState);
+    });
+
+    // Risk Profile sliders — update display value + save
+    RP_SLIDER_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        const valEl = document.getElementById(id + '_val');
+        if (el) {
+            el.addEventListener('input', () => {
+                if (valEl) valEl.textContent = el.value;
                 saveState();
             });
         }
