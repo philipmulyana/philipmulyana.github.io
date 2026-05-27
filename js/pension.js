@@ -67,6 +67,10 @@ const state = {
         dc_kontribusi_pasangan: '',
         estimasi_manfaat_pasangan: ''
     },
+    f7: {
+        strategy: '',  // bpjs_only / hybrid / swasta_only
+        anggota: {}  // {anggota_key: {bpjs_status, bpjs_kelas, asuransi_provider, premi_yr, ci_aktif, ci_provider, ci_sum, disability_rider, kondisi_medical, family_history}}
+    },
     risk_profile_inherited: null,  // from Financial Checkup lookup
     lookup_email: ''
 };
@@ -245,6 +249,10 @@ function saveState() {
         state.f3.dc_kontribusi_pasangan = val('f3_dc_kontribusi_pasangan');
         state.f3.estimasi_manfaat_pasangan = val('f3_estimasi_manfaat_pasangan');
 
+        // F7 Healthcare
+        state.f7.strategy = radioVal('f7_strategy');
+        state.f7.anggota = collectF7Anggota();
+
         localStorage.setItem(STORAGE_KEY_PEN, JSON.stringify(state));
         showSaveStatus('saved', '✓ Saved');
     } catch (e) {
@@ -402,6 +410,11 @@ function refreshConditionals() {
     } else {
         updateLayerStatus('f3', validateF3Soft());
     }
+
+    // F7 dynamic anggota render + status pill
+    renderF7AnggotaList();
+    setRadio('f7_strategy', state.f7?.strategy);
+    updateLayerStatus('f7', validateF7Soft());
 
     // Status pills
     updateLayerStatus('f1', validateF1Soft());
@@ -718,6 +731,194 @@ async function lookupKlien() {
         resultEl.className = 'lookup-result show notfound';
         resultEl.innerHTML = `<h4>✗ Lookup failed</h4><p style="font-size:0.75rem;">${e.message || 'Cek koneksi atau coba lagi.'}</p>`;
     }
+}
+
+// ============================================================================
+// F7 Healthcare anggota dynamic rendering
+// ============================================================================
+function getAnggotaKeluarga() {
+    // Returns list of anggota from F1: pemegang + pasangan (if married) + per anak
+    const list = [];
+
+    // Pemegang
+    const namaP = state.f1?.nama_pemegang || val('f1_nama_pemegang') || 'Klien';
+    list.push({key: 'pemegang', label: 'Klien', nama: namaP, role: 'Pemegang'});
+
+    // Pasangan
+    if (radioVal('f1_marital') === 'married') {
+        const namaPas = state.f1?.pasangan_nama || val('f1_pasangan_nama') || 'Pasangan';
+        list.push({key: 'pasangan', label: 'Pasangan', nama: namaPas, role: 'Pasangan'});
+    }
+
+    // Anak
+    const anakRows = state.f1?.anak || collectAnakRows();
+    anakRows.forEach((anak, idx) => {
+        if (anak.nama) {
+            list.push({key: `anak_${idx}`, label: `Anak ${idx+1}`, nama: anak.nama, role: 'Anak'});
+        }
+    });
+
+    return list;
+}
+
+function renderF7AnggotaList() {
+    const container = document.getElementById('f7_anggota_list');
+    if (!container) return;
+
+    const anggotaList = getAnggotaKeluarga();
+    if (anggotaList.length === 0) {
+        container.innerHTML = '<p style="font-size:0.8125rem;color:#9ca3af;padding:1rem;text-align:center;background:#f9fafb;border-radius:0.5rem;">Isi F1 dulu (nama klien minimal) untuk auto-generate anggota healthcare inventory.</p>';
+        return;
+    }
+
+    container.innerHTML = anggotaList.map(a => buildF7AnggotaCard(a)).join('');
+
+    // Attach listeners to all new inputs
+    container.querySelectorAll('input, select').forEach(el => {
+        const evt = (el.tagName === 'SELECT' || el.type === 'radio' || el.type === 'checkbox') ? 'change' : 'input';
+        el.addEventListener(evt, saveState);
+    });
+
+    // Restore saved state for each anggota
+    if (state.f7?.anggota) {
+        Object.keys(state.f7.anggota).forEach(key => {
+            restoreF7AnggotaState(key, state.f7.anggota[key]);
+        });
+    }
+}
+
+function buildF7AnggotaCard(a) {
+    const k = a.key;
+    return `
+        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:0.875rem 1rem;" data-f7-anggota="${k}">
+            <h4 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.625rem;color:#111827;">👤 ${a.label}: <span style="color:#6b7280;font-weight:500;">${a.nama}</span></h4>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.625rem 0.875rem;font-size:0.8125rem;">
+                <div>
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">BPJS Kesehatan</label>
+                    <select id="f7_${k}_bpjs_status" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                        <option value="">— Pilih —</option>
+                        <option value="aktif">Aktif</option>
+                        <option value="lapse">Lapse</option>
+                        <option value="never">Belum enroll</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">BPJS Kelas</label>
+                    <select id="f7_${k}_bpjs_kelas" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                        <option value="">— Pilih —</option>
+                        <option value="1">Kelas I</option>
+                        <option value="2">Kelas II</option>
+                        <option value="3">Kelas III</option>
+                    </select>
+                </div>
+
+                <div style="grid-column:1 / -1;">
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Asuransi kesehatan swasta — provider + plan</label>
+                    <input type="text" id="f7_${k}_swasta_provider" placeholder="contoh: Allianz SmartMed Premier" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+                <div>
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Limit tahunan (Rp)</label>
+                    <input type="number" id="f7_${k}_swasta_limit" placeholder="contoh: 500000000" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+                <div>
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Premi tahunan (Rp)</label>
+                    <input type="number" id="f7_${k}_swasta_premi" placeholder="contoh: 12000000" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+                <div>
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Renewable sampai usia</label>
+                    <input type="number" id="f7_${k}_swasta_age" min="65" max="100" placeholder="default 75" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+
+                <div style="grid-column:1 / -1;">
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Critical Illness (CI) standalone — provider + UP (Rp)</label>
+                    <input type="text" id="f7_${k}_ci" placeholder="contoh: Pru CI 1M, UP 1.5jt-an/yr premi" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+
+                ${k === 'pemegang' || k === 'pasangan' ? `
+                <div style="grid-column:1 / -1;">
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Disability income rider</label>
+                    <div class="radio-inline">
+                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="yes"> Ada</label>
+                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="no"> Tidak ada</label>
+                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="unknown"> Belum tahu</label>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div style="grid-column:1 / -1;">
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Kondisi medical pre-existing (kalau ada)</label>
+                    <input type="text" id="f7_${k}_kondisi" placeholder="contoh: diabetes T2 (controlled), hipertensi" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                </div>
+
+                ${k === 'pemegang' || k === 'pasangan' ? `
+                <div style="grid-column:1 / -1;">
+                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Family history chronic (centang yang relevan untuk ${a.label})</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.375rem;">
+                        ${['Cancer','Jantung','Stroke','Diabetes','Ginjal','Hipertensi','Mental Health'].map(cond => `
+                            <label style="font-size:0.75rem;padding:0.25rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.25rem;">
+                                <input type="checkbox" id="f7_${k}_hist_${cond.toLowerCase().replace(' ','_')}" data-f7-hist="${k}">
+                                ${cond}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function collectF7Anggota() {
+    const result = {};
+    const cards = document.querySelectorAll('[data-f7-anggota]');
+    cards.forEach(card => {
+        const k = card.dataset.f7Anggota;
+        const data = {
+            bpjs_status: val(`f7_${k}_bpjs_status`),
+            bpjs_kelas: val(`f7_${k}_bpjs_kelas`),
+            swasta_provider: val(`f7_${k}_swasta_provider`),
+            swasta_limit: val(`f7_${k}_swasta_limit`),
+            swasta_premi: val(`f7_${k}_swasta_premi`),
+            swasta_age: val(`f7_${k}_swasta_age`),
+            ci: val(`f7_${k}_ci`),
+            kondisi: val(`f7_${k}_kondisi`),
+        };
+        if (k === 'pemegang' || k === 'pasangan') {
+            data.disability = radioVal(`f7_${k}_disability`);
+            data.family_history = [];
+            card.querySelectorAll(`[data-f7-hist="${k}"]:checked`).forEach(cb => {
+                const id = cb.id;
+                const cond = id.replace(`f7_${k}_hist_`, '');
+                data.family_history.push(cond);
+            });
+        }
+        result[k] = data;
+    });
+    return result;
+}
+
+function restoreF7AnggotaState(k, data) {
+    if (!data) return;
+    setVal(`f7_${k}_bpjs_status`, data.bpjs_status);
+    setVal(`f7_${k}_bpjs_kelas`, data.bpjs_kelas);
+    setVal(`f7_${k}_swasta_provider`, data.swasta_provider);
+    setVal(`f7_${k}_swasta_limit`, data.swasta_limit);
+    setVal(`f7_${k}_swasta_premi`, data.swasta_premi);
+    setVal(`f7_${k}_swasta_age`, data.swasta_age);
+    setVal(`f7_${k}_ci`, data.ci);
+    setVal(`f7_${k}_kondisi`, data.kondisi);
+    if (data.disability) setRadio(`f7_${k}_disability`, data.disability);
+    if (data.family_history && Array.isArray(data.family_history)) {
+        data.family_history.forEach(cond => {
+            const el = document.getElementById(`f7_${k}_hist_${cond}`);
+            if (el) el.checked = true;
+        });
+    }
+}
+
+function validateF7Soft() {
+    return !!state.f7?.strategy;
 }
 
 // ============================================================================

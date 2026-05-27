@@ -772,10 +772,33 @@
                     <summary>
                         <span class="layer-num">F7</span>
                         <span class="layer-title">Healthcare Coverage Inventory</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f7">Pending</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Per anggota keluarga: BPJS status + asuransi swasta + CI + family medical history. Drives Section 7 healthcare buffer di PDF.</p>
+
+                        <p class="text-xs text-gray-500 mb-3">Inventory asuransi per anggota keluarga (klien + pasangan + per anak). Drives Section 7 Healthcare Buffer di PDF + medical inflation reserve sizing.</p>
+
+                        <!-- Klien preference (family-wide) -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">🏥 Healthcare Strategy Preference (family-wide)</h3>
+                            <div class="field-row">
+                                <label>Preferensi healthcare keluarga klien</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f7_strategy" value="bpjs_only"> BPJS-only (cost-conscious)</label>
+                                    <label><input type="radio" name="f7_strategy" value="hybrid"> Hybrid (BPJS + asuransi swasta)</label>
+                                    <label><input type="radio" name="f7_strategy" value="swasta_only"> Swasta-only (premium access)</label>
+                                </div>
+                                <div class="hint">Hybrid paling umum di upper-middle Jakarta. Hybrid recommended per vault KB Section 4 (BPJS = catastrophic protection, swasta = akses + service).</div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic anggota inventory list -->
+                        <div id="f7_anggota_list" style="display:flex;flex-direction:column;gap:0.625rem;">
+                            <!-- Auto-generated rows: pemegang + pasangan (if married) + per anak -->
+                        </div>
+
+                        <p class="text-xs text-gray-500 mt-3">💡 Anggota auto-generated dari F1. Update F1 (marital + anak count) untuk add/remove rows.</p>
+
                     </div>
                 </details>
 
