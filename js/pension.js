@@ -288,7 +288,8 @@ async function lookupKlien() {
         if (data.has_risk_profile && rp) {
             rpSection = `
                 <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid #d1fae5;">
-                    <div style="font-size:0.75rem;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">🧠 Risk Profile (inherited)</div>
+                    <div style="font-size:0.75rem;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.25rem;">🧠 Profil Risiko Klien</div>
+                    <div style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.5rem;">Hasil dari Step 4 Financial Checkup yang klien isi sebelumnya.</div>
                     <div style="font-size:0.8125rem;line-height:1.6;">
                         <div><strong>${rp.profile_label}</strong></div>
                         <div style="color:#374151;margin-top:0.25rem;">
