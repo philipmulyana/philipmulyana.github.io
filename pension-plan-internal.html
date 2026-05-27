@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Plan Advisor Tool — INTERNAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        /* === Internal notice === */
+        .internal-notice {
+            background: #fef3c7; border: 1.5px solid #fcd34d;
+            border-radius: 0.75rem; padding: 0.875rem 1.125rem;
+            font-size: 0.8125rem; color: #78350f;
+            display: flex; gap: 0.625rem; align-items: flex-start;
+        }
+        .internal-notice strong { font-weight: 700; }
+
+        /* === Section card === */
+        .section-card {
+            background: #f9fafb; border-radius: 1.25rem;
+            padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+        }
+        .section-card h2 {
+            font-size: 1rem; font-weight: 800; color: #111827;
+            margin-bottom: 0.5rem; letter-spacing: -0.01em;
+        }
+
+        /* === Field row === */
+        .field-row { margin-bottom: 0.875rem; }
+        .field-row:last-child { margin-bottom: 0; }
+        .field-row label {
+            display: block; font-size: 0.8125rem; color: #374151;
+            font-weight: 500; margin-bottom: 0.375rem;
+        }
+        .field-row label .req { color: #dc2626; }
+        .field-row .hint {
+            font-size: 0.6875rem; color: #6b7280;
+            margin: 0 0 0.375rem 0; padding: 0.375rem 0.625rem;
+            background: #f3f4f6; border-left: 2px solid #d1d5db;
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+        .field-row input[type="text"],
+        .field-row input[type="number"],
+        .field-row input[type="email"],
+        .field-row input[type="tel"],
+        .field-row input[type="date"],
+        .field-row select {
+            width: 100%; padding: 0.625rem 0.875rem;
+            border: 1px solid #e5e7eb; border-radius: 0.5rem;
+            font-size: 0.875rem; font-variant-numeric: tabular-nums;
+            background: white;
+        }
+        .field-row input:focus, .field-row select:focus {
+            outline: none; border-color: black;
+        }
+
+        /* === Radio group inline === */
+        .radio-inline {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .radio-inline label {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 0.875rem; border: 1px solid #e5e7eb;
+            border-radius: 0.5rem; font-size: 0.8125rem;
+            color: #111827; cursor: pointer; margin: 0;
+            font-weight: 500; transition: all 0.15s;
+        }
+        .radio-inline label:hover { border-color: #6b7280; }
+        .radio-inline label:has(input:checked) {
+            border-color: black; background: #f3f4f6; font-weight: 600;
+        }
+
+        /* === Anak rows (dynamic) === */
+        .anak-list { display: flex; flex-direction: column; gap: 0.625rem; }
+        .anak-row {
+            display: grid; grid-template-columns: 2fr 1.5fr 1fr auto;
+            gap: 0.5rem; align-items: end;
+            padding: 0.625rem 0.875rem; background: white;
+            border: 1px solid #e5e7eb; border-radius: 0.625rem;
+        }
+        .anak-row input { font-size: 0.8125rem; padding: 0.5rem 0.625rem; }
+        .anak-row label {
+            font-size: 0.625rem; color: #9ca3af;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            margin-bottom: 0.25rem; display: block;
+        }
+        .anak-row .anak-remove {
+            background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
+            border-radius: 0.375rem; padding: 0.375rem 0.5rem;
+            font-size: 0.75rem; cursor: pointer; font-weight: 600;
+        }
+        .anak-row .anak-remove:hover { background: #fee2e2; }
+        .anak-add-btn {
+            margin-top: 0.625rem; padding: 0.5rem 0.875rem;
+            border: 1px dashed #9ca3af; background: white;
+            border-radius: 0.5rem; cursor: pointer;
+            font-size: 0.8125rem; color: #6b7280; font-weight: 500;
+            width: 100%;
+        }
+        .anak-add-btn:hover { border-color: black; color: black; }
+        @media (max-width: 640px) {
+            .anak-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .anak-row .anak-remove { grid-column: 2; justify-self: end; }
+        }
+
+        /* === Accordion === */
+        .accordion-section {
+            background: white; border: 1px solid #e5e7eb;
+            border-radius: 1rem; margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .accordion-section[open] { border-color: #111827; }
+        .accordion-section summary {
+            cursor: pointer; padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.875rem;
+            font-size: 0.9375rem; user-select: none;
+            list-style: none;
+        }
+        .accordion-section summary::-webkit-details-marker { display: none; }
+        .accordion-section summary::after {
+            content: "▾"; margin-left: auto;
+            color: #9ca3af; transition: transform 0.2s;
+            font-size: 0.75rem;
+        }
+        .accordion-section[open] summary::after { transform: rotate(180deg); }
+        .accordion-section summary:hover { background: #f9fafb; }
+        .layer-num {
+            font-size: 0.6875rem; font-weight: 800;
+            background: #111827; color: white;
+            padding: 0.25rem 0.5rem; border-radius: 0.375rem;
+            min-width: 2rem; text-align: center;
+        }
+        .layer-title {
+            font-weight: 700; color: #111827; flex: 1;
+        }
+        .layer-status {
+            font-size: 0.6875rem; font-weight: 600;
+            padding: 0.25rem 0.625rem; border-radius: 999px;
+        }
+        .layer-status.pending { background: #f3f4f6; color: #6b7280; }
+        .layer-status.complete { background: #d1fae5; color: #065f46; }
+        .layer-status.placeholder { background: #fef3c7; color: #92400e; }
+        .accordion-content {
+            padding: 0 1.25rem 1.25rem 1.25rem;
+        }
+
+        /* === Save status indicator === */
+        .save-indicator {
+            position: fixed; bottom: 1rem; right: 1rem;
+            background: white; border: 1px solid #e5e7eb;
+            border-radius: 999px; padding: 0.375rem 0.875rem;
+            font-size: 0.6875rem; color: #6b7280;
+            display: flex; align-items: center; gap: 0.375rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            z-index: 50;
+        }
+        .save-indicator.saving { color: #d97706; }
+        .save-indicator.saved { color: #059669; }
+
+        /* === Submit === */
+        .submit-bar {
+            margin-top: 1.5rem; padding: 1.25rem;
+            background: black; border-radius: 1rem;
+        }
+        .submit-bar button {
+            width: 100%; padding: 0.875rem 1.25rem;
+            background: linear-gradient(to right, #059669, #10b981);
+            color: white; font-weight: 700; font-size: 0.9375rem;
+            border-radius: 0.625rem; cursor: pointer; border: 0;
+            transition: all 0.15s;
+        }
+        .submit-bar button:hover { background: linear-gradient(to right, #047857, #059669); }
+        .submit-bar .submit-hint {
+            font-size: 0.75rem; color: #9ca3af; text-align: center;
+            margin-top: 0.625rem;
+        }
+
+        /* === Klien lookup === */
+        .lookup-row {
+            display: flex; gap: 0.5rem; align-items: end;
+        }
+        .lookup-row > div:first-child { flex: 1; }
+        .lookup-row button {
+            padding: 0.625rem 1rem; background: black; color: white;
+            border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600;
+            cursor: pointer; border: 0; white-space: nowrap;
+        }
+        .lookup-result {
+            margin-top: 0.875rem; padding: 0.875rem 1.125rem;
+            background: white; border: 1px solid #e5e7eb;
+            border-radius: 0.625rem; font-size: 0.8125rem;
+            display: none;
+        }
+        .lookup-result.show { display: block; }
+        .lookup-result.found { border-color: #10b981; background: #f0fdf4; }
+        .lookup-result.notfound { border-color: #f59e0b; background: #fef3c7; }
+        .lookup-result h4 {
+            font-size: 0.8125rem; font-weight: 700; margin-bottom: 0.375rem;
+        }
+
+        /* === Conditional show/hide === */
+        .conditional { display: none; }
+        .conditional.show { display: block; }
+
+        .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-white text-black antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Header -->
+    <section class="pt-28 pb-4 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="internal-notice">
+                <span>⚠️</span>
+                <div>
+                    <strong>INTERNAL ADVISOR TOOL.</strong> Tool ini untuk Philip fill post-interview dengan klien.
+                    Klien <strong>tidak</strong> akses page ini. URL stealth (bookmark-only). PDF deliverable di-generate setelah submit, lalu Philip walkthrough klien di Zoom session.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pb-6 px-6">
+        <div class="max-w-3xl mx-auto">
+            <span class="text-xs text-amber-600 font-medium uppercase tracking-wider block">Pension Plan — Advisor Form</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Pension Plan Builder</h1>
+            <p class="text-gray-500 text-sm mt-3">Paid Rp 2jt deliverable. 11 layer input → calc engine → PDF generator → walkthrough Zoom + email delivery.</p>
+            <p class="text-xs text-gray-400 mt-3">📋 11 sections (accordion) · 💾 Auto-save localStorage · 🚀 Stage 2 build in progress (F1 active, F2-F11 placeholder)</p>
+        </div>
+    </section>
+
+    <!-- Klien lookup (Risk Profile inheritance) -->
+    <section class="px-6 mb-2 fade-up">
+        <div class="max-w-3xl mx-auto">
+            <div class="section-card">
+                <h2>🔗 Klien Risk Profile Lookup</h2>
+                <p class="text-xs text-gray-500 mb-3">Optional. Lookup Risk Profile dari Financial Checkup submission (kalau klien sudah isi). Inherit ke Pension Plan.</p>
+                <div class="lookup-row">
+                    <div>
+                        <input type="email" id="klien_lookup_email" placeholder="klien@email.com">
+                    </div>
+                    <button type="button" onclick="lookupKlien()">Lookup</button>
+                </div>
+                <div id="klien_lookup_result" class="lookup-result"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form: 11 accordion sections -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-3xl mx-auto">
+
+            <form id="pension-form" onsubmit="event.preventDefault(); submitPension();">
+
+                <!-- ============================================================ -->
+                <!-- F1: Identity & Household                                   -->
+                <!-- ============================================================ -->
+                <details class="accordion-section" open>
+                    <summary>
+                        <span class="layer-num">F1</span>
+                        <span class="layer-title">Identity & Household</span>
+                        <span class="layer-status pending" id="status-f1">Pending</span>
+                    </summary>
+                    <div class="accordion-content">
+
+                        <!-- Pemegang -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👤 Pemegang</h3>
+
+                            <div class="field-row">
+                                <label>Nama lengkap pemegang <span class="req">*</span></label>
+                                <input type="text" id="f1_nama_pemegang" placeholder="contoh: Hendra Pranata">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Gender <span class="req">*</span></label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f1_gender_pemegang" value="M"> Laki-laki</label>
+                                    <label><input type="radio" name="f1_gender_pemegang" value="F"> Perempuan</label>
+                                </div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Tanggal lahir <span class="req">*</span></label>
+                                <input type="date" id="f1_dob_pemegang">
+                                <div class="hint">Drives age math, longevity assumption, BPJS-TK plafon.</div>
+                            </div>
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">📍 Lokasi & Pensiun Anchor</h3>
+
+                            <div class="field-row">
+                                <label>Domisili sekarang <span class="req">*</span></label>
+                                <select id="f1_domisili_kota">
+                                    <option value="">— Pilih kota —</option>
+                                    <option value="jakarta">Jakarta (DKI)</option>
+                                    <option value="tangsel">Tangerang Selatan / BSD</option>
+                                    <option value="bekasi">Bekasi</option>
+                                    <option value="bandung">Bandung</option>
+                                    <option value="surabaya">Surabaya</option>
+                                    <option value="semarang">Semarang</option>
+                                    <option value="yogyakarta">Yogyakarta</option>
+                                    <option value="denpasar">Denpasar (Bali)</option>
+                                    <option value="medan">Medan</option>
+                                    <option value="makassar">Makassar</option>
+                                    <option value="batam">Batam</option>
+                                    <option value="other">Lainnya...</option>
+                                </select>
+                            </div>
+
+                            <div class="field-row conditional" id="f1_domisili_other_wrap">
+                                <label>Sebutkan kota</label>
+                                <input type="text" id="f1_domisili_other" placeholder="contoh: Solo">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Anchor usia pensiun pemegang <span class="req">*</span></label>
+                                <input type="number" id="f1_anchor_pensiun_usia" min="50" max="75" placeholder="contoh: 55">
+                                <div class="hint">Default pilihan klien. Akan di-cross-check vs current age + 5.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Anchor lokasi pensiun</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f1_anchor_lokasi_same" value="true" checked> Sama dengan domisili</label>
+                                    <label><input type="radio" name="f1_anchor_lokasi_same" value="false"> Pindah ke kota lain</label>
+                                </div>
+                            </div>
+
+                            <div class="field-row conditional" id="f1_anchor_lokasi_kota_wrap">
+                                <label>Kota tujuan pensiun</label>
+                                <select id="f1_anchor_lokasi_kota">
+                                    <option value="">— Pilih kota tujuan —</option>
+                                    <option value="jakarta">Jakarta</option>
+                                    <option value="bandung">Bandung</option>
+                                    <option value="yogyakarta">Yogyakarta</option>
+                                    <option value="denpasar">Denpasar (Bali)</option>
+                                    <option value="surabaya">Surabaya</option>
+                                    <option value="semarang">Semarang</option>
+                                    <option value="other">Lainnya (specify in notes)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Marital -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💑 Marital Status</h3>
+
+                            <div class="field-row">
+                                <label>Status <span class="req">*</span></label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f1_marital" value="single"> Single</label>
+                                    <label><input type="radio" name="f1_marital" value="married"> Menikah</label>
+                                    <label><input type="radio" name="f1_marital" value="widowed"> Janda/Duda</label>
+                                    <label><input type="radio" name="f1_marital" value="divorced"> Bercerai</label>
+                                </div>
+                            </div>
+
+                            <!-- Married-specific fields -->
+                            <div class="conditional" id="f1_married_wrap">
+                                <div class="field-row">
+                                    <label>Nama pasangan <span class="req">*</span></label>
+                                    <input type="text" id="f1_pasangan_nama" placeholder="contoh: Lisa Pranata">
+                                </div>
+                                <div class="field-row">
+                                    <label>Gender pasangan <span class="req">*</span></label>
+                                    <div class="radio-inline">
+                                        <label><input type="radio" name="f1_gender_pasangan" value="M"> Laki-laki</label>
+                                        <label><input type="radio" name="f1_gender_pasangan" value="F"> Perempuan</label>
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <label>Tanggal lahir pasangan <span class="req">*</span></label>
+                                    <input type="date" id="f1_dob_pasangan">
+                                </div>
+                                <div class="field-row">
+                                    <label>Anchor usia pensiun pasangan</label>
+                                    <input type="number" id="f1_anchor_pensiun_usia_pasangan" min="50" max="75" placeholder="contoh: 60">
+                                    <div class="hint">Boleh beda dengan pemegang (staggered retire scenario).</div>
+                                </div>
+                                <div class="field-row">
+                                    <label>Perjanjian kawin</label>
+                                    <select id="f1_perjanjian_kawin">
+                                        <option value="none">Tidak ada (default — harta bersama)</option>
+                                        <option value="pisah">Pisah harta (notarized pre-nuptial)</option>
+                                        <option value="pisah_modif">Pisah harta dengan modifikasi (post-MK 69/2015)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anak -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👶 Anak</h3>
+
+                            <div id="anak_list" class="anak-list">
+                                <!-- Dynamic anak rows added here -->
+                            </div>
+                            <button type="button" class="anak-add-btn" onclick="addAnak()">+ Tambah anak</button>
+                        </div>
+
+                        <!-- Dependents -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👥 Dependents Lain</h3>
+
+                            <div class="field-row">
+                                <label>Tanggungan selain anak (orangtua, sibling, dst)</label>
+                                <input type="text" id="f1_dependents_lain" placeholder="contoh: Ortu Bapak (umur 72), Adik bungsu">
+                                <div class="hint">Sandwich gen flag. Drives Section 7 + 12 caveat di PDF.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </details>
+
+                <!-- ============================================================ -->
+                <!-- F2-F11: Placeholder accordion sections (Stage 2 next session) -->
+                <!-- ============================================================ -->
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F2</span>
+                        <span class="layer-title">Employment Matrix (per earner)</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Akan diisi: PNS / BUMN / Swasta tetap / kontrak / BPU / freelancer / business owner / profesional independen per earner. Drives BPJS-TK access matrix + JHT/JP projection. Spec: <code>(C) Form Spec - Layers 2-3-7</code></p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F3</span>
+                        <span class="layer-title">DPPK Landscape (conditional)</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Conditional render kalau F2 employer punya DPPK aktif. Capture DB/DC scheme, formula, vesting status.</p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F4</span>
+                        <span class="layer-title">Regional CoL Adjustment</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Auto-populate dari F1 domisili + anchor lokasi pensiun. CoL ratio + regional inflasi + healthcare access tier. Spec: <code>(C) Form Spec - Layers 1-4-6-10 Simpler</code></p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F5</span>
+                        <span class="layer-title">Cashflow Decomposition (5 panel)</span>
+                        <span class="layer-status placeholder">Next session (complex)</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Bottom-up expense rebase: 5 panel (debt/anak/continues/resets-up/insurance). Per line: nominal + status @ pensiun. Spec: <code>(C) Form Spec - Layer 5 Cashflow Decomposition</code></p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F6</span>
+                        <span class="layer-title">Lifestyle Tier Anchor</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Per Decision #20: auto-derive dari F5 rebased expense + Philip override. Modest / Comfortable / Comfortable+ / Aspirational.</p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F7</span>
+                        <span class="layer-title">Healthcare Coverage Inventory</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Per anggota keluarga: BPJS status + asuransi swasta + CI + family medical history. Drives Section 7 healthcare buffer di PDF.</p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F8</span>
+                        <span class="layer-title">Asset Inventory (8 panel)</span>
+                        <span class="layer-status placeholder">Next session (HIGH complexity)</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">8 category: Property / Liquid invest / Bonds / Komoditas / Pensiun-specific / Insurance cash value / Bisnis / Currency mix. Spec: <code>(C) Form Spec - Layer 8 Asset Inventory</code></p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F9</span>
+                        <span class="layer-title">Couple-Specific (married only)</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Conditional render kalau F1 marital = married. Drives Module 4 Survivorship + staggered retire scenario.</p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F10</span>
+                        <span class="layer-title">Assumption Locks (revised)</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Inflasi (umum/healthcare/lifestyle/sewa) + longevity (M/F/joint) + SWR. Return assumption MANUAL post-interview per Decision #9.</p>
+                    </div>
+                </details>
+
+                <details class="accordion-section">
+                    <summary>
+                        <span class="layer-num">F11</span>
+                        <span class="layer-title">Special Flags + Stress Test 7 Scenarios</span>
+                        <span class="layer-status placeholder">Next session</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p class="text-xs text-gray-500">Edge case flags + Stress Test M8 7-scenario MANUAL Philip fill saat interview. Per Decision #21.</p>
+                    </div>
+                </details>
+
+                <!-- Submit -->
+                <div class="submit-bar">
+                    <button type="submit">💾 Save Draft + Generate Preview</button>
+                    <div class="submit-hint">Stage 2 BATCH 1 build in progress. Submit hanya save F1 data ke localStorage untuk now. Backend handler + PDF generator akan ship setelah F2-F11 done.</div>
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+    <!-- Save indicator -->
+    <div class="save-indicator" id="save-indicator">
+        <span>💾</span>
+        <span id="save-text">Auto-save ready</span>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/pension.js?v=1"></script>
+</body>
+</html>
