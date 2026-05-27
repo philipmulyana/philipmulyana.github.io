@@ -348,13 +348,64 @@ async function lookupKlien() {
             </div>
             ${rpSection}
             ${fsSection}
+            <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid #d1fae5;font-size:0.75rem;color:#065f46;">
+                💡 Field F1 yang bisa di-auto-fill sudah di-apply ke form di bawah.
+            </div>
         `;
+
+        // ====================================================================
+        // Auto-fill F1 fields dari lookup data
+        // ====================================================================
+        autoFillF1FromLookup(k, rp);
 
         saveState();
     } catch (e) {
         console.error('Lookup failed:', e);
         resultEl.className = 'lookup-result show notfound';
         resultEl.innerHTML = `<h4>✗ Lookup failed</h4><p style="font-size:0.75rem;">${e.message || 'Cek koneksi atau coba lagi.'}</p>`;
+    }
+}
+
+// ============================================================================
+// Auto-fill F1 fields dari Risk Profile lookup
+// ============================================================================
+function autoFillF1FromLookup(klien, riskProfile) {
+    // Fill nama klien (from Financial Checkup nama)
+    if (klien && klien.nama) {
+        const namaEl = document.getElementById('f1_nama_pemegang');
+        if (namaEl && !namaEl.value.trim()) {  // only fill kalau kosong
+            namaEl.value = klien.nama;
+            showAutoFillBadge('autofill_nama');
+        } else if (namaEl && namaEl.value.trim() !== klien.nama) {
+            // Show note kalau ada conflict (Philip already filled different name)
+            console.log(`[pension] Nama klien from lookup (${klien.nama}) ≠ existing F1 nama (${namaEl.value}). Not overriding.`);
+        }
+    }
+
+    // Show usia from Risk Profile as DOB reference hint
+    if (riskProfile && riskProfile.raw_json) {
+        try {
+            const raw = JSON.parse(riskProfile.raw_json);
+            const usia = raw?.raw_inputs?.usia;
+            if (usia) {
+                const hintEl = document.getElementById('usia_hint_rp');
+                if (hintEl) {
+                    hintEl.textContent = `Usia dari Risk Profile: ${usia} thn`;
+                    hintEl.style.display = 'inline';
+                }
+            }
+        } catch (e) { /* silent */ }
+    }
+}
+
+function showAutoFillBadge(badgeId) {
+    const el = document.getElementById(badgeId);
+    if (el) {
+        el.style.display = 'inline';
+        // Fade after 5 seconds
+        setTimeout(() => {
+            if (el) el.style.opacity = '0.5';
+        }, 5000);
     }
 }
 
