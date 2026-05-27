@@ -439,10 +439,166 @@
                     <summary>
                         <span class="layer-num">F2</span>
                         <span class="layer-title">Employment Matrix (per earner)</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f2">Pending</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Akan diisi: PNS / BUMN / Swasta tetap / kontrak / BPU / freelancer / business owner / profesional independen per earner. Drives BPJS-TK access matrix + JHT/JP projection. Spec: <code>(C) Form Spec - Layers 2-3-7</code></p>
+
+                        <!-- Klien Employment -->
+                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💼 Pekerjaan Klien</h3>
+
+                            <div class="field-row">
+                                <label>Tipe pekerjaan <span class="req">*</span></label>
+                                <select id="f2_emp_type_pemegang">
+                                    <option value="">— Pilih —</option>
+                                    <option value="pns">PNS / ASN</option>
+                                    <option value="bumn">BUMN Karyawan</option>
+                                    <option value="swasta_tetap">Swasta Tetap (PKWTT)</option>
+                                    <option value="swasta_kontrak">Swasta Kontrak (PKWT)</option>
+                                    <option value="bpu">BPU / Mandiri (BPJS-TK voluntary)</option>
+                                    <option value="freelancer">Freelancer</option>
+                                    <option value="business_owner">Business Owner (PT/CV)</option>
+                                    <option value="profesional">Profesional Independen (dokter/advokat/konsultan)</option>
+                                </select>
+                                <div class="hint">Drives BPJS-TK access matrix (JP / JHT / JKK / JKM / JKP eligibility).</div>
+                            </div>
+
+                            <!-- BPJS-TK access matrix auto-display -->
+                            <div id="bpjs_matrix_pemegang" style="display:none;margin:0.5rem 0 0.875rem;padding:0.625rem 0.875rem;background:#eff6ff;border:1px solid #93c5fd;border-radius:0.5rem;">
+                                <div style="font-size:0.6875rem;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">📋 BPJS-TK Access (auto)</div>
+                                <div id="bpjs_matrix_pemegang_content" style="font-size:0.75rem;color:#1e3a8a;line-height:1.5;"></div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Nama employer / perusahaan</label>
+                                <input type="text" id="f2_employer_pemegang" placeholder="contoh: PT Astra International">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Industri</label>
+                                <select id="f2_industri_pemegang">
+                                    <option value="">— Pilih —</option>
+                                    <option value="banking">Banking</option>
+                                    <option value="tech">Tech</option>
+                                    <option value="manufaktur">Manufaktur</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="fmcg">FMCG</option>
+                                    <option value="property">Property</option>
+                                    <option value="mining_energy">Mining / Energy</option>
+                                    <option value="telco">Telco</option>
+                                    <option value="lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Posisi / role</label>
+                                <input type="text" id="f2_posisi_pemegang" placeholder="contoh: VP Finance">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Gaji gross bulanan (Rp) <span class="req">*</span></label>
+                                <input type="number" id="f2_gaji_gross_pemegang" placeholder="contoh: 50000000">
+                                <div class="hint">Cross-check dengan F5 income. Drives BPJS-JP plafon (Rp 10.547.400/bln per Mar 2025) + JHT projection.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Komponen variable (bonus / komisi / RSU)</label>
+                                <input type="text" id="f2_gaji_variable_pemegang" placeholder="contoh: bonus tahunan ~3-4 bulan gaji">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Tahun mulai kerja (career start)</label>
+                                <input type="number" id="f2_tahun_kerja_pemegang" min="1970" max="2026" placeholder="contoh: 2008">
+                            </div>
+
+                            <div class="field-row">
+                                <label>Tahun mulai iuran BPJS-TK</label>
+                                <input type="number" id="f2_tahun_bpjstk_pemegang" min="2014" max="2026" placeholder="contoh: 2014">
+                                <div class="hint">BPJS-TK efektif sejak 2014. Drives JHT trajectory estimate.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>Estimated JHT balance saat ini (Rp)</label>
+                                <input type="number" id="f2_jht_balance_pemegang" placeholder="contoh: 200000000">
+                                <div class="hint">Klien pull dari aplikasi JMO — angka real kalau ada (gold data). Optional.</div>
+                            </div>
+
+                            <div class="field-row">
+                                <label>DPPK aktif di employer?</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="f2_dppk_pemegang" value="yes"> Ya, aktif</label>
+                                    <label><input type="radio" name="f2_dppk_pemegang" value="no"> Tidak ada</label>
+                                    <label><input type="radio" name="f2_dppk_pemegang" value="unknown"> Belum tahu</label>
+                                </div>
+                                <div class="hint">Kalau Ya → F3 DPPK section akan terbuka. Umumnya: BUMN besar (Pertamina/PLN/Telkom/BCA/Mandiri/BNI/BRI) + multinational corporate (Astra/Unilever/Nestle).</div>
+                            </div>
+                        </div>
+
+                        <!-- Pasangan Employment (conditional kalau married) -->
+                        <div class="conditional" id="f2_pasangan_wrap">
+                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;border-left:3px solid #e5e7eb;">
+                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💼 Pekerjaan Pasangan Klien</h3>
+
+                                <div class="field-row">
+                                    <label>Tipe pekerjaan pasangan</label>
+                                    <select id="f2_emp_type_pasangan">
+                                        <option value="">— Pilih (skip kalau pasangan tidak kerja) —</option>
+                                        <option value="pns">PNS / ASN</option>
+                                        <option value="bumn">BUMN Karyawan</option>
+                                        <option value="swasta_tetap">Swasta Tetap (PKWTT)</option>
+                                        <option value="swasta_kontrak">Swasta Kontrak (PKWT)</option>
+                                        <option value="bpu">BPU / Mandiri</option>
+                                        <option value="freelancer">Freelancer</option>
+                                        <option value="business_owner">Business Owner (PT/CV)</option>
+                                        <option value="profesional">Profesional Independen</option>
+                                        <option value="not_working">Tidak bekerja (ibu rumah tangga / lainnya)</option>
+                                    </select>
+                                </div>
+
+                                <div id="bpjs_matrix_pasangan" style="display:none;margin:0.5rem 0 0.875rem;padding:0.625rem 0.875rem;background:#eff6ff;border:1px solid #93c5fd;border-radius:0.5rem;">
+                                    <div style="font-size:0.6875rem;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">📋 BPJS-TK Access (auto)</div>
+                                    <div id="bpjs_matrix_pasangan_content" style="font-size:0.75rem;color:#1e3a8a;line-height:1.5;"></div>
+                                </div>
+
+                                <div class="conditional" id="f2_pasangan_working_wrap">
+                                    <div class="field-row">
+                                        <label>Nama employer / perusahaan pasangan</label>
+                                        <input type="text" id="f2_employer_pasangan" placeholder="contoh: bisnis fashion online">
+                                    </div>
+
+                                    <div class="field-row">
+                                        <label>Gaji gross bulanan pasangan (Rp)</label>
+                                        <input type="number" id="f2_gaji_gross_pasangan" placeholder="contoh: 30000000">
+                                    </div>
+
+                                    <div class="field-row">
+                                        <label>Tahun mulai kerja pasangan</label>
+                                        <input type="number" id="f2_tahun_kerja_pasangan" min="1970" max="2026" placeholder="contoh: 2012">
+                                    </div>
+
+                                    <div class="field-row">
+                                        <label>Tahun mulai iuran BPJS-TK pasangan</label>
+                                        <input type="number" id="f2_tahun_bpjstk_pasangan" min="2014" max="2026" placeholder="contoh: 2015">
+                                    </div>
+
+                                    <div class="field-row">
+                                        <label>Estimated JHT balance pasangan (Rp)</label>
+                                        <input type="number" id="f2_jht_balance_pasangan" placeholder="contoh: 80000000">
+                                    </div>
+
+                                    <div class="field-row">
+                                        <label>DPPK aktif di employer pasangan?</label>
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="f2_dppk_pasangan" value="yes"> Ya</label>
+                                            <label><input type="radio" name="f2_dppk_pasangan" value="no"> Tidak</label>
+                                            <label><input type="radio" name="f2_dppk_pasangan" value="unknown"> Belum tahu</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </details>
 

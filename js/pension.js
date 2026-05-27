@@ -27,9 +27,144 @@ const state = {
         anak: [],  // array of {nama, dob, expected_mandiri_age}
         dependents_lain: ''
     },
+    f2: {
+        // Pemegang
+        emp_type_pemegang: '',
+        employer_pemegang: '',
+        industri_pemegang: '',
+        posisi_pemegang: '',
+        gaji_gross_pemegang: '',
+        gaji_variable_pemegang: '',
+        tahun_kerja_pemegang: '',
+        tahun_bpjstk_pemegang: '',
+        jht_balance_pemegang: '',
+        dppk_pemegang: '',
+        // Pasangan
+        emp_type_pasangan: '',
+        employer_pasangan: '',
+        gaji_gross_pasangan: '',
+        tahun_kerja_pasangan: '',
+        tahun_bpjstk_pasangan: '',
+        jht_balance_pasangan: '',
+        dppk_pasangan: ''
+    },
     risk_profile_inherited: null,  // from Financial Checkup lookup
     lookup_email: ''
 };
+
+// ============================================================================
+// BPJS-TK access matrix per employment type
+// ============================================================================
+const BPJS_MATRIX = {
+    pns: {
+        jht: '❌ (pakai Taspen)',
+        jp: '❌ (pakai Taspen)',
+        jkk: '❌ (pakai Taspen)',
+        jkm: '❌ (pakai Taspen)',
+        jkp: '❌',
+        dppk: '❌ (Taspen sudah cover)',
+        note: 'PNS pakai Taspen, bukan BPJS-TK. JP estimate dari Taspen formula = ~75% gaji pokok terakhir × masa kerja/30.'
+    },
+    bumn: {
+        jht: '✅ Mandatory',
+        jp: '✅ Eligible (kalau iuran ≥15 thn)',
+        jkk: '✅ Mandatory',
+        jkm: '✅ Mandatory',
+        jkp: '✅ Mandatory',
+        dppk: 'Umumnya ✅ (Pertamina/PLN/Telkom/BCA/Mandiri/BNI/BRI/Astra)',
+        note: 'BUMN besar punya DPPK terpisah selain BPJS-TK. Tanyakan klien untuk SK Dapen / annual statement.'
+    },
+    swasta_tetap: {
+        jht: '✅ Mandatory',
+        jp: '✅ Eligible (kalau iuran ≥15 thn)',
+        jkk: '✅ Mandatory',
+        jkm: '✅ Mandatory',
+        jkp: '✅ Mandatory',
+        dppk: 'Tergantung perusahaan (multinational besar umumnya ya)',
+        note: 'Swasta PKWTT (Perjanjian Kerja Waktu Tidak Tertentu / kontrak tetap) full BPJS-TK access.'
+    },
+    swasta_kontrak: {
+        jht: '✅ Mandatory',
+        jp: '✅ Eligible (kalau ≥6 bulan kontrak)',
+        jkk: '✅ Mandatory',
+        jkm: '✅ Mandatory',
+        jkp: '✅ Mandatory',
+        dppk: 'Jarang',
+        note: 'PKWT (Perjanjian Kerja Waktu Tertentu / kontrak). Eligibility JP ada syarat minimum durasi kontrak.'
+    },
+    bpu: {
+        jht: '✅ Voluntary',
+        jp: '❌ Tidak eligible',
+        jkk: '✅ Voluntary',
+        jkm: '✅ Voluntary',
+        jkp: '❌',
+        dppk: '❌',
+        note: 'BPU (Bukan Penerima Upah / Mandiri) tidak eligible JP. JHT voluntary — iuran lower bound = JHT lebih kecil.'
+    },
+    freelancer: {
+        jht: '✅ Voluntary (kalau enrolled BPU)',
+        jp: '❌ Tidak eligible',
+        jkk: '✅ Voluntary',
+        jkm: '✅ Voluntary',
+        jkp: '❌',
+        dppk: '❌',
+        note: 'Same as BPU treatment. Sering klien lupa enroll BPJS-TK Mandiri = no JHT track.'
+    },
+    business_owner: {
+        jht: '✅ Voluntary',
+        jp: '❌ Tidak eligible',
+        jkk: '✅ Voluntary',
+        jkm: '✅ Voluntary',
+        jkp: '❌',
+        dppk: '❌ (kecuali PT enroll Direksi sebagai karyawan)',
+        note: '⚠️ Common gap: business owner sering ga enroll dirinya ke BPJS-TK. Tanyakan: "Apakah PT-nya enroll Anda sebagai Direksi dengan BPJS-TK?"'
+    },
+    profesional: {
+        jht: '✅ Voluntary',
+        jp: '❌ Tidak eligible',
+        jkk: '✅ Voluntary',
+        jkm: '✅ Voluntary',
+        jkp: '❌',
+        dppk: '❌',
+        note: 'Profesional independen (dokter/advokat/konsultan/notaris) = BPU treatment. Income variable typically.'
+    },
+    not_working: {
+        jht: '❌',
+        jp: '❌',
+        jkk: '❌',
+        jkm: '❌',
+        jkp: '❌',
+        dppk: '❌',
+        note: 'Tidak ada coverage BPJS-TK. Healthcare BPJS Kesehatan tetap perlu (terpisah).'
+    }
+};
+
+function renderBPJSMatrix(earnerSuffix) {
+    const select = document.getElementById(`f2_emp_type_${earnerSuffix}`);
+    const wrap = document.getElementById(`bpjs_matrix_${earnerSuffix}`);
+    const content = document.getElementById(`bpjs_matrix_${earnerSuffix}_content`);
+    if (!select || !wrap || !content) return;
+
+    const val = select.value;
+    if (!val || !BPJS_MATRIX[val]) {
+        wrap.style.display = 'none';
+        return;
+    }
+
+    const m = BPJS_MATRIX[val];
+    wrap.style.display = 'block';
+    content.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 0.875rem;margin-bottom:0.375rem;">
+            <div><strong>JHT:</strong> ${m.jht}</div>
+            <div><strong>JP:</strong> ${m.jp}</div>
+            <div><strong>JKK:</strong> ${m.jkk}</div>
+            <div><strong>JKM:</strong> ${m.jkm}</div>
+            <div><strong>JKP:</strong> ${m.jkp}</div>
+            <div><strong>DPPK:</strong> ${m.dppk}</div>
+        </div>
+        <div style="font-size:0.6875rem;color:#1e3a8a;padding-top:0.375rem;border-top:1px solid #bfdbfe;">${m.note}</div>
+    `;
+}
 
 // ============================================================================
 // State persistence
@@ -54,6 +189,25 @@ function saveState() {
         state.f1.dependents_lain = val('f1_dependents_lain');
         state.f1.anak = collectAnakRows();
         state.lookup_email = val('klien_lookup_email');
+
+        // F2 Employment Matrix
+        state.f2.emp_type_pemegang = val('f2_emp_type_pemegang');
+        state.f2.employer_pemegang = val('f2_employer_pemegang');
+        state.f2.industri_pemegang = val('f2_industri_pemegang');
+        state.f2.posisi_pemegang = val('f2_posisi_pemegang');
+        state.f2.gaji_gross_pemegang = val('f2_gaji_gross_pemegang');
+        state.f2.gaji_variable_pemegang = val('f2_gaji_variable_pemegang');
+        state.f2.tahun_kerja_pemegang = val('f2_tahun_kerja_pemegang');
+        state.f2.tahun_bpjstk_pemegang = val('f2_tahun_bpjstk_pemegang');
+        state.f2.jht_balance_pemegang = val('f2_jht_balance_pemegang');
+        state.f2.dppk_pemegang = radioVal('f2_dppk_pemegang');
+        state.f2.emp_type_pasangan = val('f2_emp_type_pasangan');
+        state.f2.employer_pasangan = val('f2_employer_pasangan');
+        state.f2.gaji_gross_pasangan = val('f2_gaji_gross_pasangan');
+        state.f2.tahun_kerja_pasangan = val('f2_tahun_kerja_pasangan');
+        state.f2.tahun_bpjstk_pasangan = val('f2_tahun_bpjstk_pasangan');
+        state.f2.jht_balance_pasangan = val('f2_jht_balance_pasangan');
+        state.f2.dppk_pasangan = radioVal('f2_dppk_pasangan');
 
         localStorage.setItem(STORAGE_KEY_PEN, JSON.stringify(state));
         showSaveStatus('saved', '✓ Saved');
@@ -96,6 +250,27 @@ function restoreState() {
 
         setVal('klien_lookup_email', state.lookup_email);
 
+        // F2 Employment Matrix
+        if (state.f2) {
+            setVal('f2_emp_type_pemegang', state.f2.emp_type_pemegang);
+            setVal('f2_employer_pemegang', state.f2.employer_pemegang);
+            setVal('f2_industri_pemegang', state.f2.industri_pemegang);
+            setVal('f2_posisi_pemegang', state.f2.posisi_pemegang);
+            setVal('f2_gaji_gross_pemegang', state.f2.gaji_gross_pemegang);
+            setVal('f2_gaji_variable_pemegang', state.f2.gaji_variable_pemegang);
+            setVal('f2_tahun_kerja_pemegang', state.f2.tahun_kerja_pemegang);
+            setVal('f2_tahun_bpjstk_pemegang', state.f2.tahun_bpjstk_pemegang);
+            setVal('f2_jht_balance_pemegang', state.f2.jht_balance_pemegang);
+            setRadio('f2_dppk_pemegang', state.f2.dppk_pemegang);
+            setVal('f2_emp_type_pasangan', state.f2.emp_type_pasangan);
+            setVal('f2_employer_pasangan', state.f2.employer_pasangan);
+            setVal('f2_gaji_gross_pasangan', state.f2.gaji_gross_pasangan);
+            setVal('f2_tahun_kerja_pasangan', state.f2.tahun_kerja_pasangan);
+            setVal('f2_tahun_bpjstk_pasangan', state.f2.tahun_bpjstk_pasangan);
+            setVal('f2_jht_balance_pasangan', state.f2.jht_balance_pasangan);
+            setRadio('f2_dppk_pasangan', state.f2.dppk_pasangan);
+        }
+
         // Re-evaluate conditional rendering
         refreshConditionals();
     } catch (e) {
@@ -131,17 +306,26 @@ function setRadio(name, v) {
 // Conditional render
 // ============================================================================
 function refreshConditionals() {
-    // Domisili "Other" wrap
+    // F1 conditionals
     toggleConditional('f1_domisili_other_wrap', val('f1_domisili_kota') === 'other');
-
-    // Anchor lokasi kota wrap (if not same)
     toggleConditional('f1_anchor_lokasi_kota_wrap', radioVal('f1_anchor_lokasi_same') === 'false');
-
-    // Married fields wrap
     toggleConditional('f1_married_wrap', radioVal('f1_marital') === 'married');
 
-    // Update F1 status pill
+    // F2 conditionals
+    const marital = radioVal('f1_marital');
+    toggleConditional('f2_pasangan_wrap', marital === 'married');
+
+    const pasanganEmpType = val('f2_emp_type_pasangan');
+    toggleConditional('f2_pasangan_working_wrap',
+        pasanganEmpType && pasanganEmpType !== 'not_working');
+
+    // Render BPJS matrix auto-display
+    renderBPJSMatrix('pemegang');
+    renderBPJSMatrix('pasangan');
+
+    // Status pills
     updateLayerStatus('f1', validateF1Soft());
+    updateLayerStatus('f2', validateF2Soft());
 }
 
 function toggleConditional(id, show) {
@@ -218,6 +402,15 @@ function validateF1Soft() {
         required.push(state.f1.domisili_other);
     }
 
+    const filled = required.filter(v => v && v.toString().trim().length > 0).length;
+    return filled === required.length;
+}
+
+function validateF2Soft() {
+    const required = [
+        state.f2.emp_type_pemegang,
+        state.f2.gaji_gross_pemegang
+    ];
     const filled = required.filter(v => v && v.toString().trim().length > 0).length;
     return filled === required.length;
 }
