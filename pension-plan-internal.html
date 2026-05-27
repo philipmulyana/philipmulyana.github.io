@@ -606,10 +606,132 @@
                     <summary>
                         <span class="layer-num">F3</span>
                         <span class="layer-title">DPPK Landscape (conditional)</span>
-                        <span class="layer-status placeholder">Next session</span>
+                        <span class="layer-status pending" id="status-f3">N/A — set di F2</span>
                     </summary>
                     <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Conditional render kalau F2 employer punya DPPK aktif. Capture DB/DC scheme, formula, vesting status.</p>
+
+                        <!-- Empty state — kalau ga ada DPPK -->
+                        <div id="f3_empty_state" style="padding:1rem 1.25rem;background:#f9fafb;border-radius:0.75rem;border:1px dashed #d1d5db;text-align:center;color:#6b7280;font-size:0.8125rem;">
+                            <div style="font-size:0.875rem;margin-bottom:0.25rem;">🚫 Section ini auto-hidden</div>
+                            <div>F3 muncul kalau F2 set DPPK aktif (klien atau pasangan = "Ya"). Set DPPK di F2 dulu untuk capture detail.</div>
+                        </div>
+
+                        <!-- DPPK Pemegang -->
+                        <div class="conditional" id="f3_pemegang_wrap">
+                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
+                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.25rem;color:#111827;">🏢 DPPK Klien</h3>
+                                <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">DPPK = Dana Pensiun Pemberi Kerja (sponsored by employer, terpisah dari BPJS-TK). Capture detail untuk projection income pasif post-retire.</p>
+
+                                <div class="field-row">
+                                    <label>Nama DPPK / Dapen sponsor</label>
+                                    <input type="text" id="f3_dppk_nama_pemegang" placeholder="contoh: Dana Pensiun Pertamina">
+                                    <div class="hint">Biasanya di SK Dapen / annual statement employer.</div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Jenis skema DPPK <span class="req">*</span></label>
+                                    <div class="radio-inline">
+                                        <label><input type="radio" name="f3_scheme_pemegang" value="db"> Defined Benefit (DB)</label>
+                                        <label><input type="radio" name="f3_scheme_pemegang" value="dc"> Defined Contribution (DC)</label>
+                                        <label><input type="radio" name="f3_scheme_pemegang" value="hybrid"> Hybrid</label>
+                                        <label><input type="radio" name="f3_scheme_pemegang" value="unknown"> Belum tahu</label>
+                                    </div>
+                                    <div class="hint">DB = manfaat dihitung dari formula gaji × masa kerja. DC = saldo akumulasi iuran + return investasi.</div>
+                                </div>
+
+                                <!-- DB scheme fields -->
+                                <div class="conditional" id="f3_db_wrap_pemegang">
+                                    <div class="field-row">
+                                        <label>Formula DB (kalau klien tahu)</label>
+                                        <input type="text" id="f3_formula_db_pemegang" placeholder="contoh: 2.5% × gaji pokok terakhir × masa kerja">
+                                    </div>
+                                </div>
+
+                                <!-- DC scheme fields -->
+                                <div class="conditional" id="f3_dc_wrap_pemegang">
+                                    <div class="field-row">
+                                        <label>Saldo DPPK DC saat ini (Rp)</label>
+                                        <input type="number" id="f3_dc_saldo_pemegang" placeholder="contoh: 300000000">
+                                        <div class="hint">Per HRD statement terakhir.</div>
+                                    </div>
+                                    <div class="field-row">
+                                        <label>Kontribusi DPPK DC bulanan (Rp)</label>
+                                        <input type="number" id="f3_dc_kontribusi_pemegang" placeholder="contoh: 1500000">
+                                        <div class="hint">Per slip gaji bulanan (employer + employee combined kalau ada).</div>
+                                    </div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Vesting status</label>
+                                    <div class="radio-inline">
+                                        <label><input type="radio" name="f3_vesting_pemegang" value="vested"> Vested (entitled to full manfaat)</label>
+                                        <label><input type="radio" name="f3_vesting_pemegang" value="not_yet"> Belum vested</label>
+                                        <label><input type="radio" name="f3_vesting_pemegang" value="unknown"> Belum tahu</label>
+                                    </div>
+                                    <div class="hint">Vested = sudah berhak penuh manfaat DPPK. Umumnya vest setelah X tahun masa kerja.</div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Usia normal terima manfaat DPPK</label>
+                                    <input type="number" id="f3_manfaat_age_pemegang" min="50" max="70" value="55" placeholder="default 55">
+                                    <div class="hint">Default 55-60. Cek SK Dapen untuk usia spesifik.</div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Pilihan payout</label>
+                                    <div class="radio-inline">
+                                        <label><input type="checkbox" id="f3_payout_lump_pemegang" data-payout-pemegang> Lump sum</label>
+                                        <label><input type="checkbox" id="f3_payout_annuity_pemegang" data-payout-pemegang> Annuity bulanan</label>
+                                    </div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Estimasi manfaat DPPK saat pensiun (Rp/yr atau lump sum)</label>
+                                    <input type="text" id="f3_estimasi_manfaat_pemegang" placeholder="contoh: lump sum 1.5M, atau annuity 8jt/bln">
+                                    <div class="hint" style="background:#fef3c7;border-left-color:#f59e0b;color:#92400e;">⚠️ UNVERIFIED kalau klien ga punya SK Dapen / annual statement. Flag for follow-up.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DPPK Pasangan -->
+                        <div class="conditional" id="f3_pasangan_wrap">
+                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;border-left:3px solid #e5e7eb;">
+                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.25rem;color:#111827;">🏢 DPPK Pasangan Klien</h3>
+                                <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">DPPK pasangan dari employer pasangan.</p>
+
+                                <div class="field-row">
+                                    <label>Nama DPPK pasangan</label>
+                                    <input type="text" id="f3_dppk_nama_pasangan" placeholder="contoh: Dana Pensiun Telkom">
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Jenis skema DPPK pasangan</label>
+                                    <div class="radio-inline">
+                                        <label><input type="radio" name="f3_scheme_pasangan" value="db"> DB</label>
+                                        <label><input type="radio" name="f3_scheme_pasangan" value="dc"> DC</label>
+                                        <label><input type="radio" name="f3_scheme_pasangan" value="hybrid"> Hybrid</label>
+                                        <label><input type="radio" name="f3_scheme_pasangan" value="unknown"> Belum tahu</label>
+                                    </div>
+                                </div>
+
+                                <div class="conditional" id="f3_dc_wrap_pasangan">
+                                    <div class="field-row">
+                                        <label>Saldo DPPK DC pasangan (Rp)</label>
+                                        <input type="number" id="f3_dc_saldo_pasangan" placeholder="contoh: 150000000">
+                                    </div>
+                                    <div class="field-row">
+                                        <label>Kontribusi DPPK DC bulanan pasangan (Rp)</label>
+                                        <input type="number" id="f3_dc_kontribusi_pasangan" placeholder="contoh: 800000">
+                                    </div>
+                                </div>
+
+                                <div class="field-row">
+                                    <label>Estimasi manfaat DPPK pasangan saat pensiun</label>
+                                    <input type="text" id="f3_estimasi_manfaat_pasangan" placeholder="contoh: lump sum 500jt, atau annuity 3jt/bln">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </details>
 

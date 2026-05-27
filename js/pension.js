@@ -48,6 +48,25 @@ const state = {
         jht_balance_pasangan: '',
         dppk_pasangan: ''
     },
+    f3: {
+        // Pemegang DPPK
+        dppk_nama_pemegang: '',
+        scheme_pemegang: '',
+        formula_db_pemegang: '',
+        dc_saldo_pemegang: '',
+        dc_kontribusi_pemegang: '',
+        vesting_pemegang: '',
+        manfaat_age_pemegang: '55',
+        payout_lump_pemegang: false,
+        payout_annuity_pemegang: false,
+        estimasi_manfaat_pemegang: '',
+        // Pasangan DPPK
+        dppk_nama_pasangan: '',
+        scheme_pasangan: '',
+        dc_saldo_pasangan: '',
+        dc_kontribusi_pasangan: '',
+        estimasi_manfaat_pasangan: ''
+    },
     risk_profile_inherited: null,  // from Financial Checkup lookup
     lookup_email: ''
 };
@@ -209,6 +228,23 @@ function saveState() {
         state.f2.jht_balance_pasangan = val('f2_jht_balance_pasangan');
         state.f2.dppk_pasangan = radioVal('f2_dppk_pasangan');
 
+        // F3 DPPK Landscape
+        state.f3.dppk_nama_pemegang = val('f3_dppk_nama_pemegang');
+        state.f3.scheme_pemegang = radioVal('f3_scheme_pemegang');
+        state.f3.formula_db_pemegang = val('f3_formula_db_pemegang');
+        state.f3.dc_saldo_pemegang = val('f3_dc_saldo_pemegang');
+        state.f3.dc_kontribusi_pemegang = val('f3_dc_kontribusi_pemegang');
+        state.f3.vesting_pemegang = radioVal('f3_vesting_pemegang');
+        state.f3.manfaat_age_pemegang = val('f3_manfaat_age_pemegang') || '55';
+        state.f3.payout_lump_pemegang = document.getElementById('f3_payout_lump_pemegang')?.checked || false;
+        state.f3.payout_annuity_pemegang = document.getElementById('f3_payout_annuity_pemegang')?.checked || false;
+        state.f3.estimasi_manfaat_pemegang = val('f3_estimasi_manfaat_pemegang');
+        state.f3.dppk_nama_pasangan = val('f3_dppk_nama_pasangan');
+        state.f3.scheme_pasangan = radioVal('f3_scheme_pasangan');
+        state.f3.dc_saldo_pasangan = val('f3_dc_saldo_pasangan');
+        state.f3.dc_kontribusi_pasangan = val('f3_dc_kontribusi_pasangan');
+        state.f3.estimasi_manfaat_pasangan = val('f3_estimasi_manfaat_pasangan');
+
         localStorage.setItem(STORAGE_KEY_PEN, JSON.stringify(state));
         showSaveStatus('saved', '✓ Saved');
     } catch (e) {
@@ -271,6 +307,27 @@ function restoreState() {
             setRadio('f2_dppk_pasangan', state.f2.dppk_pasangan);
         }
 
+        // F3 DPPK
+        if (state.f3) {
+            setVal('f3_dppk_nama_pemegang', state.f3.dppk_nama_pemegang);
+            setRadio('f3_scheme_pemegang', state.f3.scheme_pemegang);
+            setVal('f3_formula_db_pemegang', state.f3.formula_db_pemegang);
+            setVal('f3_dc_saldo_pemegang', state.f3.dc_saldo_pemegang);
+            setVal('f3_dc_kontribusi_pemegang', state.f3.dc_kontribusi_pemegang);
+            setRadio('f3_vesting_pemegang', state.f3.vesting_pemegang);
+            setVal('f3_manfaat_age_pemegang', state.f3.manfaat_age_pemegang || '55');
+            const lump = document.getElementById('f3_payout_lump_pemegang');
+            const ann = document.getElementById('f3_payout_annuity_pemegang');
+            if (lump) lump.checked = !!state.f3.payout_lump_pemegang;
+            if (ann) ann.checked = !!state.f3.payout_annuity_pemegang;
+            setVal('f3_estimasi_manfaat_pemegang', state.f3.estimasi_manfaat_pemegang);
+            setVal('f3_dppk_nama_pasangan', state.f3.dppk_nama_pasangan);
+            setRadio('f3_scheme_pasangan', state.f3.scheme_pasangan);
+            setVal('f3_dc_saldo_pasangan', state.f3.dc_saldo_pasangan);
+            setVal('f3_dc_kontribusi_pasangan', state.f3.dc_kontribusi_pasangan);
+            setVal('f3_estimasi_manfaat_pasangan', state.f3.estimasi_manfaat_pasangan);
+        }
+
         // Re-evaluate conditional rendering
         refreshConditionals();
     } catch (e) {
@@ -322,6 +379,29 @@ function refreshConditionals() {
     // Render BPJS matrix auto-display
     renderBPJSMatrix('pemegang');
     renderBPJSMatrix('pasangan');
+
+    // F3 conditional rendering (only render kalau F2 set DPPK active)
+    const dppkPemegang = radioVal('f2_dppk_pemegang') === 'yes';
+    const dppkPasangan = radioVal('f2_dppk_pasangan') === 'yes' && marital === 'married';
+    const anyDPPK = dppkPemegang || dppkPasangan;
+
+    toggleConditional('f3_pemegang_wrap', dppkPemegang);
+    toggleConditional('f3_pasangan_wrap', dppkPasangan);
+    const emptyState = document.getElementById('f3_empty_state');
+    if (emptyState) emptyState.style.display = anyDPPK ? 'none' : 'block';
+
+    // F3 sub-conditionals (DB vs DC scheme fields)
+    toggleConditional('f3_db_wrap_pemegang', radioVal('f3_scheme_pemegang') === 'db');
+    toggleConditional('f3_dc_wrap_pemegang', radioVal('f3_scheme_pemegang') === 'dc' || radioVal('f3_scheme_pemegang') === 'hybrid');
+    toggleConditional('f3_dc_wrap_pasangan', radioVal('f3_scheme_pasangan') === 'dc' || radioVal('f3_scheme_pasangan') === 'hybrid');
+
+    // F3 status pill
+    if (!anyDPPK) {
+        const el = document.getElementById('status-f3');
+        if (el) { el.textContent = 'N/A — set di F2'; el.className = 'layer-status placeholder'; }
+    } else {
+        updateLayerStatus('f3', validateF3Soft());
+    }
 
     // Status pills
     updateLayerStatus('f1', validateF1Soft());
@@ -413,6 +493,13 @@ function validateF2Soft() {
     ];
     const filled = required.filter(v => v && v.toString().trim().length > 0).length;
     return filled === required.length;
+}
+
+function validateF3Soft() {
+    // Only relevant kalau ada DPPK active
+    const dppkPemegangActive = state.f2.dppk_pemegang === 'yes';
+    if (!dppkPemegangActive) return true;  // not required if not applicable
+    return !!state.f3.scheme_pemegang;
 }
 
 function updateLayerStatus(layerId, isComplete) {
