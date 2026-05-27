@@ -315,36 +315,59 @@ async function lookupKlien() {
                 </div>`;
             };
 
+            // Build "kenapa" explanation section dari backend
+            const exp = rp.explanation || {};
+            const renderReasons = (arr) => (arr || []).map(r => `<li style="margin-left:1rem;">${r}</li>`).join('');
+
             rpSection = `
                 <div style="margin-top:1rem;padding:1rem 1.125rem;border-radius:0.75rem;background:${bgColor};border:2px solid ${borderColor};">
-                    <div style="font-size:0.625rem;font-weight:700;color:${textColor};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem;">🧠 Profil Risiko Klien (dari Financial Checkup)</div>
+                    <div style="font-size:0.625rem;font-weight:700;color:${textColor};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem;">🧠 Profil Risiko (dari Financial Checkup)</div>
 
-                    <div style="font-size:1.375rem;font-weight:900;color:${textColor};letter-spacing:-0.02em;line-height:1.2;margin-bottom:0.5rem;">
+                    <div style="font-size:1.5rem;font-weight:900;color:${textColor};letter-spacing:-0.02em;line-height:1.2;margin-bottom:0.875rem;">
                         ${label}
                     </div>
 
-                    <div style="font-size:0.8125rem;color:${textColor};margin-bottom:0.875rem;font-weight:500;">
-                        ${categoryHint}
-                    </div>
-
-                    <div style="display:flex;flex-direction:column;gap:0.375rem;margin-bottom:0.875rem;">
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.875rem;padding:0.625rem 0.875rem;background:rgba(255,255,255,0.6);border-radius:0.5rem;">
                         <div>
-                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Capacity (kemampuan finansial)</div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Kapasitas (kemampuan finansial)</div>
                             ${bar(rp.capacity_score)}
                         </div>
                         <div>
-                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Skill + Time (waktu & skill investasi)</div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Skill & Waktu (untuk investasi)</div>
                             ${bar(rp.skill_time_score)}
                         </div>
                         <div>
-                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Tolerance (tahan banting psikologis)</div>
+                            <div style="font-size:0.6875rem;color:${textColor};font-weight:600;margin-bottom:0.125rem;">Toleransi (tahan banting psikologis)</div>
                             ${bar(rp.tolerance_score)}
                         </div>
                     </div>
 
-                    <div style="padding:0.625rem 0.875rem;background:rgba(255,255,255,0.7);border-radius:0.5rem;font-size:0.75rem;color:${textColor};border:1px solid ${borderColor};">
-                        <strong>💡 Sale direction:</strong> ${rp.sale_direction}
+                    ${exp.what_it_means ? `
+                    <div style="padding:0.75rem 0.875rem;background:rgba(255,255,255,0.8);border-radius:0.5rem;font-size:0.8125rem;color:${textColor};border:1px solid ${borderColor};margin-bottom:0.75rem;line-height:1.55;">
+                        ${exp.what_it_means.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')}
                     </div>
+                    ` : ''}
+
+                    <details style="font-size:0.75rem;color:${textColor};">
+                        <summary style="cursor:pointer;font-weight:700;padding:0.375rem 0;user-select:none;">📋 Kenapa profile ini? (berdasarkan jawaban kamu di Financial Checkup)</summary>
+
+                        <div style="margin-top:0.5rem;padding:0.625rem 0.875rem;background:rgba(255,255,255,0.6);border-radius:0.5rem;">
+                            <div style="font-weight:700;margin-bottom:0.25rem;">📊 Skor Kapasitas (${rp.capacity_score}/100) dihitung dari:</div>
+                            <ul style="margin:0;padding:0;list-style:disc;list-style-position:inside;">
+                                ${renderReasons(exp.capacity_reasons)}
+                            </ul>
+
+                            <div style="font-weight:700;margin:0.625rem 0 0.25rem;">⚙️ Skor Skill & Waktu (${rp.skill_time_score}/100) dihitung dari:</div>
+                            <ul style="margin:0;padding:0;list-style:disc;list-style-position:inside;">
+                                ${renderReasons(exp.skill_time_reasons)}
+                            </ul>
+
+                            <div style="font-weight:700;margin:0.625rem 0 0.25rem;">💓 Skor Toleransi (${rp.tolerance_score}/100) dihitung dari:</div>
+                            <ul style="margin:0;padding:0;list-style:disc;list-style-position:inside;">
+                                ${renderReasons(exp.tolerance_reasons)}
+                            </ul>
+                        </div>
+                    </details>
                 </div>
             `;
             state.risk_profile_inherited = rp;
