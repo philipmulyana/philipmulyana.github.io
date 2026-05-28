@@ -32,7 +32,7 @@ const ITEMS = {
     tabungan:     ['i8'],
     likuid:       ['i9', 'i10'],
     investasi:    ['i11', 'i11b', 'i11c', 'i12', 'i13', 'i13b'],
-    pribadi:      ['i15', 'i16'],
+    pribadi:      ['i15'],
     utang:        ['i17']
 };
 const COLS = ['saya', 'pasangan', 'bersama'];
@@ -76,7 +76,6 @@ const PREQUAL_ITEM_MAP = {
     aset_emas:      ['i13'],
     aset_properti:  ['i13b'],
     aset_rumah_kend:['i15'],
-    aset_perhiasan: ['i16'],
 };
 
 function collectPrequal() {
