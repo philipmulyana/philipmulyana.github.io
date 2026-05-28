@@ -894,7 +894,7 @@ function buildF7AnggotaCard(a) {
 
                 <div style="grid-column:1 / -1;">
                     <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Asuransi kesehatan swasta — provider + plan</label>
-                    <input type="text" id="f7_${k}_swasta_provider" placeholder="contoh: Allianz SmartMed Premier" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                    <input type="text" id="f7_${k}_swasta_provider" placeholder="contoh: PRUWell Medical / PRUSolusi Sehat" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
                 </div>
                 <div>
                     <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Limit tahunan (Rp)</label>
@@ -911,19 +911,8 @@ function buildF7AnggotaCard(a) {
 
                 <div style="grid-column:1 / -1;">
                     <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Critical Illness (CI) standalone — provider + UP (Rp)</label>
-                    <input type="text" id="f7_${k}_ci" placeholder="contoh: Pru CI 1M, UP 1.5jt-an/yr premi" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
+                    <input type="text" id="f7_${k}_ci" placeholder="contoh: PRUCritical Benefit 88, UP 1M" style="width:100%;padding:0.375rem 0.5rem;border:1px solid #e5e7eb;border-radius:0.375rem;font-size:0.75rem;">
                 </div>
-
-                ${k === 'pemegang' || k === 'pasangan' ? `
-                <div style="grid-column:1 / -1;">
-                    <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Disability income rider</label>
-                    <div class="radio-inline">
-                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="yes"> Ada</label>
-                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="no"> Tidak ada</label>
-                        <label style="font-size:0.75rem;padding:0.25rem 0.5rem;"><input type="radio" name="f7_${k}_disability" value="unknown"> Belum tahu</label>
-                    </div>
-                </div>
-                ` : ''}
 
                 <div style="grid-column:1 / -1;">
                     <label style="font-size:0.6875rem;color:#374151;font-weight:600;display:block;margin-bottom:0.25rem;">Kondisi medical pre-existing (kalau ada)</label>
@@ -964,7 +953,6 @@ function collectF7Anggota() {
             kondisi: val(`f7_${k}_kondisi`),
         };
         if (k === 'pemegang' || k === 'pasangan') {
-            data.disability = radioVal(`f7_${k}_disability`);
             data.family_history = [];
             card.querySelectorAll(`[data-f7-hist="${k}"]:checked`).forEach(cb => {
                 const id = cb.id;
@@ -987,7 +975,6 @@ function restoreF7AnggotaState(k, data) {
     setVal(`f7_${k}_swasta_age`, data.swasta_age);
     setVal(`f7_${k}_ci`, data.ci);
     setVal(`f7_${k}_kondisi`, data.kondisi);
-    if (data.disability) setRadio(`f7_${k}_disability`, data.disability);
     if (data.family_history && Array.isArray(data.family_history)) {
         data.family_history.forEach(cond => {
             const el = document.getElementById(`f7_${k}_hist_${cond}`);
