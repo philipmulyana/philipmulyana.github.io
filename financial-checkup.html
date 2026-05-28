@@ -349,6 +349,15 @@
             display: block; font-size: 0.8125rem; font-weight: 600;
             color: #111827; margin-bottom: 0.375rem;
         }
+        /* Override .lead-form label block-display for nested radio/checkbox cards inside lead-form */
+        .lead-form .rp-radio-list label,
+        .lead-form .rp-checkbox-grid label {
+            display: flex; align-items: center; gap: 0.625rem;
+            padding: 0.625rem 0.875rem; border: 1px solid #e5e7eb;
+            border-radius: 0.625rem; font-size: 0.8125rem;
+            color: #111827; cursor: pointer; line-height: 1.35;
+            font-weight: normal; margin-bottom: 0;
+        }
         .lead-form input {
             width: 100%; padding: 0.625rem 0.875rem;
             border: 1px solid #e5e7eb; border-radius: 0.625rem;
@@ -881,8 +890,8 @@
                             <div class="lead-field">
                                 <label>Goal finansial kamu selanjutnya apa?</label>
                                 <div class="rp-radio-list" style="margin-top: 0.375rem;">
-                                    <label><input type="radio" name="financial_goal" id="fg_pensiun" value="pensiun"> Dana Pensiun</label>
-                                    <label><input type="radio" name="financial_goal" id="fg_pendidikan" value="pendidikan"> Dana Pendidikan</label>
+                                    <label><input type="radio" name="financial_goal" id="fg_pensiun" value="pensiun" onchange="document.getElementById('fg_lainnya_text_wrap').style.display='none'"> Dana Pensiun</label>
+                                    <label><input type="radio" name="financial_goal" id="fg_pendidikan" value="pendidikan" onchange="document.getElementById('fg_lainnya_text_wrap').style.display='none'"> Dana Pendidikan</label>
                                     <label><input type="radio" name="financial_goal" id="fg_lainnya" value="lainnya" onchange="document.getElementById('fg_lainnya_text_wrap').style.display='block'; document.getElementById('fg_lainnya_text').focus();"> Lainnya</label>
                                 </div>
                                 <div id="fg_lainnya_text_wrap" style="display:none; margin-top: 0.5rem;">
@@ -929,6 +938,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=2"></script>
+    <script src="js/checkup.js?v=3"></script>
 </body>
 </html>
