@@ -37,6 +37,7 @@ const state = {
     currentStep: 1,
     visitedSteps: new Set([1]),
     formMode: 'single',  // 'single' = hide pasangan/bersama cols; 'couple' = show all 3
+    skippedItems: new Set(),  // item IDs (e.g. 'i11') that klien marked "Saya belum punya ini"
     lead: { nama: '', wa: '', email: '' },
     financialGoal: { type: '', other: '' },  // type: pensiun | pendidikan | lainnya; other: free-text saat lainnya
     riskProfile: {
@@ -50,6 +51,54 @@ const state = {
         loss_tolerance: '' // 5 / 15 / 30 / 50
     }
 };
+
+// ============================================================================
+// "Saya belum punya ini" skip toggle (asset items 11–16)
+// ============================================================================
+function toggleSkip(checkbox) {
+    const itemId = checkbox.dataset.item;
+    if (!itemId) return;
+    const row = checkbox.closest('.item-row') || document.querySelector(`[data-item-row="${itemId}"]`);
+    if (checkbox.checked) {
+        state.skippedItems.add(itemId);
+        if (row) row.classList.add('is-skipped');
+        // Zero out + disable all 3 cols for this item
+        ['saya', 'pasangan', 'bersama'].forEach(col => {
+            const input = document.getElementById(`${itemId}_${col}`);
+            if (input) {
+                input.value = '';
+                input.dataset.rawValue = '';
+                input.disabled = true;
+            }
+        });
+    } else {
+        state.skippedItems.delete(itemId);
+        if (row) row.classList.remove('is-skipped');
+        ['saya', 'pasangan', 'bersama'].forEach(col => {
+            const input = document.getElementById(`${itemId}_${col}`);
+            if (input) input.disabled = false;
+        });
+    }
+    if (typeof recalculate === 'function') recalculate();
+    if (typeof saveState === 'function') saveState();
+}
+
+function restoreSkippedItems(skippedArr) {
+    if (!Array.isArray(skippedArr)) return;
+    state.skippedItems = new Set(skippedArr);
+    skippedArr.forEach(itemId => {
+        const cb = document.querySelector(`input[type="checkbox"][data-item="${itemId}"]`);
+        if (cb) {
+            cb.checked = true;
+            const row = cb.closest('.item-row') || document.querySelector(`[data-item-row="${itemId}"]`);
+            if (row) row.classList.add('is-skipped');
+            ['saya', 'pasangan', 'bersama'].forEach(col => {
+                const input = document.getElementById(`${itemId}_${col}`);
+                if (input) input.disabled = true;
+            });
+        }
+    });
+}
 
 // ============================================================================
 // Form Mode (single vs couple) — toggle visibility of Pasangan/Bersama cols
@@ -165,6 +214,7 @@ function saveState() {
             currentStep: state.currentStep,
             visitedSteps: Array.from(state.visitedSteps),
             formMode: state.formMode,
+            skippedItems: Array.from(state.skippedItems),
             lead: state.lead,
             riskProfile: collectRiskProfile(),
             financialGoal: collectFinancialGoal()
@@ -222,6 +272,11 @@ function restoreState() {
         // Restore Form Mode (single/couple)
         if (data.formMode) {
             setFormMode(data.formMode);
+        }
+
+        // Restore Skipped Items (asset items 11-16 yang klien tandain "belum punya")
+        if (data.skippedItems) {
+            restoreSkippedItems(data.skippedItems);
         }
     } catch (e) { /* silent */ }
 }
