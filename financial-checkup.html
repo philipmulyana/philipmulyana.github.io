@@ -614,11 +614,11 @@
                             <div class="prequal-group">
                                 <div class="prequal-label">Aset investasi (selain tabungan biasa)</div>
                                 <div class="prequal-options">
-                                    <label><input type="checkbox" data-prequal="aset_saham" onchange="applyPrequal()"> Saham / Reksa Dana</label>
+                                    <label><input type="checkbox" data-prequal="aset_agresif" onchange="applyPrequal()"> Saham / Reksa Dana / Kripto / Unit-link</label>
+                                    <label><input type="checkbox" data-prequal="aset_bisnis" onchange="applyPrequal()"> Bisnis pribadi</label>
                                     <label><input type="checkbox" data-prequal="aset_obligasi" onchange="applyPrequal()"> Deposito jangka panjang / Obligasi (ORI/SBN/Sukuk)</label>
                                     <label><input type="checkbox" data-prequal="aset_emas" onchange="applyPrequal()"> Emas / Logam mulia</label>
                                     <label><input type="checkbox" data-prequal="aset_properti" onchange="applyPrequal()"> Properti investasi</label>
-                                    <label><input type="checkbox" data-prequal="aset_lain" onchange="applyPrequal()"> Kripto / Bisnis pribadi / Unit-link</label>
                                 </div>
                             </div>
 
@@ -821,16 +821,25 @@
                         <div class="subsection">
                             <h3>F · Aset Investasi</h3>
                             <div class="item-row" data-item-row="i11">
-                                <div class="item-label"><span class="item-idx">11.</span> Saham + reksa dana saham / campuran</div>
-                                <div class="item-hint">💡 <strong>Saham</strong>: lihat total nilai portofolio di app Stockbit/Ajaib/Mirae. <strong>Reksa dana</strong>: lihat "nilai investasi" di Bibit/Bareksa.</div>
+                                <div class="item-label"><span class="item-idx">11.</span> Saham + Reksa Dana + Kripto + Unit-link</div>
+                                <div class="item-hint">💡 Total nilai investasi current (bucket agresif). <strong>Saham/RD</strong>: lihat di Stockbit/Ajaib/Mirae atau Bibit/Bareksa. <strong>Kripto</strong>: nilai total di Pintu/Indodax/Tokocrypto. <strong>Unit-link</strong>: lihat "nilai investasi saat ini" di app perusahaan asuransi (<span class="warn">BUKAN total premi disetor</span>).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i11_pasangan" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i11_bersama" placeholder="0"></div>
                                 </div>
                             </div>
+                            <div class="item-row" data-item-row="i_bisnis">
+                                <div class="item-label"><span class="item-idx">12.</span> Bisnis pribadi</div>
+                                <div class="item-hint">💡 Perkiraan nilai jual bisnis kamu saat ini. Kalau bingung, isi 0 atau perkiraan kasar — kita bahas saat konsultasi.</div>
+                                <div class="three-col-input">
+                                    <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_saya" placeholder="0"></div>
+                                    <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_pasangan" placeholder="0"></div>
+                                    <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_bersama" placeholder="0"></div>
+                                </div>
+                            </div>
                             <div class="item-row" data-item-row="i12">
-                                <div class="item-label"><span class="item-idx">12.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
+                                <div class="item-label"><span class="item-idx">13.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
                                 <div class="item-hint">💡 Saldo deposito tenor &gt; 1 tahun + nilai ORI/SBN/Sukuk/obligasi yang kamu pegang (kalau berencana hold sampai jatuh tempo, pakai nilai nominal).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i12_saya" placeholder="0"></div>
@@ -839,7 +848,7 @@
                                 </div>
                             </div>
                             <div class="item-row" data-item-row="i13">
-                                <div class="item-label"><span class="item-idx">13.</span> Emas / logam mulia (investasi)</div>
+                                <div class="item-label"><span class="item-idx">14.</span> Emas / logam mulia (investasi)</div>
                                 <div class="item-hint">💡 Emas batangan: berat (gram) × harga buyback Antam / UBS hari ini (<span class="warn">bukan harga beli, bukan harga toko</span>). Cek di app Pegadaian atau website Antam.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13_saya" placeholder="0"></div>
@@ -848,21 +857,12 @@
                                 </div>
                             </div>
                             <div class="item-row" data-item-row="i13b">
-                                <div class="item-label"><span class="item-idx">14.</span> Properti investasi</div>
+                                <div class="item-label"><span class="item-idx">15.</span> Properti investasi</div>
                                 <div class="item-hint">💡 Rumah / tanah / ruko yang disewakan atau yang sedang dijual (<span class="warn">bukan rumah utama yang kamu tinggali</span>). Pakai harga transaksi terakhir di tetangga atau properti sejenis di area sekitar.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13b_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i13b_pasangan" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i13b_bersama" placeholder="0"></div>
-                                </div>
-                            </div>
-                            <div class="item-row" data-item-row="i14">
-                                <div class="item-label"><span class="item-idx">15.</span> Lainnya (kripto, bisnis pribadi, unit-link)</div>
-                                <div class="item-hint">💡 <strong>Kripto</strong>: cek nilai total di Pintu/Indodax/Tokocrypto. <strong>Bisnis pribadi</strong>: perkiraan nilai jual saat ini — kalau bingung, kosongin / isi 0 (kita bahas saat konsultasi). <strong>Unit-link</strong>: lihat "nilai investasi saat ini" di app perusahaan asuransi (<span class="warn">BUKAN total premi yang sudah disetor</span>).</div>
-                                <div class="three-col-input">
-                                    <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i14_saya" placeholder="0"></div>
-                                    <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i14_pasangan" placeholder="0"></div>
-                                    <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i14_bersama" placeholder="0"></div>
                                 </div>
                             </div>
                             <div class="subtotal-row">
@@ -1147,6 +1147,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=8"></script>
+    <script src="js/checkup.js?v=9"></script>
 </body>
 </html>

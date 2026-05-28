@@ -16,14 +16,19 @@ const RP_EXP_IDS = [
 ];
 const RP_SLIDER_IDS = ['rp_skill_rd', 'rp_skill_prospectus', 'rp_skill_saham'];
 
-// --- Item definitions: 18 items (split item 13 into Emas + Properti = i13 + i13b), grouped by section ---
+// --- Item definitions (post Philip regrouping 2026-05-28):
+//     i11 = Aset agresif bucket (Saham + RD + Kripto + Unit-link merged)
+//     i_bisnis = Bisnis pribadi (separated)
+//     i12 = Deposito (>1y) + Obligasi
+//     i13 = Emas, i13b = Properti investasi (split)
+//     i14 = REMOVED (was "Lainnya: kripto + bisnis + UL" — now redistributed)
 const ITEMS = {
     pemasukan:    ['i1', 'i2'],
     cicilan:      ['i3', 'i4', 'i5'],
     pengeluaran:  ['i6', 'i7'],
     tabungan:     ['i8'],
     likuid:       ['i9', 'i10'],
-    investasi:    ['i11', 'i12', 'i13', 'i13b', 'i14'],
+    investasi:    ['i11', 'i_bisnis', 'i12', 'i13', 'i13b'],
     pribadi:      ['i15', 'i16'],
     utang:        ['i17']
 };
@@ -61,11 +66,11 @@ const PREQUAL_ITEM_MAP = {
     cicilan_kpr:    ['i3'],
     cicilan_kkb:    ['i4'],
     cicilan_kk:     ['i5'],
-    aset_saham:     ['i11'],
+    aset_agresif:   ['i11'],         // Saham + RD + Kripto + Unit-link
+    aset_bisnis:    ['i_bisnis'],
     aset_obligasi:  ['i12'],
     aset_emas:      ['i13'],
     aset_properti:  ['i13b'],
-    aset_lain:      ['i14'],
     aset_rumah_kend:['i15'],
     aset_perhiasan: ['i16'],
 };
@@ -120,10 +125,9 @@ function applyPrequal() {
         if (dot3)  dot3.classList.remove('is-hidden');
     }
 
-    // Step 4 (Risk Profile) — hide if no "real" investment (only deposito + emas/properti or nothing).
-    // Trigger investments: saham, obligasi (ORI/SBN), lain (kripto/bisnis/UL).
-    // Note: emas/properti alone = still considered conservative bucket.
-    const hasRealInvestment = state.prequal.aset_saham || state.prequal.aset_obligasi || state.prequal.aset_lain;
+    // Step 4 (Risk Profile) — only triggered if klien has aggressive bucket (Saham/RD/Kripto/UL).
+    // Bisnis/obligasi/emas/properti alone = still conservative bucket, skip risk profile.
+    const hasRealInvestment = state.prequal.aset_agresif;
     const step4 = document.getElementById('step-4');
     const dot4  = document.querySelector('.step-dot[data-step="4"]');
     if (!hasRealInvestment) {
@@ -139,15 +143,15 @@ function applyPrequal() {
     // Renumber visible step dots (e.g. 1, 2, 5, 6 → display as 1, 2, 3, 4)
     if (typeof relabelStepDots === 'function') relabelStepDots();
 
-    // Also re-run showStep to update progress label / percent for current step
+    // Update progress UI WITHOUT scrolling (klien stay in place on checkbox click)
     if (typeof showStep === 'function' && state.currentStep) {
-        // If current step got hidden by prequal change, jump to nearest visible step
+        // If current step got hidden by prequal change, jump to nearest visible step (allow scroll — context shift)
         if (state.hiddenSteps.has(state.currentStep)) {
             const visible = getVisibleStepNumbers();
             const target = visible.find(s => s > state.currentStep) || visible[visible.length - 1] || 1;
-            showStep(target);
+            showStep(target);  // scrolls — acceptable since step actually changed
         } else {
-            showStep(state.currentStep);
+            showStep(state.currentStep, { scroll: false });  // stay in place, just refresh progress UI
         }
     }
 
@@ -157,10 +161,22 @@ function applyPrequal() {
 
 function restorePrequal(prequalData) {
     if (!prequalData || typeof prequalData !== 'object') return;
-    // Backward compat: old flag aset_emas_prop migrated to aset_emas (properti default unchecked)
+
+    // Backward compat:
+    // (1) old flag aset_emas_prop → migrated to aset_emas (properti default unchecked)
     if (prequalData.aset_emas_prop && !prequalData.aset_emas) {
         prequalData.aset_emas = true;
     }
+    // (2) old flag aset_saham → migrated to aset_agresif (post-regrouping)
+    if (prequalData.aset_saham && !prequalData.aset_agresif) {
+        prequalData.aset_agresif = true;
+    }
+    // (3) old flag aset_lain (was kripto+bisnis+UL) → split to aset_agresif (kripto+UL) + aset_bisnis
+    if (prequalData.aset_lain) {
+        if (!prequalData.aset_agresif) prequalData.aset_agresif = true;
+        if (!prequalData.aset_bisnis)  prequalData.aset_bisnis = true;
+    }
+
     Object.entries(prequalData).forEach(([flag, checked]) => {
         const cb = document.querySelector(`input[type="checkbox"][data-prequal="${flag}"]`);
         if (cb) cb.checked = !!checked;
@@ -581,7 +597,9 @@ function renderReviewSummary(totals, netWorth) {
 // ============================================================================
 // Wizard navigation
 // ============================================================================
-function showStep(n) {
+function showStep(n, opts) {
+    opts = opts || {};
+    const scroll = (opts.scroll !== false);  // default true
     document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
     const stepEl = document.getElementById(`step-${n}`);
     if (stepEl) stepEl.classList.add('active');
@@ -631,8 +649,10 @@ function showStep(n) {
     // If step 5 (Review — moved from old step 4), re-render results
     if (n === 5) renderAll();
 
-    // Scroll to top of form
-    document.getElementById('checkup-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll to top of form (only when explicitly navigating — not on prequal updates)
+    if (scroll) {
+        document.getElementById('checkup-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     state.currentStep = n;
     state.visitedSteps.add(n);
