@@ -341,6 +341,64 @@
             color: #059669; text-align: right;
         }
 
+        /* === Form Mode Toggle (Saya vs Saya+Pasangan) === */
+        .mode-toggle {
+            background: #f3f4f6; border-radius: 0.875rem;
+            padding: 0.875rem 1rem; margin-bottom: 1.25rem;
+        }
+        .mode-toggle .mode-label {
+            font-size: 0.6875rem; font-weight: 700; color: #6b7280;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+        .mode-toggle .mode-pills {
+            display: flex; gap: 0.5rem; margin-bottom: 0.5rem;
+        }
+        .mode-toggle .mode-pills label {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.875rem; background: white;
+            border: 1.5px solid #e5e7eb; border-radius: 0.625rem;
+            font-size: 0.8125rem; font-weight: 500; color: #374151;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .mode-toggle .mode-pills label:has(input:checked) {
+            border-color: black; background: #f3f4f6; font-weight: 700; color: #111827;
+        }
+        .mode-toggle .mode-pills input[type="radio"] {
+            width: auto; margin: 0; accent-color: black;
+        }
+        .mode-toggle .mode-hint {
+            font-size: 0.6875rem; color: #6b7280; line-height: 1.45;
+        }
+
+        /* === Single Mode — hide Pasangan + Bersama columns === */
+        body.form-mode-single .three-col-input {
+            grid-template-columns: 1fr;
+        }
+        body.form-mode-single .col-input-wrap:nth-child(2),
+        body.form-mode-single .col-input-wrap:nth-child(3) {
+            display: none;
+        }
+        body.form-mode-single .col-input-wrap label {
+            display: none;  /* single column = "Saya" label redundant */
+        }
+        body.form-mode-single .subtotal-row {
+            grid-template-columns: 2fr 1fr;
+        }
+        body.form-mode-single .subtotal-row .subtotal-value:nth-child(3),
+        body.form-mode-single .subtotal-row .subtotal-value:nth-child(4) {
+            display: none;
+        }
+        @media (max-width: 640px) {
+            body.form-mode-single .subtotal-row {
+                grid-template-columns: 1fr;
+            }
+            body.form-mode-single .subtotal-row .subtotal-label {
+                grid-column: 1;
+            }
+        }
+
         /* === Lead capture === */
         .lead-form { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem 1.5rem; }
         .lead-form .lead-field { margin-bottom: 0.875rem; }
@@ -387,7 +445,7 @@
         .success-state p { color: #6b7280; font-size: 0.9375rem; }
     </style>
 </head>
-<body class="bg-white text-black font-sans antialiased">
+<body class="bg-white text-black font-sans antialiased form-mode-single">
 
     <div id="navbar-placeholder"></div>
 
@@ -454,7 +512,14 @@
                         <h2 class="text-xl font-black mb-1">Cash Flow Bulanan</h2>
                         <p class="text-sm text-gray-500 mb-4">Berapa uang masuk, keluar, dan berhasil kamu konversi jadi modal masa depan tiap bulan.</p>
 
-                        <p class="text-xs text-gray-400 mb-4">💡 <strong class="text-gray-600">Cara isi 3 kolom:</strong> Lajang / single user → isi kolom <strong>Saya</strong> saja · Pasangan harta dipisah → isi <strong>Saya</strong> + <strong>Pasangan</strong> · Pasangan harta gabungan → isi <strong>Bersama</strong>.</p>
+                        <div class="mode-toggle">
+                            <div class="mode-label">Kamu isi form untuk:</div>
+                            <div class="mode-pills">
+                                <label><input type="radio" name="form-mode" value="single" checked onchange="setFormMode('single')"> Diri sendiri</label>
+                                <label><input type="radio" name="form-mode" value="couple" onchange="setFormMode('couple')"> Saya &amp; pasangan</label>
+                            </div>
+                            <p class="mode-hint">Pilih "Saya &amp; pasangan" kalau mau pisah hitung Saya / Pasangan / Bersama. Bisa diubah kapan saja.</p>
+                        </div>
 
                         <div class="subsection">
                             <h3>A · Pemasukan Bulanan</h3>
@@ -631,7 +696,7 @@
                             <h3>F · Aset Investasi</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">11.</span> Saham + reksa dana saham / campuran</div>
-                                <div class="item-hint">💡 <strong>Saham</strong>: closing price terakhir × jumlah lot. <strong>Reksa dana saham/campuran</strong>: NAB hari ini × jumlah unit.</div>
+                                <div class="item-hint">💡 <strong>Saham</strong>: lihat total nilai portofolio di app Stockbit/Ajaib/Mirae. <strong>Reksa dana</strong>: lihat "nilai investasi" di Bibit/Bareksa.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i11_pasangan" placeholder="0"></div>
@@ -640,7 +705,7 @@
                             </div>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">12.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
-                                <div class="item-hint">💡 Saldo deposito tenor &gt; 1 tahun + nilai pasar ORI/SBN/Sukuk/obligasi (atau face value kalau hold-to-maturity).</div>
+                                <div class="item-hint">💡 Saldo deposito tenor &gt; 1 tahun + nilai ORI/SBN/Sukuk/obligasi yang kamu pegang (kalau berencana hold sampai jatuh tempo, pakai nilai nominal).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i12_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i12_pasangan" placeholder="0"></div>
@@ -658,7 +723,7 @@
                             </div>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">14.</span> Lainnya (kripto, bisnis pribadi, unit-link)</div>
-                                <div class="item-hint">💡 <strong>Kripto</strong>: market price × holdings. <strong>Bisnis pribadi</strong>: book value atau 3–5× EBITDA. <strong>Unit-link</strong>: NAV current / cash surrender value (<span class="warn">BUKAN total premi disetor, BUKAN UP</span>).</div>
+                                <div class="item-hint">💡 <strong>Kripto</strong>: cek nilai total di Pintu/Indodax/Tokocrypto. <strong>Bisnis pribadi</strong>: perkiraan nilai jual saat ini — kalau bingung, kosongin / isi 0 (kita bahas saat konsultasi). <strong>Unit-link</strong>: lihat "nilai investasi saat ini" di app perusahaan asuransi (<span class="warn">BUKAN total premi yang sudah disetor</span>).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i14_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i14_pasangan" placeholder="0"></div>
@@ -707,13 +772,13 @@
                 <div class="wizard-step" id="step-3">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Utang</h2>
-                        <p class="text-sm text-gray-500 mb-4">Sisa pinjaman pokok (outstanding principal) — bukan total cicilan yang sudah dibayar.</p>
+                        <p class="text-sm text-gray-500 mb-4">Sisa pinjaman yang belum dibayar — bukan total cicilan yang sudah lewat.</p>
 
                         <div class="subsection">
                             <h3>H · Total Utang</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">17.</span> Sisa pinjaman semua (KPR + kendaraan + KK + KTA + lain)</div>
-                                <div class="item-hint">💡 <strong>Sisa pinjaman pokok</strong> (outstanding principal) dari semua pinjaman aktif — KPR + KKB + sisa tagihan kartu kredit + KTA + pinjaman online/teman. <span class="warn">BUKAN total cicilan yang sudah dibayar.</span></div>
+                                <div class="item-hint">💡 <strong>Sisa pinjaman yang belum dibayar</strong> dari semua pinjaman aktif — KPR + cicilan kendaraan + sisa tagihan kartu kredit + KTA + pinjaman online/teman. <span class="warn">BUKAN total yang sudah dibayar selama ini.</span> Cek di mobile banking — biasanya ada angka "outstanding" atau "sisa pokok".</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i17_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i17_pasangan" placeholder="0"></div>
@@ -946,6 +1011,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=4"></script>
+    <script src="js/checkup.js?v=5"></script>
 </body>
 </html>

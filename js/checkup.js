@@ -36,6 +36,7 @@ Object.values(ITEMS).flat().forEach(item => {
 const state = {
     currentStep: 1,
     visitedSteps: new Set([1]),
+    formMode: 'single',  // 'single' = hide pasangan/bersama cols; 'couple' = show all 3
     lead: { nama: '', wa: '', email: '' },
     financialGoal: { type: '', other: '' },  // type: pensiun | pendidikan | lainnya; other: free-text saat lainnya
     riskProfile: {
@@ -49,6 +50,22 @@ const state = {
         loss_tolerance: '' // 5 / 15 / 30 / 50
     }
 };
+
+// ============================================================================
+// Form Mode (single vs couple) — toggle visibility of Pasangan/Bersama cols
+// ============================================================================
+function setFormMode(mode) {
+    state.formMode = mode === 'couple' ? 'couple' : 'single';
+    if (state.formMode === 'single') {
+        document.body.classList.add('form-mode-single');
+    } else {
+        document.body.classList.remove('form-mode-single');
+    }
+    // Re-sync radio button (if called programmatically from state restore)
+    const radio = document.querySelector(`input[name="form-mode"][value="${state.formMode}"]`);
+    if (radio) radio.checked = true;
+    if (typeof saveState === 'function') saveState();
+}
 
 // ============================================================================
 // Financial Goal collection (Step 6 Lead Capture)
@@ -147,6 +164,7 @@ function saveState() {
             inputs: {},
             currentStep: state.currentStep,
             visitedSteps: Array.from(state.visitedSteps),
+            formMode: state.formMode,
             lead: state.lead,
             riskProfile: collectRiskProfile(),
             financialGoal: collectFinancialGoal()
@@ -199,6 +217,11 @@ function restoreState() {
         // Restore Financial Goal (Step 6 Lead Capture)
         if (data.financialGoal) {
             restoreFinancialGoal(data.financialGoal);
+        }
+
+        // Restore Form Mode (single/couple)
+        if (data.formMode) {
+            setFormMode(data.formMode);
         }
     } catch (e) { /* silent */ }
 }
