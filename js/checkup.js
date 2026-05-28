@@ -16,14 +16,14 @@ const RP_EXP_IDS = [
 ];
 const RP_SLIDER_IDS = ['rp_skill_rd', 'rp_skill_prospectus', 'rp_skill_saham'];
 
-// --- Item definitions: 17 items, grouped by section ---
+// --- Item definitions: 18 items (split item 13 into Emas + Properti = i13 + i13b), grouped by section ---
 const ITEMS = {
     pemasukan:    ['i1', 'i2'],
     cicilan:      ['i3', 'i4', 'i5'],
     pengeluaran:  ['i6', 'i7'],
     tabungan:     ['i8'],
     likuid:       ['i9', 'i10'],
-    investasi:    ['i11', 'i12', 'i13', 'i14'],
+    investasi:    ['i11', 'i12', 'i13', 'i13b', 'i14'],
     pribadi:      ['i15', 'i16'],
     utang:        ['i17']
 };
@@ -63,7 +63,8 @@ const PREQUAL_ITEM_MAP = {
     cicilan_kk:     ['i5'],
     aset_saham:     ['i11'],
     aset_obligasi:  ['i12'],
-    aset_emas_prop: ['i13'],
+    aset_emas:      ['i13'],
+    aset_properti:  ['i13b'],
     aset_lain:      ['i14'],
     aset_rumah_kend:['i15'],
     aset_perhiasan: ['i16'],
@@ -135,17 +136,58 @@ function applyPrequal() {
         if (dot4)  dot4.classList.remove('is-hidden');
     }
 
+    // Renumber visible step dots (e.g. 1, 2, 5, 6 → display as 1, 2, 3, 4)
+    if (typeof relabelStepDots === 'function') relabelStepDots();
+
+    // Also re-run showStep to update progress label / percent for current step
+    if (typeof showStep === 'function' && state.currentStep) {
+        // If current step got hidden by prequal change, jump to nearest visible step
+        if (state.hiddenSteps.has(state.currentStep)) {
+            const visible = getVisibleStepNumbers();
+            const target = visible.find(s => s > state.currentStep) || visible[visible.length - 1] || 1;
+            showStep(target);
+        } else {
+            showStep(state.currentStep);
+        }
+    }
+
     if (typeof recalculate === 'function') recalculate();
     if (typeof saveState === 'function') saveState();
 }
 
 function restorePrequal(prequalData) {
     if (!prequalData || typeof prequalData !== 'object') return;
+    // Backward compat: old flag aset_emas_prop migrated to aset_emas (properti default unchecked)
+    if (prequalData.aset_emas_prop && !prequalData.aset_emas) {
+        prequalData.aset_emas = true;
+    }
     Object.entries(prequalData).forEach(([flag, checked]) => {
         const cb = document.querySelector(`input[type="checkbox"][data-prequal="${flag}"]`);
         if (cb) cb.checked = !!checked;
     });
     applyPrequal();
+}
+
+// ============================================================================
+// Visible step renumbering — when steps hidden by prequal, renumber visible
+// dots sequentially (1, 2, 3, 4) instead of showing literal step ID (1, 2, 5, 6)
+// ============================================================================
+function getVisibleStepNumbers() {
+    const visible = [];
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+        if (!state.hiddenSteps.has(i)) visible.push(i);
+    }
+    return visible;
+}
+
+function relabelStepDots() {
+    const visible = getVisibleStepNumbers();
+    visible.forEach((stepId, idx) => {
+        const dot = document.querySelector(`.step-dot[data-step="${stepId}"]`);
+        if (!dot) return;
+        const circle = dot.querySelector('.step-dot-circle');
+        if (circle) circle.textContent = idx + 1;  // display 1-based position among visible
+    });
 }
 
 // ============================================================================
@@ -544,13 +586,16 @@ function showStep(n) {
     const stepEl = document.getElementById(`step-${n}`);
     if (stepEl) stepEl.classList.add('active');
 
-    // Update progress UI
-    const pct = Math.round((n / TOTAL_STEPS) * 100);
+    // Update progress UI — use visible-step position, not literal step ID
+    const visible = (typeof getVisibleStepNumbers === 'function') ? getVisibleStepNumbers() : [1, 2, 3, 4, 5, 6];
+    const totalVisible = visible.length;
+    const visiblePosition = Math.max(1, visible.indexOf(n) + 1);
+    const pct = Math.round((visiblePosition / totalVisible) * 100);
     const fill = document.getElementById('progress-fill');
     const label = document.getElementById('step-label');
     const pctEl = document.getElementById('step-pct');
     if (fill) fill.style.width = pct + '%';
-    if (label) label.textContent = `Step ${n} of ${TOTAL_STEPS}`;
+    if (label) label.textContent = `Step ${visiblePosition} of ${totalVisible}`;
     if (pctEl) pctEl.textContent = pct + '%';
 
     // Update step dots
