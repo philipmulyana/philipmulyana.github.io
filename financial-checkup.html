@@ -358,6 +358,14 @@
             color: #111827; cursor: pointer; line-height: 1.35;
             font-weight: normal; margin-bottom: 0;
         }
+        /* Override .lead-form input full-width for radio/checkbox inputs (they should be small native size) */
+        .lead-form .rp-radio-list input[type="radio"],
+        .lead-form .rp-radio-list input[type="checkbox"],
+        .lead-form .rp-checkbox-grid input[type="radio"],
+        .lead-form .rp-checkbox-grid input[type="checkbox"] {
+            width: auto; flex-shrink: 0; padding: 0; border: 0;
+            margin: 0; accent-color: black;
+        }
         .lead-form input {
             width: 100%; padding: 0.625rem 0.875rem;
             border: 1px solid #e5e7eb; border-radius: 0.625rem;
@@ -938,6 +946,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=3"></script>
+    <script src="js/checkup.js?v=4"></script>
 </body>
 </html>
