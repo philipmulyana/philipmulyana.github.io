@@ -16,19 +16,22 @@ const RP_EXP_IDS = [
 ];
 const RP_SLIDER_IDS = ['rp_skill_rd', 'rp_skill_prospectus', 'rp_skill_saham'];
 
-// --- Item definitions (post Philip regrouping 2026-05-28 v2):
-//     i11 = Aset agresif bucket (Saham + RD + Kripto + Unit-link merged)
-//     i12 = Deposito (>1y) + Obligasi
-//     i13 = Emas, i13b = Properti investasi (split)
-//     i14 = REMOVED (was "Lainnya: kripto + bisnis + UL" — kripto/UL moved to i11)
-//     Bisnis pribadi REMOVED entirely — big-biz owners often don't know their biz value
+// --- Item definitions (post Philip 2026-05-28 v3 — split agresif into Saham/RD/Kripto separately,
+//     removed Unit-link entirely, removed Deposito jangka panjang from i12):
+//     i11   = Saham (was combined Saham+RD+Kripto+UL)
+//     i11b  = Reksa Dana (NEW separate)
+//     i11c  = Kripto / Aset Digital (NEW separate)
+//     i12   = Obligasi (ORI/SBN/Sukuk) — was Deposito>1y + Obligasi, deposito removed
+//     i13   = Emas, i13b = Properti investasi
+//     Unit-link REMOVED everywhere (form + Aturan Penilaian table + hints)
+//     Bisnis pribadi REMOVED (big-biz owners don't know biz value)
 const ITEMS = {
     pemasukan:    ['i1', 'i2'],
     cicilan:      ['i3', 'i4', 'i5'],
     pengeluaran:  ['i6', 'i7'],
     tabungan:     ['i8'],
     likuid:       ['i9', 'i10'],
-    investasi:    ['i11', 'i12', 'i13', 'i13b'],
+    investasi:    ['i11', 'i11b', 'i11c', 'i12', 'i13', 'i13b'],
     pribadi:      ['i15', 'i16'],
     utang:        ['i17']
 };
@@ -66,8 +69,10 @@ const PREQUAL_ITEM_MAP = {
     cicilan_kpr:    ['i3'],
     cicilan_kkb:    ['i4'],
     cicilan_kk:     ['i5'],
-    aset_agresif:   ['i11'],         // Saham + RD + Kripto + Unit-link
-    aset_obligasi:  ['i12'],
+    aset_saham:     ['i11'],         // Saham (separate)
+    aset_rd:        ['i11b'],        // Reksa Dana (separate)
+    aset_kripto:    ['i11c'],        // Kripto / Aset Digital (separate)
+    aset_obligasi:  ['i12'],         // Obligasi (ORI/SBN/Sukuk) — no more deposito>1y
     aset_emas:      ['i13'],
     aset_properti:  ['i13b'],
     aset_rumah_kend:['i15'],
@@ -124,9 +129,9 @@ function applyPrequal() {
         if (dot3)  dot3.classList.remove('is-hidden');
     }
 
-    // Step 4 (Risk Profile) — only triggered if klien has aggressive bucket (Saham/RD/Kripto/UL).
-    // Bisnis/obligasi/emas/properti alone = still conservative bucket, skip risk profile.
-    const hasRealInvestment = state.prequal.aset_agresif;
+    // Step 4 (Risk Profile) — triggered if klien has any of aggressive bucket: Saham, RD, Kripto.
+    // Obligasi/emas/properti alone = still conservative bucket, skip risk profile.
+    const hasRealInvestment = state.prequal.aset_saham || state.prequal.aset_rd || state.prequal.aset_kripto;
     const step4 = document.getElementById('step-4');
     const dot4  = document.querySelector('.step-dot[data-step="4"]');
     if (!hasRealInvestment) {
@@ -170,10 +175,16 @@ function restorePrequal(prequalData) {
     if (prequalData.aset_saham && !prequalData.aset_agresif) {
         prequalData.aset_agresif = true;
     }
-    // (3) old flag aset_lain (was kripto+bisnis+UL) → migrated to aset_agresif (kripto+UL).
-    //     Bisnis pribadi tidak lagi di-track via prequal — big-biz owners rarely know nilai bisnis.
-    if (prequalData.aset_lain && !prequalData.aset_agresif) {
-        prequalData.aset_agresif = true;
+    // (3) old flag aset_lain (was kripto+bisnis+UL) → kripto component → aset_kripto.
+    //     Bisnis pribadi + UL no longer tracked.
+    if (prequalData.aset_lain && !prequalData.aset_kripto) {
+        prequalData.aset_kripto = true;
+    }
+    // (4) old flag aset_agresif (was Saham+RD+Kripto+UL combined) → split to saham + rd
+    //     (most common, klien bisa unchek kalau ga punya salah satu)
+    if (prequalData.aset_agresif) {
+        if (!prequalData.aset_saham) prequalData.aset_saham = true;
+        if (!prequalData.aset_rd)    prequalData.aset_rd = true;
     }
 
     Object.entries(prequalData).forEach(([flag, checked]) => {
