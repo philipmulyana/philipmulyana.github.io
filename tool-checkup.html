@@ -243,6 +243,104 @@
         .ratio-mini .r-status.good { background: #d1fae5; color: #065f46; }
         .ratio-mini .r-status.bad { background: #fee2e2; color: #991b1b; }
 
+        /* === Risk Profile Step 4 === */
+        .rp-question { margin-bottom: 1.25rem; }
+        .rp-question:last-child { margin-bottom: 0; }
+        .rp-question .rp-label {
+            font-size: 0.875rem; font-weight: 700; color: #111827;
+            margin-bottom: 0.375rem; letter-spacing: -0.01em;
+        }
+        .rp-question .rp-label .rp-num {
+            display: inline-block; font-size: 0.625rem; font-weight: 700;
+            color: #059669; text-transform: uppercase; letter-spacing: 0.08em;
+            margin-right: 0.5rem;
+        }
+        .rp-question .rp-hint {
+            font-size: 0.6875rem; color: #6b7280;
+            margin-bottom: 0.625rem; line-height: 1.5;
+        }
+        .rp-question .rp-single-input {
+            width: 100%; max-width: 8rem; padding: 0.5rem 0.75rem;
+            border: 1px solid #e5e7eb; border-radius: 0.5rem;
+            font-size: 0.875rem; font-variant-numeric: tabular-nums;
+        }
+        .rp-question .rp-single-input:focus { outline: none; border-color: black; }
+
+        /* Checkbox tag grid (pengalaman investasi) */
+        .rp-checkbox-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+            gap: 0.5rem;
+        }
+        .rp-checkbox-tag { position: relative; }
+        .rp-checkbox-tag input[type="checkbox"] {
+            position: absolute; opacity: 0; pointer-events: none;
+        }
+        .rp-checkbox-tag label {
+            display: block; padding: 0.5rem 0.75rem;
+            background: white; border: 1.5px solid #e5e7eb; border-radius: 0.625rem;
+            font-size: 0.75rem; font-weight: 600; color: #374151;
+            text-align: center; cursor: pointer; transition: all 0.15s;
+            user-select: none;
+        }
+        .rp-checkbox-tag input[type="checkbox"]:checked + label {
+            background: #059669; color: white; border-color: #059669;
+        }
+        .rp-checkbox-tag label:hover { border-color: #6b7280; }
+        .rp-checkbox-tag input[type="checkbox"]:checked + label:hover { background: #047857; border-color: #047857; }
+
+        /* Radio cards (drawdown, time, loss) */
+        .rp-radio-stack { display: flex; flex-direction: column; gap: 0.375rem; }
+        .rp-radio-card { position: relative; }
+        .rp-radio-card input[type="radio"] {
+            position: absolute; opacity: 0; pointer-events: none;
+        }
+        .rp-radio-card label {
+            display: flex; align-items: center; gap: 0.625rem;
+            padding: 0.625rem 0.875rem;
+            background: white; border: 1.5px solid #e5e7eb; border-radius: 0.625rem;
+            font-size: 0.8125rem; color: #374151; cursor: pointer;
+            transition: all 0.15s; user-select: none;
+        }
+        .rp-radio-card label::before {
+            content: ''; flex-shrink: 0;
+            width: 1.125rem; height: 1.125rem; border-radius: 50%;
+            border: 2px solid #d1d5db; background: white;
+            transition: all 0.15s;
+        }
+        .rp-radio-card input[type="radio"]:checked + label {
+            background: #f0fdf4; border-color: #059669; color: #064e3b; font-weight: 600;
+        }
+        .rp-radio-card input[type="radio"]:checked + label::before {
+            border-color: #059669; background: #059669; box-shadow: inset 0 0 0 3px white;
+        }
+        .rp-radio-card label:hover { border-color: #6b7280; }
+
+        /* Sliders (skill self-rating) */
+        .rp-slider-row { margin-bottom: 0.75rem; }
+        .rp-slider-row:last-child { margin-bottom: 0; }
+        .rp-slider-row .rp-slider-label {
+            display: flex; justify-content: space-between; align-items: baseline;
+            font-size: 0.75rem; color: #374151; margin-bottom: 0.25rem;
+        }
+        .rp-slider-row .rp-slider-label .rp-slider-val {
+            font-size: 0.875rem; font-weight: 700; color: #059669;
+            font-variant-numeric: tabular-nums; min-width: 1.5rem; text-align: right;
+        }
+        .rp-slider-row input[type="range"] {
+            width: 100%; -webkit-appearance: none; appearance: none;
+            height: 4px; background: #e5e7eb; border-radius: 2px; outline: none;
+        }
+        .rp-slider-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 1.125rem; height: 1.125rem; border-radius: 50%;
+            background: #059669; cursor: pointer; border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .rp-slider-row .rp-slider-anchors {
+            display: flex; justify-content: space-between;
+            font-size: 0.625rem; color: #9ca3af; margin-top: 0.125rem;
+        }
+
         /* === Lead capture === */
         .lead-form { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem 1.5rem; }
         .lead-form .lead-field { margin-bottom: 0.875rem; }
@@ -299,8 +397,8 @@
                 <!-- Sticky progress -->
                 <div class="progress-wrap">
                     <div class="progress-header">
-                        <span class="label" id="step-label">Step 1 of 5</span>
-                        <span class="pct" id="step-pct">20%</span>
+                        <span class="label" id="step-label">Step 1 of 6</span>
+                        <span class="pct" id="step-pct">17%</span>
                     </div>
                     <div class="progress-bar-track">
                         <div class="progress-bar-fill" id="progress-fill" style="width: 20%;"></div>
@@ -320,10 +418,14 @@
                         </button>
                         <button type="button" class="step-dot" data-step="4" onclick="goToStep(4)">
                             <div class="step-dot-circle">4</div>
-                            <span class="step-dot-label">Hasil</span>
+                            <span class="step-dot-label">Profil Risiko</span>
                         </button>
                         <button type="button" class="step-dot" data-step="5" onclick="goToStep(5)">
                             <div class="step-dot-circle">5</div>
+                            <span class="step-dot-label">Hasil</span>
+                        </button>
+                        <button type="button" class="step-dot" data-step="6" onclick="goToStep(6)">
+                            <div class="step-dot-circle">6</div>
                             <span class="step-dot-label">Kirim</span>
                         </button>
                     </div>
@@ -611,8 +713,110 @@
                     </div>
                 </div>
 
-                <!-- =================== STEP 4: REVIEW =================== -->
+                <!-- =================== STEP 4: PROFIL RISIKO =================== -->
                 <div class="wizard-step" id="step-4">
+                    <div class="section-card">
+                        <h2 class="text-xl font-black mb-1">Profil Risiko</h2>
+                        <p class="text-sm text-gray-500 mb-4">6 pertanyaan singkat — supaya saya bisa kasih insight lebih spesifik saat konsultasi. Isi jujur, tidak ada jawaban benar atau salah.</p>
+
+                        <div class="subsection">
+                            <!-- Q1 Usia -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 1</span> Berapa usia kamu sekarang?</div>
+                                <div class="rp-hint">Untuk konteks horizon planning.</div>
+                                <input type="number" id="rp_usia" class="rp-single-input" min="17" max="80" placeholder="tahun" inputmode="numeric">
+                            </div>
+
+                            <!-- Q2 Pengalaman -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 2</span> Instrumen investasi apa saja yang pernah kamu miliki atau pakai?</div>
+                                <div class="rp-hint">Pilih semua yang sesuai.</div>
+                                <div class="rp-checkbox-grid">
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_deposito"><label for="rp_exp_deposito">Deposito</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_rd"><label for="rp_exp_rd">Reksa Dana</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_saham"><label for="rp_exp_saham">Saham</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_obligasi"><label for="rp_exp_obligasi">Obligasi</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_properti"><label for="rp_exp_properti">Properti</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_emas"><label for="rp_exp_emas">Emas</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_crypto"><label for="rp_exp_crypto">Crypto</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_derivatif"><label for="rp_exp_derivatif">Derivatif/Forex</label></div>
+                                    <div class="rp-checkbox-tag"><input type="checkbox" id="rp_exp_none"><label for="rp_exp_none">Belum pernah</label></div>
+                                </div>
+                            </div>
+
+                            <!-- Q3 Drawdown reaction -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 3</span> Kalau portfolio investasi kamu turun -25% dalam 1 bulan, reaksi paling jujur kamu apa?</div>
+                                <div class="rp-hint">Jawab yang paling jujur, bukan yang "seharusnya".</div>
+                                <div class="rp-radio-stack">
+                                    <div class="rp-radio-card"><input type="radio" name="rp_drawdown" id="rp_dd_jual" value="A"><label for="rp_dd_jual">Jual semua untuk cut loss</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_drawdown" id="rp_dd_hold" value="B"><label for="rp_dd_hold">Hold posisi, tunggu market recover</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_drawdown" id="rp_dd_beli" value="C"><label for="rp_dd_beli">Beli lagi sambil harga murah (average down)</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_drawdown" id="rp_dd_freeze" value="D"><label for="rp_dd_freeze">Bingung, kemungkinan freeze tidak ambil tindakan</label></div>
+                                </div>
+                            </div>
+
+                            <!-- Q4 Waktu monitor -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 4</span> Realistis berapa jam per minggu kamu bisa alokasi untuk monitor &amp; review investasi?</div>
+                                <div class="rp-hint">Berdasarkan jadwal sebenarnya, bukan aspirasi.</div>
+                                <div class="rp-radio-stack">
+                                    <div class="rp-radio-card"><input type="radio" name="rp_time" id="rp_time_a" value="A"><label for="rp_time_a">Kurang dari 1 jam</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_time" id="rp_time_b" value="B"><label for="rp_time_b">1–3 jam</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_time" id="rp_time_c" value="C"><label for="rp_time_c">3–5 jam</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_time" id="rp_time_d" value="D"><label for="rp_time_d">Lebih dari 5 jam</label></div>
+                                </div>
+                            </div>
+
+                            <!-- Q5 Self-rated skill (3 sliders) -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 5</span> Rate keyakinan kamu 1–5 di 3 hal berikut:</div>
+                                <div class="rp-hint">Self-rating jujur — tidak ada benar atau salah.</div>
+                                <div class="rp-slider-row">
+                                    <div class="rp-slider-label">
+                                        <span>Memilih Reksa Dana yang sesuai goal saya</span>
+                                        <span class="rp-slider-val" id="rp_skill_rd_val">1</span>
+                                    </div>
+                                    <input type="range" id="rp_skill_rd" min="1" max="5" value="1" oninput="document.getElementById('rp_skill_rd_val').textContent = this.value">
+                                    <div class="rp-slider-anchors"><span>Tidak yakin</span><span>Sangat yakin</span></div>
+                                </div>
+                                <div class="rp-slider-row">
+                                    <div class="rp-slider-label">
+                                        <span>Membaca prospektus atau Fund Fact Sheet</span>
+                                        <span class="rp-slider-val" id="rp_skill_prospectus_val">1</span>
+                                    </div>
+                                    <input type="range" id="rp_skill_prospectus" min="1" max="5" value="1" oninput="document.getElementById('rp_skill_prospectus_val').textContent = this.value">
+                                    <div class="rp-slider-anchors"><span>Tidak yakin</span><span>Sangat yakin</span></div>
+                                </div>
+                                <div class="rp-slider-row">
+                                    <div class="rp-slider-label">
+                                        <span>Evaluasi saham individu (fundamental + teknikal)</span>
+                                        <span class="rp-slider-val" id="rp_skill_saham_val">1</span>
+                                    </div>
+                                    <input type="range" id="rp_skill_saham" min="1" max="5" value="1" oninput="document.getElementById('rp_skill_saham_val').textContent = this.value">
+                                    <div class="rp-slider-anchors"><span>Tidak yakin</span><span>Sangat yakin</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Q6 Loss tolerance -->
+                            <div class="rp-question">
+                                <div class="rp-label"><span class="rp-num">Pertanyaan 6</span> Maksimum % kerugian portfolio yang masih bisa kamu hold tanpa panik atau jual?</div>
+                                <div class="rp-hint">Jawab realistik — bukan aspirational.</div>
+                                <div class="rp-radio-stack">
+                                    <div class="rp-radio-card"><input type="radio" name="rp_loss" id="rp_loss_5" value="5"><label for="rp_loss_5">5% — saya sangat sensitif terhadap kerugian</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_loss" id="rp_loss_15" value="15"><label for="rp_loss_15">15% — saya bisa toleran rugi moderate</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_loss" id="rp_loss_30" value="30"><label for="rp_loss_30">30% — saya bisa hold turun banyak</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="rp_loss" id="rp_loss_50" value="50"><label for="rp_loss_50">50%+ — saya nyaman dengan volatilitas tinggi</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-400 mt-4">💡 Setelah ini, kamu akan lihat review angka + 4 rasio keuangan kamu.</p>
+                    </div>
+                </div>
+
+                <!-- =================== STEP 5: REVIEW (was step-4) =================== -->
+                <div class="wizard-step" id="step-5">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Hasil Snapshot Kamu</h2>
                         <p class="text-sm text-gray-500 mb-4">Review angka kamu + preview 4 rasio. PDF lengkap dengan penjelasan setiap rasio dikirim ke email kamu setelah submit.</p>
@@ -664,11 +868,11 @@
                     </div>
                 </div>
 
-                <!-- =================== STEP 5: LEAD CAPTURE =================== -->
-                <div class="wizard-step" id="step-5">
+                <!-- =================== STEP 6: LEAD CAPTURE (was step-5) =================== -->
+                <div class="wizard-step" id="step-6">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Kirim ke Email Kamu</h2>
-                        <p class="text-sm text-gray-500 mb-4">Kami kirim PDF lengkap (8 halaman) langsung ke email kamu, gratis. Tidak ada spam — kontak kamu hanya saya pakai untuk satu kali follow-up kalau kamu mau review session.</p>
+                        <p class="text-sm text-gray-500 mb-4">Kami kirim PDF lengkap langsung ke email kamu, gratis. Tidak ada spam — kontak kamu hanya saya pakai untuk satu kali follow-up kalau kamu mau review session.</p>
 
                         <div class="lead-form">
                             <div class="lead-field">
@@ -685,7 +889,22 @@
                                 <input type="email" id="lead-email" placeholder="contoh: budi@gmail.com" autocomplete="email">
                                 <div class="lead-hint">PDF akan dikirim ke email ini dalam beberapa menit.</div>
                             </div>
-                            <!-- Cloudflare Turnstile placeholder — actual widget added saat backend ready -->
+
+                            <!-- Financial Goal — qualifying lead intent -->
+                            <div class="lead-field">
+                                <label>Goal finansial kamu selanjutnya apa?</label>
+                                <div class="rp-radio-stack" style="margin-top: 0.5rem;">
+                                    <div class="rp-radio-card"><input type="radio" name="financial_goal" id="fg_pensiun" value="pensiun"><label for="fg_pensiun">Dana Pensiun</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="financial_goal" id="fg_pendidikan" value="pendidikan"><label for="fg_pendidikan">Dana Pendidikan</label></div>
+                                    <div class="rp-radio-card"><input type="radio" name="financial_goal" id="fg_lainnya" value="lainnya" onchange="document.getElementById('fg_lainnya_text_wrap').style.display='block'; document.getElementById('fg_lainnya_text').focus();"><label for="fg_lainnya">Lainnya</label></div>
+                                </div>
+                                <div id="fg_lainnya_text_wrap" style="display:none; margin-top: 0.5rem;">
+                                    <input type="text" id="fg_lainnya_text" placeholder="Sebutkan goal kamu — contoh: beli rumah, dana liburan, modal usaha" style="width:100%; padding:0.625rem 0.875rem; border:1px solid #e5e7eb; border-radius:0.625rem; font-size:0.875rem;">
+                                </div>
+                                <div class="lead-hint" style="margin-top: 0.375rem;">Pilih yang paling utama saat ini. Bisa diubah kapan saja saat konsultasi.</div>
+                            </div>
+
+                            <!-- Cloudflare Turnstile placeholder -->
                             <div class="lead-field">
                                 <div id="cf-turnstile-placeholder" style="background: #f3f4f6; border: 1.5px dashed #d1d5db; border-radius: 0.625rem; padding: 1rem; text-align: center; color: #6b7280; font-size: 0.75rem;">
                                     🔒 CAPTCHA verification (akan aktif begitu backend ready)
@@ -723,6 +942,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=1"></script>
+    <script src="js/checkup.js?v=2"></script>
 </body>
 </html>

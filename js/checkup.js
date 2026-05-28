@@ -37,6 +37,7 @@ const state = {
     currentStep: 1,
     visitedSteps: new Set([1]),
     lead: { nama: '', wa: '', email: '' },
+    financialGoal: { type: '', other: '' },  // type: pensiun | pendidikan | lainnya; other: free-text saat lainnya
     riskProfile: {
         usia: '',
         experience: [],  // array of selected instrument keys
@@ -48,6 +49,36 @@ const state = {
         loss_tolerance: '' // 5 / 15 / 30 / 50
     }
 };
+
+// ============================================================================
+// Financial Goal collection (Step 6 Lead Capture)
+// ============================================================================
+function collectFinancialGoal() {
+    const sel = document.querySelector('input[name="financial_goal"]:checked');
+    const other = document.getElementById('fg_lainnya_text');
+    return {
+        type: sel ? sel.value : '',
+        other: (sel && sel.value === 'lainnya' && other) ? (other.value || '').trim() : ''
+    };
+}
+
+function restoreFinancialGoal(fg) {
+    if (!fg) return;
+    if (fg.type) {
+        const el = document.querySelector(`input[name="financial_goal"][value="${fg.type}"]`);
+        if (el) {
+            el.checked = true;
+            if (fg.type === 'lainnya') {
+                const wrap = document.getElementById('fg_lainnya_text_wrap');
+                if (wrap) wrap.style.display = 'block';
+            }
+        }
+    }
+    if (fg.other) {
+        const txt = document.getElementById('fg_lainnya_text');
+        if (txt) txt.value = fg.other;
+    }
+}
 
 // ============================================================================
 // Risk Profile state collection (Step 4)
@@ -117,7 +148,8 @@ function saveState() {
             currentStep: state.currentStep,
             visitedSteps: Array.from(state.visitedSteps),
             lead: state.lead,
-            riskProfile: collectRiskProfile()
+            riskProfile: collectRiskProfile(),
+            financialGoal: collectFinancialGoal()
         };
         ALL_INPUT_IDS.forEach(id => {
             const el = document.getElementById(id);
@@ -162,6 +194,11 @@ function restoreState() {
         // Restore Risk Profile (Step 4)
         if (data.riskProfile) {
             restoreRiskProfile(data.riskProfile);
+        }
+
+        // Restore Financial Goal (Step 6 Lead Capture)
+        if (data.financialGoal) {
+            restoreFinancialGoal(data.financialGoal);
         }
     } catch (e) { /* silent */ }
 }
