@@ -37,7 +37,8 @@ const state = {
     currentStep: 1,
     visitedSteps: new Set([1]),
     formMode: 'single',  // 'single' = hide pasangan/bersama cols; 'couple' = show all 3
-    skippedItems: new Set(),  // item IDs (e.g. 'i11') that klien marked "Saya belum punya ini"
+    prequal: {},  // pre-qualifier flags: cicilan_kpr, cicilan_kkb, cicilan_kk, aset_saham, aset_obligasi, aset_emas_prop, aset_lain, aset_rumah_kend, aset_perhiasan, punya_utang
+    hiddenSteps: new Set(),  // step numbers hidden by pre-qualifier (3 = Utang, 4 = Risk Profile)
     lead: { nama: '', wa: '', email: '' },
     financialGoal: { type: '', other: '' },  // type: pensiun | pendidikan | lainnya; other: free-text saat lainnya
     riskProfile: {
@@ -53,51 +54,98 @@ const state = {
 };
 
 // ============================================================================
-// "Saya belum punya ini" skip toggle (asset items 11–16)
+// Pre-qualifier — apply visibility based on what klien declared they own
+// Map of prequal flag → item row(s) it controls
 // ============================================================================
-function toggleSkip(checkbox) {
-    const itemId = checkbox.dataset.item;
-    if (!itemId) return;
-    const row = checkbox.closest('.item-row') || document.querySelector(`[data-item-row="${itemId}"]`);
-    if (checkbox.checked) {
-        state.skippedItems.add(itemId);
-        if (row) row.classList.add('is-skipped');
-        // Zero out + disable all 3 cols for this item
-        ['saya', 'pasangan', 'bersama'].forEach(col => {
-            const input = document.getElementById(`${itemId}_${col}`);
-            if (input) {
-                input.value = '';
-                input.dataset.rawValue = '';
-                input.disabled = true;
+const PREQUAL_ITEM_MAP = {
+    cicilan_kpr:    ['i3'],
+    cicilan_kkb:    ['i4'],
+    cicilan_kk:     ['i5'],
+    aset_saham:     ['i11'],
+    aset_obligasi:  ['i12'],
+    aset_emas_prop: ['i13'],
+    aset_lain:      ['i14'],
+    aset_rumah_kend:['i15'],
+    aset_perhiasan: ['i16'],
+};
+
+function collectPrequal() {
+    const out = {};
+    document.querySelectorAll('input[type="checkbox"][data-prequal]').forEach(cb => {
+        out[cb.dataset.prequal] = cb.checked;
+    });
+    return out;
+}
+
+function zeroOutItem(itemId) {
+    ['saya', 'pasangan', 'bersama'].forEach(col => {
+        const input = document.getElementById(`${itemId}_${col}`);
+        if (input) {
+            input.value = '';
+            input.dataset.rawValue = '';
+        }
+    });
+}
+
+function applyPrequal() {
+    state.prequal = collectPrequal();
+
+    // Hide/show individual item rows based on prequal flags
+    Object.entries(PREQUAL_ITEM_MAP).forEach(([flag, itemIds]) => {
+        const owned = !!state.prequal[flag];
+        itemIds.forEach(itemId => {
+            const row = document.querySelector(`[data-item-row="${itemId}"]`);
+            if (!row) return;
+            if (owned) {
+                row.classList.remove('is-hidden');
+            } else {
+                row.classList.add('is-hidden');
+                zeroOutItem(itemId);
             }
         });
+    });
+
+    // Step 3 (Utang) — hide entirely if no debt declared
+    const step3 = document.getElementById('step-3');
+    const dot3  = document.querySelector('.step-dot[data-step="3"]');
+    if (!state.prequal.punya_utang) {
+        state.hiddenSteps.add(3);
+        if (step3) step3.classList.add('is-hidden');
+        if (dot3)  dot3.classList.add('is-hidden');
+        zeroOutItem('i17');
     } else {
-        state.skippedItems.delete(itemId);
-        if (row) row.classList.remove('is-skipped');
-        ['saya', 'pasangan', 'bersama'].forEach(col => {
-            const input = document.getElementById(`${itemId}_${col}`);
-            if (input) input.disabled = false;
-        });
+        state.hiddenSteps.delete(3);
+        if (step3) step3.classList.remove('is-hidden');
+        if (dot3)  dot3.classList.remove('is-hidden');
     }
+
+    // Step 4 (Risk Profile) — hide if no "real" investment (only deposito + emas/properti or nothing).
+    // Trigger investments: saham, obligasi (ORI/SBN), lain (kripto/bisnis/UL).
+    // Note: emas/properti alone = still considered conservative bucket.
+    const hasRealInvestment = state.prequal.aset_saham || state.prequal.aset_obligasi || state.prequal.aset_lain;
+    const step4 = document.getElementById('step-4');
+    const dot4  = document.querySelector('.step-dot[data-step="4"]');
+    if (!hasRealInvestment) {
+        state.hiddenSteps.add(4);
+        if (step4) step4.classList.add('is-hidden');
+        if (dot4)  dot4.classList.add('is-hidden');
+    } else {
+        state.hiddenSteps.delete(4);
+        if (step4) step4.classList.remove('is-hidden');
+        if (dot4)  dot4.classList.remove('is-hidden');
+    }
+
     if (typeof recalculate === 'function') recalculate();
     if (typeof saveState === 'function') saveState();
 }
 
-function restoreSkippedItems(skippedArr) {
-    if (!Array.isArray(skippedArr)) return;
-    state.skippedItems = new Set(skippedArr);
-    skippedArr.forEach(itemId => {
-        const cb = document.querySelector(`input[type="checkbox"][data-item="${itemId}"]`);
-        if (cb) {
-            cb.checked = true;
-            const row = cb.closest('.item-row') || document.querySelector(`[data-item-row="${itemId}"]`);
-            if (row) row.classList.add('is-skipped');
-            ['saya', 'pasangan', 'bersama'].forEach(col => {
-                const input = document.getElementById(`${itemId}_${col}`);
-                if (input) input.disabled = true;
-            });
-        }
+function restorePrequal(prequalData) {
+    if (!prequalData || typeof prequalData !== 'object') return;
+    Object.entries(prequalData).forEach(([flag, checked]) => {
+        const cb = document.querySelector(`input[type="checkbox"][data-prequal="${flag}"]`);
+        if (cb) cb.checked = !!checked;
     });
+    applyPrequal();
 }
 
 // ============================================================================
@@ -214,7 +262,7 @@ function saveState() {
             currentStep: state.currentStep,
             visitedSteps: Array.from(state.visitedSteps),
             formMode: state.formMode,
-            skippedItems: Array.from(state.skippedItems),
+            prequal: collectPrequal(),
             lead: state.lead,
             riskProfile: collectRiskProfile(),
             financialGoal: collectFinancialGoal()
@@ -274,9 +322,12 @@ function restoreState() {
             setFormMode(data.formMode);
         }
 
-        // Restore Skipped Items (asset items 11-16 yang klien tandain "belum punya")
-        if (data.skippedItems) {
-            restoreSkippedItems(data.skippedItems);
+        // Restore Pre-qualifier (cicilan/aset/utang flags) — also hides items + steps
+        if (data.prequal) {
+            restorePrequal(data.prequal);
+        } else {
+            // First-time load (no saved state): default everything hidden until klien centang
+            applyPrequal();
         }
     } catch (e) { /* silent */ }
 }
@@ -513,12 +564,18 @@ function showStep(n) {
         }
     });
 
+    // Determine if any visible step exists after current
+    let hasNextVisible = false;
+    for (let i = n + 1; i <= TOTAL_STEPS; i++) {
+        if (!state.hiddenSteps.has(i)) { hasNextVisible = true; break; }
+    }
+
     // Nav button state
     const backBtn = document.getElementById('btn-back');
     const nextBtn = document.getElementById('btn-next');
     const submitBtn = document.getElementById('btn-submit');
     if (backBtn) backBtn.disabled = (n === 1);
-    if (n === TOTAL_STEPS) {
+    if (!hasNextVisible) {
         if (nextBtn) nextBtn.style.display = 'none';
         if (submitBtn) submitBtn.style.display = 'block';
     } else {
@@ -539,14 +596,18 @@ function showStep(n) {
 
 function nextStep() {
     if (!validateStep(state.currentStep)) return;
-    if (state.currentStep < TOTAL_STEPS) {
-        showStep(state.currentStep + 1);
+    let next = state.currentStep + 1;
+    while (next <= TOTAL_STEPS && state.hiddenSteps.has(next)) next++;
+    if (next <= TOTAL_STEPS) {
+        showStep(next);
     }
 }
 
 function prevStep() {
-    if (state.currentStep > 1) {
-        showStep(state.currentStep - 1);
+    let prev = state.currentStep - 1;
+    while (prev >= 1 && state.hiddenSteps.has(prev)) prev--;
+    if (prev >= 1) {
+        showStep(prev);
     }
 }
 
@@ -774,8 +835,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Restore prior state
+    // Restore prior state (also runs applyPrequal — hides items/steps based on klien declarations)
     restoreState();
+
+    // Safety: if restoreState didn't run applyPrequal (no saved data path), force it now
+    if (typeof applyPrequal === 'function') applyPrequal();
 
     // Initial render
     renderAll();

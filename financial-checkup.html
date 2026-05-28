@@ -364,32 +364,55 @@
             display: flex; align-items: center; gap: 0.5rem;
         }
 
-        /* === "Saya belum punya ini" skip toggle per asset/cicilan item === */
-        .item-skip {
-            margin-bottom: 0.5rem;
+        /* === Pre-qualifier (Personalisasi form upfront) === */
+        .prequal-card {
+            background: white; border: 1.5px solid #e5e7eb;
+            border-radius: 0.875rem; padding: 1rem 1.125rem;
+            margin-bottom: 1.25rem;
         }
-        .item-skip label {
-            display: inline-flex; gap: 0.375rem; align-items: center;
-            font-size: 0.75rem; color: #6b7280; cursor: pointer;
-            font-weight: 500; padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem; transition: all 0.15s;
+        .prequal-card .prequal-title {
+            font-size: 0.875rem; font-weight: 800; color: #111827;
+            margin-bottom: 0.25rem;
         }
-        .item-skip label:hover { background: #f3f4f6; color: #111827; }
-        .item-skip input[type="checkbox"] {
-            width: auto; margin: 0; accent-color: #6b7280;
+        .prequal-card .prequal-intro {
+            font-size: 0.75rem; color: #6b7280; line-height: 1.5;
+            margin-bottom: 0.875rem;
         }
-        .item-row.is-skipped {
-            opacity: 0.55;
+        .prequal-group { margin-bottom: 0.875rem; }
+        .prequal-group:last-child { margin-bottom: 0; }
+        .prequal-group .prequal-label {
+            font-size: 0.6875rem; font-weight: 700; color: #6b7280;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-bottom: 0.375rem;
         }
-        .item-row.is-skipped .three-col-input input {
-            background: #f3f4f6; pointer-events: none;
+        .prequal-options {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0.375rem;
         }
-        .item-row.is-skipped .item-hint { opacity: 0.6; }
-        .item-row.is-skipped .item-skip label {
-            color: #047857; background: #d1fae5; font-weight: 700;
+        @media (max-width: 480px) {
+            .prequal-options { grid-template-columns: 1fr; }
         }
-        .item-row.is-skipped .item-skip input[type="checkbox"] {
-            accent-color: #059669;
+        .prequal-options label {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 0.75rem; background: #f9fafb;
+            border: 1.5px solid #e5e7eb; border-radius: 0.5rem;
+            font-size: 0.75rem; color: #374151; cursor: pointer;
+            transition: all 0.15s; font-weight: 500;
+        }
+        .prequal-options label:hover { border-color: #6b7280; }
+        .prequal-options label:has(input:checked) {
+            background: #ecfdf5; border-color: #059669; color: #064e3b; font-weight: 600;
+        }
+        .prequal-options input {
+            width: auto; margin: 0; accent-color: #059669; flex-shrink: 0;
+        }
+
+        /* Step / item hide when pre-qualifier excludes */
+        .item-row.is-hidden,
+        .subsection.is-hidden,
+        .wizard-step.is-hidden,
+        .step-dot.is-hidden {
+            display: none !important;
         }
 
         /* === Form Mode Toggle (Saya vs Saya+Pasangan) === */
@@ -575,6 +598,45 @@
                             <span>Form auto-save di browser kamu. Berat sekarang? Tutup tab — buka lagi besok dari titik yang sama.</span>
                         </div>
 
+                        <div class="prequal-card">
+                            <div class="prequal-title">🎯 Personalisasi form (30 detik)</div>
+                            <div class="prequal-intro">Centang yang kamu punya — form bakal cuma nampilin section yang relevan untuk kamu. Yang tidak dicentang akan disembunyikan.</div>
+
+                            <div class="prequal-group">
+                                <div class="prequal-label">Cicilan bulanan</div>
+                                <div class="prequal-options">
+                                    <label><input type="checkbox" data-prequal="cicilan_kpr" onchange="applyPrequal()"> KPR rumah</label>
+                                    <label><input type="checkbox" data-prequal="cicilan_kkb" onchange="applyPrequal()"> Cicilan kendaraan (mobil/motor)</label>
+                                    <label><input type="checkbox" data-prequal="cicilan_kk" onchange="applyPrequal()"> Kartu kredit / KTA / paylater</label>
+                                </div>
+                            </div>
+
+                            <div class="prequal-group">
+                                <div class="prequal-label">Aset investasi (selain tabungan biasa)</div>
+                                <div class="prequal-options">
+                                    <label><input type="checkbox" data-prequal="aset_saham" onchange="applyPrequal()"> Saham / Reksa Dana</label>
+                                    <label><input type="checkbox" data-prequal="aset_obligasi" onchange="applyPrequal()"> Deposito jangka panjang / Obligasi (ORI/SBN/Sukuk)</label>
+                                    <label><input type="checkbox" data-prequal="aset_emas_prop" onchange="applyPrequal()"> Emas / Properti investasi</label>
+                                    <label><input type="checkbox" data-prequal="aset_lain" onchange="applyPrequal()"> Kripto / Bisnis pribadi / Unit-link</label>
+                                </div>
+                            </div>
+
+                            <div class="prequal-group">
+                                <div class="prequal-label">Aset pribadi</div>
+                                <div class="prequal-options">
+                                    <label><input type="checkbox" data-prequal="aset_rumah_kend" onchange="applyPrequal()"> Rumah utama atau kendaraan ≥ Rp 50jt</label>
+                                    <label><input type="checkbox" data-prequal="aset_perhiasan" onchange="applyPrequal()"> Perhiasan / barang berharga lain</label>
+                                </div>
+                            </div>
+
+                            <div class="prequal-group">
+                                <div class="prequal-label">Sisa pinjaman aktif</div>
+                                <div class="prequal-options">
+                                    <label><input type="checkbox" data-prequal="punya_utang" onchange="applyPrequal()"> Saya punya pinjaman aktif (KPR/KKB/KK/KTA/pinjol)</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mode-toggle">
                             <div class="mode-label">Kamu isi form untuk:</div>
                             <div class="mode-pills">
@@ -614,7 +676,7 @@
 
                         <div class="subsection">
                             <h3>B · Cicilan Bulanan</h3>
-                            <div class="item-row">
+                            <div class="item-row" data-item-row="i3">
                                 <div class="item-label"><span class="item-idx">3.</span> Cicilan KPR</div>
                                 <div class="item-hint">💡 Angsuran KPR yang ditarik bank tiap bulan.</div>
                                 <div class="three-col-input">
@@ -623,7 +685,7 @@
                                     <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i3_bersama" placeholder="0"></div>
                                 </div>
                             </div>
-                            <div class="item-row">
+                            <div class="item-row" data-item-row="i4">
                                 <div class="item-label"><span class="item-idx">4.</span> Cicilan kendaraan (KKB)</div>
                                 <div class="item-hint">💡 Angsuran kredit kendaraan bermotor (mobil/motor) tiap bulan.</div>
                                 <div class="three-col-input">
@@ -632,7 +694,7 @@
                                     <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i4_bersama" placeholder="0"></div>
                                 </div>
                             </div>
-                            <div class="item-row">
+                            <div class="item-row" data-item-row="i5">
                                 <div class="item-label"><span class="item-idx">5.</span> Kartu kredit + KTA + lain</div>
                                 <div class="item-hint">💡 Pembayaran minimum kartu kredit + cicilan KTA + cicilan pinjaman online / teman. Tiap bulan.</div>
                                 <div class="three-col-input">
@@ -650,7 +712,7 @@
                         </div>
 
                         <div class="subsection">
-                            <h3>C · Pengeluaran Hidup</h3>
+                            <h3>C · Pengeluaran Hidup Bulanan</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">6.</span> Belanja rutin (makan, listrik, transport, internet, pendidikan anak)</div>
                                 <div class="item-hint">💡 Semua pengeluaran rutin <strong>selain cicilan & tabungan</strong>: makanan, listrik, air, internet, transport, SPP anak, gaji ART, asuransi (kalau bukan dari Item 7). Habis tiap bulan.</div>
@@ -759,7 +821,6 @@
                             <h3>F · Aset Investasi</h3>
                             <div class="item-row" data-item-row="i11">
                                 <div class="item-label"><span class="item-idx">11.</span> Saham + reksa dana saham / campuran</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i11" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 <strong>Saham</strong>: lihat total nilai portofolio di app Stockbit/Ajaib/Mirae. <strong>Reksa dana</strong>: lihat "nilai investasi" di Bibit/Bareksa.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11_saya" placeholder="0"></div>
@@ -769,7 +830,6 @@
                             </div>
                             <div class="item-row" data-item-row="i12">
                                 <div class="item-label"><span class="item-idx">12.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i12" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 Saldo deposito tenor &gt; 1 tahun + nilai ORI/SBN/Sukuk/obligasi yang kamu pegang (kalau berencana hold sampai jatuh tempo, pakai nilai nominal).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i12_saya" placeholder="0"></div>
@@ -779,7 +839,6 @@
                             </div>
                             <div class="item-row" data-item-row="i13">
                                 <div class="item-label"><span class="item-idx">13.</span> Emas / logam mulia (investasi) + properti investasi</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i13" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 <strong>Emas batangan</strong>: harga buyback Antam / UBS hari ini (<span class="warn">bukan harga beli</span>). <strong>Properti investasi</strong> (rumah/tanah yang disewakan atau untuk dijual): pakai <strong>harga transaksi terakhir di tetangga</strong> atau properti sejenis di area sekitar.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13_saya" placeholder="0"></div>
@@ -789,7 +848,6 @@
                             </div>
                             <div class="item-row" data-item-row="i14">
                                 <div class="item-label"><span class="item-idx">14.</span> Lainnya (kripto, bisnis pribadi, unit-link)</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i14" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 <strong>Kripto</strong>: cek nilai total di Pintu/Indodax/Tokocrypto. <strong>Bisnis pribadi</strong>: perkiraan nilai jual saat ini — kalau bingung, kosongin / isi 0 (kita bahas saat konsultasi). <strong>Unit-link</strong>: lihat "nilai investasi saat ini" di app perusahaan asuransi (<span class="warn">BUKAN total premi yang sudah disetor</span>).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i14_saya" placeholder="0"></div>
@@ -809,7 +867,6 @@
                             <h3>G · Aset Pribadi</h3>
                             <div class="item-row" data-item-row="i15">
                                 <div class="item-label"><span class="item-idx">15.</span> Rumah utama (yang ditinggali) + kendaraan (&gt; Rp 50 jt)</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i15" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 <strong>Rumah utama</strong> (yang kamu tinggali sekarang): pakai <strong>harga acquisition</strong> — harga yang kamu bayar saat beli. <strong>Kendaraan</strong>: cek market value di OLX / Mobil123, hanya hitung kalau ≥ Rp 50 jt.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i15_saya" placeholder="0"></div>
@@ -819,7 +876,6 @@
                             </div>
                             <div class="item-row" data-item-row="i16">
                                 <div class="item-label"><span class="item-idx">16.</span> Perhiasan personal + barang berharga lain</div>
-                                <div class="item-skip"><label><input type="checkbox" data-item="i16" onchange="toggleSkip(this)"> Saya belum punya ini</label></div>
                                 <div class="item-hint">💡 <strong>Perhiasan emas</strong>: berat (gram) × harga buyback hari ini (<span class="warn">bukan harga toko / harga beli</span>). <strong>Jam tangan, lukisan, koleksi</strong>: estimasi nilai jual sekarang.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i16_saya" placeholder="0"></div>
@@ -1081,6 +1137,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=6"></script>
+    <script src="js/checkup.js?v=7"></script>
 </body>
 </html>
