@@ -615,7 +615,6 @@
                                 <div class="prequal-label">Aset investasi (selain tabungan biasa)</div>
                                 <div class="prequal-options">
                                     <label><input type="checkbox" data-prequal="aset_agresif" onchange="applyPrequal()"> Saham / Reksa Dana / Kripto / Unit-link</label>
-                                    <label><input type="checkbox" data-prequal="aset_bisnis" onchange="applyPrequal()"> Bisnis pribadi</label>
                                     <label><input type="checkbox" data-prequal="aset_obligasi" onchange="applyPrequal()"> Deposito jangka panjang / Obligasi (ORI/SBN/Sukuk)</label>
                                     <label><input type="checkbox" data-prequal="aset_emas" onchange="applyPrequal()"> Emas / Logam mulia</label>
                                     <label><input type="checkbox" data-prequal="aset_properti" onchange="applyPrequal()"> Properti investasi</label>
@@ -829,17 +828,8 @@
                                     <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i11_bersama" placeholder="0"></div>
                                 </div>
                             </div>
-                            <div class="item-row" data-item-row="i_bisnis">
-                                <div class="item-label"><span class="item-idx">12.</span> Bisnis pribadi</div>
-                                <div class="item-hint">💡 Perkiraan nilai jual bisnis kamu saat ini. Kalau bingung, isi 0 atau perkiraan kasar — kita bahas saat konsultasi.</div>
-                                <div class="three-col-input">
-                                    <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_saya" placeholder="0"></div>
-                                    <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_pasangan" placeholder="0"></div>
-                                    <div class="col-input-wrap"><label>Bersama</label><input class="formatted-number" inputmode="numeric" id="i_bisnis_bersama" placeholder="0"></div>
-                                </div>
-                            </div>
                             <div class="item-row" data-item-row="i12">
-                                <div class="item-label"><span class="item-idx">13.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
+                                <div class="item-label"><span class="item-idx">12.</span> Deposito (&gt; 1 tahun) + ORI / SBN / Sukuk + obligasi</div>
                                 <div class="item-hint">💡 Saldo deposito tenor &gt; 1 tahun + nilai ORI/SBN/Sukuk/obligasi yang kamu pegang (kalau berencana hold sampai jatuh tempo, pakai nilai nominal).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i12_saya" placeholder="0"></div>
@@ -848,7 +838,7 @@
                                 </div>
                             </div>
                             <div class="item-row" data-item-row="i13">
-                                <div class="item-label"><span class="item-idx">14.</span> Emas / logam mulia (investasi)</div>
+                                <div class="item-label"><span class="item-idx">13.</span> Emas / logam mulia (investasi)</div>
                                 <div class="item-hint">💡 Emas batangan: berat (gram) × harga buyback Antam / UBS hari ini (<span class="warn">bukan harga beli, bukan harga toko</span>). Cek di app Pegadaian atau website Antam.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13_saya" placeholder="0"></div>
@@ -857,7 +847,7 @@
                                 </div>
                             </div>
                             <div class="item-row" data-item-row="i13b">
-                                <div class="item-label"><span class="item-idx">15.</span> Properti investasi</div>
+                                <div class="item-label"><span class="item-idx">14.</span> Properti investasi</div>
                                 <div class="item-hint">💡 Rumah / tanah / ruko yang disewakan atau yang sedang dijual (<span class="warn">bukan rumah utama yang kamu tinggali</span>). Pakai harga transaksi terakhir di tetangga atau properti sejenis di area sekitar.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13b_saya" placeholder="0"></div>
@@ -876,7 +866,7 @@
                         <div class="subsection">
                             <h3>G · Aset Pribadi</h3>
                             <div class="item-row" data-item-row="i15">
-                                <div class="item-label"><span class="item-idx">16.</span> Rumah utama (yang ditinggali) + kendaraan (&gt; Rp 50 jt)</div>
+                                <div class="item-label"><span class="item-idx">15.</span> Rumah utama (yang ditinggali) + kendaraan (&gt; Rp 50 jt)</div>
                                 <div class="item-hint">💡 <strong>Rumah utama</strong> (yang kamu tinggali sekarang): pakai <strong>harga acquisition</strong> — harga yang kamu bayar saat beli. <strong>Kendaraan</strong>: cek market value di OLX / Mobil123, hanya hitung kalau ≥ Rp 50 jt.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i15_saya" placeholder="0"></div>
@@ -885,7 +875,7 @@
                                 </div>
                             </div>
                             <div class="item-row" data-item-row="i16">
-                                <div class="item-label"><span class="item-idx">17.</span> Perhiasan personal + barang berharga lain</div>
+                                <div class="item-label"><span class="item-idx">16.</span> Perhiasan personal + barang berharga lain</div>
                                 <div class="item-hint">💡 <strong>Perhiasan emas</strong>: berat (gram) × harga buyback hari ini (<span class="warn">bukan harga toko / harga beli</span>). <strong>Jam tangan, lukisan, koleksi</strong>: estimasi nilai jual sekarang.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i16_saya" placeholder="0"></div>
@@ -912,7 +902,7 @@
                         <div class="subsection">
                             <h3>H · Total Utang</h3>
                             <div class="item-row">
-                                <div class="item-label"><span class="item-idx">18.</span> Sisa pinjaman semua (KPR + kendaraan + KK + KTA + lain)</div>
+                                <div class="item-label"><span class="item-idx">17.</span> Sisa pinjaman semua (KPR + kendaraan + KK + KTA + lain)</div>
                                 <div class="item-hint">💡 <strong>Sisa pinjaman yang belum dibayar</strong> dari semua pinjaman aktif — KPR + cicilan kendaraan + sisa tagihan kartu kredit + KTA + pinjaman online/teman. <span class="warn">BUKAN total yang sudah dibayar selama ini.</span> Cek di mobile banking — biasanya ada angka "outstanding" atau "sisa pokok".</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i17_saya" placeholder="0"></div>
@@ -1147,6 +1137,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=9"></script>
+    <script src="js/checkup.js?v=10"></script>
 </body>
 </html>

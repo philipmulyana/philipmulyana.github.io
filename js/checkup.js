@@ -16,19 +16,19 @@ const RP_EXP_IDS = [
 ];
 const RP_SLIDER_IDS = ['rp_skill_rd', 'rp_skill_prospectus', 'rp_skill_saham'];
 
-// --- Item definitions (post Philip regrouping 2026-05-28):
+// --- Item definitions (post Philip regrouping 2026-05-28 v2):
 //     i11 = Aset agresif bucket (Saham + RD + Kripto + Unit-link merged)
-//     i_bisnis = Bisnis pribadi (separated)
 //     i12 = Deposito (>1y) + Obligasi
 //     i13 = Emas, i13b = Properti investasi (split)
-//     i14 = REMOVED (was "Lainnya: kripto + bisnis + UL" — now redistributed)
+//     i14 = REMOVED (was "Lainnya: kripto + bisnis + UL" — kripto/UL moved to i11)
+//     Bisnis pribadi REMOVED entirely — big-biz owners often don't know their biz value
 const ITEMS = {
     pemasukan:    ['i1', 'i2'],
     cicilan:      ['i3', 'i4', 'i5'],
     pengeluaran:  ['i6', 'i7'],
     tabungan:     ['i8'],
     likuid:       ['i9', 'i10'],
-    investasi:    ['i11', 'i_bisnis', 'i12', 'i13', 'i13b'],
+    investasi:    ['i11', 'i12', 'i13', 'i13b'],
     pribadi:      ['i15', 'i16'],
     utang:        ['i17']
 };
@@ -67,7 +67,6 @@ const PREQUAL_ITEM_MAP = {
     cicilan_kkb:    ['i4'],
     cicilan_kk:     ['i5'],
     aset_agresif:   ['i11'],         // Saham + RD + Kripto + Unit-link
-    aset_bisnis:    ['i_bisnis'],
     aset_obligasi:  ['i12'],
     aset_emas:      ['i13'],
     aset_properti:  ['i13b'],
@@ -171,10 +170,10 @@ function restorePrequal(prequalData) {
     if (prequalData.aset_saham && !prequalData.aset_agresif) {
         prequalData.aset_agresif = true;
     }
-    // (3) old flag aset_lain (was kripto+bisnis+UL) → split to aset_agresif (kripto+UL) + aset_bisnis
-    if (prequalData.aset_lain) {
-        if (!prequalData.aset_agresif) prequalData.aset_agresif = true;
-        if (!prequalData.aset_bisnis)  prequalData.aset_bisnis = true;
+    // (3) old flag aset_lain (was kripto+bisnis+UL) → migrated to aset_agresif (kripto+UL).
+    //     Bisnis pribadi tidak lagi di-track via prequal — big-biz owners rarely know nilai bisnis.
+    if (prequalData.aset_lain && !prequalData.aset_agresif) {
+        prequalData.aset_agresif = true;
     }
 
     Object.entries(prequalData).forEach(([flag, checked]) => {
