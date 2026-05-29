@@ -42,15 +42,50 @@ const state = {
 };
 
 // ============================================================================
+// Number formatting (Indonesian-style separator 1,000,000)
+// ============================================================================
+function formatNumberInput(input) {
+    const raw = (input.value || '').replace(/[^0-9]/g, '');
+    input.dataset.rawValue = raw;
+    if (raw === '') { input.value = ''; return; }
+    input.value = Number(raw).toLocaleString('en-US');
+}
+
+function getRawNumber(id) {
+    const el = document.getElementById(id);
+    if (!el) return '';
+    return el.dataset.rawValue || (el.value || '').replace(/[^0-9]/g, '') || '';
+}
+
+function setFormattedNumber(id, value) {
+    const el = document.getElementById(id);
+    if (!el || value == null || value === '') return;
+    const raw = String(value).replace(/[^0-9]/g, '');
+    el.dataset.rawValue = raw;
+    el.value = raw === '' ? '' : Number(raw).toLocaleString('en-US');
+}
+
+// ============================================================================
 // DOM helpers
 // ============================================================================
 function val(id) {
     const el = document.getElementById(id);
-    return el ? (el.value || '') : '';
+    if (!el) return '';
+    // Formatted-number inputs: return raw digits
+    if (el.classList && el.classList.contains('formatted-number')) {
+        return el.dataset.rawValue || (el.value || '').replace(/[^0-9]/g, '') || '';
+    }
+    return el.value || '';
 }
 function setVal(id, v) {
     const el = document.getElementById(id);
-    if (el && v != null) el.value = v;
+    if (!el || v == null) return;
+    // Formatted-number inputs: format on restore
+    if (el.classList && el.classList.contains('formatted-number')) {
+        setFormattedNumber(id, v);
+        return;
+    }
+    el.value = v;
 }
 function radioVal(name) {
     const el = document.querySelector(`input[name="${name}"]:checked`);
@@ -382,35 +417,23 @@ async function lookupKlien() {
             }
         }
 
-        // Auto-fill cashflow + asset dari Financial Snapshot
-        if (fs.pemasukan_bulanan) {
-            const el = document.getElementById('s2_income_household');
-            if (el && !el.value) {
-                el.value = Math.round(fs.pemasukan_bulanan);
-                showAutoFillBadge('autofill_income');
-            }
+        // Auto-fill cashflow + asset dari Financial Snapshot (using formatted-number setter)
+        if (fs.pemasukan_bulanan && !val('s2_income_household')) {
+            setFormattedNumber('s2_income_household', Math.round(fs.pemasukan_bulanan));
+            showAutoFillBadge('autofill_income');
         }
-        if (fs.pengeluaran_bulanan) {
-            const el = document.getElementById('s2_expense_current');
-            if (el && !el.value) {
-                el.value = Math.round(fs.pengeluaran_bulanan);
-                showAutoFillBadge('autofill_expense');
-            }
+        if (fs.pengeluaran_bulanan && !val('s2_expense_current')) {
+            setFormattedNumber('s2_expense_current', Math.round(fs.pengeluaran_bulanan));
+            showAutoFillBadge('autofill_expense');
         }
-        if (fs.aset_pribadi) {
-            const el = document.getElementById('s3_property');
-            if (el && !el.value) {
-                el.value = Math.round(fs.aset_pribadi);
-                showAutoFillBadge('autofill_property');
-            }
+        if (fs.aset_pribadi && !val('s3_property')) {
+            setFormattedNumber('s3_property', Math.round(fs.aset_pribadi));
+            showAutoFillBadge('autofill_property');
         }
         const liquidTotal = (fs.aset_likuid || 0) + (fs.aset_investasi || 0);
-        if (liquidTotal > 0) {
-            const el = document.getElementById('s3_liquid');
-            if (el && !el.value) {
-                el.value = Math.round(liquidTotal);
-                showAutoFillBadge('autofill_liquid');
-            }
+        if (liquidTotal > 0 && !val('s3_liquid')) {
+            setFormattedNumber('s3_liquid', Math.round(liquidTotal));
+            showAutoFillBadge('autofill_liquid');
         }
 
         saveState();
@@ -467,7 +490,17 @@ function submitPension() {
 document.addEventListener('DOMContentLoaded', () => {
     restoreState();
 
-    document.querySelectorAll('#pension-form input, #pension-form select, #pension-form textarea').forEach(el => {
+    // Initialize formatted-number inputs (saat restore selesai)
+    document.querySelectorAll('.formatted-number').forEach(input => {
+        if (input.value) formatNumberInput(input);
+        input.addEventListener('input', () => {
+            formatNumberInput(input);
+            saveState();
+            refreshConditionals();
+        });
+    });
+
+    document.querySelectorAll('#pension-form input:not(.formatted-number), #pension-form select, #pension-form textarea').forEach(el => {
         const evt = (el.tagName === 'SELECT' || el.type === 'radio' || el.type === 'checkbox') ? 'change' : 'input';
         el.addEventListener(evt, () => {
             saveState();

@@ -336,25 +336,24 @@
                     <div class="field-grid-2">
                         <div class="field-row">
                             <label>Total income household per bulan (Rp) <span class="autofill-badge" id="autofill_income" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="number" id="s2_income_household" placeholder="auto-fill dari Financial Checkup">
-                            <div class="hint">Gabungan income klien + pasangan (kalau ada). Dari Financial Checkup "Pemasukan Bulanan".</div>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s2_income_household" placeholder="contoh: 80,000,000">
+                            <div class="hint">Gabungan income klien + pasangan (kalau ada).</div>
                         </div>
                         <div class="field-row">
                             <label>Total pengeluaran current per bulan (Rp) <span class="autofill-badge" id="autofill_expense" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="number" id="s2_expense_current" placeholder="auto-fill dari Financial Checkup">
-                            <div class="hint">Dari Financial Checkup "Pengeluaran Bulanan".</div>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s2_expense_current" placeholder="contoh: 80,000,000">
                         </div>
                     </div>
 
                     <div class="field-row">
                         <label>Passive income (Rp/bln)</label>
-                        <input type="number" id="s2_income_passive" placeholder="contoh: 7500000">
+                        <input type="text" inputmode="numeric" class="formatted-number" id="s2_income_passive" placeholder="contoh: 7,500,000">
                         <div class="hint">Sewa properti, dividen rutin, bisnis residual income current. Skip kalau ga ada.</div>
                     </div>
 
                     <div class="field-row" style="padding:1rem;background:#fef3c7;border:2px solid #f59e0b;border-radius:0.625rem;">
                         <label style="color:#92400e;font-weight:700;">🎯 Target pengeluaran di pensiun (TODAY's Rp, bukan future) <span class="req">*</span></label>
-                        <input type="number" id="s2_expense_target_pensiun" placeholder="contoh: 63000000" style="border-color:#f59e0b;">
+                        <input type="text" inputmode="numeric" class="formatted-number" id="s2_expense_target_pensiun" placeholder="contoh: 63,000,000" style="border-color:#f59e0b;">
                         <div class="hint" style="background:white;border-left-color:#f59e0b;color:#78350f;">
                             <strong>THE KEY INPUT — di nilai uang HARI INI.</strong><br>
                             Mulai dari expense current → <strong>minus</strong> yang lunas/terminate di pensiun (cicilan KPR, cicilan mobil, SPP anak yang mandiri) → <strong>plus</strong> yang naik di pensiun (healthcare 3-10x, travel 2-3x, hobby/club, caregiving buffer).<br>
@@ -373,20 +372,20 @@
                     <div class="field-grid-2">
                         <div class="field-row">
                             <label>Total property value (Rp) <span class="autofill-badge" id="autofill_property" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="number" id="s3_property" placeholder="auto-fill dari Financial Checkup">
-                            <div class="hint">Dari Financial Checkup "Aset Pribadi" (rumah utama acquisition cost).</div>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_property" placeholder="contoh: 8,000,000,000">
+                            <div class="hint">Rumah utama (acquisition cost) + properti investasi gabungan.</div>
                         </div>
                         <div class="field-row">
                             <label>Total liquid investasi (Rp) <span class="autofill-badge" id="autofill_liquid" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="number" id="s3_liquid" placeholder="auto-fill dari Financial Checkup">
-                            <div class="hint">Dari Financial Checkup "Aset Likuid + Aset Investasi" gabungan (RD + saham + deposito + ORI + emas + DPLK).</div>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_liquid" placeholder="contoh: 3,500,000,000">
+                            <div class="hint">RD + saham + deposito + ORI + emas + DPLK gabungan.</div>
                         </div>
                     </div>
 
                     <div class="field-row">
                         <label>Expected income passive di pensiun (Rp/bln)</label>
-                        <input type="number" id="s3_passive_pensiun" placeholder="contoh: 12000000">
-                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun. Klien self-report estimate, bukan dari Financial Checkup.</div>
+                        <input type="text" inputmode="numeric" class="formatted-number" id="s3_passive_pensiun" placeholder="contoh: 12,000,000">
+                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun. Klien self-report estimate.</div>
                     </div>
 
                     <div class="field-row">
