@@ -17,16 +17,13 @@
     <style>
         body { font-family: 'Inter', system-ui, sans-serif; }
 
-        /* === Internal notice === */
         .internal-notice {
             background: #fef3c7; border: 1.5px solid #fcd34d;
             border-radius: 0.75rem; padding: 0.875rem 1.125rem;
             font-size: 0.8125rem; color: #78350f;
             display: flex; gap: 0.625rem; align-items: flex-start;
         }
-        .internal-notice strong { font-weight: 700; }
 
-        /* === Section card === */
         .section-card {
             background: #f9fafb; border-radius: 1.25rem;
             padding: 1.25rem 1.5rem; margin-bottom: 1rem;
@@ -36,7 +33,6 @@
             margin-bottom: 0.5rem; letter-spacing: -0.01em;
         }
 
-        /* === Field row === */
         .field-row { margin-bottom: 0.875rem; }
         .field-row:last-child { margin-bottom: 0; }
         .field-row label {
@@ -55,17 +51,26 @@
         .field-row input[type="email"],
         .field-row input[type="tel"],
         .field-row input[type="date"],
-        .field-row select {
+        .field-row select,
+        .field-row textarea {
             width: 100%; padding: 0.625rem 0.875rem;
             border: 1px solid #e5e7eb; border-radius: 0.5rem;
             font-size: 0.875rem; font-variant-numeric: tabular-nums;
-            background: white;
+            background: white; font-family: inherit;
         }
-        .field-row input:focus, .field-row select:focus {
+        .field-row textarea { min-height: 5rem; line-height: 1.5; }
+        .field-row input:focus, .field-row select:focus, .field-row textarea:focus {
             outline: none; border-color: black;
         }
 
-        /* === Radio group inline === */
+        .field-grid-2 {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0.625rem;
+        }
+        @media (max-width: 640px) {
+            .field-grid-2 { grid-template-columns: 1fr; }
+        }
+
         .radio-inline {
             display: flex; flex-wrap: wrap; gap: 0.5rem;
         }
@@ -81,10 +86,9 @@
             border-color: black; background: #f3f4f6; font-weight: 600;
         }
 
-        /* === Anak rows (dynamic) === */
-        .anak-list { display: flex; flex-direction: column; gap: 0.625rem; }
+        .anak-list { display: flex; flex-direction: column; gap: 0.5rem; }
         .anak-row {
-            display: grid; grid-template-columns: 2fr 1.5fr 1fr auto;
+            display: grid; grid-template-columns: 1fr 1fr auto;
             gap: 0.5rem; align-items: end;
             padding: 0.625rem 0.875rem; background: white;
             border: 1px solid #e5e7eb; border-radius: 0.625rem;
@@ -95,82 +99,30 @@
             text-transform: uppercase; letter-spacing: 0.05em;
             margin-bottom: 0.25rem; display: block;
         }
-        .anak-row .anak-remove {
+        .anak-remove {
             background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
             border-radius: 0.375rem; padding: 0.375rem 0.5rem;
             font-size: 0.75rem; cursor: pointer; font-weight: 600;
         }
-        .anak-row .anak-remove:hover { background: #fee2e2; }
         .anak-add-btn {
-            margin-top: 0.625rem; padding: 0.5rem 0.875rem;
+            margin-top: 0.5rem; padding: 0.5rem 0.875rem;
             border: 1px dashed #9ca3af; background: white;
             border-radius: 0.5rem; cursor: pointer;
             font-size: 0.8125rem; color: #6b7280; font-weight: 500;
             width: 100%;
         }
         .anak-add-btn:hover { border-color: black; color: black; }
-        @media (max-width: 640px) {
-            .anak-row {
-                grid-template-columns: 1fr 1fr;
-            }
-            .anak-row .anak-remove { grid-column: 2; justify-self: end; }
-        }
 
-        /* === Accordion === */
-        .accordion-section {
-            background: white; border: 1px solid #e5e7eb;
-            border-radius: 1rem; margin-bottom: 0.75rem;
-            overflow: hidden;
-        }
-        .accordion-section[open] { border-color: #111827; }
-        .accordion-section summary {
-            cursor: pointer; padding: 1rem 1.25rem;
-            display: flex; align-items: center; gap: 0.875rem;
-            font-size: 0.9375rem; user-select: none;
-            list-style: none;
-        }
-        .accordion-section summary::-webkit-details-marker { display: none; }
-        .accordion-section summary::after {
-            content: "▾"; margin-left: auto;
-            color: #9ca3af; transition: transform 0.2s;
-            font-size: 0.75rem;
-        }
-        .accordion-section[open] summary::after { transform: rotate(180deg); }
-        .accordion-section summary:hover { background: #f9fafb; }
-        .layer-num {
-            font-size: 0.6875rem; font-weight: 800;
-            background: #111827; color: white;
-            padding: 0.25rem 0.5rem; border-radius: 0.375rem;
-            min-width: 2rem; text-align: center;
-        }
-        .layer-title {
-            font-weight: 700; color: #111827; flex: 1;
-        }
-        .layer-status {
-            font-size: 0.6875rem; font-weight: 600;
-            padding: 0.25rem 0.625rem; border-radius: 999px;
-        }
-        .layer-status.pending { background: #f3f4f6; color: #6b7280; }
-        .layer-status.complete { background: #d1fae5; color: #065f46; }
-        .layer-status.placeholder { background: #fef3c7; color: #92400e; }
-        .accordion-content {
-            padding: 0 1.25rem 1.25rem 1.25rem;
-        }
-
-        /* === Save status indicator === */
         .save-indicator {
             position: fixed; bottom: 1rem; right: 1rem;
             background: white; border: 1px solid #e5e7eb;
             border-radius: 999px; padding: 0.375rem 0.875rem;
             font-size: 0.6875rem; color: #6b7280;
             display: flex; align-items: center; gap: 0.375rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            z-index: 50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 50;
         }
-        .save-indicator.saving { color: #d97706; }
         .save-indicator.saved { color: #059669; }
 
-        /* === Submit === */
         .submit-bar {
             margin-top: 1.5rem; padding: 1.25rem;
             background: black; border-radius: 1rem;
@@ -180,7 +132,6 @@
             background: linear-gradient(to right, #059669, #10b981);
             color: white; font-weight: 700; font-size: 0.9375rem;
             border-radius: 0.625rem; cursor: pointer; border: 0;
-            transition: all 0.15s;
         }
         .submit-bar button:hover { background: linear-gradient(to right, #047857, #059669); }
         .submit-bar .submit-hint {
@@ -188,7 +139,6 @@
             margin-top: 0.625rem;
         }
 
-        /* === Klien lookup === */
         .lookup-row {
             display: flex; gap: 0.5rem; align-items: end;
         }
@@ -211,12 +161,16 @@
             font-size: 0.8125rem; font-weight: 700; margin-bottom: 0.375rem;
         }
 
-        /* === Conditional show/hide === */
         .conditional { display: none; }
         .conditional.show { display: block; }
 
         .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
         .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+
+        .autofill-badge {
+            font-size: 0.625rem; color: #059669; font-weight: 600;
+            margin-left: 0.375rem;
+        }
     </style>
 </head>
 <body class="bg-white text-black antialiased">
@@ -229,8 +183,7 @@
             <div class="internal-notice">
                 <span>⚠️</span>
                 <div>
-                    <strong>INTERNAL ADVISOR TOOL.</strong> Tool ini untuk Philip fill post-interview dengan klien.
-                    Klien <strong>tidak</strong> akses page ini. URL stealth (bookmark-only). PDF deliverable di-generate setelah submit, lalu Philip walkthrough klien di Zoom session.
+                    <strong>INTERNAL ADVISOR TOOL.</strong> Tool ini untuk Philip fill post-interview dengan klien. URL stealth (bookmark-only). PDF deliverable di-generate setelah submit, lalu Philip walkthrough klien di Zoom session.
                 </div>
             </div>
         </div>
@@ -240,17 +193,16 @@
         <div class="max-w-3xl mx-auto">
             <span class="text-xs text-amber-600 font-medium uppercase tracking-wider block">Pension Plan — Advisor Form</span>
             <h1 class="text-3xl md:text-4xl font-black mt-1">Pension Plan Builder</h1>
-            <p class="text-gray-500 text-sm mt-3">Paid Rp 2jt deliverable. 11 layer input → calc engine → PDF generator → walkthrough Zoom + email delivery.</p>
-            <p class="text-xs text-gray-400 mt-3">📋 11 sections (accordion) · 💾 Auto-save localStorage · 🚀 Stage 2 build in progress (F1 active, F2-F11 placeholder)</p>
+            <p class="text-gray-500 text-sm mt-3">Paid Rp 2jt deliverable. Simplified MVP — 6 sections, ~25 fields, ~10-15 min fill per klien.</p>
         </div>
     </section>
 
-    <!-- Klien lookup (Risk Profile inheritance) -->
+    <!-- Klien Risk Profile Lookup -->
     <section class="px-6 mb-2 fade-up">
         <div class="max-w-3xl mx-auto">
             <div class="section-card">
                 <h2>🔗 Klien Risk Profile Lookup</h2>
-                <p class="text-xs text-gray-500 mb-3">Optional. Lookup Risk Profile dari Financial Checkup submission (kalau klien sudah isi). Inherit ke Pension Plan.</p>
+                <p class="text-xs text-gray-500 mb-3">Optional. Lookup Risk Profile dari Financial Checkup submission (kalau klien sudah isi). Auto-fill nama + usia ke Section 1.</p>
                 <div class="lookup-row">
                     <div>
                         <input type="email" id="klien_lookup_email" placeholder="klien@email.com">
@@ -262,650 +214,297 @@
         </div>
     </section>
 
-    <!-- Form: 11 accordion sections -->
+    <!-- Form -->
     <section class="px-6 pb-16 fade-up">
         <div class="max-w-3xl mx-auto">
 
             <form id="pension-form" onsubmit="event.preventDefault(); submitPension();">
 
                 <!-- ============================================================ -->
-                <!-- F1: Identity & Household                                   -->
+                <!-- SECTION 1: Profil & Lokasi                                  -->
                 <!-- ============================================================ -->
-                <details class="accordion-section" open>
-                    <summary>
-                        <span class="layer-num">F1</span>
-                        <span class="layer-title">Identity & Household</span>
-                        <span class="layer-status pending" id="status-f1">Pending</span>
-                    </summary>
-                    <div class="accordion-content">
+                <div class="section-card">
+                    <h2>1. Profil Klien & Lokasi</h2>
+                    <p class="text-xs text-gray-500 mb-4">Data dasar klien + lokasi pensiun.</p>
 
-                        <!-- Klien -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👤 Klien</h3>
-
-                            <div class="field-row">
-                                <label>Nama lengkap klien <span class="req">*</span> <span class="autofill-badge" id="autofill_nama" style="display:none;font-size:0.625rem;color:#059669;font-weight:600;margin-left:0.375rem;">✓ Auto-filled</span></label>
-                                <input type="text" id="f1_nama_pemegang" placeholder="contoh: Hendra Pranata">
-                            </div>
-
-                            <div class="field-row">
-                                <label>Gender <span class="req">*</span></label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f1_gender_pemegang" value="M"> Laki-laki</label>
-                                    <label><input type="radio" name="f1_gender_pemegang" value="F"> Perempuan</label>
-                                </div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Tanggal lahir <span class="req">*</span> <span id="usia_hint_rp" style="display:none;font-size:0.6875rem;color:#059669;font-weight:600;margin-left:0.375rem;"></span></label>
-                                <input type="date" id="f1_dob_pemegang">
-                                <div class="hint">Drives age math, longevity assumption, BPJS-TK plafon. Reference dari Risk Profile akan ditampilkan kalau ada.</div>
-                            </div>
-                        </div>
-
-                        <!-- Lokasi -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">📍 Lokasi & Pensiun Anchor</h3>
-
-                            <div class="field-row">
-                                <label>Domisili sekarang <span class="req">*</span></label>
-                                <select id="f1_domisili_kota">
-                                    <option value="">— Pilih kota —</option>
-                                    <option value="jakarta">Jakarta (DKI)</option>
-                                    <option value="tangsel">Tangerang Selatan / BSD</option>
-                                    <option value="bekasi">Bekasi</option>
-                                    <option value="bandung">Bandung</option>
-                                    <option value="surabaya">Surabaya</option>
-                                    <option value="semarang">Semarang</option>
-                                    <option value="yogyakarta">Yogyakarta</option>
-                                    <option value="denpasar">Denpasar (Bali)</option>
-                                    <option value="medan">Medan</option>
-                                    <option value="makassar">Makassar</option>
-                                    <option value="batam">Batam</option>
-                                    <option value="other">Lainnya...</option>
-                                </select>
-                            </div>
-
-                            <div class="field-row conditional" id="f1_domisili_other_wrap">
-                                <label>Sebutkan kota</label>
-                                <input type="text" id="f1_domisili_other" placeholder="contoh: Solo">
-                            </div>
-
-                            <div class="field-row">
-                                <label>Anchor usia pensiun klien <span class="req">*</span></label>
-                                <input type="number" id="f1_anchor_pensiun_usia" min="50" max="75" placeholder="contoh: 55">
-                                <div class="hint">Target usia klien mau pensiun. Akan di-cross-check vs current age + 5.</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Anchor lokasi pensiun</label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f1_anchor_lokasi_same" value="true" checked> Sama dengan domisili</label>
-                                    <label><input type="radio" name="f1_anchor_lokasi_same" value="false"> Pindah ke kota lain</label>
-                                </div>
-                            </div>
-
-                            <div class="field-row conditional" id="f1_anchor_lokasi_kota_wrap">
-                                <label>Kota tujuan pensiun</label>
-                                <select id="f1_anchor_lokasi_kota">
-                                    <option value="">— Pilih kota tujuan —</option>
-                                    <option value="jakarta">Jakarta</option>
-                                    <option value="bandung">Bandung</option>
-                                    <option value="yogyakarta">Yogyakarta</option>
-                                    <option value="denpasar">Denpasar (Bali)</option>
-                                    <option value="surabaya">Surabaya</option>
-                                    <option value="semarang">Semarang</option>
-                                    <option value="other">Lainnya (specify in notes)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Marital -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💑 Marital Status</h3>
-
-                            <div class="field-row">
-                                <label>Status <span class="req">*</span></label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f1_marital" value="single"> Single</label>
-                                    <label><input type="radio" name="f1_marital" value="married"> Menikah</label>
-                                    <label><input type="radio" name="f1_marital" value="divorced"> Cerai</label>
-                                </div>
-                            </div>
-
-                            <!-- Married-specific fields -->
-                            <div class="conditional" id="f1_married_wrap">
-                                <div class="field-row">
-                                    <label>Nama pasangan klien <span class="req">*</span></label>
-                                    <input type="text" id="f1_pasangan_nama" placeholder="contoh: Lisa Pranata">
-                                </div>
-                                <div class="field-row">
-                                    <label>Gender pasangan <span class="req">*</span></label>
-                                    <div class="radio-inline">
-                                        <label><input type="radio" name="f1_gender_pasangan" value="M"> Laki-laki</label>
-                                        <label><input type="radio" name="f1_gender_pasangan" value="F"> Perempuan</label>
-                                    </div>
-                                </div>
-                                <div class="field-row">
-                                    <label>Tanggal lahir pasangan <span class="req">*</span></label>
-                                    <input type="date" id="f1_dob_pasangan">
-                                </div>
-                                <div class="field-row">
-                                    <label>Anchor usia pensiun pasangan</label>
-                                    <input type="number" id="f1_anchor_pensiun_usia_pasangan" min="50" max="75" placeholder="contoh: 60">
-                                    <div class="hint">Boleh beda dengan klien utama (staggered retire scenario).</div>
-                                </div>
-                                <div class="field-row">
-                                    <label>Perjanjian kawin</label>
-                                    <select id="f1_perjanjian_kawin">
-                                        <option value="none">Tidak ada (default — harta bersama)</option>
-                                        <option value="pisah">Pisah harta (notarized pre-nuptial)</option>
-                                        <option value="pisah_modif">Pisah harta dengan modifikasi (post-MK 69/2015)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Anak -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👶 Anak</h3>
-
-                            <div id="anak_list" class="anak-list">
-                                <!-- Dynamic anak rows added here -->
-                            </div>
-                            <button type="button" class="anak-add-btn" onclick="addAnak()">+ Tambah anak</button>
-                        </div>
-
-                        <!-- Dependents -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">👥 Dependents Lain</h3>
-
-                            <div class="field-row">
-                                <label>Tanggungan selain anak (orangtua, sibling, dst)</label>
-                                <input type="text" id="f1_dependents_lain" placeholder="contoh: Ortu Bapak (umur 72), Adik bungsu">
-                                <div class="hint">Sandwich gen flag. Drives Section 7 + 12 caveat di PDF.</div>
-                            </div>
-                        </div>
-
+                    <div class="field-row">
+                        <label>Nama klien <span class="req">*</span> <span class="autofill-badge" id="autofill_nama" style="display:none;">✓ Auto-filled</span></label>
+                        <input type="text" id="s1_nama" placeholder="contoh: Hendra Pranata">
                     </div>
-                </details>
+
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Usia klien <span class="req">*</span> <span class="autofill-badge" id="autofill_usia" style="display:none;">✓ Auto-filled</span></label>
+                            <input type="number" id="s1_usia" min="20" max="80" placeholder="contoh: 42">
+                        </div>
+                        <div class="field-row">
+                            <label>Gender klien <span class="req">*</span></label>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="s1_gender" value="M"> Laki-laki</label>
+                                <label><input type="radio" name="s1_gender" value="F"> Perempuan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <label>Target usia pensiun klien <span class="req">*</span></label>
+                        <input type="number" id="s1_target_retire" min="40" max="75" placeholder="contoh: 55">
+                    </div>
+
+                    <div class="field-row">
+                        <label>Marital status <span class="req">*</span></label>
+                        <div class="radio-inline">
+                            <label><input type="radio" name="s1_marital" value="single"> Single</label>
+                            <label><input type="radio" name="s1_marital" value="married"> Menikah</label>
+                            <label><input type="radio" name="s1_marital" value="divorced"> Cerai</label>
+                        </div>
+                    </div>
+
+                    <!-- Pasangan (conditional) -->
+                    <div class="conditional" id="s1_pasangan_wrap">
+                        <div class="field-row">
+                            <label>Nama pasangan</label>
+                            <input type="text" id="s1_pasangan_nama" placeholder="contoh: Lisa Pranata">
+                        </div>
+                        <div class="field-grid-2">
+                            <div class="field-row">
+                                <label>Usia pasangan</label>
+                                <input type="number" id="s1_pasangan_usia" min="20" max="80" placeholder="contoh: 38">
+                            </div>
+                            <div class="field-row">
+                                <label>Gender pasangan</label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="s1_pasangan_gender" value="M"> Laki-laki</label>
+                                    <label><input type="radio" name="s1_pasangan_gender" value="F"> Perempuan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label>Target usia pensiun pasangan</label>
+                            <input type="number" id="s1_pasangan_target_retire" min="40" max="75" placeholder="contoh: 60">
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <label>Anak (kalau ada)</label>
+                        <div id="anak_list" class="anak-list"></div>
+                        <button type="button" class="anak-add-btn" onclick="addAnak()">+ Tambah anak</button>
+                    </div>
+
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Domisili kota</label>
+                            <select id="s1_domisili">
+                                <option value="">— Pilih —</option>
+                                <option value="jakarta">Jakarta</option>
+                                <option value="tangsel">Tangerang Selatan / BSD</option>
+                                <option value="bekasi">Bekasi</option>
+                                <option value="bandung">Bandung</option>
+                                <option value="surabaya">Surabaya</option>
+                                <option value="semarang">Semarang</option>
+                                <option value="yogyakarta">Yogyakarta</option>
+                                <option value="denpasar">Denpasar (Bali)</option>
+                                <option value="medan">Medan</option>
+                                <option value="makassar">Makassar</option>
+                                <option value="batam">Batam</option>
+                                <option value="other">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="field-row">
+                            <label>Lokasi pensiun</label>
+                            <select id="s1_lokasi_pensiun">
+                                <option value="same">Sama dengan domisili</option>
+                                <option value="jakarta">Pindah ke Jakarta</option>
+                                <option value="bandung">Pindah ke Bandung</option>
+                                <option value="yogyakarta">Pindah ke Yogyakarta</option>
+                                <option value="denpasar">Pindah ke Denpasar (Bali)</option>
+                                <option value="surabaya">Pindah ke Surabaya</option>
+                                <option value="semarang">Pindah ke Semarang</option>
+                                <option value="other">Pindah ke lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- ============================================================ -->
-                <!-- F2-F11: Placeholder accordion sections (Stage 2 next session) -->
+                <!-- SECTION 2: Cashflow Snapshot                                -->
                 <!-- ============================================================ -->
+                <div class="section-card">
+                    <h2>2. Cashflow</h2>
+                    <p class="text-xs text-gray-500 mb-4">Income + expense + <strong>target pengeluaran di pensiun</strong> (THE KEY INPUT).</p>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F2</span>
-                        <span class="layer-title">Employment Matrix (per earner)</span>
-                        <span class="layer-status pending" id="status-f2">Pending</span>
-                    </summary>
-                    <div class="accordion-content">
-
-                        <!-- Klien Employment -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💼 Pekerjaan Klien</h3>
-
-                            <div class="field-row">
-                                <label>Tipe pekerjaan <span class="req">*</span></label>
-                                <select id="f2_emp_type_pemegang">
-                                    <option value="">— Pilih —</option>
-                                    <option value="pns">PNS / ASN</option>
-                                    <option value="bumn">BUMN Karyawan</option>
-                                    <option value="swasta_tetap">Swasta Tetap (PKWTT)</option>
-                                    <option value="swasta_kontrak">Swasta Kontrak (PKWT)</option>
-                                    <option value="bpu">BPU / Mandiri (BPJS-TK voluntary)</option>
-                                    <option value="freelancer">Freelancer</option>
-                                    <option value="business_owner">Business Owner (PT/CV)</option>
-                                    <option value="profesional">Profesional Independen (dokter/advokat/konsultan)</option>
-                                </select>
-                                <div class="hint">Drives BPJS-TK access matrix (JP / JHT / JKK / JKM / JKP eligibility).</div>
-                            </div>
-
-                            <!-- BPJS-TK access matrix auto-display -->
-                            <div id="bpjs_matrix_pemegang" style="display:none;margin:0.5rem 0 0.875rem;padding:0.625rem 0.875rem;background:#eff6ff;border:1px solid #93c5fd;border-radius:0.5rem;">
-                                <div style="font-size:0.6875rem;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">📋 BPJS-TK Access (auto)</div>
-                                <div id="bpjs_matrix_pemegang_content" style="font-size:0.75rem;color:#1e3a8a;line-height:1.5;"></div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Nama employer / perusahaan</label>
-                                <input type="text" id="f2_employer_pemegang" placeholder="contoh: PT Astra International">
-                            </div>
-
-                            <div class="field-row">
-                                <label>Industri</label>
-                                <select id="f2_industri_pemegang">
-                                    <option value="">— Pilih —</option>
-                                    <option value="banking">Banking</option>
-                                    <option value="tech">Tech</option>
-                                    <option value="manufaktur">Manufaktur</option>
-                                    <option value="healthcare">Healthcare</option>
-                                    <option value="consulting">Consulting</option>
-                                    <option value="fmcg">FMCG</option>
-                                    <option value="property">Property</option>
-                                    <option value="mining_energy">Mining / Energy</option>
-                                    <option value="telco">Telco</option>
-                                    <option value="lainnya">Lainnya</option>
-                                </select>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Posisi / role</label>
-                                <input type="text" id="f2_posisi_pemegang" placeholder="contoh: VP Finance">
-                            </div>
-
-                            <div class="field-row">
-                                <label>Gaji gross bulanan (Rp) <span class="req">*</span></label>
-                                <input type="number" id="f2_gaji_gross_pemegang" placeholder="contoh: 50000000">
-                                <div class="hint">Cross-check dengan F5 income. Drives BPJS-JP plafon (Rp 10.547.400/bln per Mar 2025) + JHT projection.</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Komponen variable (bonus / komisi / RSU)</label>
-                                <input type="text" id="f2_gaji_variable_pemegang" placeholder="contoh: bonus tahunan ~3-4 bulan gaji">
-                            </div>
-
-                            <div class="field-row">
-                                <label>Tahun mulai kerja (career start)</label>
-                                <input type="number" id="f2_tahun_kerja_pemegang" min="1970" max="2026" placeholder="contoh: 2008">
-                            </div>
-
-                            <div class="field-row">
-                                <label>BPJS-TK status</label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f2_bpjstk_status_pemegang" value="aktif"> Aktif</label>
-                                    <label><input type="radio" name="f2_bpjstk_status_pemegang" value="not_enrolled"> Belum enroll</label>
-                                    <label><input type="radio" name="f2_bpjstk_status_pemegang" value="unknown"> Belum tahu</label>
-                                </div>
-                                <div class="hint">Just capture status existence, BUKAN projection JHT (too many variables: job change, salary change).</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>DPPK aktif di employer?</label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f2_dppk_pemegang" value="yes"> Ya, aktif</label>
-                                    <label><input type="radio" name="f2_dppk_pemegang" value="no"> Tidak ada</label>
-                                    <label><input type="radio" name="f2_dppk_pemegang" value="unknown"> Belum tahu</label>
-                                </div>
-                                <div class="hint">Kalau Ya → F3 section terbuka untuk capture employer dapen-nya. Umumnya: BUMN besar (Pertamina/PLN/Telkom/BCA/Mandiri/BNI/BRI) + multinational (Astra/Unilever/Nestle).</div>
-                            </div>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Income klien per bulan (Rp)</label>
+                            <input type="number" id="s2_income_klien" placeholder="contoh: 50000000">
+                            <div class="hint">Total gross income per bulan (gaji + tunjangan + bonus dirata-rata).</div>
                         </div>
-
-                        <!-- Pasangan Employment (conditional kalau married) -->
-                        <div class="conditional" id="f2_pasangan_wrap">
-                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;border-left:3px solid #e5e7eb;">
-                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">💼 Pekerjaan Pasangan Klien</h3>
-
-                                <div class="field-row">
-                                    <label>Tipe pekerjaan pasangan</label>
-                                    <select id="f2_emp_type_pasangan">
-                                        <option value="">— Pilih (skip kalau pasangan tidak kerja) —</option>
-                                        <option value="pns">PNS / ASN</option>
-                                        <option value="bumn">BUMN Karyawan</option>
-                                        <option value="swasta_tetap">Swasta Tetap (PKWTT)</option>
-                                        <option value="swasta_kontrak">Swasta Kontrak (PKWT)</option>
-                                        <option value="bpu">BPU / Mandiri</option>
-                                        <option value="freelancer">Freelancer</option>
-                                        <option value="business_owner">Business Owner (PT/CV)</option>
-                                        <option value="profesional">Profesional Independen</option>
-                                        <option value="not_working">Tidak bekerja (ibu rumah tangga / lainnya)</option>
-                                    </select>
-                                </div>
-
-                                <div id="bpjs_matrix_pasangan" style="display:none;margin:0.5rem 0 0.875rem;padding:0.625rem 0.875rem;background:#eff6ff;border:1px solid #93c5fd;border-radius:0.5rem;">
-                                    <div style="font-size:0.6875rem;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">📋 BPJS-TK Access (auto)</div>
-                                    <div id="bpjs_matrix_pasangan_content" style="font-size:0.75rem;color:#1e3a8a;line-height:1.5;"></div>
-                                </div>
-
-                                <div class="conditional" id="f2_pasangan_working_wrap">
-                                    <div class="field-row">
-                                        <label>Nama employer / perusahaan pasangan</label>
-                                        <input type="text" id="f2_employer_pasangan" placeholder="contoh: bisnis fashion online">
-                                    </div>
-
-                                    <div class="field-row">
-                                        <label>Gaji gross bulanan pasangan (Rp)</label>
-                                        <input type="number" id="f2_gaji_gross_pasangan" placeholder="contoh: 30000000">
-                                    </div>
-
-                                    <div class="field-row">
-                                        <label>Tahun mulai kerja pasangan</label>
-                                        <input type="number" id="f2_tahun_kerja_pasangan" min="1970" max="2026" placeholder="contoh: 2012">
-                                    </div>
-
-                                    <div class="field-row">
-                                        <label>BPJS-TK status pasangan</label>
-                                        <div class="radio-inline">
-                                            <label><input type="radio" name="f2_bpjstk_status_pasangan" value="aktif"> Aktif</label>
-                                            <label><input type="radio" name="f2_bpjstk_status_pasangan" value="not_enrolled"> Belum enroll</label>
-                                            <label><input type="radio" name="f2_bpjstk_status_pasangan" value="unknown"> Belum tahu</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="field-row">
-                                        <label>DPPK aktif di employer pasangan?</label>
-                                        <div class="radio-inline">
-                                            <label><input type="radio" name="f2_dppk_pasangan" value="yes"> Ya</label>
-                                            <label><input type="radio" name="f2_dppk_pasangan" value="no"> Tidak</label>
-                                            <label><input type="radio" name="f2_dppk_pasangan" value="unknown"> Belum tahu</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="field-row conditional" id="s2_income_pasangan_wrap">
+                            <label>Income pasangan per bulan (Rp)</label>
+                            <input type="number" id="s2_income_pasangan" placeholder="contoh: 30000000">
                         </div>
-
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F3</span>
-                        <span class="layer-title">DPPK Landscape (conditional)</span>
-                        <span class="layer-status pending" id="status-f3">N/A — set di F2</span>
-                    </summary>
-                    <div class="accordion-content">
-
-                        <!-- Empty state — kalau ga ada DPPK -->
-                        <div id="f3_empty_state" style="padding:1rem 1.25rem;background:#f9fafb;border-radius:0.75rem;border:1px dashed #d1d5db;text-align:center;color:#6b7280;font-size:0.8125rem;">
-                            <div style="font-size:0.875rem;margin-bottom:0.25rem;">🚫 Section ini auto-hidden</div>
-                            <div>F3 muncul kalau F2 set DPPK aktif (klien atau pasangan = "Ya"). Set DPPK di F2 dulu untuk capture detail.</div>
-                        </div>
-
-                        <!-- DPPK Pemegang -->
-                        <div class="conditional" id="f3_pemegang_wrap">
-                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.25rem;color:#111827;">🏢 DPPK Klien</h3>
-                                <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">DPPK = Dana Pensiun Pemberi Kerja (sponsored by employer, terpisah dari BPJS-TK). Capture eksistensi + employer info, BUKAN projection (terlalu kompleks karena variables: job change, salary change).</p>
-
-                                <div class="field-row">
-                                    <label>Nama DPPK / Dapen sponsor</label>
-                                    <input type="text" id="f3_dppk_nama_pemegang" placeholder="contoh: Dana Pensiun Pertamina">
-                                    <div class="hint">Biasanya di SK Dapen / annual statement employer.</div>
-                                </div>
-
-                                <div class="field-row">
-                                    <label>Jenis skema DPPK</label>
-                                    <div class="radio-inline">
-                                        <label><input type="radio" name="f3_scheme_pemegang" value="db"> Defined Benefit (DB)</label>
-                                        <label><input type="radio" name="f3_scheme_pemegang" value="dc"> Defined Contribution (DC)</label>
-                                        <label><input type="radio" name="f3_scheme_pemegang" value="hybrid"> Hybrid</label>
-                                        <label><input type="radio" name="f3_scheme_pemegang" value="unknown"> Belum tahu</label>
-                                    </div>
-                                    <div class="hint">Informational only. DB = formula gaji × masa kerja. DC = saldo akumulasi iuran.</div>
-                                </div>
-
-                                <div class="field-row">
-                                    <label>Notes DPPK (opsional)</label>
-                                    <input type="text" id="f3_notes_pemegang" placeholder="contoh: klien punya SK Dapen lengkap, atau perlu pull statement dari HRD">
-                                    <div class="hint">Free-text untuk Philip annotation. Bahan diskusi konsultasi.</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- DPPK Pasangan -->
-                        <div class="conditional" id="f3_pasangan_wrap">
-                            <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;border-left:3px solid #e5e7eb;">
-                                <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.25rem;color:#111827;">🏢 DPPK Pasangan Klien</h3>
-
-                                <div class="field-row">
-                                    <label>Nama DPPK pasangan</label>
-                                    <input type="text" id="f3_dppk_nama_pasangan" placeholder="contoh: Dana Pensiun Telkom">
-                                </div>
-
-                                <div class="field-row">
-                                    <label>Jenis skema DPPK pasangan</label>
-                                    <div class="radio-inline">
-                                        <label><input type="radio" name="f3_scheme_pasangan" value="db"> DB</label>
-                                        <label><input type="radio" name="f3_scheme_pasangan" value="dc"> DC</label>
-                                        <label><input type="radio" name="f3_scheme_pasangan" value="hybrid"> Hybrid</label>
-                                        <label><input type="radio" name="f3_scheme_pasangan" value="unknown"> Belum tahu</label>
-                                    </div>
-                                </div>
-
-                                <div class="field-row">
-                                    <label>Notes DPPK pasangan (opsional)</label>
-                                    <input type="text" id="f3_notes_pasangan" placeholder="contoh: statement DPPK belum diminta">
-                                </div>
-                            </div>
-                        </div>
-
+                    <div class="field-row">
+                        <label>Income passive current (Rp/bln)</label>
+                        <input type="number" id="s2_income_passive" placeholder="contoh: 7500000">
+                        <div class="hint">Sewa properti, dividen rutin, bisnis residual income. Skip kalau ga ada.</div>
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F4</span>
-                        <span class="layer-title">Regional CoL Adjustment</span>
-                        <span class="layer-status pending" id="status-f4">Pending</span>
-                    </summary>
-                    <div class="accordion-content">
+                    <div class="field-row">
+                        <label>Total pengeluaran current per bulan (Rp)</label>
+                        <input type="number" id="s2_expense_current" placeholder="contoh: 80000000">
+                    </div>
 
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">📍 Cost-of-Living Adjustment</h3>
-                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Auto-populate dari F1 domisili + anchor lokasi pensiun. Default ratios = best-effort proxy (BPS Susenas + IHK regional), Philip override per klien kalau perlu.</p>
+                    <div class="field-row" style="padding:1rem;background:#fef3c7;border:2px solid #f59e0b;border-radius:0.625rem;">
+                        <label style="color:#92400e;font-weight:700;">🎯 Target pengeluaran di pensiun (today's Rp) <span class="req">*</span></label>
+                        <input type="number" id="s2_expense_target_pensiun" placeholder="contoh: 63000000" style="border-color:#f59e0b;">
+                        <div class="hint" style="background:white;border-left-color:#f59e0b;color:#78350f;">
+                            <strong>THE KEY INPUT.</strong> Berapa Rp/bulan klien target hidup di pensiun, di nilai uang hari ini? Calc engine pakai angka ini untuk pot needed + gap analysis.
+                        </div>
+                    </div>
+                </div>
 
-                            <div id="f4_col_display" style="padding:0.75rem 0.875rem;background:white;border:1px solid #e5e7eb;border-radius:0.5rem;font-size:0.8125rem;color:#374151;margin-bottom:0.875rem;">
-                                <em style="color:#9ca3af;">Set domisili & anchor lokasi pensiun di F1 dulu untuk lihat CoL ratio auto.</em>
-                            </div>
+                <!-- ============================================================ -->
+                <!-- SECTION 3: Aset Existing                                    -->
+                <!-- ============================================================ -->
+                <div class="section-card">
+                    <h2>3. Aset Existing</h2>
+                    <p class="text-xs text-gray-500 mb-4">Rough total value per kategori + expected income passive di pensiun.</p>
 
-                            <div class="field-row">
-                                <label>Override CoL ratio domisili (Jakarta=1.00)</label>
-                                <input type="number" id="f4_col_ratio_domisili" min="0.5" max="1.5" step="0.05" placeholder="auto-populate dari F1 domisili">
-                            </div>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Total property value (Rp)</label>
+                            <input type="number" id="s3_property" placeholder="contoh: 8000000000">
+                            <div class="hint">Rumah utama (acquisition cost) + properti investasi (harga tetangga / market). Estimasi OK.</div>
+                        </div>
+                        <div class="field-row">
+                            <label>Total liquid investasi (Rp)</label>
+                            <input type="number" id="s3_liquid" placeholder="contoh: 3500000000">
+                            <div class="hint">RD + saham + deposito + ORI + emas + DPLK gabungan.</div>
+                        </div>
+                    </div>
 
-                            <div class="field-row">
-                                <label>Override CoL ratio lokasi pensiun (Jakarta=1.00)</label>
-                                <input type="number" id="f4_col_ratio_pensiun" min="0.5" max="1.5" step="0.05" placeholder="auto-populate dari F1 anchor">
-                            </div>
+                    <div class="field-row">
+                        <label>Expected income passive di pensiun (Rp/bln)</label>
+                        <input type="number" id="s3_passive_pensiun" placeholder="contoh: 12000000">
+                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun (klien self-report estimate). Sumber yang sudah ada + masih akan jalan.</div>
+                    </div>
 
-                            <div class="field-row">
-                                <label>Healthcare access tier per lokasi pensiun</label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f4_healthcare_tier" value="premium"> Premium (Jakarta CBD, Bali expat, Surabaya elite)</label>
-                                    <label><input type="radio" name="f4_healthcare_tier" value="mid"> Mid (Bandung, Yogya, Semarang)</label>
-                                    <label><input type="radio" name="f4_healthcare_tier" value="limited"> Limited (daerah tier 2-3, BPJS-dependent)</label>
-                                </div>
-                                <div class="hint">Affects F10 default medical inflation assumption (premium 14% / mid 12% / limited 10%).</div>
-                            </div>
+                    <div class="field-row">
+                        <label>Catatan aset (opsional)</label>
+                        <input type="text" id="s3_notes" placeholder="contoh: 2 properti Jakarta + 1 villa Bali, DPPK Pertamina aktif">
+                    </div>
+                </div>
 
-                            <div class="field-row">
-                                <label>Notes regional (opsional)</label>
-                                <input type="text" id="f4_notes" placeholder="contoh: klien pindah ke Bali tapi lifestyle expat = ratio naik">
+                <!-- ============================================================ -->
+                <!-- SECTION 4: Healthcare Snapshot                              -->
+                <!-- ============================================================ -->
+                <div class="section-card">
+                    <h2>4. Healthcare Coverage</h2>
+                    <p class="text-xs text-gray-500 mb-4">Coverage current + risk flags.</p>
+
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>BPJS Kesehatan klien aktif?</label>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="s4_bpjs_klien" value="yes"> Ya</label>
+                                <label><input type="radio" name="s4_bpjs_klien" value="no"> Tidak</label>
+                                <label><input type="radio" name="s4_bpjs_klien" value="unknown"> Belum tahu</label>
                             </div>
                         </div>
-
-                    </div>
-                </details>
-
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F5</span>
-                        <span class="layer-title">Cashflow Decomposition (5 panel)</span>
-                        <span class="layer-status placeholder">Next session (complex)</span>
-                    </summary>
-                    <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Bottom-up expense rebase: 5 panel (debt/anak/continues/resets-up/insurance). Per line: nominal + status @ pensiun. Spec: <code>(C) Form Spec - Layer 5 Cashflow Decomposition</code></p>
-                    </div>
-                </details>
-
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F6</span>
-                        <span class="layer-title">Lifestyle Tier Anchor (auto)</span>
-                        <span class="layer-status placeholder" id="status-f6">Auto from F5</span>
-                    </summary>
-                    <div class="accordion-content">
-
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">🎯 Lifestyle Tier — Auto-Derive dari F5</h3>
-                            <p style="font-size:0.8125rem;color:#374151;line-height:1.5;margin-bottom:0.625rem;">Tier (Modest / Comfortable / Comfortable+ / Aspirational) akan auto-derive dari <strong>F5 Cashflow Decomposition</strong> (rebased expense klien), bukan manual pick.</p>
-
-                            <p style="font-size:0.75rem;color:#6b7280;line-height:1.5;margin-bottom:0.625rem;">Rationale: lebih akurat tanya expense langsung di F5 daripada minta klien self-classify ke tier abstract. Tier output di sini = informational classifier untuk rendering PDF.</p>
-
-                            <div id="f6_auto_display" style="padding:0.75rem 0.875rem;background:white;border:1px solid #e5e7eb;border-radius:0.5rem;font-size:0.8125rem;color:#374151;">
-                                <em style="color:#9ca3af;">Akan menampilkan tier auto-derived setelah F5 Cashflow Decomposition di-build (Batch 3). Sementara: skip section ini.</em>
+                        <div class="field-row conditional" id="s4_bpjs_pasangan_wrap">
+                            <label>BPJS pasangan aktif?</label>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="s4_bpjs_pasangan" value="yes"> Ya</label>
+                                <label><input type="radio" name="s4_bpjs_pasangan" value="no"> Tidak</label>
+                                <label><input type="radio" name="s4_bpjs_pasangan" value="unknown"> Belum tahu</label>
                             </div>
                         </div>
-
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F7</span>
-                        <span class="layer-title">Healthcare Coverage Inventory</span>
-                        <span class="layer-status pending" id="status-f7">Pending</span>
-                    </summary>
-                    <div class="accordion-content">
-
-                        <p class="text-xs text-gray-500 mb-3">Inventory asuransi per anggota keluarga (klien + pasangan + per anak). Drives Section 7 Healthcare Buffer di PDF + medical inflation reserve sizing.</p>
-
-                        <!-- Klien preference (family-wide) -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.75rem;color:#111827;">🏥 Healthcare Strategy Preference (family-wide)</h3>
-                            <div class="field-row">
-                                <label>Preferensi healthcare keluarga klien</label>
-                                <div class="radio-inline">
-                                    <label><input type="radio" name="f7_strategy" value="bpjs_only"> BPJS-only (cost-conscious)</label>
-                                    <label><input type="radio" name="f7_strategy" value="hybrid"> Hybrid (BPJS + asuransi swasta)</label>
-                                    <label><input type="radio" name="f7_strategy" value="swasta_only"> Swasta-only (premium access)</label>
-                                </div>
-                                <div class="hint">Hybrid paling umum di upper-middle Jakarta. Hybrid recommended per vault KB Section 4 (BPJS = catastrophic protection, swasta = akses + service).</div>
-                            </div>
-                        </div>
-
-                        <!-- Dynamic anggota inventory list -->
-                        <div id="f7_anggota_list" style="display:flex;flex-direction:column;gap:0.625rem;">
-                            <!-- Auto-generated rows: pemegang + pasangan (if married) + per anak -->
-                        </div>
-
-                        <p class="text-xs text-gray-500 mt-3">💡 Anggota auto-generated dari F1. Update F1 (marital + anak count) untuk add/remove rows.</p>
-
+                    <div class="field-row">
+                        <label>Asuransi kesehatan swasta klien</label>
+                        <input type="text" id="s4_swasta_klien" placeholder="contoh: PRUWell Medical, premi 12jt/yr, limit 500jt">
+                        <div class="hint">Provider + premi annual + limit tahunan. Skip kalau ga ada.</div>
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F8</span>
-                        <span class="layer-title">Asset Inventory (8 panel)</span>
-                        <span class="layer-status placeholder">Next session (HIGH complexity)</span>
-                    </summary>
-                    <div class="accordion-content">
-                        <p class="text-xs text-gray-500">8 category: Property / Liquid invest / Bonds / Komoditas / Pensiun-specific / Insurance cash value / Bisnis / Currency mix. Spec: <code>(C) Form Spec - Layer 8 Asset Inventory</code></p>
+                    <div class="field-row conditional" id="s4_swasta_pasangan_wrap">
+                        <label>Asuransi kesehatan swasta pasangan</label>
+                        <input type="text" id="s4_swasta_pasangan" placeholder="contoh: PRUWell Medical, premi 10jt/yr">
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F9</span>
-                        <span class="layer-title">Couple-Specific (married only)</span>
-                        <span class="layer-status placeholder">Next session</span>
-                    </summary>
-                    <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Conditional render kalau F1 marital = married. Drives Module 4 Survivorship + staggered retire scenario.</p>
+                    <div class="field-row">
+                        <label>Critical Illness coverage (klien & pasangan)</label>
+                        <input type="text" id="s4_ci" placeholder="contoh: klien PRUCritical Benefit 88 UP 1M, pasangan tidak ada">
                     </div>
-                </details>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F10</span>
-                        <span class="layer-title">Assumption Locks (revised)</span>
-                        <span class="layer-status pending" id="status-f10">Pending</span>
-                    </summary>
-                    <div class="accordion-content">
-
-                        <!-- Inflasi -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">📈 Inflasi Assumptions</h3>
-                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Default dari vault KB Retirement Planning Indo. Override per klien kalau perlu (e.g. family history medical → naikkin medical inflation).</p>
-
-                            <div class="field-row">
-                                <label>Inflasi umum CPI (% p.a.)</label>
-                                <input type="number" id="f10_inflasi_umum" min="1" max="8" step="0.1" value="3.0">
-                                <div class="hint">Default 3%. BI target 2.5% ± 1%, historis 10-yr ~3.2%.</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Inflasi healthcare (% p.a.)</label>
-                                <input type="number" id="f10_inflasi_healthcare" min="8" max="20" step="0.5" value="12.0">
-                                <div class="hint">Default 12%. Vault range 10-14% (Mercer 2024-2026). Naikkan ke 14-16% kalau family history chronic.</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Inflasi lifestyle / travel (% p.a.)</label>
-                                <input type="number" id="f10_inflasi_lifestyle" min="2" max="10" step="0.5" value="5.0">
-                                <div class="hint">Default 5%. Luxury creep adjustment vs CPI umum.</div>
-                            </div>
-
-                            <div class="field-row">
-                                <label>Inflasi sewa rental (% p.a.)</label>
-                                <input type="number" id="f10_inflasi_sewa" min="2" max="8" step="0.5" value="4.0">
-                                <div class="hint">Default 4%. Sewa typically lag CPI sedikit di Indo.</div>
-                            </div>
-                        </div>
-
-                        <!-- Longevity -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">⏳ Longevity (Plan-to Age)</h3>
-                            <p style="font-size:0.6875rem;color:#6b7280;margin-bottom:0.875rem;">Default berdasarkan gender (BPS UHH + buffer). Override kalau family longevity history (orangtua hidup 90+).</p>
-
-                            <div class="field-row">
-                                <label>Longevity klien (umur plan-to)</label>
-                                <input type="number" id="f10_longevity_pemegang" min="75" max="100" placeholder="Auto: M=85, F=88">
-                                <div class="hint">Default M=85, F=88 (akan auto-set berdasarkan F1 gender saat fill).</div>
-                            </div>
-
-                            <div class="field-row conditional" id="f10_longevity_pasangan_wrap">
-                                <label>Longevity pasangan klien</label>
-                                <input type="number" id="f10_longevity_pasangan" min="75" max="100" placeholder="Auto sesuai gender pasangan">
-                            </div>
-
-                            <div class="field-row conditional" id="f10_joint_horizon_wrap">
-                                <label>Joint horizon (umur longer-survivor)</label>
-                                <input type="number" id="f10_joint_horizon" min="80" max="100" placeholder="Default max(klien, pasangan)">
-                                <div class="hint">Couple mode only. Plan dana sampai usia longer-survivor (typical: 90+).</div>
-                            </div>
-                        </div>
-
-                        <!-- SWR -->
-                        <div class="subsection" style="background:#f9fafb;border-radius:0.75rem;padding:1rem 1.25rem;margin-bottom:0.75rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#111827;">💧 Safe Withdrawal Rate (SWR)</h3>
-
-                            <div class="field-row">
-                                <label>SWR base (% per tahun)</label>
-                                <input type="number" id="f10_swr_base" min="2.5" max="4.0" step="0.05" value="3.25">
-                                <div class="hint">Default 3.25%. Vault Indo range 3.0-3.5% (Pfau methodology), lebih konservatif dari 4% Trinity US karena IHSG volatility + medical inflation Indo.</div>
-                            </div>
-                        </div>
-
-                        <!-- Return assumption note -->
-                        <div class="subsection" style="background:#fef3c7;border:1px solid #f59e0b;border-radius:0.75rem;padding:1rem 1.25rem;">
-                            <h3 style="font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;color:#92400e;">⚠️ Return Assumption (IHSG forward)</h3>
-                            <p style="font-size:0.75rem;color:#78350f;line-height:1.5;">
-                                Return assumption (IHSG forward 4-8%) <strong>NOT di F10</strong> per Decision #9. Akan di-decide post-interview based on klien vehicle preference (DCA RD / DIY saham / via investment partner / asuransi-led).
-                                Default rendering PDF: <strong>3-scenario all</strong> (Conservative 4% / Base 6% / Optimistic 8%) per Decision #17.
-                            </p>
-                        </div>
-
+                    <div class="field-row">
+                        <label>Pre-existing condition + family medical history</label>
+                        <textarea id="s4_medical_notes" placeholder="contoh: klien hipertensi controlled, riwayat keluarga: ayah stroke, ibu diabetes T2"></textarea>
                     </div>
-                </details>
+                </div>
 
-                <details class="accordion-section">
-                    <summary>
-                        <span class="layer-num">F11</span>
-                        <span class="layer-title">Special Flags + Stress Test 7 Scenarios</span>
-                        <span class="layer-status placeholder">Next session</span>
-                    </summary>
-                    <div class="accordion-content">
-                        <p class="text-xs text-gray-500">Edge case flags + Stress Test M8 7-scenario MANUAL Philip fill saat interview. Per Decision #21.</p>
+                <!-- ============================================================ -->
+                <!-- SECTION 5: Asumsi                                           -->
+                <!-- ============================================================ -->
+                <div class="section-card">
+                    <h2>5. Asumsi (default per vault KB)</h2>
+                    <p class="text-xs text-gray-500 mb-4">Locked dengan defaults. Override per klien kalau perlu.</p>
+
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Inflasi umum (% p.a.)</label>
+                            <input type="number" id="s5_inflasi_umum" min="1" max="8" step="0.1" value="3.0">
+                        </div>
+                        <div class="field-row">
+                            <label>Inflasi healthcare (% p.a.)</label>
+                            <input type="number" id="s5_inflasi_healthcare" min="8" max="20" step="0.5" value="12.0">
+                        </div>
+                        <div class="field-row">
+                            <label>Inflasi lifestyle (% p.a.)</label>
+                            <input type="number" id="s5_inflasi_lifestyle" min="2" max="10" step="0.5" value="5.0">
+                        </div>
+                        <div class="field-row">
+                            <label>Inflasi sewa (% p.a.)</label>
+                            <input type="number" id="s5_inflasi_sewa" min="2" max="8" step="0.5" value="4.0">
+                        </div>
+                        <div class="field-row">
+                            <label>Longevity klien</label>
+                            <input type="number" id="s5_longevity_klien" min="75" max="100" placeholder="default M=85, F=88">
+                        </div>
+                        <div class="field-row conditional" id="s5_longevity_pasangan_wrap">
+                            <label>Longevity pasangan</label>
+                            <input type="number" id="s5_longevity_pasangan" min="75" max="100" placeholder="default M=85, F=88">
+                        </div>
+                        <div class="field-row">
+                            <label>SWR (% p.a.)</label>
+                            <input type="number" id="s5_swr" min="2.5" max="4.0" step="0.05" value="3.25">
+                        </div>
                     </div>
-                </details>
+
+                    <div style="margin-top:0.5rem;padding:0.75rem 0.875rem;background:#fef3c7;border:1px solid #f59e0b;border-radius:0.5rem;font-size:0.75rem;color:#78350f;line-height:1.5;">
+                        ⚠️ <strong>Return assumption (IHSG forward 4-8%)</strong> not in form per Decision #9. Decided post-interview based on klien vehicle preference. Default PDF render: 3-scenario (Conservative 4% / Base 6% / Optimistic 8%) per Decision #17.
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- SECTION 6: Catatan & Special Flags                          -->
+                <!-- ============================================================ -->
+                <div class="section-card">
+                    <h2>6. Catatan Khusus</h2>
+                    <p class="text-xs text-gray-500 mb-4">Free notes Philip — special flags, stress test responses dari interview, anything custom.</p>
+
+                    <div class="field-row">
+                        <label>Catatan</label>
+                        <textarea id="s6_notes" placeholder="contoh:&#10;- Klien punya plan exit bisnis 2030, valuation ~3M&#10;- Anak sulung mungkin S2 overseas, parent willing fund&#10;- Pasangan ada family history cancer, preference asuransi premium&#10;- Stress test market crash Y1-3: klien akan cut spending 10%&#10;- Stress test medical: klien hold reserve fund Rp 500jt liquid" style="min-height:10rem;"></textarea>
+                    </div>
+                </div>
 
                 <!-- Submit -->
                 <div class="submit-bar">
-                    <button type="submit">💾 Save Draft + Generate Preview</button>
-                    <div class="submit-hint">Stage 2 BATCH 1 build in progress. Submit hanya save F1 data ke localStorage untuk now. Backend handler + PDF generator akan ship setelah F2-F11 done.</div>
+                    <button type="submit">💾 Save Draft</button>
+                    <div class="submit-hint">Simplified MVP — saves to localStorage. Backend handler + PDF generator akan ship di Stage 3.</div>
                 </div>
 
             </form>
@@ -922,6 +521,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/pension.js?v=1"></script>
+    <script src="js/pension.js?v=2"></script>
 </body>
 </html>
