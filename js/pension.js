@@ -14,7 +14,7 @@ const state = {
         marital: '',
         pasangan_nama: '', pasangan_usia: '', pasangan_gender: '', pasangan_target_retire: '',
         anak: [],  // [{usia, mandiri_age}]
-        domisili: '', lokasi_pensiun: 'same'
+        domisili: ''
     },
     s2: {
         income_household: '', income_passive: '',
@@ -26,9 +26,7 @@ const state = {
         notes: ''
     },
     s4: {
-        bpjs_klien: '', bpjs_pasangan: '',
-        swasta_klien: '', swasta_pasangan: '',
-        ci: '', medical_notes: ''
+        notes: ''
     },
     s5: {
         inflasi_umum: '3.0', inflasi_healthcare: '12.0',
@@ -115,7 +113,6 @@ function saveState() {
         state.s1.pasangan_target_retire = val('s1_pasangan_target_retire');
         state.s1.anak = collectAnakRows();
         state.s1.domisili = val('s1_domisili');
-        state.s1.lokasi_pensiun = val('s1_lokasi_pensiun');
 
         state.s2.income_household = val('s2_income_household');
         state.s2.income_passive = val('s2_income_passive');
@@ -130,12 +127,7 @@ function saveState() {
         state.s3.dppk_estimasi = val('s3_dppk_estimasi');
         state.s3.notes = val('s3_notes');
 
-        state.s4.bpjs_klien = radioVal('s4_bpjs_klien');
-        state.s4.bpjs_pasangan = radioVal('s4_bpjs_pasangan');
-        state.s4.swasta_klien = val('s4_swasta_klien');
-        state.s4.swasta_pasangan = val('s4_swasta_pasangan');
-        state.s4.ci = val('s4_ci');
-        state.s4.medical_notes = val('s4_medical_notes');
+        state.s4.notes = val('s4_notes');
 
         state.s5.inflasi_umum = val('s5_inflasi_umum');
         state.s5.inflasi_healthcare = val('s5_inflasi_healthcare');
@@ -174,7 +166,6 @@ function restoreState() {
             setRadio('s1_pasangan_gender', state.s1.pasangan_gender);
             setVal('s1_pasangan_target_retire', state.s1.pasangan_target_retire);
             setVal('s1_domisili', state.s1.domisili);
-            setVal('s1_lokasi_pensiun', state.s1.lokasi_pensiun || 'same');
             if (Array.isArray(state.s1.anak)) {
                 state.s1.anak.forEach(a => addAnak(a));
             }
@@ -193,12 +184,7 @@ function restoreState() {
             setVal('s3_notes', state.s3.notes);
         }
         if (state.s4) {
-            setRadio('s4_bpjs_klien', state.s4.bpjs_klien);
-            setRadio('s4_bpjs_pasangan', state.s4.bpjs_pasangan);
-            setVal('s4_swasta_klien', state.s4.swasta_klien);
-            setVal('s4_swasta_pasangan', state.s4.swasta_pasangan);
-            setVal('s4_ci', state.s4.ci);
-            setVal('s4_medical_notes', state.s4.medical_notes);
+            setVal('s4_notes', state.s4.notes);
         }
         if (state.s5) {
             Object.entries(state.s5).forEach(([k, v]) => setVal('s5_' + k, v));
@@ -258,8 +244,6 @@ function collectAnakRows() {
 function refreshConditionals() {
     const isMarried = radioVal('s1_marital') === 'married';
     toggleConditional('s1_pasangan_wrap', isMarried);
-    toggleConditional('s4_bpjs_pasangan_wrap', isMarried);
-    toggleConditional('s4_swasta_pasangan_wrap', isMarried);
     toggleConditional('s5_longevity_pasangan_wrap', isMarried);
 
     // S3 DPLK / DPPK conditional detail wraps

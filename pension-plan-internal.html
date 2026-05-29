@@ -291,38 +291,23 @@
                         <button type="button" class="anak-add-btn" onclick="addAnak()">+ Tambah anak</button>
                     </div>
 
-                    <div class="field-grid-2">
-                        <div class="field-row">
-                            <label>Domisili kota</label>
-                            <select id="s1_domisili">
-                                <option value="">— Pilih —</option>
-                                <option value="jakarta">Jakarta</option>
-                                <option value="tangsel">Tangerang Selatan / BSD</option>
-                                <option value="bekasi">Bekasi</option>
-                                <option value="bandung">Bandung</option>
-                                <option value="surabaya">Surabaya</option>
-                                <option value="semarang">Semarang</option>
-                                <option value="yogyakarta">Yogyakarta</option>
-                                <option value="denpasar">Denpasar (Bali)</option>
-                                <option value="medan">Medan</option>
-                                <option value="makassar">Makassar</option>
-                                <option value="batam">Batam</option>
-                                <option value="other">Lainnya</option>
-                            </select>
-                        </div>
-                        <div class="field-row">
-                            <label>Lokasi pensiun</label>
-                            <select id="s1_lokasi_pensiun">
-                                <option value="same">Sama dengan domisili</option>
-                                <option value="jakarta">Pindah ke Jakarta</option>
-                                <option value="bandung">Pindah ke Bandung</option>
-                                <option value="yogyakarta">Pindah ke Yogyakarta</option>
-                                <option value="denpasar">Pindah ke Denpasar (Bali)</option>
-                                <option value="surabaya">Pindah ke Surabaya</option>
-                                <option value="semarang">Pindah ke Semarang</option>
-                                <option value="other">Pindah ke lainnya</option>
-                            </select>
-                        </div>
+                    <div class="field-row">
+                        <label>Domisili kota</label>
+                        <select id="s1_domisili">
+                            <option value="">— Pilih —</option>
+                            <option value="jakarta">Jakarta</option>
+                            <option value="tangsel">Tangerang Selatan / BSD</option>
+                            <option value="bekasi">Bekasi</option>
+                            <option value="bandung">Bandung</option>
+                            <option value="surabaya">Surabaya</option>
+                            <option value="semarang">Semarang</option>
+                            <option value="yogyakarta">Yogyakarta</option>
+                            <option value="denpasar">Denpasar (Bali)</option>
+                            <option value="medan">Medan</option>
+                            <option value="makassar">Makassar</option>
+                            <option value="batam">Batam</option>
+                            <option value="other">Lainnya</option>
+                        </select>
                     </div>
                 </div>
 
@@ -425,50 +410,15 @@
                 </div>
 
                 <!-- ============================================================ -->
-                <!-- SECTION 4: Healthcare Snapshot                              -->
+                <!-- SECTION 4: Asuransi & Medical                                -->
                 <!-- ============================================================ -->
                 <div class="section-card">
-                    <h2>4. Healthcare Coverage</h2>
-                    <p class="text-xs text-gray-500 mb-4">Coverage current + risk flags.</p>
-
-                    <div class="field-grid-2">
-                        <div class="field-row">
-                            <label>BPJS Kesehatan klien aktif?</label>
-                            <div class="radio-inline">
-                                <label><input type="radio" name="s4_bpjs_klien" value="yes"> Ya</label>
-                                <label><input type="radio" name="s4_bpjs_klien" value="no"> Tidak</label>
-                                <label><input type="radio" name="s4_bpjs_klien" value="unknown"> Belum tahu</label>
-                            </div>
-                        </div>
-                        <div class="field-row conditional" id="s4_bpjs_pasangan_wrap">
-                            <label>BPJS pasangan aktif?</label>
-                            <div class="radio-inline">
-                                <label><input type="radio" name="s4_bpjs_pasangan" value="yes"> Ya</label>
-                                <label><input type="radio" name="s4_bpjs_pasangan" value="no"> Tidak</label>
-                                <label><input type="radio" name="s4_bpjs_pasangan" value="unknown"> Belum tahu</label>
-                            </div>
-                        </div>
-                    </div>
+                    <h2>4. Asuransi & Medical</h2>
+                    <p class="text-xs text-gray-500 mb-4">Catat semua asuransi yang dimiliki klien (health, CI, life, disability, property, dst.) + medical condition / family history. Free text — tulis sesuka kamu.</p>
 
                     <div class="field-row">
-                        <label>Asuransi kesehatan swasta klien</label>
-                        <input type="text" id="s4_swasta_klien" placeholder="contoh: PRUWell Medical, premi 12jt/yr, limit 500jt">
-                        <div class="hint">Provider + premi annual + limit tahunan. Skip kalau ga ada.</div>
-                    </div>
-
-                    <div class="field-row conditional" id="s4_swasta_pasangan_wrap">
-                        <label>Asuransi kesehatan swasta pasangan</label>
-                        <input type="text" id="s4_swasta_pasangan" placeholder="contoh: PRUWell Medical, premi 10jt/yr">
-                    </div>
-
-                    <div class="field-row">
-                        <label>Critical Illness coverage (klien & pasangan)</label>
-                        <input type="text" id="s4_ci" placeholder="contoh: klien PRUCritical Benefit 88 UP 1M, pasangan tidak ada">
-                    </div>
-
-                    <div class="field-row">
-                        <label>Pre-existing condition + family medical history</label>
-                        <textarea id="s4_medical_notes" placeholder="contoh: klien hipertensi controlled, riwayat keluarga: ayah stroke, ibu diabetes T2"></textarea>
+                        <label>Asuransi & medical notes</label>
+                        <textarea id="s4_notes" placeholder="contoh:&#10;BPJS Kesehatan: klien + pasangan aktif Kelas I&#10;Asuransi Kesehatan Swasta:&#10;  - Klien: PRUWell Medical, premi 12jt/yr, limit 500jt&#10;  - Pasangan: PRUWell Medical, premi 10jt/yr&#10;CI Standalone:&#10;  - Klien: PRUCritical Benefit 88, UP 1M&#10;  - Pasangan: tidak ada&#10;Life Insurance: PRUFuture, UP 2M, premi 24jt/yr (klien)&#10;Property Insurance: rumah utama covered Allianz&#10;Medical Condition Klien: hipertensi controlled&#10;Family History: ayah stroke usia 65, ibu diabetes T2" style="min-height:12rem;"></textarea>
                     </div>
                 </div>
 
