@@ -363,34 +363,64 @@
                 </div>
 
                 <!-- ============================================================ -->
-                <!-- SECTION 3: Aset Existing                                    -->
+                <!-- SECTION 3: Rencana Pensiun yang Sudah Jalan                 -->
                 <!-- ============================================================ -->
                 <div class="section-card">
-                    <h2>3. Aset Existing</h2>
-                    <p class="text-xs text-gray-500 mb-4">Auto-fill dari Financial Checkup. Override kalau angkanya stale atau klien punya update.</p>
+                    <h2>3. Rencana Pensiun yang Sudah Jalan</h2>
+                    <p class="text-xs text-gray-500 mb-4">Klien mungkin sudah punya DPLK / DPPK aktif. Capture eksistensi + detail kalau klien tahu.</p>
 
-                    <div class="field-grid-2">
-                        <div class="field-row">
-                            <label>Total property value (Rp) <span class="autofill-badge" id="autofill_property" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_property" placeholder="contoh: 8,000,000,000">
-                            <div class="hint">Rumah utama (acquisition cost) + properti investasi gabungan.</div>
+                    <!-- DPLK -->
+                    <div class="field-row">
+                        <label>DPLK (Dana Pensiun Lembaga Keuangan) aktif?</label>
+                        <div class="radio-inline">
+                            <label><input type="radio" name="s3_dplk_aktif" value="yes"> Ya</label>
+                            <label><input type="radio" name="s3_dplk_aktif" value="no"> Tidak</label>
+                            <label><input type="radio" name="s3_dplk_aktif" value="unknown"> Belum tahu</label>
                         </div>
-                        <div class="field-row">
-                            <label>Total liquid investasi (Rp) <span class="autofill-badge" id="autofill_liquid" style="display:none;">✓ Auto-filled</span></label>
-                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_liquid" placeholder="contoh: 3,500,000,000">
-                            <div class="hint">RD + saham + deposito + ORI + emas + DPLK gabungan.</div>
+                        <div class="hint">DPLK = klien-initiated, dari bank/asuransi (Manulife, BCA, AIA, Allianz, BRI, Mandiri, dst).</div>
+                    </div>
+
+                    <div class="conditional" id="s3_dplk_detail_wrap">
+                        <div class="field-grid-2">
+                            <div class="field-row">
+                                <label>Nama DPLK provider</label>
+                                <input type="text" id="s3_dplk_nama" placeholder="contoh: DPLK Manulife">
+                            </div>
+                            <div class="field-row">
+                                <label>Estimated saldo DPLK (Rp) — opsional</label>
+                                <input type="text" inputmode="numeric" class="formatted-number" id="s3_dplk_saldo" placeholder="kalau klien tahu">
+                            </div>
                         </div>
                     </div>
 
+                    <!-- DPPK -->
                     <div class="field-row">
-                        <label>Expected income passive di pensiun (Rp/bln)</label>
-                        <input type="text" inputmode="numeric" class="formatted-number" id="s3_passive_pensiun" placeholder="contoh: 12,000,000">
-                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun. Klien self-report estimate.</div>
+                        <label>DPPK (Dana Pensiun Pemberi Kerja) aktif?</label>
+                        <div class="radio-inline">
+                            <label><input type="radio" name="s3_dppk_aktif" value="yes"> Ya</label>
+                            <label><input type="radio" name="s3_dppk_aktif" value="no"> Tidak</label>
+                            <label><input type="radio" name="s3_dppk_aktif" value="unknown"> Belum tahu</label>
+                        </div>
+                        <div class="hint">DPPK = sponsored by employer (BUMN besar / multinational corporate). Tanyakan klien.</div>
                     </div>
 
+                    <div class="conditional" id="s3_dppk_detail_wrap">
+                        <div class="field-grid-2">
+                            <div class="field-row">
+                                <label>Nama DPPK sponsor</label>
+                                <input type="text" id="s3_dppk_nama" placeholder="contoh: Dana Pensiun Pertamina">
+                            </div>
+                            <div class="field-row">
+                                <label>Estimated manfaat DPPK — opsional</label>
+                                <input type="text" id="s3_dppk_estimasi" placeholder="contoh: lump sum 1.5M, atau 8jt/bln">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Catatan -->
                     <div class="field-row">
-                        <label>Catatan aset (opsional)</label>
-                        <input type="text" id="s3_notes" placeholder="contoh: 2 properti Jakarta + 1 villa Bali, DPPK Pertamina aktif">
+                        <label>Catatan rencana pensiun lain (opsional)</label>
+                        <input type="text" id="s3_notes" placeholder="contoh: Klien punya tabungan saham individual untuk pensiun, atau plan exit bisnis 2035">
                     </div>
                 </div>
 

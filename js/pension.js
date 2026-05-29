@@ -21,7 +21,9 @@ const state = {
         expense_current: '', expense_target_pensiun: ''
     },
     s3: {
-        property: '', liquid: '', passive_pensiun: '', notes: ''
+        dplk_aktif: '', dplk_nama: '', dplk_saldo: '',
+        dppk_aktif: '', dppk_nama: '', dppk_estimasi: '',
+        notes: ''
     },
     s4: {
         bpjs_klien: '', bpjs_pasangan: '',
@@ -120,9 +122,12 @@ function saveState() {
         state.s2.expense_current = val('s2_expense_current');
         state.s2.expense_target_pensiun = val('s2_expense_target_pensiun');
 
-        state.s3.property = val('s3_property');
-        state.s3.liquid = val('s3_liquid');
-        state.s3.passive_pensiun = val('s3_passive_pensiun');
+        state.s3.dplk_aktif = radioVal('s3_dplk_aktif');
+        state.s3.dplk_nama = val('s3_dplk_nama');
+        state.s3.dplk_saldo = val('s3_dplk_saldo');
+        state.s3.dppk_aktif = radioVal('s3_dppk_aktif');
+        state.s3.dppk_nama = val('s3_dppk_nama');
+        state.s3.dppk_estimasi = val('s3_dppk_estimasi');
         state.s3.notes = val('s3_notes');
 
         state.s4.bpjs_klien = radioVal('s4_bpjs_klien');
@@ -179,7 +184,13 @@ function restoreState() {
             Object.entries(state.s2).forEach(([k, v]) => setVal('s2_' + k, v));
         }
         if (state.s3) {
-            Object.entries(state.s3).forEach(([k, v]) => setVal('s3_' + k, v));
+            setRadio('s3_dplk_aktif', state.s3.dplk_aktif);
+            setVal('s3_dplk_nama', state.s3.dplk_nama);
+            setVal('s3_dplk_saldo', state.s3.dplk_saldo);
+            setRadio('s3_dppk_aktif', state.s3.dppk_aktif);
+            setVal('s3_dppk_nama', state.s3.dppk_nama);
+            setVal('s3_dppk_estimasi', state.s3.dppk_estimasi);
+            setVal('s3_notes', state.s3.notes);
         }
         if (state.s4) {
             setRadio('s4_bpjs_klien', state.s4.bpjs_klien);
@@ -250,6 +261,10 @@ function refreshConditionals() {
     toggleConditional('s4_bpjs_pasangan_wrap', isMarried);
     toggleConditional('s4_swasta_pasangan_wrap', isMarried);
     toggleConditional('s5_longevity_pasangan_wrap', isMarried);
+
+    // S3 DPLK / DPPK conditional detail wraps
+    toggleConditional('s3_dplk_detail_wrap', radioVal('s3_dplk_aktif') === 'yes');
+    toggleConditional('s3_dppk_detail_wrap', radioVal('s3_dppk_aktif') === 'yes');
 
     // Auto-suggest longevity placeholders based on gender
     const g = radioVal('s1_gender');
@@ -426,15 +441,7 @@ async function lookupKlien() {
             setFormattedNumber('s2_expense_current', Math.round(fs.pengeluaran_bulanan));
             showAutoFillBadge('autofill_expense');
         }
-        if (fs.aset_pribadi && !val('s3_property')) {
-            setFormattedNumber('s3_property', Math.round(fs.aset_pribadi));
-            showAutoFillBadge('autofill_property');
-        }
-        const liquidTotal = (fs.aset_likuid || 0) + (fs.aset_investasi || 0);
-        if (liquidTotal > 0 && !val('s3_liquid')) {
-            setFormattedNumber('s3_liquid', Math.round(liquidTotal));
-            showAutoFillBadge('autofill_liquid');
-        }
+        // Property + Liquid auto-fill removed — Section 3 sekarang = DPLK/DPPK existence check
 
         saveState();
     } catch (e) {
