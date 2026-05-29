@@ -353,10 +353,12 @@
                     </div>
 
                     <div class="field-row" style="padding:1rem;background:#fef3c7;border:2px solid #f59e0b;border-radius:0.625rem;">
-                        <label style="color:#92400e;font-weight:700;">🎯 Target pengeluaran di pensiun (today's Rp) <span class="req">*</span></label>
+                        <label style="color:#92400e;font-weight:700;">🎯 Target pengeluaran di pensiun (TODAY's Rp, bukan future) <span class="req">*</span></label>
                         <input type="number" id="s2_expense_target_pensiun" placeholder="contoh: 63000000" style="border-color:#f59e0b;">
                         <div class="hint" style="background:white;border-left-color:#f59e0b;color:#78350f;">
-                            <strong>THE KEY INPUT.</strong> Berapa Rp/bulan klien target hidup di pensiun, di nilai uang hari ini? Calc engine pakai angka ini untuk pot needed + gap analysis.
+                            <strong>THE KEY INPUT — di nilai uang HARI INI.</strong><br>
+                            Mulai dari expense current → <strong>minus</strong> yang lunas/terminate di pensiun (cicilan KPR, cicilan mobil, SPP anak yang mandiri) → <strong>plus</strong> yang naik di pensiun (healthcare 3-10x, travel 2-3x, hobby/club, caregiving buffer).<br>
+                            <em>Calc engine yang inflate ke future value pakai assumption inflasi (Section 5).</em>
                         </div>
                     </div>
                 </div>
