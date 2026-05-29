@@ -17,7 +17,7 @@ const state = {
         domisili: '', lokasi_pensiun: 'same'
     },
     s2: {
-        income_klien: '', income_pasangan: '', income_passive: '',
+        income_household: '', income_passive: '',
         expense_current: '', expense_target_pensiun: ''
     },
     s3: {
@@ -80,8 +80,7 @@ function saveState() {
         state.s1.domisili = val('s1_domisili');
         state.s1.lokasi_pensiun = val('s1_lokasi_pensiun');
 
-        state.s2.income_klien = val('s2_income_klien');
-        state.s2.income_pasangan = val('s2_income_pasangan');
+        state.s2.income_household = val('s2_income_household');
         state.s2.income_passive = val('s2_income_passive');
         state.s2.expense_current = val('s2_expense_current');
         state.s2.expense_target_pensiun = val('s2_expense_target_pensiun');
@@ -213,7 +212,6 @@ function collectAnakRows() {
 function refreshConditionals() {
     const isMarried = radioVal('s1_marital') === 'married';
     toggleConditional('s1_pasangan_wrap', isMarried);
-    toggleConditional('s2_income_pasangan_wrap', isMarried);
     toggleConditional('s4_bpjs_pasangan_wrap', isMarried);
     toggleConditional('s4_swasta_pasangan_wrap', isMarried);
     toggleConditional('s5_longevity_pasangan_wrap', isMarried);
@@ -381,6 +379,37 @@ async function lookupKlien() {
             if (namaEl && !namaEl.value.trim()) {
                 namaEl.value = k.nama;
                 showAutoFillBadge('autofill_nama');
+            }
+        }
+
+        // Auto-fill cashflow + asset dari Financial Snapshot
+        if (fs.pemasukan_bulanan) {
+            const el = document.getElementById('s2_income_household');
+            if (el && !el.value) {
+                el.value = Math.round(fs.pemasukan_bulanan);
+                showAutoFillBadge('autofill_income');
+            }
+        }
+        if (fs.pengeluaran_bulanan) {
+            const el = document.getElementById('s2_expense_current');
+            if (el && !el.value) {
+                el.value = Math.round(fs.pengeluaran_bulanan);
+                showAutoFillBadge('autofill_expense');
+            }
+        }
+        if (fs.aset_pribadi) {
+            const el = document.getElementById('s3_property');
+            if (el && !el.value) {
+                el.value = Math.round(fs.aset_pribadi);
+                showAutoFillBadge('autofill_property');
+            }
+        }
+        const liquidTotal = (fs.aset_likuid || 0) + (fs.aset_investasi || 0);
+        if (liquidTotal > 0) {
+            const el = document.getElementById('s3_liquid');
+            if (el && !el.value) {
+                el.value = Math.round(liquidTotal);
+                showAutoFillBadge('autofill_liquid');
             }
         }
 

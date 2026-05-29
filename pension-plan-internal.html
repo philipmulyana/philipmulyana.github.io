@@ -327,33 +327,29 @@
                 </div>
 
                 <!-- ============================================================ -->
-                <!-- SECTION 2: Cashflow Snapshot                                -->
+                <!-- SECTION 2: Cashflow                                         -->
                 <!-- ============================================================ -->
                 <div class="section-card">
                     <h2>2. Cashflow</h2>
-                    <p class="text-xs text-gray-500 mb-4">Income + expense + <strong>target pengeluaran di pensiun</strong> (THE KEY INPUT).</p>
+                    <p class="text-xs text-gray-500 mb-4">Auto-fill dari Financial Checkup kalau klien sudah submit. Override kalau perlu.</p>
 
                     <div class="field-grid-2">
                         <div class="field-row">
-                            <label>Income klien per bulan (Rp)</label>
-                            <input type="number" id="s2_income_klien" placeholder="contoh: 50000000">
-                            <div class="hint">Total gross income per bulan (gaji + tunjangan + bonus dirata-rata).</div>
+                            <label>Total income household per bulan (Rp) <span class="autofill-badge" id="autofill_income" style="display:none;">✓ Auto-filled</span></label>
+                            <input type="number" id="s2_income_household" placeholder="auto-fill dari Financial Checkup">
+                            <div class="hint">Gabungan income klien + pasangan (kalau ada). Dari Financial Checkup "Pemasukan Bulanan".</div>
                         </div>
-                        <div class="field-row conditional" id="s2_income_pasangan_wrap">
-                            <label>Income pasangan per bulan (Rp)</label>
-                            <input type="number" id="s2_income_pasangan" placeholder="contoh: 30000000">
+                        <div class="field-row">
+                            <label>Total pengeluaran current per bulan (Rp) <span class="autofill-badge" id="autofill_expense" style="display:none;">✓ Auto-filled</span></label>
+                            <input type="number" id="s2_expense_current" placeholder="auto-fill dari Financial Checkup">
+                            <div class="hint">Dari Financial Checkup "Pengeluaran Bulanan".</div>
                         </div>
                     </div>
 
                     <div class="field-row">
-                        <label>Income passive current (Rp/bln)</label>
+                        <label>Passive income (Rp/bln)</label>
                         <input type="number" id="s2_income_passive" placeholder="contoh: 7500000">
-                        <div class="hint">Sewa properti, dividen rutin, bisnis residual income. Skip kalau ga ada.</div>
-                    </div>
-
-                    <div class="field-row">
-                        <label>Total pengeluaran current per bulan (Rp)</label>
-                        <input type="number" id="s2_expense_current" placeholder="contoh: 80000000">
+                        <div class="hint">Sewa properti, dividen rutin, bisnis residual income current. Skip kalau ga ada.</div>
                     </div>
 
                     <div class="field-row" style="padding:1rem;background:#fef3c7;border:2px solid #f59e0b;border-radius:0.625rem;">
@@ -370,25 +366,25 @@
                 <!-- ============================================================ -->
                 <div class="section-card">
                     <h2>3. Aset Existing</h2>
-                    <p class="text-xs text-gray-500 mb-4">Rough total value per kategori + expected income passive di pensiun.</p>
+                    <p class="text-xs text-gray-500 mb-4">Auto-fill dari Financial Checkup. Override kalau angkanya stale atau klien punya update.</p>
 
                     <div class="field-grid-2">
                         <div class="field-row">
-                            <label>Total property value (Rp)</label>
-                            <input type="number" id="s3_property" placeholder="contoh: 8000000000">
-                            <div class="hint">Rumah utama (acquisition cost) + properti investasi (harga tetangga / market). Estimasi OK.</div>
+                            <label>Total property value (Rp) <span class="autofill-badge" id="autofill_property" style="display:none;">✓ Auto-filled</span></label>
+                            <input type="number" id="s3_property" placeholder="auto-fill dari Financial Checkup">
+                            <div class="hint">Dari Financial Checkup "Aset Pribadi" (rumah utama acquisition cost).</div>
                         </div>
                         <div class="field-row">
-                            <label>Total liquid investasi (Rp)</label>
-                            <input type="number" id="s3_liquid" placeholder="contoh: 3500000000">
-                            <div class="hint">RD + saham + deposito + ORI + emas + DPLK gabungan.</div>
+                            <label>Total liquid investasi (Rp) <span class="autofill-badge" id="autofill_liquid" style="display:none;">✓ Auto-filled</span></label>
+                            <input type="number" id="s3_liquid" placeholder="auto-fill dari Financial Checkup">
+                            <div class="hint">Dari Financial Checkup "Aset Likuid + Aset Investasi" gabungan (RD + saham + deposito + ORI + emas + DPLK).</div>
                         </div>
                     </div>
 
                     <div class="field-row">
                         <label>Expected income passive di pensiun (Rp/bln)</label>
                         <input type="number" id="s3_passive_pensiun" placeholder="contoh: 12000000">
-                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun (klien self-report estimate). Sumber yang sudah ada + masih akan jalan.</div>
+                        <div class="hint">Estimasi BPJS-JP + DPPK + sewa rental + lain-lain saat klien pensiun. Klien self-report estimate, bukan dari Financial Checkup.</div>
                     </div>
 
                     <div class="field-row">
