@@ -345,6 +345,14 @@
                             <em>Calc engine yang inflate ke future value pakai assumption inflasi (Section 5).</em>
                         </div>
                     </div>
+
+                    <!-- Auto-hitung future value widget (Enhancement 4 v1.1) -->
+                    <div id="fv_widget" style="margin-top:0.75rem;padding:0.875rem 1rem;background:#f3f4f6;border:1px solid #d1d5db;border-radius:0.625rem;font-size:0.8125rem;color:#374151;">
+                        <div style="font-weight:700;color:#111827;margin-bottom:0.375rem;">💡 Auto-hitung future value <span style="font-weight:500;color:#6b7280;font-size:0.6875rem;">(informational only — Philip's reference)</span></div>
+                        <div id="fv_widget_body" style="font-family:'Inter',monospace;line-height:1.6;font-variant-numeric:tabular-nums;">
+                            <span style="color:#9ca3af;">Isi target pengeluaran + usia + target retire untuk lihat preview.</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ============================================================ -->
@@ -447,15 +455,15 @@
                             <input type="number" id="s5_inflasi_sewa" min="2" max="8" step="0.5" value="4.0">
                         </div>
                         <div class="field-row">
-                            <label>Longevity klien</label>
-                            <input type="number" id="s5_longevity_klien" min="75" max="100" placeholder="default M=85, F=88">
+                            <label>Sampai usia klien (longevity)</label>
+                            <input type="number" id="s5_longevity_klien" min="75" max="100" placeholder="default 75">
                         </div>
                         <div class="field-row conditional" id="s5_longevity_pasangan_wrap">
-                            <label>Longevity pasangan</label>
-                            <input type="number" id="s5_longevity_pasangan" min="75" max="100" placeholder="default M=85, F=88">
+                            <label>Sampai usia pasangan (longevity)</label>
+                            <input type="number" id="s5_longevity_pasangan" min="75" max="100" placeholder="default 75">
                         </div>
                         <div class="field-row">
-                            <label>SWR (% p.a.)</label>
+                            <label>SWR / Tingkat Penarikan Aman (% p.a.)</label>
                             <input type="number" id="s5_swr" min="2.5" max="4.0" step="0.05" value="3.25">
                         </div>
                     </div>
@@ -481,7 +489,8 @@
                 <!-- Submit -->
                 <div class="submit-bar">
                     <button type="submit">💾 Save Draft</button>
-                    <div class="submit-hint">Simplified MVP — saves to localStorage. Backend handler + PDF generator akan ship di Stage 3.</div>
+                    <button type="button" onclick="copyPayloadForClaude()" style="margin-top:0.625rem;width:100%;padding:0.875rem 1.25rem;background:#f59e0b;color:white;font-weight:700;font-size:0.9375rem;border-radius:0.625rem;cursor:pointer;border:0;">📋 Copy JSON for Claude</button>
+                    <div class="submit-hint">Save Draft = localStorage. Copy JSON = clipboard (paste ke Claude chat untuk generate pension plan PDF). Stage 3 backend pending.</div>
                 </div>
 
             </form>
@@ -498,6 +507,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/pension.js?v=2"></script>
+    <script src="js/pension.js?v=6"></script>
 </body>
 </html>

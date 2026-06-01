@@ -250,22 +250,65 @@ function refreshConditionals() {
     toggleConditional('s3_dplk_detail_wrap', radioVal('s3_dplk_aktif') === 'yes');
     toggleConditional('s3_dppk_detail_wrap', radioVal('s3_dppk_aktif') === 'yes');
 
-    // Auto-suggest longevity placeholders based on gender
-    const g = radioVal('s1_gender');
+    // Auto-suggest longevity placeholders (default 75 for simplicity, override in form if needed)
     const lp = document.getElementById('s5_longevity_klien');
     if (lp && !lp.value) {
-        lp.placeholder = g === 'F' ? 'default 88 (Perempuan)' : g === 'M' ? 'default 85 (Laki-laki)' : 'default M=85, F=88';
+        lp.placeholder = 'default 75';
     }
-    const gPas = radioVal('s1_pasangan_gender');
     const lpPas = document.getElementById('s5_longevity_pasangan');
     if (lpPas && !lpPas.value) {
-        lpPas.placeholder = gPas === 'F' ? 'default 88' : gPas === 'M' ? 'default 85' : 'default M=85, F=88';
+        lpPas.placeholder = 'default 75';
     }
 }
 
 function toggleConditional(id, show) {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('show', show);
+}
+
+// ============================================================================
+// Future Value Widget (Enhancement 4 v1.1)
+// Live calc: today's Rp × (1 + blended_infl)^years_to_retire
+// Blended = 60% umum + 20% healthcare + 20% lifestyle
+// ============================================================================
+function fmtRpJuta(n) {
+    if (!n || isNaN(n)) return 'Rp 0';
+    if (n >= 1e9) return 'Rp ' + (n / 1e9).toFixed(2).replace('.', ',') + ' M';
+    if (n >= 1e6) return 'Rp ' + (n / 1e6).toFixed(1).replace('.', ',') + ' jt';
+    return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+}
+
+function refreshFvWidget() {
+    const body = document.getElementById('fv_widget_body');
+    if (!body) return;
+
+    const todayRpRaw = getRawNumber('s2_expense_target_pensiun');
+    const todayRp = parseInt(todayRpRaw, 10) || 0;
+    const usia = parseInt(val('s1_usia'), 10) || 0;
+    const targetRetire = parseInt(val('s1_target_retire'), 10) || 0;
+    const inflUmum = parseFloat(val('s5_inflasi_umum')) || 3.0;
+    const inflHealth = parseFloat(val('s5_inflasi_healthcare')) || 12.0;
+    const inflLifestyle = parseFloat(val('s5_inflasi_lifestyle')) || 5.0;
+
+    if (!todayRp || !usia || !targetRetire || targetRetire <= usia) {
+        body.innerHTML = '<span style="color:#9ca3af;">Isi target pengeluaran + usia + target retire untuk lihat preview.</span>';
+        return;
+    }
+
+    const years = targetRetire - usia;
+    const blended = 0.6 * inflUmum + 0.2 * inflHealth + 0.2 * inflLifestyle;
+    const multiplier = Math.pow(1 + blended / 100, years);
+    const futureMonthly = todayRp * multiplier;
+    const futureAnnual = futureMonthly * 12;
+
+    body.innerHTML = `
+        <div style="color:#374151;">Target pengeluaran di pensiun (today's Rp): <strong style="color:#000;">${fmtRpJuta(todayRp)}</strong></div>
+        <div style="color:#6b7280;">× Inflasi rata-rata tertimbang <strong>${blended.toFixed(2)}%</strong> × <strong>${years}</strong> tahun (pengali ${multiplier.toFixed(2)}×)</div>
+        <div style="border-top:1px dashed #9ca3af;margin:0.375rem 0;"></div>
+        <div style="color:#000;font-weight:700;">= ${fmtRpJuta(futureMonthly)}/bulan <span style="font-weight:500;color:#6b7280;">(nilai future di usia ${targetRetire})</span></div>
+        <div style="color:#000;font-weight:700;">= ${fmtRpJuta(futureAnnual)}/tahun</div>
+        <div style="margin-top:0.5rem;font-size:0.6875rem;color:#9ca3af;">Blended = 60% umum (${inflUmum}%) + 20% healthcare (${inflHealth}%) + 20% lifestyle (${inflLifestyle}%)</div>
+    `;
 }
 
 // ============================================================================
@@ -476,6 +519,46 @@ function submitPension() {
 }
 
 // ============================================================================
+// Copy payload for Claude (Stage 3 backend bridge)
+// ============================================================================
+async function copyPayloadForClaude() {
+    saveState();
+    const payload = {
+        action: 'pension_plan_draft',
+        ...state,
+        timestamp: new Date().toISOString(),
+        stage: 'MVP-v2-copy-to-claude'
+    };
+    const jsonStr = JSON.stringify(payload, null, 2);
+
+    try {
+        await navigator.clipboard.writeText(jsonStr);
+        alert('✅ Pension plan JSON copied to clipboard.\n\nPaste ke Claude chat — gw akan generate pension plan PDF.\n\n(Size: ' + jsonStr.length + ' chars)');
+    } catch (err) {
+        // Fallback for browsers without clipboard API permission
+        const ta = document.createElement('textarea');
+        ta.value = jsonStr;
+        ta.style.position = 'fixed';
+        ta.style.top = '20%';
+        ta.style.left = '5%';
+        ta.style.width = '90%';
+        ta.style.height = '60%';
+        ta.style.zIndex = '99999';
+        ta.style.padding = '1rem';
+        ta.style.border = '2px solid black';
+        ta.style.borderRadius = '0.5rem';
+        ta.style.fontFamily = 'monospace';
+        ta.style.fontSize = '12px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* manual select */ }
+        alert('Clipboard API blocked — JSON di textarea (Cmd+A → Cmd+C → paste ke Claude chat).\n\nKlik di luar textarea untuk close.');
+        ta.addEventListener('blur', () => { ta.remove(); });
+        ta.focus();
+    }
+}
+
+// ============================================================================
 // Bootstrap
 // ============================================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -488,6 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formatNumberInput(input);
             saveState();
             refreshConditionals();
+            refreshFvWidget();
         });
     });
 
@@ -496,10 +580,12 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener(evt, () => {
             saveState();
             refreshConditionals();
+            refreshFvWidget();
         });
     });
 
     refreshConditionals();
+    refreshFvWidget();
 
     setTimeout(() => {
         document.querySelectorAll('.fade-up').forEach(el => el.classList.add('animate-in'));
