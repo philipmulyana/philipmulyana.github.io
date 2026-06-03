@@ -75,7 +75,7 @@ async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, 
         return;
     }
 
-    renderSummary(summaryContainerId, testimonials);
+    renderSummary(summaryContainerId, testimonials, featuredContainerId);
 
     // Featured 5: prefer manual flag, fallback to top 5 by rating + insight presence
     let featured = testimonials.filter(t => t.featured);
@@ -95,7 +95,7 @@ async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, 
     renderScrollTestimonials(featuredContainerId, featured);
 }
 
-function renderSummary(containerId, testimonials) {
+function renderSummary(containerId, testimonials, featuredContainerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
@@ -164,37 +164,70 @@ function renderSummary(containerId, testimonials) {
 
     // Wire click handlers
     const expand = document.getElementById(`${containerId}-expand`);
+    const featuredSection = featuredContainerId
+        ? document.getElementById(featuredContainerId)?.closest('section')
+        : null;
     let activeRating = null;
+
+    function closeExpand() {
+        activeRating = null;
+        expand.classList.add('hidden');
+        expand.innerHTML = '';
+        if (featuredSection) featuredSection.classList.remove('hidden');
+        // Reset active state on bars
+        container.querySelectorAll('.rating-bar').forEach(b => b.classList.remove('ring-2', 'ring-yellow-400', 'rounded-lg'));
+    }
+
+    function openExpand(r) {
+        activeRating = r;
+        const list = buckets[r];
+        if (list.length === 0) return;
+
+        const cards = list.map(t => `
+            <div class="snap-start shrink-0 w-[85%] md:w-[45%] lg:w-[32%] bg-white rounded-2xl p-5 border border-gray-100 flex flex-col">
+                <div class="flex gap-0.5 mb-3">${renderStars(t.rating || 0)}</div>
+                ${t.text ? `<p class="text-sm text-gray-600 leading-relaxed mb-4 flex-1">"${escapeHtml(t.text)}"</p>` : '<p class="text-xs text-gray-400 italic mb-4 flex-1">Tanpa cerita tertulis</p>'}
+                <p class="text-sm font-bold">${escapeHtml(t.name || 'Anonymous')}</p>
+            </div>
+        `).join('');
+
+        expand.innerHTML = `
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-xs text-gray-500 uppercase tracking-wider">${list.length} ulasan ${r} bintang</p>
+                <button type="button" class="expand-close text-gray-400 hover:text-black transition-colors p-1 -m-1" aria-label="Tutup">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-6 no-scrollbar">
+                ${cards}
+            </div>
+        `;
+        expand.classList.remove('hidden');
+
+        // Highlight active bar
+        container.querySelectorAll('.rating-bar').forEach(b => {
+            if (parseInt(b.dataset.rating) === r) {
+                b.classList.add('ring-2', 'ring-yellow-400', 'rounded-lg');
+            } else {
+                b.classList.remove('ring-2', 'ring-yellow-400', 'rounded-lg');
+            }
+        });
+
+        // Hide Featured 5 section so expand doesn't push content down
+        if (featuredSection) featuredSection.classList.add('hidden');
+
+        // Wire close button
+        expand.querySelector('.expand-close')?.addEventListener('click', closeExpand);
+    }
+
     container.querySelectorAll('.rating-bar').forEach(btn => {
         btn.addEventListener('click', () => {
             const r = parseInt(btn.dataset.rating);
             if (activeRating === r) {
-                // Toggle off
-                activeRating = null;
-                expand.classList.add('hidden');
-                expand.innerHTML = '';
+                closeExpand();
                 return;
             }
-            activeRating = r;
-            const list = buckets[r];
-            if (list.length === 0) return;
-
-            const itemsHtml = list.map(t => `
-                <div class="bg-white rounded-2xl p-4 border border-gray-100">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="text-sm font-bold">${escapeHtml(t.name || 'Anonymous')}</p>
-                        <div class="flex gap-0.5">${renderStars(t.rating || 0)}</div>
-                    </div>
-                    ${t.text ? `<p class="text-sm text-gray-600 leading-relaxed">"${escapeHtml(t.text)}"</p>` : '<p class="text-xs text-gray-400 italic">Tanpa cerita tertulis</p>'}
-                </div>
-            `).join('');
-
-            expand.innerHTML = `
-                <p class="text-xs text-gray-500 uppercase tracking-wider mb-3">${list.length} ulasan ${r} bintang</p>
-                <div class="space-y-3">${itemsHtml}</div>
-            `;
-            expand.classList.remove('hidden');
-            expand.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            openExpand(r);
         });
     });
 }
