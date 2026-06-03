@@ -1,45 +1,66 @@
 const TESTIMONIALS_API = 'https://philip-mulyana--ai-website-builder-testimonials.modal.run';
 
+const CACHE_KEY_PREFIX = 'pm_testimonials_';
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h — stale-while-revalidate handles freshness
+
+function readCache(type) {
+    try {
+        const raw = localStorage.getItem(CACHE_KEY_PREFIX + (type || 'all'));
+        if (!raw) return null;
+        const { ts, data } = JSON.parse(raw);
+        if (!ts || !Array.isArray(data)) return null;
+        return { ts, data, stale: (Date.now() - ts) > CACHE_TTL_MS };
+    } catch (e) { return null; }
+}
+
+function writeCache(type, data) {
+    try {
+        localStorage.setItem(CACHE_KEY_PREFIX + (type || 'all'), JSON.stringify({ ts: Date.now(), data }));
+    } catch (e) { /* quota or disabled */ }
+}
+
+async function fetchFromApi(type) {
+    if (type !== 'consultation') return [];
+    try {
+        const apiRes = await fetch(`${TESTIMONIALS_API}?type=consultation`);
+        if (!apiRes.ok) return [];
+        const data = await apiRes.json();
+        return (data.testimonials || []).map(t => ({
+            name: t.name,
+            text: t.quote || t.text || '',
+            rating: t.rating || 5,
+            type: t.type || 'consultation',
+            featured: !!t.featured,
+            insight: t.insight || '',
+        }));
+    } catch (err) {
+        console.log('Airtable testimonials fetch failed:', err.message);
+        return [];
+    }
+}
+
+async function fetchFromStatic(type) {
+    try {
+        const res = await fetch('data/testimonials.json');
+        const arr = await res.json();
+        return (type ? arr.filter(t => t.type === type) : arr).map(t => ({
+            name: t.name,
+            text: t.text || t.quote || '',
+            rating: t.rating || 5,
+            type: t.type || type || 'consultation',
+            featured: !!t.featured,
+            insight: t.insight || '',
+            date: t.date,
+        }));
+    } catch (err) {
+        console.log('Static testimonials not loaded:', err.message);
+        return [];
+    }
+}
+
 async function fetchTestimonials(type) {
-    let testimonials = [];
-
-    if (type === 'consultation') {
-        try {
-            const apiRes = await fetch(`${TESTIMONIALS_API}?type=consultation`);
-            if (apiRes.ok) {
-                const data = await apiRes.json();
-                testimonials = (data.testimonials || []).map(t => ({
-                    name: t.name,
-                    text: t.quote || t.text || '',
-                    rating: t.rating || 5,
-                    type: t.type || 'consultation',
-                    featured: !!t.featured,
-                    insight: t.insight || '',
-                }));
-            }
-        } catch (err) {
-            console.log('Airtable testimonials fetch failed, falling back to static:', err.message);
-        }
-    }
-
-    if (testimonials.length === 0) {
-        try {
-            const res = await fetch('data/testimonials.json');
-            const arr = await res.json();
-            testimonials = (type ? arr.filter(t => t.type === type) : arr).map(t => ({
-                name: t.name,
-                text: t.text || t.quote || '',
-                rating: t.rating || 5,
-                type: t.type || type || 'consultation',
-                featured: !!t.featured,
-                insight: t.insight || '',
-                date: t.date,
-            }));
-        } catch (err) {
-            console.log('Static testimonials not loaded:', err.message);
-        }
-    }
-
+    let testimonials = await fetchFromApi(type);
+    if (testimonials.length === 0) testimonials = await fetchFromStatic(type);
     return testimonials;
 }
 
@@ -62,28 +83,12 @@ async function loadTestimonials(containerId, options = {}) {
     }
 }
 
-// Load Summary + Featured-5 combo (used on consultation page)
-async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, options = {}) {
-    const { type = 'consultation' } = options;
-    const testimonials = await fetchTestimonials(type);
-    if (!testimonials || testimonials.length === 0) {
-        // Hide containers if no data
-        const sc = document.getElementById(summaryContainerId);
-        const fc = document.getElementById(featuredContainerId);
-        if (sc) sc.closest('section')?.classList.add('hidden');
-        if (fc) fc.closest('section')?.classList.add('hidden');
-        return;
-    }
-
-    renderSummary(summaryContainerId, testimonials, featuredContainerId);
-
-    // Featured 5: prefer manual flag, fallback to top 5 by rating + insight presence
+function pickFeatured(testimonials) {
     let featured = testimonials.filter(t => t.featured);
     if (featured.length === 0) {
         featured = [...testimonials].sort((a, b) => {
             const rDiff = (b.rating || 0) - (a.rating || 0);
             if (rDiff !== 0) return rDiff;
-            // tiebreak: prefer ones with insight, then longer quote
             const iDiff = (b.insight ? 1 : 0) - (a.insight ? 1 : 0);
             if (iDiff !== 0) return iDiff;
             return (b.text || '').length - (a.text || '').length;
@@ -91,8 +96,47 @@ async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, 
     } else {
         featured = featured.slice(0, 5);
     }
+    return featured;
+}
 
-    renderScrollTestimonials(featuredContainerId, featured);
+function renderSummaryAndFeatured(summaryContainerId, featuredContainerId, testimonials) {
+    if (!testimonials || testimonials.length === 0) {
+        const sc = document.getElementById(summaryContainerId);
+        const fc = document.getElementById(featuredContainerId);
+        if (sc) sc.closest('section')?.classList.add('hidden');
+        if (fc) fc.closest('section')?.classList.add('hidden');
+        return;
+    }
+    renderSummary(summaryContainerId, testimonials, featuredContainerId);
+    renderScrollTestimonials(featuredContainerId, pickFeatured(testimonials));
+}
+
+// Load Summary + Featured-5 combo (used on consultation page)
+// Strategy: render from localStorage cache instantly (if any), then refresh in background.
+async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, options = {}) {
+    const { type = 'consultation' } = options;
+
+    // Pass 1 — instant render from cache (if exists)
+    const cached = readCache(type);
+    let rendered = false;
+    if (cached && cached.data.length > 0) {
+        renderSummaryAndFeatured(summaryContainerId, featuredContainerId, cached.data);
+        rendered = true;
+    }
+
+    // Pass 2 — fresh fetch in background; re-render only if data differs
+    const fresh = await fetchTestimonials(type);
+    if (fresh && fresh.length > 0) {
+        writeCache(type, fresh);
+        const cachedHash = cached ? JSON.stringify(cached.data) : '';
+        const freshHash = JSON.stringify(fresh);
+        if (!rendered || cachedHash !== freshHash) {
+            renderSummaryAndFeatured(summaryContainerId, featuredContainerId, fresh);
+        }
+    } else if (!rendered) {
+        // Nothing cached AND fetch failed — hide
+        renderSummaryAndFeatured(summaryContainerId, featuredContainerId, []);
+    }
 }
 
 function renderSummary(containerId, testimonials, featuredContainerId) {
