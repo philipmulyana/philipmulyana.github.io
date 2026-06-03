@@ -92,7 +92,7 @@ async function loadTestimonialsSummary(summaryContainerId, featuredContainerId, 
         featured = featured.slice(0, 5);
     }
 
-    renderTestimonials(featuredContainerId, featured);
+    renderScrollTestimonials(featuredContainerId, featured);
 }
 
 function renderSummary(containerId, testimonials) {
