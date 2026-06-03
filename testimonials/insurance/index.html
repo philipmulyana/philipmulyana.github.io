@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerita Pengalaman Konsultasi — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="/js/pixel.js"></script>
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wjulbbpfmx");
+    </script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+        .star-input { cursor: pointer; transition: color 0.15s; }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <!-- Hero -->
+    <section class="pt-32 pb-12 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs text-gray-400 uppercase tracking-wider">Testimonial Klien</span>
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Cerita dong</h1>
+            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Gimana pengalaman kamu konsultasi sama Philip? Cerita kamu bakal bantu orang lain yang lagi nimbang-nimbang konsultasi.</p>
+        </div>
+    </section>
+
+    <!-- Form -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-xl mx-auto">
+            <form id="testimonial-form" class="space-y-5">
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium mb-1.5">Nama</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
+                        placeholder="Nama kamu">
+                </div>
+
+                <!-- Rating -->
+                <div>
+                    <label class="block text-sm font-medium mb-1.5">Rating</label>
+                    <div id="star-rating" class="flex gap-1 text-3xl text-gray-300">
+                        <span class="star-input" data-value="1">★</span>
+                        <span class="star-input" data-value="2">★</span>
+                        <span class="star-input" data-value="3">★</span>
+                        <span class="star-input" data-value="4">★</span>
+                        <span class="star-input" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" required value="">
+                </div>
+
+                <!-- Quote utama (Opsi C — beda framing) -->
+                <div>
+                    <label for="quote" class="block text-sm font-medium mb-1.5">Apa yang bikin pengalaman konsultasi sama Philip beda?</label>
+                    <textarea id="quote" name="quote" required rows="4" maxlength="500"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm resize-none"
+                        placeholder="Yang bikin beda buat saya adalah..."></textarea>
+                    <p class="text-xs text-gray-400 mt-1.5">2-3 kalimat. Ceritain hal spesifik yang bikin pengalaman ini berkesan atau beda dari yang kamu bayangkan.</p>
+                </div>
+
+                <!-- Insight (optional) -->
+                <div>
+                    <label for="insight" class="block text-sm font-medium mb-1.5">Satu hal paling penting yang kamu pelajari <span class="text-gray-400 font-normal">(opsional)</span></label>
+                    <textarea id="insight" name="insight" rows="2" maxlength="300"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm resize-none"
+                        placeholder="Yang akhirnya saya paham adalah..."></textarea>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" id="submit-btn"
+                    class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
+                    Kirim Cerita
+                </button>
+
+                <p class="text-xs text-gray-400 text-center mt-3">Dengan mengirim cerita, kamu setuju ditampilkan di philipmulyana.com</p>
+            </form>
+
+            <!-- Success -->
+            <div id="success-msg" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h2 class="text-2xl font-black mb-2">Terima kasih!</h2>
+                <p class="text-gray-500 text-sm">Cerita kamu udah masuk. Setelah review, akan tampil di halaman konsultasi untuk bantu calon klien lain.</p>
+            </div>
+
+            <!-- Error -->
+            <div id="error-msg" class="hidden text-center py-4">
+                <p class="text-red-500 text-sm">Terjadi kesalahan. Coba lagi ya.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Star rating
+        const stars = document.querySelectorAll('#star-rating .star-input');
+        const ratingInput = document.getElementById('rating');
+        function paintStars(value) {
+            stars.forEach(s => {
+                s.classList.toggle('text-yellow-400', parseInt(s.dataset.value) <= value);
+                s.classList.toggle('text-gray-300', parseInt(s.dataset.value) > value);
+            });
+        }
+        stars.forEach(s => {
+            s.addEventListener('mouseenter', () => paintStars(parseInt(s.dataset.value)));
+            s.addEventListener('mouseleave', () => paintStars(parseInt(ratingInput.value) || 0));
+            s.addEventListener('click', () => {
+                ratingInput.value = s.dataset.value;
+                paintStars(parseInt(s.dataset.value));
+            });
+        });
+
+        // Form submit
+        const ENDPOINT = 'https://philip-mulyana--ai-website-builder-testimonial-submit.modal.run';
+
+        document.getElementById('testimonial-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const form = this;
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.classList.add('hidden');
+
+            if (!ratingInput.value) {
+                errorMsg.querySelector('p').textContent = 'Pilih rating dulu ya (klik bintangnya).';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Mengirim...';
+
+            const data = {
+                name: form.name.value.trim(),
+                quote: form.quote.value.trim(),
+                insight: form.insight.value.trim(),
+                rating: parseInt(ratingInput.value),
+                type: 'consultation',
+            };
+
+            try {
+                const resp = await fetch(ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (!resp.ok) throw new Error('Server error');
+                form.classList.add('hidden');
+                document.getElementById('success-msg').classList.remove('hidden');
+            } catch (err) {
+                errorMsg.querySelector('p').textContent = 'Terjadi kesalahan. Coba lagi ya.';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Kirim Cerita';
+            }
+        });
+
+        // Fade-up
+        document.querySelectorAll('.fade-up').forEach(el => {
+            const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('animate-in'); obs.unobserve(el); } }, { threshold: 0.1 });
+            obs.observe(el);
+        });
+    </script>
+</body>
+</html>

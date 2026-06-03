@@ -1,27 +1,55 @@
+const TESTIMONIALS_API = 'https://philip-mulyana--ai-website-builder-testimonials.modal.run';
+
 async function loadTestimonials(containerId, options = {}) {
     const { limit = 0, type = null, layout = 'grid' } = options;
 
-    try {
-        const res = await fetch('data/testimonials.json');
-        let testimonials = await res.json();
+    let testimonials = [];
+    let usedSource = 'none';
 
-        if (type) {
-            testimonials = testimonials.filter(t => t.type === type);
+    // For consultation type, try Airtable first (live + approval-gated).
+    // Falls back to static JSON if API unreachable.
+    if (type === 'consultation') {
+        try {
+            const apiRes = await fetch(`${TESTIMONIALS_API}?type=consultation`);
+            if (apiRes.ok) {
+                const data = await apiRes.json();
+                testimonials = (data.testimonials || []).map(t => ({
+                    name: t.name,
+                    text: t.quote || t.text || '',
+                    rating: t.rating || 5,
+                    type: t.type || 'consultation',
+                }));
+                usedSource = 'airtable';
+            }
+        } catch (err) {
+            console.log('Airtable testimonials fetch failed, falling back to static:', err.message);
         }
+    }
 
-        testimonials.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (limit > 0) {
-            testimonials = testimonials.slice(0, limit);
+    if (testimonials.length === 0) {
+        try {
+            const res = await fetch('data/testimonials.json');
+            testimonials = await res.json();
+            usedSource = 'static';
+            if (type) testimonials = testimonials.filter(t => t.type === type);
+        } catch (err) {
+            console.log('Static testimonials not loaded:', err.message);
+            return;
         }
+    }
 
-        if (layout === 'scroll') {
-            renderScrollTestimonials(containerId, testimonials);
-        } else {
-            renderTestimonials(containerId, testimonials);
-        }
-    } catch (err) {
-        console.log('Testimonials not loaded:', err.message);
+    // Sort: Airtable items have no `date`, use rating desc as tiebreaker; static items use date desc
+    testimonials.sort((a, b) => {
+        if (a.date && b.date) return new Date(b.date) - new Date(a.date);
+        return (b.rating || 0) - (a.rating || 0);
+    });
+
+    if (limit > 0) testimonials = testimonials.slice(0, limit);
+
+    if (layout === 'scroll') {
+        renderScrollTestimonials(containerId, testimonials);
+    } else {
+        renderTestimonials(containerId, testimonials);
     }
 }
 
