@@ -131,7 +131,7 @@ function renderPostCard(post) {
     const typeBadge = isNewsInsight ? 'Berita Keuangan' : 'Artikel Kami';
     const topicLabel = categoryLabels[post.category] || post.categoryLabel;
     const formattedDate = formatDate(post.date);
-    const postUrl = `post.html?slug=${post.slug}`;
+    const postUrl = `/blog/${post.slug}.html`;
 
     return `
         <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">

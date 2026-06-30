@@ -112,6 +112,7 @@
 
     async function loadPost() {
         const slug = new URLSearchParams(window.location.search).get('slug');
+        if (slug) { window.location.replace('/blog/' + encodeURIComponent(slug) + '.html'); return; }
         if (!slug) {
             document.getElementById('post-title').textContent = 'Artikel tidak ditemukan';
             return;
