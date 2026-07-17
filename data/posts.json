@@ -1,6 +1,26 @@
 {
   "posts": [
     {
+      "slug": "10-biaya-muncul-setelah-pensiun",
+      "title": "10 Biaya yang Baru Muncul Justru Setelah Kamu Pensiun",
+      "category": "personal_finance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-07-17",
+      "excerpt": "Berhenti kerja bukan berarti pengeluaran berhenti. Ada 10 biaya yang justru baru muncul setelah pensiun, dan kebanyakan orang tidak menghitungnya.",
+      "readingTime": "3 min read",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "bpjs-dan-dana-pensiun-kantor-cukup-ga",
+      "title": "BPJS dan Dana Pensiun Kantor: Cukup Ga Buat Pensiun Kamu? Cek Gap-nya",
+      "category": "personal_finance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-07-17",
+      "excerpt": "Banyak yang merasa aman karena sudah punya BPJS dan dana pensiun kantor. Tapi begitu diitung, hampir selalu ada gap. Ini cara ceknya.",
+      "readingTime": "4 min read",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "biaya-kuliah-swasta-non-kedokteran",
       "title": "Dua Orang Tua, Target yang Sama — Kenapa yang Satu Harus Bayar 3 Kali Lipat?",
       "category": "personal_finance",
