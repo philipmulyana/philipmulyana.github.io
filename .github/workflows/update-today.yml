@@ -2,7 +2,7 @@ name: Update /today redirect
 
 on:
   schedule:
-    - cron: '0 17 * * *'   # 00:00 WIB (17:00 UTC)
+    - cron: '55 0 * * *'   # 07:55 WIB (00:55 UTC)
   workflow_dispatch:        # allow manual "Run workflow" for testing
 
 permissions:
