@@ -108,7 +108,7 @@ def fmt_date(s):
 CM_BASE = "appqIkiQc23r9UU2T"
 CM_TABLE = "tblZUarT6cG2qIPdY"
 CM_APPROVED = "4 - Writing Approved"
-TOOL_KEYS = ("tool-retirement.html", "tool-education.html", "financial-checkup.html")
+TOOL_KEYS = ("tool-retirement.html", "tool-education.html", "tool-proteksi.html", "financial-checkup.html")
 
 
 def _airtable_all(base, table, token):
@@ -149,7 +149,7 @@ def _cm_content(body):
     marker comment so cta_block()/mid_cta() still detect the tool."""
     body = body or ""
     tool = next((k for k in TOOL_KEYS if k in body), None)
-    body = re.sub(r"\[([^\]]+)\]\((https?://[^)]*(?:tool-retirement|tool-education|financial-checkup)[^)]*)\)", r"\1", body)
+    body = re.sub(r"\[([^\]]+)\]\((https?://[^)]*(?:tool-retirement|tool-education|tool-proteksi|financial-checkup)[^)]*)\)", r"\1", body)
     if tool:
         body += f"\n\n<!-- {tool} -->"
     return body
@@ -219,6 +219,7 @@ def baca_juga(post, all_posts):
 TOOL_CTA = {
     "tool-education.html": ("Hitung Dana Pendidikan Anak Kamu", "https://philipmulyana.com/tool-education.html"),
     "tool-retirement.html": ("Cek Gap Dana Pensiun Kamu", "https://philipmulyana.com/tool-retirement.html"),
+    "tool-proteksi.html": ("Hitung Kebutuhan Proteksi Kamu", "https://philipmulyana.com/tool-proteksi.html"),
     "financial-checkup.html": ("Mulai Financial Check-up Gratis", "https://philipmulyana.com/financial-checkup.html"),
 }
 
