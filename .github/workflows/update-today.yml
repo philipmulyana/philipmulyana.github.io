@@ -1,0 +1,33 @@
+name: Update /today redirect
+
+on:
+  schedule:
+    - cron: '0 17 * * *'   # 00:00 WIB (17:00 UTC)
+  workflow_dispatch:        # allow manual "Run workflow" for testing
+
+permissions:
+  contents: write
+
+jobs:
+  update-today:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compute today's blog and rewrite today.html
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: python .github/scripts/today_updater.py
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet today.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add today.html
+            git commit -m "Auto-update /today [skip ci]"
+            git push
+          else
+            echo "today.html unchanged — nothing to commit."
+          fi
