@@ -13,7 +13,7 @@ Runs FLAT in the site repo (repo root = site root), env from GitHub Actions:
 MERGE-PRESERVE: posts.json keeps existing entries whose HTML still exists but isn't in
 Airtable (local-render blogs never drop from the listing).
 """
-import json, re, os, time, urllib.request, urllib.parse, pathlib, html as _html, socket
+import json, re, os, time, urllib.request, urllib.parse, pathlib, html as _html, socket, datetime
 import markdown as md
 
 socket.setdefaulttimeout(30)
@@ -103,17 +103,22 @@ def fmt_date(s):
         return s
 
 
-def fetch_posts():
-    T = os.environ["AIRTABLE_TOKEN"]
-    B = os.environ.get("AIRTABLE_BASE_ID", "appKuGZUI8tK4as7n")
-    TB = os.environ.get("AIRTABLE_BLOG_TABLE", "Blog Posts")
+# Content Machine "Blogs" authoring table (Content Strategist base) — second source.
+# A blog here with Status "4 - Writing Approved" publishes directly, no manual sync.
+CM_BASE = "appqIkiQc23r9UU2T"
+CM_TABLE = "tblZUarT6cG2qIPdY"
+CM_APPROVED = "4 - Writing Approved"
+TOOL_KEYS = ("tool-retirement.html", "tool-education.html", "financial-checkup.html")
+
+
+def _airtable_all(base, table, token):
     recs, off = [], None
     while True:
-        u = f"https://api.airtable.com/v0/{B}/{urllib.parse.quote(TB)}?pageSize=100" + (f"&offset={off}" if off else "")
+        u = f"https://api.airtable.com/v0/{base}/{urllib.parse.quote(table)}?pageSize=100" + (f"&offset={off}" if off else "")
         d = None
         for attempt in range(5):
             try:
-                d = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={"Authorization": f"Bearer {T}"})))
+                d = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={"Authorization": f"Bearer {token}"})))
                 break
             except Exception as e:
                 if attempt == 4:
@@ -123,7 +128,65 @@ def fetch_posts():
         recs += d["records"]; off = d.get("offset")
         if not off:
             break
-    posts = [r["fields"] for r in recs if r["fields"].get("Approved") and r["fields"].get("Slug")]
+    return recs
+
+
+def _excerpt_from_body(body):
+    txt = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", body or "")
+    for line in txt.splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and not line.startswith("<!--"):
+            return (line[:157] + "...") if len(line) > 160 else line
+    return ""
+
+
+def _reading_time(body):
+    return f"{max(2, round(len((body or '').split()) / 200))} menit baca"
+
+
+def _cm_content(body):
+    """Strip tool-CTA markdown links (auto-CTA injects styled buttons) but keep a
+    marker comment so cta_block()/mid_cta() still detect the tool."""
+    body = body or ""
+    tool = next((k for k in TOOL_KEYS if k in body), None)
+    body = re.sub(r"\[([^\]]+)\]\((https?://[^)]*(?:tool-retirement|tool-education|financial-checkup)[^)]*)\)", r"\1", body)
+    if tool:
+        body += f"\n\n<!-- {tool} -->"
+    return body
+
+
+def fetch_posts():
+    T = os.environ["AIRTABLE_TOKEN"]
+    B = os.environ.get("AIRTABLE_BASE_ID", "appKuGZUI8tK4as7n")
+    TB = os.environ.get("AIRTABLE_BLOG_TABLE", "Blog Posts")
+    today = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=7)).strftime("%Y-%m-%d")
+
+    # Source 1: Website Builder "Blog Posts" (Approved checkbox)
+    posts = [r["fields"] for r in _airtable_all(B, TB, T)
+             if r["fields"].get("Approved") and r["fields"].get("Slug")]
+    seen = {p.get("Slug") for p in posts}
+
+    # Source 2: Content Machine "Blogs" (Status == Writing Approved)
+    for r in _airtable_all(CM_BASE, CM_TABLE, T):
+        f = r["fields"]
+        if f.get("Status") != CM_APPROVED or not f.get("Slug") or not f.get("Body") or f["Slug"] in seen:
+            continue
+        seen.add(f["Slug"])
+        body = f["Body"]
+        posts.append({
+            "Title": f.get("Title", ""),
+            "Slug": f["Slug"],
+            "Content": _cm_content(body),
+            "Excerpt": f.get("Excerpt") or _excerpt_from_body(body),
+            "ReadingTime": _reading_time(body),
+            "Category": "personal_finance",
+            "CategoryLabel": "Artikel Kami",
+            "Author": "Philip Mulyana",
+            "Date": f.get("Publish Date", ""),
+        })
+
+    # Date-gate: future-dated posts wait until their publish date (WIB).
+    posts = [p for p in posts if not p.get("Date") or p.get("Date") <= today]
     posts.sort(key=lambda f: f.get("Date", ""), reverse=True)
     return posts
 
