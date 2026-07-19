@@ -105,6 +105,8 @@ function formatRpShort(num) {
 }
 
 let calcResults = null;
+// Rincian ditahan sampai lead submit — dibuka di revealResults()
+let pendingBreakdownHTML = '';
 
 function getIsAgent() {
     const checked = document.querySelector('input[name="edu-is-agent"]:checked');
@@ -144,7 +146,12 @@ function buildBreakdownHTML(kuliah) {
     `;
 }
 
-function buildHeroHTML(totalNeeded, startAge) {
+function buildHeroHTML(totalNeeded, startAge, showNudge) {
+    const nudge = showNudge ? `
+        <p class="text-sm text-gray-600 text-center -mt-2 mb-6">
+            Di bawah: <strong>kenapa angkanya naik secepat itu</strong> — plus rincian lengkap biaya hari ini vs saat anakmu masuk. ↓
+        </p>
+    ` : '';
     return `
         <h3 class="text-lg font-bold text-center mb-1">Hasil Perhitungan Dana Kuliah</h3>
         <p class="text-xs text-gray-400 text-center mb-6">Berdasarkan data yang kamu masukkan</p>
@@ -154,10 +161,10 @@ function buildHeroHTML(totalNeeded, startAge) {
             <p class="text-3xl md:text-4xl font-black text-amber-700">${formatRp(totalNeeded)}</p>
             <p class="text-xs text-gray-400 mt-2">untuk membiayai kuliah anakmu di umur ${startAge}</p>
         </div>
-    `;
+    ` + nudge;
 }
 
-function buildLeadGateHTML(currentAge, kuliah, breakdownHTML) {
+function buildLeadGateHTML(currentAge, kuliah) {
     const yearsUntilKuliah = kuliah.yearsUntilStart;
 
     const scenario = `
@@ -209,10 +216,6 @@ function buildLeadGateHTML(currentAge, kuliah, breakdownHTML) {
                 <p class="text-[10px] text-gray-400 leading-relaxed mb-5">
                     Sumber: BPS, OJK studies on education inflation Indonesia, Manulife Asia Care Survey 2025.
                 </p>
-
-                <div class="rounded-xl overflow-hidden mb-5 border border-gray-200 bg-white">
-                    ${breakdownHTML}
-                </div>
 
                 ${identity}
             </div>
@@ -294,15 +297,18 @@ function calculateEducation() {
         keepalive: true,
     }).catch(() => { /* non-blocking */ });
 
-    const heroHTML = buildHeroHTML(kuliah.totalFuture, kuliah.startAge);
     const breakdownHTML = buildBreakdownHTML(kuliah);
+    pendingBreakdownHTML = breakdownHTML;
 
     if (isAgent || childAge >= AGE_TOO_LATE) {
-        resultsEl.innerHTML = heroHTML + breakdownHTML + buildDisclaimerHTML();
+        // Agen / terlalu telat: angka + rincian langsung, tanpa gate
+        resultsEl.innerHTML = buildHeroHTML(kuliah.totalFuture, kuliah.startAge, false)
+            + breakdownHTML + buildDisclaimerHTML();
     } else {
+        // Rincian DITAHAN di balik form — dibuka setelah submit (revealResults)
         resultsEl.innerHTML =
-            heroHTML +
-            buildLeadGateHTML(childAge, kuliah, breakdownHTML) +
+            buildHeroHTML(kuliah.totalFuture, kuliah.startAge, true) +
+            buildLeadGateHTML(childAge, kuliah) +
             buildDisclaimerHTML();
     }
 
@@ -408,6 +414,11 @@ function revealResults() {
             <p class="text-sm text-gray-700 leading-relaxed">
                 Philip akan menghubungi kamu via WhatsApp dalam <strong>1×24 jam</strong>.
             </p>
+        </div>
+
+        <div class="border-t border-gray-100 pt-6">
+            <p class="text-sm font-bold text-gray-900 mb-3 text-center">Rincian lengkap perhitungan kamu</p>
+            ${pendingBreakdownHTML}
         </div>
     `;
     confirmEl.classList.remove('hidden');
