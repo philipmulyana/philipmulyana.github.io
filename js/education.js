@@ -224,11 +224,17 @@ function buildLeadGateHTML(currentAge, kuliah) {
 
             <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
             <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
-                <p class="text-sm text-gray-800 leading-relaxed">
-                    <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi. Untuk kebutuhan seperti ini
-                    saya pakai <strong>asuransi dwiguna</strong> — bukan unit link. Kalau setelah ngobrol ternyata
-                    yang kamu butuhkan bukan itu, saya akan bilang apa adanya.
-                </p>
+                <p class="text-sm text-gray-800 leading-relaxed mb-2">
+                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi — tapi ini bukan sesi jualan.
+                        Obrolan 10 menit ini murni diskusi, dan <strong>kamu tidak wajib beli apa pun.</strong>
+                    </p>
+                    <p class="text-sm text-gray-800 leading-relaxed mb-2">
+                        Kalau ternyata kamu belum perlu, saya bilang apa adanya. Kalau ternyata cocok dan kamu mau
+                        lanjut, silakan. Dua-duanya sama-sama oke.
+                    </p>
+                    <p class="text-sm text-gray-800 leading-relaxed">
+                        Biar tidak salah paham juga: yang saya bahas di sini <strong>bukan unit link.</strong>
+                    </p>
             </div>
 
             <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors" id="edu-consent-label">
