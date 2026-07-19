@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Plan Builder — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/pixel.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+        .section-card { background: #f9fafb; border-radius: 1.5rem; padding: 1.75rem; }
+        .section-card + .section-card { margin-top: 1rem; }
+        .subsection { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem; }
+        .subsection + .subsection { margin-top: 0.75rem; }
+        .subsection h3 { font-size: 0.875rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; }
+        .subtotal { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; margin-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 0.75rem; }
+        .subtotal-label { color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+        .subtotal-value { font-weight: 800; color: #111827; }
+        .vital-card { background: white; border-radius: 1rem; padding: 1.25rem; border: 1px solid #e5e7eb; }
+        .flag-green { background: #ecfdf5; color: #065f46; }
+        .flag-yellow { background: #fefce8; color: #854d0e; }
+        .flag-red { background: #fef2f2; color: #991b1b; }
+        .input-row { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+        @media (min-width: 640px) { .input-row { grid-template-columns: 1fr auto; align-items: center; } }
+        .input-row label { font-size: 0.8125rem; color: #374151; font-weight: 500; }
+        .input-row input { width: 100%; padding: 0.625rem 0.875rem; border-radius: 0.625rem; border: 1px solid #e5e7eb; font-size: 0.875rem; }
+        @media (min-width: 640px) { .input-row input { width: 12rem; text-align: right; } }
+        .input-row input:focus { outline: none; border-color: black; }
+        .field-hint { font-size: 0.6875rem; color: #9ca3af; margin-top: 0.125rem; }
+        .risk-question { margin-bottom: 1.25rem; }
+        .risk-question:last-child { margin-bottom: 0; }
+        .risk-question p.q { font-size: 0.875rem; font-weight: 500; color: #111827; margin-bottom: 0.5rem; }
+        .risk-options { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+        @media (min-width: 640px) { .risk-options { grid-template-columns: 1fr 1fr; } }
+        .risk-option input { display: none; }
+        .risk-option div { padding: 0.625rem 0.875rem; border: 1.5px solid #e5e7eb; border-radius: 0.625rem; font-size: 0.8125rem; cursor: pointer; transition: all 0.15s; }
+        .risk-option input:checked + div { border-color: black; background: black; color: white; }
+        .risk-option div:hover { border-color: #9ca3af; }
+        .risk-option input:checked + div:hover { border-color: black; }
+
+        /* ===== Wizard / Multi-step ===== */
+        .wizard-step { display: none; }
+        .wizard-step.active { display: block; animation: stepFade 0.25s ease-out; }
+        @keyframes stepFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .progress-wrap { background: white; border: 1px solid #e5e7eb; border-radius: 1.25rem; padding: 1.25rem 1.25rem 1rem; margin-bottom: 1.25rem; position: sticky; top: 1rem; z-index: 10; backdrop-filter: blur(8px); background: rgba(255,255,255,0.92); }
+        .progress-header { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.75rem; color: #6b7280; margin-bottom: 0.625rem; }
+        .progress-header .label { color: #111827; font-weight: 600; font-size: 0.875rem; }
+        .progress-header .pct { color: #7c3aed; font-weight: 700; }
+        .progress-bar-track { height: 4px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(to right, #7c3aed, #a855f7); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px; }
+        .step-dots { display: flex; justify-content: space-between; margin-top: 0.875rem; gap: 0.25rem; }
+        .step-dot { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.375rem; cursor: not-allowed; opacity: 0.45; transition: opacity 0.2s; background: none; border: 0; padding: 0; font-family: inherit; }
+        .step-dot.visited, .step-dot.active { cursor: pointer; opacity: 1; }
+        .step-dot.visited:hover .step-dot-circle { transform: scale(1.08); }
+        .step-dot-circle { width: 1.75rem; height: 1.75rem; border-radius: 50%; background: #e5e7eb; color: #6b7280; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; }
+        .step-dot.active .step-dot-circle { background: black; color: white; box-shadow: 0 0 0 4px rgba(0,0,0,0.06); }
+        .step-dot.visited .step-dot-circle { background: #7c3aed; color: white; }
+        .step-dot-label { font-size: 0.625rem; color: #9ca3af; text-align: center; line-height: 1.2; }
+        .step-dot.active .step-dot-label { color: #111827; font-weight: 600; }
+        .step-dot.visited .step-dot-label { color: #6b7280; }
+        @media (max-width: 480px) { .step-dot-label { font-size: 0.5625rem; } .step-dot-circle { width: 1.5rem; height: 1.5rem; font-size: 0.6875rem; } }
+        .wizard-nav { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
+        .wizard-nav button { flex: 1; padding: 0.875rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; transition: all 0.15s; cursor: pointer; }
+        .wizard-nav button:active:not(:disabled) { transform: scale(0.98); }
+        .wizard-back { background: white; border: 1.5px solid #e5e7eb; color: #111827; }
+        .wizard-back:hover:not(:disabled) { border-color: #6b7280; }
+        .wizard-back:disabled { opacity: 0.35; cursor: not-allowed; }
+        .wizard-next, .wizard-submit { background: black; color: white; border: 1.5px solid black; flex: 2; }
+        .wizard-next:hover, .wizard-submit:hover { background: #1f2937; }
+        .wizard-submit { background: linear-gradient(to right, #7c3aed, #a855f7); border-color: transparent; }
+        .wizard-submit:hover { background: linear-gradient(to right, #6d28d9, #9333ea); }
+        .step-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.8125rem; margin-top: 0.875rem; display: none; }
+        .step-error.show { display: block; }
+
+        /* Review screen */
+        .review-block { padding: 1rem 0; border-bottom: 1px solid #f3f4f6; }
+        .review-block:last-of-type { border-bottom: 0; }
+        .review-block h4 { font-size: 0.8125rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between; }
+        .review-edit { font-size: 0.6875rem; color: #7c3aed; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; background: none; border: 0; padding: 0; }
+        .review-edit:hover { color: #6d28d9; text-decoration: underline; }
+        .review-row { display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 0.25rem 0; }
+        .review-row .k { color: #6b7280; }
+        .review-row .v { color: #111827; font-weight: 500; text-align: right; max-width: 65%; }
+        .review-row .v.empty { color: #d1d5db; font-style: italic; font-weight: 400; }
+        .review-warning { background: #fefce8; border: 1px solid #fde68a; color: #854d0e; padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.75rem; margin-top: 0.75rem; }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Breadcrumb + Header -->
+    <section class="pt-28 pb-8 px-6">
+        <div class="max-w-2xl mx-auto">
+            <a href="/tools/" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                All Tools
+            </a>
+            <span class="text-xs text-violet-600 font-medium uppercase tracking-wider block">Master Plan Klinik</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Master Plan Builder</h1>
+            <p class="text-gray-500 text-sm mt-3">Visi → Diagnosa 6 Vitals → Goals → Gap analysis. End-to-end master plan kamu dalam satu tempat.</p>
+            <p class="text-xs text-gray-400 mt-3">⏱ 15–25 menit · 🔒 Data hanya untuk perhitungan kamu</p>
+        </div>
+    </section>
+
+    <!-- Form -->
+    <section class="px-6 pb-16 fade-up">
+        <div class="max-w-2xl mx-auto">
+
+            <form id="vitals-form" class="space-y-4" onsubmit="event.preventDefault(); calculateVitals();">
+
+                <!-- ====== Progress Bar (sticky) ====== -->
+                <div class="progress-wrap">
+                    <div class="progress-header">
+                        <span class="label" id="wiz-step-label">Step 1 of 5 · Profil Klien</span>
+                        <span class="pct" id="wiz-pct">20%</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="wiz-fill" style="width: 20%"></div>
+                    </div>
+                    <div class="step-dots" id="wiz-dots">
+                        <button type="button" class="step-dot active" data-step="1" onclick="goToStep(1)">
+                            <span class="step-dot-circle">1</span>
+                            <span class="step-dot-label">Profil</span>
+                        </button>
+                        <button type="button" class="step-dot" data-step="2" onclick="goToStep(2)">
+                            <span class="step-dot-circle">2</span>
+                            <span class="step-dot-label">Visi</span>
+                        </button>
+                        <button type="button" class="step-dot" data-step="3" onclick="goToStep(3)">
+                            <span class="step-dot-circle">3</span>
+                            <span class="step-dot-label">Vitals</span>
+                        </button>
+                        <button type="button" class="step-dot" data-step="4" onclick="goToStep(4)">
+                            <span class="step-dot-circle">4</span>
+                            <span class="step-dot-label">Goals</span>
+                        </button>
+                        <button type="button" class="step-dot" data-step="5" onclick="goToStep(5)">
+                            <span class="step-dot-circle">5</span>
+                            <span class="step-dot-label">Generate</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ====== STEP 1: Profil Klien ====== -->
+                <div class="wizard-step active" data-step="1">
+
+                <!-- ====== Section P: Profil Klien ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">P</span>
+                        <h2 class="text-base font-bold">Profil Klien</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Identitas dasar untuk personalisasi Master Plan & deliverable PDF.</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="vt-prof-nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
+                            <input type="text" id="vt-prof-nama" placeholder="e.g. Aiden Putra"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-dob" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label>
+                            <p class="text-xs text-gray-400 mb-2">Usia otomatis dihitung dari tanggal lahir.</p>
+                            <input type="date" id="vt-prof-dob"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                            <p id="vt-prof-age-display" class="text-xs text-violet-700 mt-1 hidden font-medium"></p>
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-profesi" class="block text-sm font-medium text-gray-700 mb-1">Profesi</label>
+                            <input type="text" id="vt-prof-profesi" placeholder="e.g. Senior Manager / Doctor / Bisnis Owner"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-kota" class="block text-sm font-medium text-gray-700 mb-1">Lokasi Kota</label>
+                            <input type="text" id="vt-prof-kota" placeholder="e.g. Jakarta Selatan"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-hp" class="block text-sm font-medium text-gray-700 mb-1">Nomor Handphone</label>
+                            <input type="tel" id="vt-prof-hp" placeholder="e.g. 0812-3456-7890"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Apakah klien agen asuransi? *</label>
+                            <div class="flex gap-3">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="vt-is-agent" value="no" class="peer hidden" checked>
+                                    <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 hover:border-gray-400 select-none">
+                                        Bukan
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="vt-is-agent" value="yes" class="peer hidden">
+                                    <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 hover:border-gray-400 select-none">
+                                        Ya, agen
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-sesi-date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sesi</label>
+                            <p class="text-xs text-gray-400 mb-2">Default hari ini, editable kalau sesi terjadwal di tanggal lain.</p>
+                            <input type="date" id="vt-prof-sesi-date"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-prof-status" class="block text-sm font-medium text-gray-700 mb-1">Status Pernikahan *</label>
+                            <select id="vt-prof-status"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm bg-white">
+                                <option value="">-- Pilih status --</option>
+                                <option value="single">Single</option>
+                                <option value="menikah">Menikah</option>
+                                <option value="cerai">Cerai</option>
+                                <option value="janda-duda">Janda / Duda</option>
+                            </select>
+                        </div>
+
+                        <div id="vt-prof-pasangan-group" class="hidden">
+                            <div class="subsection">
+                                <h3>Pasangan</h3>
+                                <div>
+                                    <label for="vt-prof-pasangan-nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Pasangan</label>
+                                    <input type="text" id="vt-prof-pasangan-nama" placeholder="Nama lengkap pasangan"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cara Kelola Keuangan</label>
+                                    <div class="flex gap-3">
+                                        <label class="flex-1 cursor-pointer">
+                                            <input type="radio" name="vt-prof-wealth" value="joint" class="peer hidden" checked>
+                                            <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 hover:border-gray-400 select-none">
+                                                Joint (gabung)
+                                            </div>
+                                        </label>
+                                        <label class="flex-1 cursor-pointer">
+                                            <input type="radio" name="vt-prof-wealth" value="separate" class="peer hidden">
+                                            <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 hover:border-gray-400 select-none">
+                                                Separate (pisah)
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="vt-prof-wealth-helper" class="hidden mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                                        <p class="text-xs text-amber-900 leading-relaxed">
+                                            <strong>Note:</strong> Tool generate 1 Master Plan per orang. Disarankan bikin sesi terpisah untuk pasangan — data, goals, dan risk profile mereka mungkin beda.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Anak-anak</label>
+                            <p class="text-xs text-gray-400 mb-3">Tambahkan tiap anak dengan nama & tanggal lahir. Skip kalau tidak ada anak.</p>
+                            <div id="vt-prof-anak-list" class="space-y-3"></div>
+                            <p id="vt-prof-anak-empty-hint" class="text-xs text-gray-400 mt-1 italic">Belum ada anak ditambahkan.</p>
+                            <button type="button" onclick="addAnak()" class="mt-3 px-4 py-2.5 rounded-full bg-white border border-gray-200 text-xs font-medium hover:border-black hover:bg-gray-50 transition-colors active:scale-95">
+                                + Tambah Anak
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="step-error" id="step1-error"></div>
+                    <div class="wizard-nav">
+                        <button type="button" class="wizard-back" disabled>← Back</button>
+                        <button type="button" class="wizard-next" onclick="goToStep(2)">Next: Visi Hidup →</button>
+                    </div>
+                </div><!-- /STEP 1 -->
+
+                <!-- ====== STEP 2: Visi Hidup ====== -->
+                <div class="wizard-step" data-step="2">
+
+                <!-- ====== Section 0: Visi Hidup ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">0</span>
+                        <h2 class="text-base font-bold">Visi Hidup Kamu</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Sebelum lihat angka — apa yang sebenarnya kamu kejar? Ini akan jadi konteks pembacaan 6 vitals di bawah.</p>
+
+                    <label for="vt-vision" class="block text-sm font-medium text-gray-700 mb-1">Tulis 2-3 kalimat: di usia 60, kamu bayangin hidup seperti apa?</label>
+                    <p class="text-xs text-gray-400 mb-2">Apa yang kamu kerjakan, bersama siapa, dan apa yang penting kamu capai. Ini <em>bukan</em> tentang Rupiah — ini tentang kualitas hidup.</p>
+                    <textarea id="vt-vision" rows="4" placeholder="Contoh: Di usia 60, saya ingin bisa berhenti kerja sebagai keputusan, bukan keterpaksaan. Bisa traveling dengan anak-istri tanpa hitung-hitungan, dan masih punya kapasitas untuk membantu orangtua."
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm leading-relaxed"></textarea>
+                </div>
+
+                    <div class="step-error" id="step2-error"></div>
+                    <div class="wizard-nav">
+                        <button type="button" class="wizard-back" onclick="goToStep(1)">← Back</button>
+                        <button type="button" class="wizard-next" onclick="goToStep(3)">Next: Financial Vitals →</button>
+                    </div>
+                </div><!-- /STEP 2 -->
+
+                <!-- ====== STEP 3: Financial Vitals (A + B + C + D) ====== -->
+                <div class="wizard-step" data-step="3">
+
+                <!-- ====== Section A: Profil & Cash Flow ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">A</span>
+                        <h2 class="text-base font-bold">Profil & Cash Flow Bulanan</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Arus kas bulanan. Usia otomatis dari profil di atas.</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="vt-income" class="block text-sm font-medium text-gray-700 mb-1">Pendapatan Bulanan (THP / Take-Home Pay) *</label>
+                            <p class="text-xs text-gray-400 mb-2">Yang benar-benar masuk rekening setelah dipotong pajak, BPJS, dan iuran wajib lain. Total semua sumber: gaji, bisnis, sewa.</p>
+                            <input type="text" id="vt-income" inputmode="numeric" placeholder="e.g. 40,000,000"
+                                class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-expense" class="block text-sm font-medium text-gray-700 mb-1">Pengeluaran Bulanan *</label>
+                            <p class="text-xs text-gray-400 mb-2">Total semua: makan, transport, cicilan, lifestyle, anak, premi asuransi.</p>
+                            <input type="text" id="vt-expense" inputmode="numeric" placeholder="e.g. 25,000,000"
+                                class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-invest-monthly" class="block text-sm font-medium text-gray-700 mb-1">Kontribusi Investasi / Tabungan Bulanan *</label>
+                            <p class="text-xs text-gray-400 mb-2">Berapa per bulan yang konsisten masuk ke reksadana, saham, obligasi, deposito, emas. Belum termasuk premi unit link.</p>
+                            <input type="text" id="vt-invest-monthly" inputmode="numeric" placeholder="e.g. 8,000,000"
+                                class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label for="vt-debt-monthly" class="block text-sm font-medium text-gray-700 mb-1">Cicilan Utang Bulanan</label>
+                            <p class="text-xs text-gray-400 mb-2">Total semua cicilan bulanan: KPR + KKB + kartu kredit + KTA. Isi 0 kalau tidak ada utang.</p>
+                            <input type="text" id="vt-debt-monthly" inputmode="numeric" placeholder="e.g. 6,000,000"
+                                class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== Section B: Aset & Utang ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">B</span>
+                        <h2 class="text-base font-bold">Inventaris Aset & Utang</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Semua aset di-input dengan <strong>estimasi nilai pasar saat ini</strong> (bukan harga beli). Total per kategori auto-terhitung.</p>
+
+                    <!-- B1: Aset Likuid -->
+                    <div class="subsection">
+                        <h3>B1. Aset Likuid</h3>
+                        <p class="text-xs text-gray-500 mb-3">Aset yang bisa dicairkan dalam &lt; 7 hari tanpa kehilangan nilai signifikan.</p>
+
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-tabungan">Tabungan & Giro</label>
+                                <p class="field-hint">Total saldo semua rekening, saldo current</p>
+                            </div>
+                            <input type="text" id="vt-asset-tabungan" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-deposito">Deposito & Money Market</label>
+                                <p class="field-hint">Deposito berjangka, RD pasar uang — saldo nominal</p>
+                            </div>
+                            <input type="text" id="vt-asset-deposito" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-emas">Emas Batangan</label>
+                                <p class="field-hint">Pakai harga <em>buyback</em> Antam/UBS hari ini × gram</p>
+                            </div>
+                            <input type="text" id="vt-asset-emas" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total Aset Likuid</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-liquid">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- B2: Aset Investasi -->
+                    <div class="subsection">
+                        <h3>B2. Aset Investasi</h3>
+                        <p class="text-xs text-gray-500 mb-3">Aset pertumbuhan jangka menengah-panjang. Pakai <strong>nilai pasar current</strong>.</p>
+
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-reksadana">Reksadana</label>
+                                <p class="field-hint">RD saham/campuran/PT — pakai NAB × unit</p>
+                            </div>
+                            <input type="text" id="vt-asset-reksadana" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-saham">Saham Langsung</label>
+                                <p class="field-hint">IDX / saham luar — harga penutupan × lot</p>
+                            </div>
+                            <input type="text" id="vt-asset-saham" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-obligasi">Obligasi</label>
+                                <p class="field-hint">ORI/Sukuk/SBN/Corporate bonds — harga pasar, atau face value kalau hold-to-maturity</p>
+                            </div>
+                            <input type="text" id="vt-asset-obligasi" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-kripto">Kripto</label>
+                                <p class="field-hint">BTC, ETH, dll — nilai pasar saat ini</p>
+                            </div>
+                            <input type="text" id="vt-asset-kripto" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total Aset Investasi</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-invest">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- B3: Aset Properti -->
+                    <div class="subsection">
+                        <h3>B3. Aset Properti</h3>
+                        <p class="text-xs text-gray-500 mb-3">Pakai <strong>Estimated Market Value</strong> — bukan harga beli, bukan asking price. Cek listing comparable di area × 0.85, atau NJOP × 1.5-2.0 sebagai proxy.</p>
+
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-property-invest">Properti Investasi</label>
+                                <p class="field-hint">Yang disewakan / income-generating</p>
+                            </div>
+                            <input type="text" id="vt-asset-property-invest" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-property-utama">Properti Utama</label>
+                                <p class="field-hint">Rumah/apt yang ditempati. Masuk net worth, <em>tapi tidak dihitung untuk retirement readiness</em> (karena tidak generate income kecuali dijual + pindah)</p>
+                            </div>
+                            <input type="text" id="vt-asset-property-utama" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-tanah">Tanah</label>
+                                <p class="field-hint">Tanah kosong / kavling</p>
+                            </div>
+                            <input type="text" id="vt-asset-tanah" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total Aset Properti</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-property">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- B4: Aset Lain -->
+                    <div class="subsection">
+                        <h3>B4. Aset Lain</h3>
+                        <p class="text-xs text-gray-500 mb-3">Aset yang tidak masuk kategori di atas.</p>
+
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-unitlink">Unit Link (NAV / Cash Value)</label>
+                                <p class="field-hint"><strong>NAV current</strong> dari polis, bukan total premi disetor, bukan UP</p>
+                            </div>
+                            <input type="text" id="vt-asset-unitlink" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-kendaraan">Kendaraan</label>
+                                <p class="field-hint">Nilai pasar OLX/Mobil123 — hanya ≥ Rp 50jt</p>
+                            </div>
+                            <input type="text" id="vt-asset-kendaraan" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-asset-bisnis">Bisnis Pribadi</label>
+                                <p class="field-hint">Book value (equity) atau 3-5× EBITDA tahunan</p>
+                            </div>
+                            <input type="text" id="vt-asset-bisnis" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total Aset Lain</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-other">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- B5: Sisa Pokok Utang -->
+                    <div class="subsection">
+                        <h3>B5. Sisa Pokok Utang</h3>
+                        <p class="text-xs text-gray-500 mb-3">Sisa pokok outstanding — bukan original loan, bukan total remaining payments.</p>
+
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-debt-kpr">KPR</label>
+                                <p class="field-hint">Sisa pokok kredit properti</p>
+                            </div>
+                            <input type="text" id="vt-debt-kpr" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-debt-kkb">KKB</label>
+                                <p class="field-hint">Sisa pokok kredit kendaraan</p>
+                            </div>
+                            <input type="text" id="vt-debt-kkb" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-debt-cc">Kartu Kredit</label>
+                                <p class="field-hint">Total tagihan revolving / belum lunas</p>
+                            </div>
+                            <input type="text" id="vt-debt-cc" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-debt-kta">KTA & Lain</label>
+                                <p class="field-hint">KTA, P2P, pinjaman keluarga, dll</p>
+                            </div>
+                            <input type="text" id="vt-debt-kta" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total Sisa Utang</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-debt">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== Section C: Proteksi ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">C</span>
+                        <h2 class="text-base font-bold">Proteksi Jiwa</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Uang pertanggungan (UP) asuransi jiwa — gabungan semua polis, dipecah per jenis produk.</p>
+
+                    <div class="subsection">
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-life-term">UP Term Life</label>
+                                <p class="field-hint">Asuransi jiwa murni / proteksi saja</p>
+                            </div>
+                            <input type="text" id="vt-life-term" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-life-unitlink">UP Unit Link</label>
+                                <p class="field-hint">PRULink, AXA Mandiri, dll (UP jiwa saja, bukan NAV)</p>
+                            </div>
+                            <input type="text" id="vt-life-unitlink" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+                        <div class="input-row">
+                            <div>
+                                <label for="vt-life-whole">UP Whole Life / Endowment</label>
+                                <p class="field-hint">Whole life / dwiguna / endowment</p>
+                            </div>
+                            <input type="text" id="vt-life-whole" class="formatted-number" inputmode="numeric" placeholder="0">
+                        </div>
+
+                        <div class="subtotal">
+                            <span class="subtotal-label">Total UP Jiwa</span>
+                            <span class="subtotal-value">Rp <span id="vt-sum-life-sa">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== Section D: Profil Risiko ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">D</span>
+                        <h2 class="text-base font-bold">Profil Risiko Investasi</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">5 pertanyaan untuk menentukan asumsi return realistis. Konservatif → return ekspektasi rendah. Agresif → return tinggi tapi volatilitas tinggi.</p>
+
+                    <div class="subsection">
+                        <!-- Q1: Time Horizon -->
+                        <div class="risk-question">
+                            <p class="q">1. Horizon investasi utama kamu (sampai uang itu dibutuhkan)?</p>
+                            <div class="risk-options">
+                                <label class="risk-option"><input type="radio" name="vt-risk-q1" value="1"><div>&lt; 3 tahun</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q1" value="2"><div>3–5 tahun</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q1" value="3"><div>5–10 tahun</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q1" value="4"><div>&gt; 10 tahun</div></label>
+                            </div>
+                        </div>
+
+                        <!-- Q2: Drawdown Tolerance -->
+                        <div class="risk-question">
+                            <p class="q">2. Portofolio kamu turun 30% dalam 1 bulan. Reaksi?</p>
+                            <div class="risk-options">
+                                <label class="risk-option"><input type="radio" name="vt-risk-q2" value="1"><div>Panik, jual semua</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q2" value="2"><div>Cemas, jual sebagian</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q2" value="3"><div>Tenang, hold saja</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q2" value="4"><div>Excited, beli lebih banyak</div></label>
+                            </div>
+                        </div>
+
+                        <!-- Q3: Knowledge -->
+                        <div class="risk-question">
+                            <p class="q">3. Pengalaman investasi pasar modal kamu?</p>
+                            <div class="risk-options">
+                                <label class="risk-option"><input type="radio" name="vt-risk-q3" value="1"><div>Belum pernah</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q3" value="2"><div>Reksadana / deposito saja</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q3" value="3"><div>Reksadana + saham occasional</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q3" value="4"><div>Aktif multi-asset</div></label>
+                            </div>
+                        </div>
+
+                        <!-- Q4: Income Stability -->
+                        <div class="risk-question">
+                            <p class="q">4. Kestabilan pendapatan utama kamu?</p>
+                            <div class="risk-options">
+                                <label class="risk-option"><input type="radio" name="vt-risk-q4" value="1"><div>Sangat fluktuatif (komisi/freelance)</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q4" value="2"><div>Bisnis sendiri, terkendali</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q4" value="3"><div>Karyawan tetap + bonus</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q4" value="4"><div>Karyawan tetap + side income stabil</div></label>
+                            </div>
+                        </div>
+
+                        <!-- Q5: Goal Flexibility -->
+                        <div class="risk-question">
+                            <p class="q">5. Kalau target pensiun tertunda 3-5 tahun karena pasar, ok?</p>
+                            <div class="risk-options">
+                                <label class="risk-option"><input type="radio" name="vt-risk-q5" value="1"><div>Tidak — harus tepat waktu</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q5" value="2"><div>Agak tidak nyaman</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q5" value="3"><div>Ok kalau memang dibutuhkan</div></label>
+                                <label class="risk-option"><input type="radio" name="vt-risk-q5" value="4"><div>Sama sekali tidak masalah</div></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="step-error" id="step3-error"></div>
+                    <div class="wizard-nav">
+                        <button type="button" class="wizard-back" onclick="goToStep(2)">← Back</button>
+                        <button type="button" class="wizard-next" onclick="goToStep(4)">Next: Goals →</button>
+                    </div>
+                </div><!-- /STEP 3 -->
+
+                <!-- ====== STEP 4: Goals ====== -->
+                <div class="wizard-step" data-step="4">
+
+                <!-- ====== Section E: Goals & Master Plan ====== -->
+                <div class="section-card">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">E</span>
+                        <h2 class="text-base font-bold">Goals & Target Finansial</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Tambahkan target finansial yang nyata dikejar — satu per satu. Boleh berapa pun. Bisa multi-anak, multi-target, dll.</p>
+
+                    <div id="vt-goals-list" class="space-y-3"></div>
+
+                    <p id="vt-goals-empty-hint" class="text-xs text-gray-400 mt-3 italic">Belum ada goal. Klik tombol di bawah untuk mulai.</p>
+
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <button type="button" onclick="addGoal('pendidikan')" class="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-xs font-medium hover:border-black hover:bg-gray-50 transition-colors active:scale-95">
+                            + Pendidikan Anak
+                        </button>
+                        <button type="button" onclick="addGoal('pensiun')" class="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-xs font-medium hover:border-black hover:bg-gray-50 transition-colors active:scale-95">
+                            + Pensiun
+                        </button>
+                        <button type="button" onclick="addGoal('custom')" class="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-xs font-medium hover:border-black hover:bg-gray-50 transition-colors active:scale-95">
+                            + Custom
+                        </button>
+                    </div>
+                </div>
+
+                    <div class="step-error" id="step4-error"></div>
+                    <div class="wizard-nav">
+                        <button type="button" class="wizard-back" onclick="goToStep(3)">← Back</button>
+                        <button type="button" class="wizard-next" onclick="goToStep(5)">Next: Review →</button>
+                    </div>
+                </div><!-- /STEP 4 -->
+
+                <!-- ====== STEP 5: Review & Generate ====== -->
+                <div class="wizard-step" data-step="5">
+                    <div class="section-card">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-xs font-bold text-violet-700 bg-violet-100 rounded-full px-2 py-0.5">✓</span>
+                            <h2 class="text-base font-bold">Review & Generate</h2>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4">Cek ringkasan data sebelum generate Master Plan. Klik "Edit" di setiap section untuk balik & ubah.</p>
+
+                        <div id="vt-review-content"></div>
+                        <div id="vt-review-warning" class="review-warning hidden"></div>
+                    </div>
+
+                    <div class="step-error" id="step5-error"></div>
+                    <div class="wizard-nav">
+                        <button type="button" class="wizard-back" onclick="goToStep(4)">← Back</button>
+                        <button type="submit" class="wizard-submit">✨ Generate Master Plan</button>
+                    </div>
+                    <p id="form-error" class="text-red-500 text-xs text-center hidden mt-3"></p>
+                </div><!-- /STEP 5 -->
+
+            </form>
+
+            <!-- Results -->
+            <div id="vt-results" class="hidden mt-6"></div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/vitals.js?v=6"></script>
+</body>
+</html>

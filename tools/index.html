@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Tools — Philip Mulyana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="/js/pixel.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
+        .tool-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Header -->
+    <section class="pt-32 pb-12 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight">Financial Tools</h1>
+            <p class="text-gray-500 mt-4">Free interactive tools to help you make smarter financial decisions</p>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- Kalkulator Pensiun -->
+            <a href="/tool-retirement.html" class="tool-card bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]">
+                <div>
+                    <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <span class="text-xs text-emerald-600 font-medium uppercase tracking-wider">Calculator</span>
+                    <h3 class="text-lg font-bold mt-1">Kalkulator Pensiun</h3>
+                    <p class="text-gray-500 text-sm mt-2">Hitung berapa total dana yang kamu butuhkan untuk pensiun nyaman di usia 55.</p>
+                </div>
+                <span class="inline-flex items-center text-sm font-medium text-emerald-600 mt-4">
+                    Hitung sekarang
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+
+            <!-- Kalkulator Dana Kuliah -->
+            <a href="/tool-education.html" class="tool-card bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]">
+                <div>
+                    <div class="w-10 h-10 bg-amber-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                    </div>
+                    <span class="text-xs text-amber-600 font-medium uppercase tracking-wider">Calculator</span>
+                    <h3 class="text-lg font-bold mt-1">Kalkulator Dana Kuliah</h3>
+                    <p class="text-gray-500 text-sm mt-2">Hitung berapa dana yang dibutuhkan untuk membiayai kuliah anakmu di universitas impiannya.</p>
+                </div>
+                <span class="inline-flex items-center text-sm font-medium text-amber-600 mt-4">
+                    Hitung sekarang
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+
+            <!-- Kalkulator Kebutuhan Proteksi -->
+            <a href="/tool-proteksi.html" class="tool-card bg-gradient-to-br from-rose-50 to-red-50 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]">
+                <div>
+                    <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </div>
+                    <span class="text-xs text-rose-600 font-medium uppercase tracking-wider">Calculator</span>
+                    <h3 class="text-lg font-bold mt-1">Kalkulator Kebutuhan Proteksi</h3>
+                    <p class="text-gray-500 text-sm mt-2">Hitung berapa nilai proteksi (uang pertanggungan) yang sepadan dengan peran ekonomi kamu buat keluarga.</p>
+                </div>
+                <span class="inline-flex items-center text-sm font-medium text-rose-600 mt-4">
+                    Hitung sekarang
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+
+            <!-- Assessment Kesiapan Pensiun -->
+            <a href="/tool-assessment.html" class="tool-card bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]">
+                <div>
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <span class="text-xs text-blue-600 font-medium uppercase tracking-wider">Assessment</span>
+                    <h3 class="text-lg font-bold mt-1">Assessment Kesiapan Pensiun</h3>
+                    <p class="text-gray-500 text-sm mt-2">10 pertanyaan untuk mengukur seberapa siap kamu menghadapi masa pensiun.</p>
+                </div>
+                <span class="inline-flex items-center text-sm font-medium text-blue-600 mt-4">
+                    Mulai assessment
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+
+            <!-- Assessment Kesiapan Proteksi Jiwa -->
+            <a href="/tool-assessment-jiwa.html" class="tool-card bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 flex flex-col justify-between min-h-[260px]">
+                <div>
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                    </div>
+                    <span class="text-xs text-blue-600 font-medium uppercase tracking-wider">Assessment</span>
+                    <h3 class="text-lg font-bold mt-1">Assessment Kesiapan Proteksi Jiwa</h3>
+                    <p class="text-gray-500 text-sm mt-2">10 pertanyaan untuk melihat posisi keluarga kamu kalau penghasilan berhenti mendadak.</p>
+                </div>
+                <span class="inline-flex items-center text-sm font-medium text-blue-600 mt-4">
+                    Mulai assessment
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="px-6 pb-20 fade-up">
+        <div class="max-w-3xl mx-auto text-center">
+            <p class="text-xl font-bold mb-4">Want a personalized analysis?</p>
+            <p class="text-gray-500 text-sm mb-6">These tools give you a starting point. For a deeper, tailored assessment, book a free consultation.</p>
+            <a href="/consultation.html#consultation" class="inline-flex items-center bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                Book Free Consultation
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

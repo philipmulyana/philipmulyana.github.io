@@ -40,7 +40,7 @@ NAV = '''    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md bo
             <div class="flex items-center justify-between h-16">
                 <a href="/index.html" class="text-lg font-bold tracking-tight text-black">PM</a>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/tools.html" class="text-sm text-gray-500 hover:text-black transition-colors">Tools</a>
+                    <a href="/tools/" class="text-sm text-gray-500 hover:text-black transition-colors">Tools</a>
                     <a href="/blog.html" class="text-sm text-black font-medium">Blog</a>
                     <a href="/consultation.html" class="text-sm bg-black text-white px-5 py-2 rounded-full transition-colors">Consultation</a>
                 </div>
@@ -54,7 +54,7 @@ NAV = '''    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md bo
         </div>
         <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
             <div class="px-6 py-4 space-y-1">
-                <a href="/tools.html" class="block px-3 py-2 rounded-lg text-gray-500 hover:text-black">Tools</a>
+                <a href="/tools/" class="block px-3 py-2 rounded-lg text-gray-500 hover:text-black">Tools</a>
                 <a href="/blog.html" class="block px-3 py-2 rounded-lg text-black font-medium">Blog</a>
                 <a href="/consultation.html" class="block px-3 py-2 rounded-lg text-gray-500 hover:text-black">Consultation</a>
             </div>

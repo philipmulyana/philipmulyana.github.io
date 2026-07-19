@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const footerPlaceholder = document.getElementById('footer-placeholder');
 
     if (navPlaceholder) {
-        fetch('partials/navbar.html?v=' + Date.now())
+        // Root-relative so pages in subdirectories (e.g. /tools/) resolve it too
+        fetch('/partials/navbar.html?v=' + Date.now())
             .then(r => r.text())
             .then(html => {
                 navPlaceholder.innerHTML = html;
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (footerPlaceholder) {
-        fetch('partials/footer.html')
+        fetch('/partials/footer.html')
             .then(r => r.text())
             .then(html => {
                 footerPlaceholder.innerHTML = html;
@@ -46,7 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function highlightActiveLink() {
-    const page = window.location.pathname.split('/').pop() || 'index.html';
+    const path = window.location.pathname;
+    // Directory-style URLs (/tools/) have an empty last segment; map them first.
+    if (/^\/tools\/?$/.test(path)) {
+        markActiveNav('tools');
+        return;
+    }
+    const page = path.split('/').pop() || 'index.html';
     const navMap = {
         'index.html': 'home',
         'consultation.html': 'contact',
@@ -65,18 +72,20 @@ function highlightActiveLink() {
         if (page.startsWith('post-')) activeNav = 'blog';
         else if (page.startsWith('tool-')) activeNav = 'tools';
     }
-    if (activeNav) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            if (link.dataset.nav === activeNav) {
-                link.classList.remove('text-gray-500');
-                link.classList.add('text-black');
-                // Skip the contact button styling
-                if (activeNav !== 'contact') {
-                    link.classList.add('font-medium');
-                }
+    if (activeNav) markActiveNav(activeNav);
+}
+
+function markActiveNav(activeNav) {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.dataset.nav === activeNav) {
+            link.classList.remove('text-gray-500');
+            link.classList.add('text-black');
+            // Skip the contact button styling
+            if (activeNav !== 'contact') {
+                link.classList.add('font-medium');
             }
-        });
-    }
+        }
+    });
 }
 
 function initMobileMenu() {
