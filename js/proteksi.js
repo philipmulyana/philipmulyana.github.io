@@ -345,7 +345,7 @@ function revealResults() {
 
     // Fire-and-forget POST to backend (email + sheets + Pipedrive)
     const payload = JSON.stringify({
-        action: 'website_calc',
+        action: 'website_calc_proteksi',
         calculator: 'proteksi',
         nama,
         email,
