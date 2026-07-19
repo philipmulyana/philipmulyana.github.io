@@ -1,4 +1,5 @@
-// Retirement Readiness Assessment — based on AI Lead Gen assessment_scorer.py
+// Assessment Kesiapan Pensiun. Scoring mirrors AI Lead Gen assessment_scorer.py.
+// Skor = teaser (gratis). Rincian per area = dikunci di balik form (Philip 2026-07-19).
 
 const ASSESSMENT_QUESTIONS = [
     {
@@ -191,58 +192,80 @@ function getCategory(score) {
     return CATEGORIES[CATEGORIES.length - 1];
 }
 
-function generateRecommendations() {
-    const recs = [];
+// --- Findings: DESKRIPSI POSISI, bukan rekomendasi ---
+// Aturan Philip (locked): output klien-facing cuma boleh gambarin posisi.
+// Resep/rekomendasi = prerogatif Philip live pas konsultasi. JANGAN tambah
+// kalimat yang nyuruh ("mulai...", "prioritaskan...", "pertimbangkan...").
+function generateFindings() {
+    const out = [];
 
-    // Emergency fund
     if (answers.emergency_fund && answers.emergency_fund.score === 0) {
-        recs.push('Prioritas pertama: bangun dana darurat minimal 6 bulan pengeluaran. Ini fondasi sebelum investasi apapun.');
+        out.push('Kamu belum punya dana darurat. Artinya kalau ada kejadian tak terduga, dana pensiun yang sedang dikumpulkan berisiko kepakai duluan.');
     } else if (answers.emergency_fund && answers.emergency_fund.score === 5) {
-        recs.push('Dana darurat kamu belum cukup 6 bulan pengeluaran. Lengkapi dulu sebelum fokus investasi jangka panjang.');
+        out.push('Dana darurat kamu ada, tapi belum sampai 6 bulan pengeluaran. Bantalannya masih tipis dibanding standar umum.');
     }
 
-    // Savings rate
     if (answers.savings_rate && answers.savings_rate.score === 0) {
-        recs.push('Mulai sisihkan minimal 10% dari penghasilan setiap bulan. Automasi transfer di tanggal gajian supaya konsisten.');
+        out.push('Saat ini belum ada penghasilan yang disisihkan rutin tiap bulan. Ini variabel yang paling besar pengaruhnya ke hasil akhir dana pensiun.');
     } else if (answers.savings_rate && answers.savings_rate.score === 5) {
-        recs.push('Tabungan/investasi masih di bawah 10%. Coba naikkan bertahap — target idealnya 20-30% dari penghasilan.');
+        out.push('Porsi yang kamu sisihkan masih di bawah 10% dari penghasilan.');
     }
 
-    // Retirement fund
     if (answers.retirement_fund && answers.retirement_fund.score === 0) {
-        recs.push('Kamu belum mulai menyiapkan dana pensiun secara khusus. Semakin cepat mulai, semakin ringan bebannya berkat compound interest.');
+        out.push('Belum ada dana yang dipisahkan khusus untuk pensiun. Tanpa pos terpisah, dana pensiun biasanya ikut terpakai untuk kebutuhan lain.');
     }
 
-    // Target
     if (answers.target && answers.target.score === 0) {
-        recs.push('Kamu belum pernah menghitung target dana pensiun. Coba gunakan Kalkulator Pensiun kami untuk tahu angka pastinya.');
+        out.push('Kamu belum pernah menghitung target dana pensiun. Jadi belum ada angka pembanding untuk menilai posisi sekarang.');
     }
 
-    // Health insurance
     if (answers.health_insurance && answers.health_insurance.score === 0) {
-        recs.push('Tanpa asuransi kesehatan, satu kejadian medis bisa menghabiskan tabungan bertahun-tahun. Ini prioritas tinggi.');
+        out.push('Belum ada asuransi kesehatan. Biaya medis besar adalah salah satu penyebab paling umum tabungan jangka panjang terkuras.');
     } else if (answers.health_insurance && answers.health_insurance.score === 3) {
-        recs.push('Asuransi dari kantor akan hilang saat kamu pensiun atau pindah kerja. Pertimbangkan asuransi kesehatan pribadi.');
+        out.push('Proteksi kesehatan kamu saat ini menempel pada kantor. Manfaat ini umumnya berhenti ketika kamu pensiun atau pindah kerja.');
     }
 
-    // Life insurance
     if (answers.life_insurance && answers.life_insurance.score === 0) {
-        recs.push('Jika ada yang bergantung pada penghasilan kamu, asuransi jiwa bukan pilihan — itu keharusan.');
+        out.push('Belum ada asuransi jiwa. Kalau ada orang yang bergantung pada penghasilan kamu, risiko itu saat ini belum tertutup.');
     }
 
-    // Confidence
     if (answers.confidence && answers.confidence.score <= 3) {
-        recs.push('Kabar baiknya: dengan strategi yang tepat dan konsisten, kamu masih punya waktu untuk mempersiapkan pensiun yang nyaman.');
+        out.push('Kamu sendiri belum yakin bisa pensiun nyaman di usia 55. Rasa ini biasanya muncul karena angkanya memang belum pernah dipetakan.');
     }
 
-    return recs.slice(0, 3);
+    return out.slice(0, 4);
 }
+
+// --- Funnel telemetry (samain pola dengan retirement.js) ---
+const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
+
+function fireAssessmentEvent(stage, score, category) {
+    try {
+        fetch(WEBSITE_CALC_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'funnel_event',
+                calculator: 'assessment',
+                stage,
+                score,
+                category,
+            }),
+            keepalive: true,
+        }).catch(() => { /* non-blocking */ });
+    } catch (e) { /* non-blocking */ }
+}
+
+let assessmentResults = null;
 
 function showResults() {
     const totalScore = Object.values(answers).reduce((sum, a) => sum + a.score, 0);
     const percentage = Math.round((totalScore / MAX_SCORE) * 100);
     const category = getCategory(totalScore);
-    const recommendations = generateRecommendations();
+    const findings = generateFindings();
+
+    assessmentResults = { totalScore, percentage, category: category.label, findings };
+    fireAssessmentEvent('result_shown', totalScore, category.label);
 
     const container = document.getElementById('assessment-container');
     const resultsEl = document.getElementById('assessment-results');
@@ -253,62 +276,205 @@ function showResults() {
             <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color: ${category.color}20">
                 <svg class="w-8 h-8" fill="none" stroke="${category.color}" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <p class="text-sm text-gray-400 mb-1">Assessment selesai!</p>
-            <p class="text-sm text-gray-500">Lihat hasil lengkap di bawah.</p>
+            <p class="text-sm text-gray-400 mb-1">Assessment selesai.</p>
+            <p class="text-sm text-gray-500">Hasilnya ada di bawah.</p>
         </div>
     `;
 
     resultsEl.innerHTML = `
-        <!-- Score -->
+        <!-- Skor: TEASER, keliatan gratis -->
         <div class="text-center mb-8">
             <p class="text-6xl font-black" style="color: ${category.color}">${totalScore}</p>
             <p class="text-sm text-gray-400 mt-1">dari ${MAX_SCORE} poin</p>
 
-            <!-- Progress bar -->
             <div class="w-full bg-gray-200 rounded-full h-3 mt-4 max-w-xs mx-auto">
                 <div class="rounded-full h-3 transition-all duration-500" style="width: ${percentage}%; background-color: ${category.color}"></div>
             </div>
 
-            <!-- Category badge -->
             <div class="inline-block mt-4 px-4 py-1.5 rounded-full text-sm font-bold" style="background-color: ${category.color}20; color: ${category.color}">
                 ${category.label}
             </div>
         </div>
 
-        <!-- Recommendations -->
-        ${recommendations.length > 0 ? `
-        <div class="mb-8">
-            <h3 class="text-lg font-bold mb-4">Rekomendasi untuk Kamu</h3>
-            <div class="space-y-3">
-                ${recommendations.map((rec, i) => `
-                    <div class="flex gap-3 bg-gray-50 rounded-xl p-4">
-                        <div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">${i + 1}</div>
-                        <p class="text-sm text-gray-600 leading-relaxed">${rec}</p>
-                    </div>
-                `).join('')}
+        <!-- GATE: rincian dikunci di balik form -->
+        <div id="assess-gate" class="bg-gray-50 rounded-2xl p-6 mb-6">
+            <div class="text-center mb-5">
+                <p class="text-base font-bold text-gray-900 mb-2">
+                    Skor kamu sudah keluar. Yang belum: kenapa angkanya di situ.
+                </p>
+                <p class="text-sm text-gray-700 leading-relaxed">
+                    Ada <strong>${findings.length} hal</strong> dari jawaban kamu yang menentukan posisi ini.
+                    Isi data di bawah untuk melihat rinciannya.
+                </p>
             </div>
-        </div>
-        ` : ''}
 
-        <!-- Next steps -->
-        <div class="border-t border-gray-100 pt-6">
-            <div class="flex flex-col sm:flex-row gap-3">
-                <a href="tool-retirement.html" class="flex-1 text-center border border-gray-200 text-black px-6 py-3 rounded-full text-sm font-medium hover:border-black transition-colors">
-                    Hitung Target Pensiun
-                </a>
-                <a href="consultation.html#consultation" class="flex-1 text-center bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                    Book a Call
-                </a>
+            <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
+            <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
+                <p class="text-sm text-gray-800 leading-relaxed mb-2">
+                    <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi, tapi ini bukan sesi jualan.
+                    Obrolan 10 menit ini murni diskusi, dan <strong>kamu tidak wajib beli apa pun.</strong>
+                </p>
+                <p class="text-sm text-gray-800 leading-relaxed mb-2">
+                    Kalau ternyata kamu belum perlu, saya bilang apa adanya. Kalau ternyata cocok dan kamu mau
+                    lanjut, silakan. Dua-duanya sama-sama oke.
+                </p>
+                <p class="text-sm text-gray-800 leading-relaxed">
+                    Biar tidak salah paham juga: yang saya bahas di sini <strong>bukan unit link.</strong>
+                </p>
             </div>
-            <button onclick="initAssessment(); document.getElementById('assessment-results').classList.add('hidden');"
-                class="w-full text-center text-sm text-gray-400 hover:text-black mt-4 transition-colors">
-                Ulangi Assessment
-            </button>
+
+            <!-- Consent -->
+            <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors">
+                <input type="checkbox" id="as-consent" class="mt-0.5 w-5 h-5 accent-black flex-shrink-0" onchange="toggleAssessConsent()">
+                <span class="text-sm text-gray-700 leading-relaxed">
+                    Saya setuju Philip menghubungi saya via WhatsApp untuk membahas hasil assessment ini.
+                </span>
+            </label>
+
+            <!-- Form -->
+            <div id="assess-form" class="space-y-3 max-w-md mx-auto opacity-40 pointer-events-none transition-opacity">
+                <input type="text" id="as-nama" placeholder="Nama kamu"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                <input type="email" id="as-email" placeholder="Email kamu"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                <input type="tel" id="as-whatsapp" placeholder="Nomor WhatsApp (e.g. 081234567890)"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
+                <button onclick="revealAssessmentDetail()" id="as-submit"
+                    class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Lihat Rincian Skor Saya
+                </button>
+            </div>
+            <p id="assess-error" class="text-red-500 text-xs mt-2 text-center hidden"></p>
         </div>
+
+        <!-- Rincian: dibuka setelah form -->
+        <div id="assess-detail" class="hidden"></div>
     `;
 
     resultsEl.classList.remove('hidden');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Track kalau gate keliatan di layar
+    const gateEl = document.getElementById('assess-gate');
+    if (gateEl && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fireAssessmentEvent('gate_seen', totalScore, category.label);
+                obs.disconnect();
+            }
+        }, { threshold: 0.3 });
+        obs.observe(gateEl);
+    }
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function toggleAssessConsent() {
+    const checked = document.getElementById('as-consent').checked;
+    const form = document.getElementById('assess-form');
+    if (!form) return;
+    if (checked) {
+        form.classList.remove('opacity-40', 'pointer-events-none');
+        if (assessmentResults && !window._assessConsentFired) {
+            window._assessConsentFired = true;
+            fireAssessmentEvent('consent_ticked', assessmentResults.totalScore, assessmentResults.category);
+        }
+    } else {
+        form.classList.add('opacity-40', 'pointer-events-none');
+    }
+}
+
+function revealAssessmentDetail() {
+    const consentEl = document.getElementById('as-consent');
+    const errorEl = document.getElementById('assess-error');
+
+    if (!consentEl || !consentEl.checked) {
+        errorEl.textContent = 'Mohon centang persetujuan di atas dulu sebelum mengirim data.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
+    const nama = document.getElementById('as-nama').value.trim();
+    const email = document.getElementById('as-email').value.trim();
+    const whatsapp = document.getElementById('as-whatsapp').value.trim();
+    const submitBtn = document.getElementById('as-submit');
+
+    const errors = [];
+    if (!nama) errors.push('nama');
+    if (!isValidEmail(email)) errors.push('email yang valid');
+    if (!whatsapp || whatsapp.length < 8) errors.push('nomor WhatsApp');
+
+    if (errors.length > 0) {
+        errorEl.textContent = 'Mohon isi ' + errors.join(', ') + '.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
+    errorEl.classList.add('hidden');
+    if (!assessmentResults) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Mengirim...';
+
+    fetch(WEBSITE_CALC_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'website_calc_assessment',
+            calculator: 'assessment',
+            nama,
+            email,
+            whatsapp,
+            score: assessmentResults.totalScore,
+            max_score: MAX_SCORE,
+            category: assessmentResults.category,
+            is_agent: false,
+        }),
+        keepalive: true,
+    }).catch(() => { /* non-blocking */ });
+
+    document.getElementById('assess-gate').style.display = 'none';
+
+    const f = assessmentResults.findings;
+    const detailEl = document.getElementById('assess-detail');
+    detailEl.innerHTML = `
+        <div class="mb-8">
+            <h3 class="text-lg font-bold mb-4">Yang menentukan skor kamu</h3>
+            <div class="space-y-3">
+                ${f.map((item, i) => `
+                    <div class="flex gap-3 bg-gray-50 rounded-xl p-4">
+                        <div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">${i + 1}</div>
+                        <p class="text-sm text-gray-600 leading-relaxed">${item}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="border-t border-gray-100 pt-6 text-center">
+            <p class="text-base font-bold text-gray-900 mb-2">Terima kasih.</p>
+            <p class="text-sm text-gray-700 leading-relaxed mb-5">
+                Satu langkah lagi: pilih jam ngobrol yang cocok buat kamu.
+                Cuma <strong>10 menit</strong>, gratis, tanpa kewajiban apa pun.
+            </p>
+            <a href="https://calendly.com/philipmulyana/first-call" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-colors">
+                Pilih Jam Ngobrol (10 Menit)
+            </a>
+            <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
+
+            <div class="mt-6">
+                <a href="tool-retirement.html" class="inline-block text-sm text-gray-500 hover:text-black underline transition-colors">
+                    Atau hitung dulu target dana pensiun kamu
+                </a>
+            </div>
+        </div>
+    `;
+    detailEl.classList.remove('hidden');
+    detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    fireAssessmentEvent('lead_captured', assessmentResults.totalScore, assessmentResults.category);
 }
 
 // Initialize on load
