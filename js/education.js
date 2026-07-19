@@ -413,9 +413,15 @@ function revealResults() {
     confirmEl.innerHTML = `
         <div class="text-center py-6">
             <p class="text-base font-bold text-gray-900 mb-2">Terima kasih!</p>
-            <p class="text-sm text-gray-700 leading-relaxed">
-                Philip akan menghubungi kamu via WhatsApp dalam <strong>1×24 jam</strong>.
+            <p class="text-sm text-gray-700 leading-relaxed mb-5">
+                Satu langkah lagi: pilih jam ngobrol yang cocok buat kamu.
+                Cuma <strong>10 menit</strong>, gratis, tanpa kewajiban apa pun.
             </p>
+            <a href="https://calendly.com/philipmulyana/first-call" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-colors">
+                Pilih Jam Ngobrol — 10 Menit
+            </a>
+            <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
         </div>
 
         <div class="border-t border-gray-100 pt-6">
