@@ -465,7 +465,7 @@ function revealAssessmentDetail() {
             <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
 
             <div class="mt-6">
-                <a href="tool-retirement.html" class="inline-block text-sm text-gray-500 hover:text-black underline transition-colors">
+                <a href="/tools/retirement/" class="inline-block text-sm text-gray-500 hover:text-black underline transition-colors">
                     Atau hitung dulu target dana pensiun kamu
                 </a>
             </div>

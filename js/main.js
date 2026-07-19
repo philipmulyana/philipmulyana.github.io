@@ -48,8 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function highlightActiveLink() {
     const path = window.location.pathname;
-    // Directory-style URLs (/tools/) have an empty last segment; map them first.
-    if (/^\/tools\/?$/.test(path)) {
+    // Directory-style URLs (/tools/, /tools/retirement/) have an empty last
+    // segment, so the filename lookup below would miss them entirely.
+    if (/^\/tools(\/|$)/.test(path)) {
         markActiveNav('tools');
         return;
     }

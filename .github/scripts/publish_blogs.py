@@ -217,9 +217,9 @@ def baca_juga(post, all_posts):
 
 
 TOOL_CTA = {
-    "tool-education.html": ("Hitung Dana Pendidikan Anak Kamu", "https://philipmulyana.com/tool-education.html"),
-    "tool-retirement.html": ("Cek Gap Dana Pensiun Kamu", "https://philipmulyana.com/tool-retirement.html"),
-    "tool-proteksi.html": ("Hitung Kebutuhan Proteksi Kamu", "https://philipmulyana.com/tool-proteksi.html"),
+    "tool-education.html": ("Hitung Dana Pendidikan Anak Kamu", "https://philipmulyana.com/tools/education/"),
+    "tool-retirement.html": ("Cek Gap Dana Pensiun Kamu", "https://philipmulyana.com/tools/retirement/"),
+    "tool-proteksi.html": ("Hitung Kebutuhan Proteksi Kamu", "https://philipmulyana.com/tools/proteksi/"),
     "financial-checkup.html": ("Mulai Financial Check-up Gratis", "https://philipmulyana.com/financial-checkup.html"),
 }
 
