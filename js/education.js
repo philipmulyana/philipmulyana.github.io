@@ -26,7 +26,9 @@ function fireFunnelEvent(eventName, age, cost, isAgent) {
         keepalive: true,
     }).catch(() => {});
 }
-const EDU_INFLATION = 0.10;
+// 8% p.a. — batas atas asumsi defensible per KB (C) Data Biaya Kuliah Indonesia
+// (CAGR empiris 2020-2025: PTN ~2-5%, PTS ~1.7-2%, PTS premium ~8%). JANGAN naikkan ke 10%.
+const EDU_INFLATION = 0.08;
 const KULIAH_START_AGE = 18;
 const KULIAH_DURATION = 4;
 const STORAGE_KEY_EDU = 'calc_education_state_v1';
@@ -180,7 +182,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
     `;
     const structuralBacking = `
         <p class="text-sm text-gray-700 leading-relaxed mb-2">
-            <strong>Inflasi pendidikan di Indonesia 10–15% per tahun</strong> — 2–3× lipat inflasi umum. Yang hari ini ${formatRpShort(kuliah.totalToday)}, dalam ${yearsUntilKuliah} tahun bisa jadi ${formatRpShort(kuliah.totalFuture)}.
+            <strong>Biaya kuliah naik lebih cepat dari kenaikan gaji.</strong> Dengan asumsi kenaikan 8% per tahun, yang hari ini ${formatRpShort(kuliah.totalToday)} bisa jadi ${formatRpShort(kuliah.totalFuture)} dalam ${yearsUntilKuliah} tahun. Kampus swasta premium yang naiknya paling cepat.
         </p>
         <p class="text-sm text-gray-700 leading-relaxed">
             Kabar baiknya: anakmu masih ${currentAge === 0 ? 'bayi' : `${currentAge} tahun`}. Kamu masih punya waktu yang cukup untuk siapkan kuliahnya — kalau mulai sekarang, kontribusinya bisa terasa masuk akal. Tapi window-nya sudah berjalan.
@@ -250,7 +252,7 @@ function buildDisclaimerHTML() {
     return `
         <div class="mt-6 pt-4 border-t border-gray-100">
             <p class="text-xs text-gray-400 text-center">
-                *Perhitungan berdasarkan asumsi inflasi pendidikan 10%/tahun. Hasil aktual dapat berbeda tergantung jenis universitas, kota, dan kondisi pasar. Untuk perhitungan yang lebih akurat, butuh konsultasi langsung.
+                *Perhitungan berdasarkan asumsi kenaikan biaya kuliah 8%/tahun. Hasil aktual dapat berbeda tergantung jenis universitas, kota, dan kondisi pasar. Untuk perhitungan yang lebih akurat, butuh konsultasi langsung.
             </p>
         </div>
     `;
