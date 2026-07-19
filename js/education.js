@@ -1,4 +1,4 @@
-// Kalkulator Dana Kuliah — hybrid lead gen version
+// Kalkulator Dana Kuliah, hybrid lead gen version
 const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
 
 // Session tracking for funnel analysis
@@ -26,14 +26,14 @@ function fireFunnelEvent(eventName, age, cost, isAgent) {
         keepalive: true,
     }).catch(() => {});
 }
-// 8% p.a. — batas atas asumsi defensible per KB (C) Data Biaya Kuliah Indonesia
+// 8% p.a., batas atas asumsi defensible per KB (C) Data Biaya Kuliah Indonesia
 // (CAGR empiris 2020-2025: PTN ~2-5%, PTS ~1.7-2%, PTS premium ~8%). JANGAN naikkan ke 10%.
 const EDU_INFLATION = 0.08;
 const KULIAH_START_AGE = 18;
 const KULIAH_DURATION = 4;
 const STORAGE_KEY_EDU = 'calc_education_state_v1';
 
-// Threshold age for routing — child age 10+ (or agent) shows numbers only, no lead gate
+// Threshold age for routing, child age 10+ (or agent) shows numbers only, no lead gate
 const AGE_TOO_LATE = 10;
 
 // --- Preserve form state across reloads ---
@@ -107,7 +107,7 @@ function formatRpShort(num) {
 }
 
 let calcResults = null;
-// Rincian ditahan sampai lead submit — dibuka di revealResults()
+// Rincian ditahan sampai lead submit, dibuka di revealResults()
 let pendingBreakdownHTML = '';
 
 function getIsAgent() {
@@ -151,7 +151,7 @@ function buildBreakdownHTML(kuliah) {
 function buildHeroHTML(totalNeeded, startAge, showNudge) {
     const nudge = showNudge ? `
         <p class="text-sm text-gray-600 text-center -mt-2 mb-6">
-            Di bawah: <strong>kenapa angkanya naik secepat itu</strong> — plus rincian lengkap biaya hari ini vs saat anakmu masuk. ↓
+            Di bawah: <strong>kenapa angkanya naik secepat itu</strong>, plus rincian lengkap biaya hari ini vs saat anakmu masuk. ↓
         </p>
     ` : '';
     return `
@@ -177,7 +177,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
             Tapi kamu harus menatap matanya dan bilang: <em>"Maaf nak, ayah/ibu belum siap."</em>
         </p>
         <p class="text-sm text-gray-800 leading-relaxed font-medium">
-            Yang menyakitkan bukan keterbatasannya. Yang menyakitkan: dia akan bilang "nggak apa-apa kok" — dan dia benar-benar maksudnya. Tapi kamu akan tahu. Dan dia akan tahu. Bahwa pintu yang seharusnya terbuka, ditutup bukan karena dia kurang.
+            Yang menyakitkan bukan keterbatasannya. Yang menyakitkan: dia akan bilang "nggak apa-apa kok", dan dia benar-benar maksudnya. Tapi kamu akan tahu. Dan dia akan tahu. Bahwa pintu yang seharusnya terbuka, ditutup bukan karena dia kurang.
         </p>
     `;
     const structuralBacking = `
@@ -185,7 +185,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
             <strong>Biaya kuliah naik lebih cepat dari kenaikan gaji.</strong> Dengan asumsi kenaikan 8% per tahun, yang hari ini ${formatRpShort(kuliah.totalToday)} bisa jadi ${formatRpShort(kuliah.totalFuture)} dalam ${yearsUntilKuliah} tahun. Kampus swasta premium yang naiknya paling cepat.
         </p>
         <p class="text-sm text-gray-700 leading-relaxed">
-            Kabar baiknya: anakmu masih ${currentAge === 0 ? 'bayi' : `${currentAge} tahun`}. Kamu masih punya waktu yang cukup untuk siapkan kuliahnya — kalau mulai sekarang, kontribusinya bisa terasa masuk akal. Tapi window-nya sudah berjalan.
+            Kabar baiknya: anakmu masih ${currentAge === 0 ? 'bayi' : `${currentAge} tahun`}. Kamu masih punya waktu yang cukup untuk siapkan kuliahnya, kalau mulai sekarang, kontribusinya bisa terasa masuk akal. Tapi window-nya sudah berjalan.
         </p>
     `;
     const identity = `
@@ -196,7 +196,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
             Pertanyaannya: <em>seberapa jauh kamu mau pintu terbuka untuk anakmu?</em>
         </p>
     `;
-    const consentText = `Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya mengunci dana kuliah anak saya</strong> — sebelum window-nya menyempit lebih jauh.`;
+    const consentText = `Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya mengunci dana kuliah anak saya</strong>, sebelum window-nya menyempit lebih jauh.`;
 
     return `
         <div id="lead-gate" class="bg-gray-50 rounded-2xl p-6">
@@ -208,7 +208,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
                 </div>
 
                 <p class="text-sm text-gray-700 leading-relaxed mb-4">
-                    Ini bukan cerita yang dilebih-lebihkan. Ini realita yang dihadapi mayoritas orangtua Indonesia hari ini — dan ada alasan struktural kenapa:
+                    Ini bukan cerita yang dilebih-lebihkan. Ini realita yang dihadapi mayoritas orangtua Indonesia hari ini, dan ada alasan struktural kenapa:
                 </p>
 
                 <div class="bg-gray-100 rounded-xl p-4 mb-2">
@@ -225,7 +225,7 @@ function buildLeadGateHTML(currentAge, kuliah) {
             <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
             <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
                 <p class="text-sm text-gray-800 leading-relaxed mb-2">
-                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi — tapi ini bukan sesi jualan.
+                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi, tapi ini bukan sesi jualan.
                         Obrolan 10 menit ini murni diskusi, dan <strong>kamu tidak wajib beli apa pun.</strong>
                     </p>
                     <p class="text-sm text-gray-800 leading-relaxed mb-2">
@@ -322,7 +322,7 @@ function calculateEducation() {
         resultsEl.innerHTML = buildHeroHTML(kuliah.totalFuture, kuliah.startAge, false)
             + breakdownHTML + buildDisclaimerHTML();
     } else {
-        // Rincian DITAHAN di balik form — dibuka setelah submit (revealResults)
+        // Rincian DITAHAN di balik form, dibuka setelah submit (revealResults)
         resultsEl.innerHTML =
             buildHeroHTML(kuliah.totalFuture, kuliah.startAge, true) +
             buildLeadGateHTML(childAge, kuliah) +
@@ -419,7 +419,7 @@ function revealResults() {
         keepalive: true,
     }).catch(() => { /* non-blocking */ });
 
-    // Successful submit — clear preserved state
+    // Successful submit, clear preserved state
     clearEduState();
 
     document.getElementById('lead-gate').style.display = 'none';
@@ -434,7 +434,7 @@ function revealResults() {
             </p>
             <a href="https://calendly.com/philipmulyana/first-call" target="_blank" rel="noopener noreferrer"
                class="inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-colors">
-                Pilih Jam Ngobrol — 10 Menit
+                Pilih Jam Ngobrol (10 Menit)
             </a>
             <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
         </div>

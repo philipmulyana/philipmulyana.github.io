@@ -1,4 +1,4 @@
-// Kalkulator Kebutuhan Proteksi (Uang Pertanggungan) — income approach + lead gen
+// Kalkulator Kebutuhan Proteksi (Uang Pertanggungan), income approach + lead gen
 const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
 
 // Session tracking for funnel analysis
@@ -193,7 +193,7 @@ function calculateProteksi() {
     `;
 
     if (isAgent) {
-        // Agent: numbers only — no urgency, no persuasion, no CTA
+        // Agent: numbers only, no urgency, no persuasion, no CTA
         resultsEl.innerHTML = heroHTML + buildBreakdownTableHTML(calcResults) + buildDisclaimerHTML();
     } else {
         // Non-agent: big number + urgency + consent gate
@@ -212,7 +212,7 @@ function calculateProteksi() {
                             Yang hilang bukan cuma sosok kamu, tapi aliran penghasilan yang selama ini menopang semuanya. Dan itu tidak bisa digantikan oleh tabungan beberapa bulan.
                         </p>
                         <p class="text-sm text-gray-800 leading-relaxed font-medium">
-                            Angka di atas adalah perkiraan nilai ekonomi kamu buat keluarga — berapa yang dibutuhkan supaya rencana hidup mereka tetap jalan tanpa kamu.
+                            Angka di atas adalah perkiraan nilai ekonomi kamu buat keluarga: berapa yang dibutuhkan supaya rencana hidup mereka tetap jalan tanpa kamu.
                         </p>
                     </div>
 
@@ -232,7 +232,7 @@ function calculateProteksi() {
                 <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
                 <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
                     <p class="text-sm text-gray-800 leading-relaxed mb-2">
-                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi — tapi ini bukan sesi jualan.
+                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi, tapi ini bukan sesi jualan.
                         Obrolan 10 menit ini murni diskusi, dan <strong>kamu tidak wajib beli apa pun.</strong>
                     </p>
                     <p class="text-sm text-gray-800 leading-relaxed mb-2">
@@ -248,7 +248,7 @@ function calculateProteksi() {
                 <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors" id="prot-consent-label">
                     <input type="checkbox" id="prot-consent" class="mt-0.5 w-5 h-5 accent-black flex-shrink-0" onchange="toggleConsent()">
                     <span class="text-sm text-gray-700 leading-relaxed">
-                        Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya menyiapkan proteksi penghasilan</strong> — supaya keluarga saya <strong>tetap berdiri</strong> kalau terjadi sesuatu pada saya.
+                        Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya menyiapkan proteksi penghasilan</strong>, supaya keluarga saya <strong>tetap berdiri</strong> kalau terjadi sesuatu pada saya.
                     </span>
                 </label>
 
@@ -377,7 +377,7 @@ function revealResults() {
             </p>
             <a href="https://calendly.com/philipmulyana/first-call" target="_blank" rel="noopener noreferrer"
                class="inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-colors">
-                Pilih Jam Ngobrol — 10 Menit
+                Pilih Jam Ngobrol (10 Menit)
             </a>
             <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
         </div>

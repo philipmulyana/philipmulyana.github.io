@@ -1,4 +1,4 @@
-// Kalkulator Dana Pensiun — hybrid lead gen version
+// Kalkulator Dana Pensiun, hybrid lead gen version
 const WEBSITE_CALC_ENDPOINT = 'https://philip-mulyana--ai-lead-gen-gateway.modal.run/campaign';
 
 // Session tracking for funnel analysis
@@ -194,7 +194,7 @@ function calculateRetirement() {
     `;
 
     if (isAgent || currentAge >= 45) {
-        // Agent or age ≥ 45: numbers only — no urgency, no persuasion, no CTA
+        // Agent or age ≥ 45: numbers only, no urgency, no persuasion, no CTA
         resultsEl.innerHTML = heroHTML + buildBreakdownTableHTML(calcResults) + buildDisclaimerHTML();
     } else {
         // Non-agent: show big number + urgency + consent gate
@@ -211,7 +211,7 @@ function calculateRetirement() {
                             Anak yang kamu besarkan dan kamu sekolahkan setinggi-tingginya sudah punya karir. Mungkin sudah berkeluarga, mungkin sudah punya anak sendiri.
                         </p>
                         <p class="text-sm text-gray-800 leading-relaxed mb-3">
-                            Tapi setiap bulan, dia harus menyisihkan dari gajinya untuk transfer ke kamu — bukan karena ingin memberikan hadiah, tapi karena harus. Untuk biaya hidup kamu. Untuk obat-obatan kamu.
+                            Tapi setiap bulan, dia harus menyisihkan dari gajinya untuk transfer ke kamu, bukan karena ingin memberikan hadiah, tapi karena harus. Untuk biaya hidup kamu. Untuk obat-obatan kamu.
                         </p>
                         <p class="text-sm text-gray-800 leading-relaxed font-medium">
                             Kamu yang dulu jadi sandaran utama mereka, pelan-pelan jadi beban di samping kebutuhan keluarga mereka sendiri.
@@ -219,7 +219,7 @@ function calculateRetirement() {
                     </div>
 
                     <p class="text-sm text-gray-700 leading-relaxed mb-4">
-                        Ini bukan cerita yang dilebih-lebihkan. Ini realita mayoritas keluarga Indonesia hari ini — dan ada alasan struktural kenapa:
+                        Ini bukan cerita yang dilebih-lebihkan. Ini realita mayoritas keluarga Indonesia hari ini, dan ada alasan struktural kenapa:
                     </p>
 
                     <!-- Compact data backup -->
@@ -228,7 +228,7 @@ function calculateRetirement() {
                             <strong>Sistem tidak akan menyelamatkan.</strong> Singapura mewajibkan kontribusi pensiun <strong>37% dari gaji</strong>. Indonesia hanya <strong>8,7%</strong> lewat BPJS. Selisih hampir 30% itu adalah tanggung jawab pribadi yang harus kamu siapkan sendiri.
                         </p>
                         <p class="text-sm text-gray-700 leading-relaxed">
-                            Hasilnya: <strong>kurang dari 15% pekerja Indonesia</strong> benar-benar siap secara finansial untuk pensiun. Sisanya bekerja jauh lebih lama dari yang seharusnya — atau bergantung pada anak.
+                            Hasilnya: <strong>kurang dari 15% pekerja Indonesia</strong> benar-benar siap secara finansial untuk pensiun. Sisanya bekerja jauh lebih lama dari yang seharusnya, atau bergantung pada anak.
                         </p>
                     </div>
 
@@ -248,7 +248,7 @@ function calculateRetirement() {
                 <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
                 <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
                     <p class="text-sm text-gray-800 leading-relaxed mb-2">
-                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi — tapi ini bukan sesi jualan.
+                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi, tapi ini bukan sesi jualan.
                         Obrolan 10 menit ini murni diskusi, dan <strong>kamu tidak wajib beli apa pun.</strong>
                     </p>
                     <p class="text-sm text-gray-800 leading-relaxed mb-2">
@@ -264,7 +264,7 @@ function calculateRetirement() {
                 <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors" id="ret-consent-label">
                     <input type="checkbox" id="ret-consent" class="mt-0.5 w-5 h-5 accent-black flex-shrink-0" onchange="toggleConsent()">
                     <span class="text-sm text-gray-700 leading-relaxed">
-                        Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya memulai langkah pertama</strong> — supaya saya <strong>tidak menjadi beban untuk anak saya</strong> di masa pensiun.
+                        Saya setuju Philip menghubungi saya via WhatsApp untuk <strong>membantu saya memulai langkah pertama</strong>, supaya saya <strong>tidak menjadi beban untuk anak saya</strong> di masa pensiun.
                     </span>
                 </label>
 
@@ -381,7 +381,7 @@ function revealResults() {
         keepalive: true,
     }).catch(() => { /* non-blocking */ });
 
-    // Successful submit — clear preserved state
+    // Successful submit, clear preserved state
     clearPenState();
 
     // Show simple confirmation (don't wait for backend)
@@ -397,7 +397,7 @@ function revealResults() {
             </p>
             <a href="https://calendly.com/philipmulyana/first-call" target="_blank" rel="noopener noreferrer"
                class="inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-colors">
-                Pilih Jam Ngobrol — 10 Menit
+                Pilih Jam Ngobrol (10 Menit)
             </a>
             <p class="text-xs text-gray-400 mt-4">Kalau lebih nyaman, Philip juga akan menghubungi kamu via WhatsApp.</p>
         </div>
