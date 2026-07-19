@@ -229,6 +229,15 @@ function calculateProteksi() {
                     </p>
                 </div>
 
+                <!-- Disclosure: transparansi SIAPA sebelum tukar kontak (Philip locked 2026-07-19) -->
+                <div class="bg-white border border-gray-300 rounded-xl p-4 mb-4">
+                    <p class="text-sm text-gray-800 leading-relaxed">
+                        <strong>Biar jelas sebelum kamu isi:</strong> saya agen asuransi. Yang dibahas di sini
+                        murni <strong>proteksi jiwa</strong> — bukan produk investasi, bukan unit link. Kalau setelah
+                        ngobrol ternyata yang kamu butuhkan bukan itu, saya akan bilang apa adanya.
+                    </p>
+                </div>
+
                 <!-- Consent checkbox -->
                 <label class="flex items-start gap-3 cursor-pointer mb-5 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-400 transition-colors" id="prot-consent-label">
                     <input type="checkbox" id="prot-consent" class="mt-0.5 w-5 h-5 accent-black flex-shrink-0" onchange="toggleConsent()">
