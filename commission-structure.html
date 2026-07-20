@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, follow">
+    <title>Simulasi Struktur Income — Komisi &amp; Overriding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        [hidden] { display: none !important; }
+
+        .internal-notice {
+            background: #fef3c7; border: 1.5px solid #fcd34d;
+            border-radius: 0.75rem; padding: 0.875rem 1.125rem;
+            font-size: 0.8125rem; color: #78350f;
+            display: flex; gap: 0.625rem; align-items: flex-start;
+        }
+
+        .section-card {
+            background: #f9fafb; border-radius: 1.25rem;
+            padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+        }
+        .section-card h2 {
+            font-size: 0.6875rem; font-weight: 700; color: #6b7280;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 0.875rem;
+        }
+
+        label {
+            display: block; font-size: 0.8125rem; color: #374151;
+            font-weight: 500; margin-bottom: 0.375rem;
+        }
+        .fld + .fld { margin-top: 0.875rem; }
+
+        input[type="text"] {
+            width: 100%; padding: 0.625rem 0.875rem;
+            border: 1px solid #e5e7eb; border-radius: 0.5rem;
+            font-size: 0.875rem; font-variant-numeric: tabular-nums;
+            background: white; font-family: inherit; color: #111827;
+        }
+        input[type="text"]:focus {
+            outline: none; border-color: #111827;
+            box-shadow: 0 0 0 3px rgba(17,24,39,.07);
+        }
+        .hint {
+            font-size: 0.6875rem; color: #6b7280; margin-top: 0.375rem;
+        }
+        .suffix { position: relative; }
+        .suffix > span {
+            position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+            color: #9ca3af; font-size: 0.8125rem; pointer-events: none;
+        }
+        .suffix input { padding-right: 2rem; }
+
+        /* segmented control */
+        .seg { display: flex; gap: 0.25rem; background: #f3f4f6; padding: 0.25rem; border-radius: 0.625rem; }
+        .seg button {
+            flex: 1; background: transparent; border: 0; color: #6b7280;
+            font: inherit; font-size: 0.8125rem; font-weight: 600;
+            padding: 0.5rem 0.25rem; border-radius: 0.4375rem; cursor: pointer;
+            transition: all .14s;
+        }
+        .seg button:hover { color: #111827; }
+        .seg button[aria-selected="true"] { background: #1f2937; color: white; }
+
+        /* mode tabs */
+        .modes { display: flex; gap: 0.375rem; background: #f3f4f6; padding: 0.3125rem; border-radius: 0.875rem; }
+        .modes button {
+            flex: 1; background: transparent; border: 0; color: #6b7280;
+            font: inherit; font-size: 0.875rem; font-weight: 700;
+            padding: 0.75rem 0.625rem; border-radius: 0.625rem; cursor: pointer;
+            transition: all .14s; display: flex; flex-direction: column; gap: 0.125rem;
+            text-align: center; line-height: 1.35;
+        }
+        .modes button em {
+            font-style: normal; font-size: 0.6875rem; font-weight: 400; opacity: .7;
+        }
+        .modes button:hover { color: #111827; }
+        .modes button[aria-selected="true"] { background: #1f2937; color: white; }
+        @media (max-width: 520px) { .modes button em { display: none; } }
+
+        .roledesc {
+            font-size: 0.75rem; color: #4b5563; margin-top: 0.75rem;
+            padding: 0.625rem 0.75rem; background: white;
+            border-left: 2px solid #d1d5db; border-radius: 0 0.375rem 0.375rem 0;
+        }
+
+        /* agent rows */
+        .agentrow { display: grid; grid-template-columns: 1fr 140px 34px; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+        .agentrow input { padding: 0.5rem 0.625rem; font-size: 0.8125rem; }
+        .del {
+            background: white; border: 1px solid #e5e7eb; color: #9ca3af;
+            border-radius: 0.4375rem; height: 36px; cursor: pointer;
+            font-size: 1rem; line-height: 1; transition: all .14s;
+        }
+        .del:hover { border-color: #dc2626; color: #dc2626; }
+        .addbtn {
+            width: 100%; margin-top: 0.5rem; background: white;
+            border: 1px dashed #d1d5db; color: #6b7280; border-radius: 0.5rem;
+            padding: 0.625rem; font: inherit; font-size: 0.8125rem;
+            cursor: pointer; transition: all .14s;
+        }
+        .addbtn:hover { border-color: #111827; color: #111827; }
+        .locked {
+            font-size: 0.75rem; color: #9ca3af; padding: 0.875rem;
+            background: white; border-radius: 0.5rem; text-align: center;
+        }
+
+        /* headline result */
+        .headline {
+            background: #111827; border-radius: 1.25rem;
+            padding: 1.5rem 1.5rem 1.375rem; color: white; margin-bottom: 1rem;
+        }
+        .headline .k {
+            font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #9ca3af;
+        }
+        .headline .v {
+            font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 900;
+            letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+            margin: 0.25rem 0 0.125rem;
+        }
+        .headline .s { font-size: 0.8125rem; color: #9ca3af; }
+
+        .bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: #374151; margin: 1rem 0 0.5rem; }
+        .bar span { display: block; transition: width .3s ease; }
+        .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.75rem; color: #9ca3af; }
+        .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.375rem; vertical-align: middle; }
+
+        .yr { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; margin-top: 1rem; }
+        @media (max-width: 520px) { .yr { grid-template-columns: 1fr; } }
+        .yrbox { background: #1f2937; border-radius: 0.75rem; padding: 0.875rem; }
+        .yrtag { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.25rem; }
+        .yrval { font-size: 1.125rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; }
+
+        /* activity tiles */
+        .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.625rem; }
+        .tile { background: white; border: 1px solid #e5e7eb; border-radius: 0.875rem; padding: 0.875rem 1rem; }
+        .tile .k { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.07em; color: #9ca3af; font-weight: 700; margin-bottom: 0.375rem; }
+        .tile .v { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #111827; }
+        .tile .u { font-size: 0.6875rem; color: #6b7280; margin-top: 0.125rem; }
+        .tile.hero { background: #ecfdf5; border-color: #a7f3d0; }
+        .tile.hero .v { color: #047857; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+        th { text-align: left; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.07em; color: #9ca3af; font-weight: 700; padding: 0 0 0.5rem; border-bottom: 1px solid #e5e7eb; }
+        th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
+        td { padding: 0.6875rem 0; border-bottom: 1px solid #f3f4f6; color: #374151; }
+        tr:last-child td { border-bottom: 0; }
+        tr.sum td { font-weight: 800; color: #111827; border-top: 1px solid #e5e7eb; border-bottom: 0; padding-top: 0.75rem; }
+        .meta { display: block; font-size: 0.6875rem; color: #9ca3af; margin-top: 0.125rem; font-weight: 400; }
+
+        .note {
+            font-size: 0.75rem; color: #4b5563; margin-top: 0.875rem;
+            padding: 0.75rem 0.875rem; background: white;
+            border-left: 2px solid #10b981; border-radius: 0 0.375rem 0.375rem 0;
+            line-height: 1.6;
+        }
+        .note b { color: #111827; font-weight: 700; }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Internal notice -->
+    <section class="pt-28 pb-4 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="internal-notice">
+                <span>⚠️</span>
+                <div>
+                    <strong>INTERNAL RECRUITMENT TOOL.</strong> Dipakai saat sesi P1 bersama calon agent. URL stealth (bookmark-only, tidak ter-index, tidak di-link dari navigasi). Seluruh persentase = angka ilustratif dari materi training internal, <strong>bukan salinan resmi compensation schedule Prudential</strong> — verifikasi ke dokumen resmi sebelum dijadikan dasar keputusan.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Header -->
+    <section class="pb-6 px-6">
+        <div class="max-w-5xl mx-auto">
+            <span class="text-xs text-amber-600 font-medium uppercase tracking-wider block">Struktur Income Agent</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Simulasi Komisi &amp; Overriding</h1>
+            <p class="text-gray-500 text-sm mt-3 max-w-2xl">Gambaran bagaimana komisi dan overriding bekerja di setiap posisi — dan aktivitas yang menyertainya.</p>
+        </div>
+    </section>
+
+    <!-- Mode tabs -->
+    <section class="pb-6 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="modes" role="tablist" id="modes">
+                <button role="tab" data-mode="fwd" aria-selected="true">
+                    Potensi Income<em>kalau produksi segini, dapat berapa</em>
+                </button>
+                <button role="tab" data-mode="rev" aria-selected="false">
+                    Cara Kejar Target<em>kalau mau segini, harus ngapain</em>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ MODE 1 — FORWARD ═══════════ -->
+    <section class="pb-16 px-6" id="paneFwd">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-[minmax(0,340px)_1fr] gap-6 items-start">
+
+            <div>
+                <div class="section-card">
+                    <h2>1 · Posisi &amp; Produksi Pribadi</h2>
+
+                    <div class="fld">
+                        <label>Posisi</label>
+                        <div class="seg" role="tablist" id="segF">
+                            <button role="tab" data-role="AG"  aria-selected="true">Agent</button>
+                            <button role="tab" data-role="AAB" aria-selected="false">AAB</button>
+                            <button role="tab" data-role="AB"  aria-selected="false">AB</button>
+                        </div>
+                        <div class="roledesc" id="roledescF"></div>
+                    </div>
+
+                    <div class="fld">
+                        <label for="omzet">Produksi pribadi — FYP per tahun</label>
+                        <input type="text" id="omzet" value="360.000.000" inputmode="numeric" autocomplete="off">
+                        <p class="hint">FYP = premi yang terkumpul dalam 1 tahun. Contoh: 2 closing/bulan × premi 15 juta = 360 juta setahun.</p>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2>2 · Tim (Agent Langsung)</h2>
+                    <div id="teamwrap">
+                        <div id="agents"></div>
+                        <button class="addbtn" id="add">+ Tambah agent</button>
+                    </div>
+                    <div class="locked" id="teamlocked" hidden>
+                        Overriding tim terbuka setelah promosi ke AAB atau AB.
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="headline">
+                    <div class="k">Total Komisi + Overriding</div>
+                    <div class="v" id="grand">—</div>
+                    <div class="s" id="grandsub"></div>
+
+                    <div class="bar"><span id="barA"></span><span id="barB"></span></div>
+                    <div class="legend">
+                        <span><i style="background:#60a5fa"></i>Tahun 1</span>
+                        <span><i style="background:#a78bfa"></i>Tahun 2</span>
+                    </div>
+
+                    <div class="yr">
+                        <div class="yrbox"><div class="yrtag" style="color:#60a5fa">Tahun 1</div><div class="yrval" id="y1">—</div></div>
+                        <div class="yrbox"><div class="yrtag" style="color:#a78bfa">Tahun 2</div><div class="yrval" id="y2">—</div></div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2>Rincian — Produksi Pribadi</h2>
+                    <table>
+                        <thead><tr><th>Komponen</th><th class="n">Tahun 1</th><th class="n">Tahun 2</th></tr></thead>
+                        <tbody id="tblSelf"></tbody>
+                    </table>
+                </div>
+
+                <div class="section-card" id="cardTeam">
+                    <h2>Rincian — Overriding Tim</h2>
+                    <table>
+                        <thead><tr><th>Sumber</th><th class="n">Tahun 1</th><th class="n">Tahun 2</th></tr></thead>
+                        <tbody id="tblTeam"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════ MODE 2 — REVERSE ═══════════ -->
+    <section class="pb-16 px-6" id="paneRev" hidden>
+        <div class="max-w-5xl mx-auto grid md:grid-cols-[minmax(0,340px)_1fr] gap-6 items-start">
+
+            <div>
+                <div class="section-card">
+                    <h2>1 · Target Kamu</h2>
+
+                    <div class="fld">
+                        <label for="goal">Target income per tahun</label>
+                        <input type="text" id="goal" value="500.000.000" inputmode="numeric" autocomplete="off">
+                        <p class="hint">Dihitung dari <b>komisi Tahun 1 saja</b>. Komisi Tahun 2 atas produksi yang sama belum dimasukkan, jadi angka di bawah bersifat konservatif.</p>
+                    </div>
+
+                    <div class="fld">
+                        <label>Posisi</label>
+                        <div class="seg" role="tablist" id="segR">
+                            <button role="tab" data-role="AG"  aria-selected="true">Agent</button>
+                            <button role="tab" data-role="AAB" aria-selected="false">AAB</button>
+                            <button role="tab" data-role="AB"  aria-selected="false">AB</button>
+                        </div>
+                        <div class="roledesc" id="roledescR"></div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2>2 · Asumsi Aktivitas</h2>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="caseSize">Rata-rata premi per case</label>
+                            <input type="text" id="caseSize" value="15.000.000" inputmode="numeric" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="closeRate">Closing ratio</label>
+                            <div class="suffix">
+                                <input type="text" id="closeRate" value="10" inputmode="numeric" autocomplete="off">
+                                <span>%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="hint">Closing ratio 10% berarti dari 10 meeting, 1 menjadi nasabah.</p>
+                </div>
+
+                <div class="section-card" id="cardRevTeam">
+                    <h2>3 · Tim (Agent Langsung)</h2>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="teamCount">Jumlah agent</label>
+                            <input type="text" id="teamCount" value="0" inputmode="numeric" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="teamAvg">Rata-rata FYP per agent</label>
+                            <input type="text" id="teamAvg" value="360.000.000" inputmode="numeric" autocomplete="off">
+                        </div>
+                    </div>
+                    <p class="hint">Overriding dari tim mengurangi produksi pribadi yang perlu kamu kejar.</p>
+                </div>
+                <div class="section-card locked" id="revTeamLocked" hidden>
+                    Overriding tim terbuka setelah promosi ke AAB atau AB.
+                </div>
+            </div>
+
+            <div>
+                <div class="headline">
+                    <div class="k">Produksi Pribadi yang Dibutuhkan</div>
+                    <div class="v" id="reqFyp">—</div>
+                    <div class="s" id="reqSub"></div>
+                </div>
+
+                <div class="section-card">
+                    <h2>Aktivitas yang Menyertainya</h2>
+                    <div class="tiles">
+                        <div class="tile hero"><div class="k">Meeting</div><div class="v" id="mtgWeek">—</div><div class="u">per minggu</div></div>
+                        <div class="tile"><div class="k">Meeting</div><div class="v" id="mtgMonth">—</div><div class="u">per bulan</div></div>
+                        <div class="tile"><div class="k">Nasabah Baru</div><div class="v" id="caseMonth">—</div><div class="u">per bulan (case)</div></div>
+                        <div class="tile"><div class="k">Nasabah Baru</div><div class="v" id="caseYear">—</div><div class="u">per tahun (case)</div></div>
+                    </div>
+                    <div class="note" id="revNote"></div>
+                </div>
+
+                <div class="section-card">
+                    <h2>Dari Mana Target Itu Terpenuhi</h2>
+                    <table>
+                        <thead><tr><th>Sumber</th><th class="n">Kontribusi / tahun</th></tr></thead>
+                        <tbody id="tblRev"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer note -->
+    <section class="pb-20 px-6">
+        <div class="max-w-5xl mx-auto pt-6 border-t border-gray-200 text-xs text-gray-400 leading-relaxed">
+            Simulasi ini menampilkan <b class="text-gray-500">komisi</b> dan <b class="text-gray-500">overriding</b> saja. Bonus kuartalan, royalty, succession, serta program income support (PruElevate / PruVenture) tidak termasuk dalam perhitungan di atas.<br>
+            Referensi struktur: materi training internal, Juli 2026. Bukan janji atas penghasilan tertentu — hasil sesungguhnya bergantung pada produksi, persistensi nasabah, dan ketentuan resmi yang berlaku.
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/commission.js?v=1"></script>
+</body>
+</html>
