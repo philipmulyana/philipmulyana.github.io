@@ -344,6 +344,7 @@ def render_page(post, all_posts):
     </section>
 
 {FOOTER}
+    <script src="/js/blog-track.js"></script>
 </body>
 </html>
 '''

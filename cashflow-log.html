@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catatan Cashflow</title>
+    <script src="/js/pixel.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+ body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#111;}
+ .card{background:#f9fafb;border-radius:1rem;padding:1rem 1.25rem;margin-bottom:0.875rem;}
+ .card h2{font-size:0.95rem;font-weight:800;margin-bottom:0.5rem;}
+ label{display:block;font-size:0.8rem;color:#374151;font-weight:500;margin-bottom:0.3rem;}
+ input,select{width:100%;padding:0.6rem 0.7rem;border:1px solid #e5e7eb;border-radius:0.5rem;font-size:0.9rem;font-family:inherit;background:#fff;}
+ input:focus,select:focus{outline:none;border-color:#000;}
+ .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+ .trow{display:grid;grid-template-columns:0.8fr 0.7fr 1fr 0.9fr auto;gap:0.3rem;align-items:center;margin-bottom:0.4rem;}
+ .rm{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;border-radius:0.4rem;padding:0.4rem 0.5rem;font-size:0.7rem;font-weight:600;cursor:pointer;}
+ .addbtn{margin-top:0.3rem;padding:0.55rem;border:1px dashed #9ca3af;background:#fff;border-radius:0.5rem;cursor:pointer;font-size:0.8rem;color:#6b7280;font-weight:500;width:100%;}
+ .save{width:100%;padding:0.85rem;background:linear-gradient(to right,#059669,#10b981);color:#fff;font-weight:700;border-radius:0.6rem;border:0;cursor:pointer;font-size:0.95rem;margin-top:0.4rem;}
+ .pill{display:inline-block;background:#000;color:#fff;border-radius:999px;padding:0.2rem 0.7rem;font-size:0.65rem;font-weight:600;}
+ .tiny{font-size:0.72rem;color:#9ca3af;}
+ .sumbox{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;text-align:center;}
+ .sumbox div b{display:block;font-size:1rem;font-weight:800;}
+ .sumbox div span{font-size:0.68rem;color:#6b7280;}
+</style>
+</head>
+<body class="antialiased">
+<div class="max-w-md mx-auto px-4 py-6">
+  <span class="pill">Catatan Cashflow</span>
+  <h1 class="text-2xl font-black mt-2">Catat uang masuk & keluar</h1>
+  <p class="text-gray-500 text-sm mt-1 mb-4">Catat pemasukan & pengeluaran tiap beberapa hari. Philip yang pantau.</p>
+
+  <!-- IDENTITAS -->
+  <div class="card">
+    <h2>1. Identitas <span class="tiny">(isi sekali)</span></h2>
+    <div class="grid2">
+      <div><label>Nama</label><input type="text" id="nama" placeholder="Nama kamu"></div>
+      <div><label>Email <span style="color:#dc2626">*</span></label><input type="email" id="email" placeholder="email@kamu.com"></div>
+    </div>
+    <p class="tiny mt-1">Email = identitas kamu (biar Philip tau ini punya siapa).</p>
+  </div>
+
+  <!-- TRANSAKSI -->
+  <div class="card">
+    <h2>2. Transaksi <span class="tiny">(masuk / keluar)</span></h2>
+    <div id="tx_list"></div>
+    <button type="button" class="addbtn" onclick="addTx()">+ Tambah transaksi</button>
+  </div>
+
+  <!-- RINGKASAN -->
+  <div class="card">
+    <h2>Ringkasan bulan ini</h2>
+    <div class="sumbox">
+      <div><b id="s_in" style="color:#059669">Rp 0</b><span>Masuk</span></div>
+      <div><b id="s_out" style="color:#dc2626">Rp 0</b><span>Keluar</span></div>
+      <div><b id="s_net">Rp 0</b><span>Selisih</span></div>
+    </div>
+  </div>
+
+  <button class="save" onclick="submitLog()">💾 Simpan & Kirim</button>
+  <p class="tiny text-center mt-2" id="status">Tersimpan otomatis di HP ini.</p>
+</div>
+
+<script>
+const KEY='cashflow_capture_v1';
+const ENDPOINT='https://philip-mulyana--ai-website-builder-cashflow-log.modal.run';
+const KAT_KELUAR=['Makan','Transport','Tagihan','Belanja','Lifestyle','Kesehatan','Lain'];
+const KAT_MASUK=['Gaji','Bonus','Usaha','Lain'];
+function fmt(v){const n=String(v).replace(/[^\d]/g,'');return n?Number(n).toLocaleString('id-ID'):'';}
+function rawn(el){return Number(String(el&&el.value||'').replace(/[^\d]/g,''))||0;}
+function rp(n){return 'Rp '+Number(n||0).toLocaleString('id-ID');}
+function thisMonth(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+function katOptions(tipe,selected){const arr=tipe==='masuk'?KAT_MASUK:KAT_KELUAR;
+  return arr.map(c=>`<option ${c===selected?'selected':''}>${c}</option>`).join('');}
+
+function addTx(p){const w=document.createElement('div');w.className='trow';
+  w.innerHTML=`<input type="date" data-t="tanggal">
+    <select data-t="tipe"><option value="keluar">Keluar</option><option value="masuk">Masuk</option></select>
+    <select data-t="kategori"></select>
+    <input type="text" inputmode="numeric" data-t="jumlah" placeholder="Jumlah Rp">
+    <button type="button" class="rm" onclick="this.closest('.trow').remove();refresh();">✕</button>`;
+  document.getElementById('tx_list').appendChild(w);
+  const dt=w.querySelector('[data-t="tanggal"]');dt.value=(p&&p.tanggal)||today();dt.addEventListener('change',refresh);
+  const tp=w.querySelector('[data-t="tipe"]');const kt=w.querySelector('[data-t="kategori"]');
+  const setKat=(sel)=>{kt.innerHTML=katOptions(tp.value,sel);};
+  tp.addEventListener('change',()=>{setKat();refresh();});
+  kt.addEventListener('change',refresh);
+  const jm=w.querySelector('[data-t="jumlah"]');jm.addEventListener('input',()=>{jm.value=fmt(jm.value);refresh();});
+  if(p){tp.value=p.tipe||'keluar';setKat(p.kategori);jm.value=fmt(p.jumlah);}else{setKat();}}
+
+function collectTx(){return Array.from(document.querySelectorAll('#tx_list .trow')).map(w=>({
+  tanggal:w.querySelector('[data-t="tanggal"]').value,
+  tipe:w.querySelector('[data-t="tipe"]').value,
+  kategori:w.querySelector('[data-t="kategori"]').value,
+  jumlah:rawn(w.querySelector('[data-t="jumlah"]'))})).filter(t=>t.jumlah);}
+
+function renderSum(){const tx=collectTx().filter(t=>(t.tanggal||'').startsWith(thisMonth()));
+  const masuk=tx.filter(t=>t.tipe==='masuk').reduce((a,b)=>a+b.jumlah,0);
+  const keluar=tx.filter(t=>t.tipe==='keluar').reduce((a,b)=>a+b.jumlah,0);
+  document.getElementById('s_in').textContent=rp(masuk);
+  document.getElementById('s_out').textContent=rp(keluar);
+  const net=masuk-keluar;const ne=document.getElementById('s_net');
+  ne.textContent=(net<0?'-':'')+rp(Math.abs(net));ne.style.color=net<0?'#dc2626':'#059669';}
+
+function collect(){const email=(document.getElementById('email').value||'').trim().toLowerCase();
+  return {client_id:email,nama:document.getElementById('nama').value||'',email:email,logs:collectTx()};}
+function refresh(){renderSum();save();}
+function save(){localStorage.setItem(KEY,JSON.stringify(collect()));document.getElementById('status').textContent='Tersimpan ✓';}
+function restore(){try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');
+  if(d.nama)document.getElementById('nama').value=d.nama;
+  if(d.email)document.getElementById('email').value=d.email;
+  (d.logs||[]).forEach(addTx);return true;}catch(e){return false;}}
+
+async function submitLog(){const d=collect();save();
+  if(!d.email){alert('Isi email dulu ya (buat identitas).');return;}
+  const btn=document.querySelector('.save');btn.textContent='Mengirim...';btn.disabled=true;
+  try{const res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+    const j=await res.json();
+    if(j.ok){alert('✅ Terkirim ke Philip. Makasih!');document.getElementById('status').textContent='Terkirim ✓';}
+    else{alert('Gagal kirim: '+(j.error||'coba lagi'));}
+  }catch(e){alert('Gagal kirim (cek koneksi). Tersimpan di HP ini.');}
+  finally{btn.textContent='💾 Simpan & Kirim';btn.disabled=false;}}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  restore();
+  if(!document.querySelector('#tx_list .trow'))addTx();
+  ['nama','email'].forEach(id=>document.getElementById(id).addEventListener('input',save));
+  refresh();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Plan Advisor Tool — INTERNAL</title>
+    <script src="/js/pixel.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','system-ui','sans-serif'] } } } }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .internal-notice { background:#fef3c7; border:1.5px solid #fcd34d; border-radius:0.75rem; padding:0.875rem 1.125rem; font-size:0.8125rem; color:#78350f; display:flex; gap:0.625rem; align-items:flex-start; }
+        .section-card { background:#f9fafb; border-radius:1.25rem; padding:1.25rem 1.5rem; margin-bottom:1rem; }
+        .section-card h2 { font-size:1rem; font-weight:800; color:#111827; margin-bottom:0.5rem; letter-spacing:-0.01em; }
+        .field-row { margin-bottom:0.875rem; } .field-row:last-child { margin-bottom:0; }
+        .field-row label { display:block; font-size:0.8125rem; color:#374151; font-weight:500; margin-bottom:0.375rem; }
+        .field-row label .req { color:#dc2626; }
+        .field-row .hint { font-size:0.6875rem; color:#6b7280; margin:0 0 0.375rem 0; padding:0.375rem 0.625rem; background:#f3f4f6; border-left:2px solid #d1d5db; border-radius:0 0.375rem 0.375rem 0; }
+        .field-row input[type="text"], .field-row input[type="number"], .field-row input[type="email"], .field-row input[type="date"], .field-row select, .field-row textarea {
+            width:100%; padding:0.625rem 0.875rem; border:1px solid #e5e7eb; border-radius:0.5rem; font-size:0.875rem; font-variant-numeric:tabular-nums; background:white; font-family:inherit; }
+        .field-row textarea { min-height:5rem; line-height:1.5; }
+        .field-row input:focus, .field-row select:focus, .field-row textarea:focus { outline:none; border-color:black; }
+        .field-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:0.625rem; }
+        @media (max-width:640px){ .field-grid-2 { grid-template-columns:1fr; } }
+        .radio-inline { display:flex; flex-wrap:wrap; gap:0.5rem; }
+        .radio-inline label { display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 0.875rem; border:1px solid #e5e7eb; border-radius:0.5rem; font-size:0.8125rem; color:#111827; cursor:pointer; margin:0; font-weight:500; transition:all 0.15s; }
+        .radio-inline label:hover { border-color:#6b7280; }
+        .radio-inline label:has(input:checked) { border-color:black; background:#f3f4f6; font-weight:600; }
+        .uni-card { background:white; border:1px solid #e5e7eb; border-radius:0.875rem; padding:0.875rem 1rem; margin-bottom:0.625rem; position:relative; }
+        .uni-card .uni-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; }
+        .uni-card .uni-num { font-size:0.6875rem; font-weight:700; color:#059669; text-transform:uppercase; letter-spacing:0.06em; }
+        .uni-remove { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; border-radius:0.375rem; padding:0.25rem 0.5rem; font-size:0.6875rem; cursor:pointer; font-weight:600; }
+        .uni-add-btn { margin-top:0.25rem; padding:0.5rem 0.875rem; border:1px dashed #9ca3af; background:white; border-radius:0.5rem; cursor:pointer; font-size:0.8125rem; color:#6b7280; font-weight:500; width:100%; }
+        .uni-add-btn:hover { border-color:black; color:black; }
+        .uni-add-btn:disabled { opacity:0.4; cursor:not-allowed; }
+        .save-indicator { position:fixed; bottom:1rem; right:1rem; background:white; border:1px solid #e5e7eb; border-radius:999px; padding:0.375rem 0.875rem; font-size:0.6875rem; color:#6b7280; display:flex; align-items:center; gap:0.375rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); z-index:50; }
+        .save-indicator.saved { color:#059669; }
+        .submit-bar { margin-top:1.5rem; padding:1.25rem; background:black; border-radius:1rem; }
+        .submit-bar button { width:100%; padding:0.875rem 1.25rem; background:linear-gradient(to right,#059669,#10b981); color:white; font-weight:700; font-size:0.9375rem; border-radius:0.625rem; cursor:pointer; border:0; }
+        .submit-bar button:hover { background:linear-gradient(to right,#047857,#059669); }
+        .submit-bar .submit-hint { font-size:0.75rem; color:#9ca3af; text-align:center; margin-top:0.625rem; }
+        .lookup-row { display:flex; gap:0.5rem; align-items:end; } .lookup-row > div:first-child { flex:1; }
+        .lookup-row button { padding:0.625rem 1rem; background:black; color:white; border-radius:0.5rem; font-size:0.8125rem; font-weight:600; cursor:pointer; border:0; white-space:nowrap; }
+        .conditional { display:none; } .conditional.show { display:block; }
+        .autofill-badge { font-size:0.625rem; color:#059669; font-weight:600; margin-left:0.375rem; }
+    </style>
+</head>
+<body class="bg-white text-black antialiased">
+
+    <section class="pt-10 pb-4 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="internal-notice">
+                <span>⚠️</span>
+                <div><strong>INTERNAL ADVISOR TOOL.</strong> Philip isi post-interview klien. URL stealth (bookmark-only). Setelah isi → "Copy JSON for Claude" → paste ke Claude untuk generate Education Plan PDF → walkthrough klien.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pb-6 px-6">
+        <div class="max-w-3xl mx-auto">
+            <span class="text-xs text-amber-600 font-medium uppercase tracking-wider block">Education Plan — Advisor Form</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">Education Plan Builder</h1>
+            <p class="text-gray-500 text-sm mt-3">Fokus kuliah. Banding sampai 3 universitas. Inflasi pendidikan per-tier (vault, BUKAN 10%). ~10-15 min/klien.</p>
+        </div>
+    </section>
+
+    <!-- Risk Profile Lookup -->
+    <section class="px-6 mb-2">
+        <div class="max-w-3xl mx-auto">
+            <div class="section-card">
+                <h2>🔗 Klien Risk Profile Lookup</h2>
+                <p class="text-xs text-gray-500 mb-3">Optional. Tarik Risk Profile + cashflow dari Financial Check-up (kalau klien sudah isi). Auto-fill nama + cashflow.</p>
+                <div class="lookup-row">
+                    <div><input type="email" id="klien_lookup_email" placeholder="klien@email.com"></div>
+                    <button type="button" onclick="lookupKlien()">Lookup</button>
+                </div>
+                <div id="klien_lookup_result" class="lookup-result" style="margin-top:0.875rem;display:none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-6 pb-16">
+        <div class="max-w-3xl mx-auto">
+            <form id="edu-form" onsubmit="event.preventDefault(); copyPayloadForClaude();">
+
+                <!-- SECTION 1 -->
+                <div class="section-card">
+                    <h2>1. Profil Klien & Anak</h2>
+                    <p class="text-xs text-gray-500 mb-4">Data klien + anak yang direncanakan kuliah.</p>
+                    <div class="field-row">
+                        <label>Nama klien <span class="req">*</span> <span class="autofill-badge" id="autofill_nama" style="display:none;">✓ Auto-filled</span></label>
+                        <input type="text" id="s1_nama" placeholder="contoh: Hendra Pranata">
+                    </div>
+                    <div class="field-row">
+                        <label>Nama pasangan (kalau ada)</label>
+                        <input type="text" id="s1_pasangan" placeholder="contoh: Lisa Pranata">
+                    </div>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Nama anak <span class="req">*</span></label>
+                            <input type="text" id="s1_anak_nama" placeholder="contoh: Bima">
+                        </div>
+                        <div class="field-row">
+                            <label>Usia anak sekarang <span class="req">*</span></label>
+                            <input type="number" id="s1_anak_usia" min="0" max="18" placeholder="contoh: 8">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>Target usia masuk kuliah</label>
+                        <input type="number" id="s1_target_usia_kuliah" min="16" max="22" value="18">
+                        <div class="hint">Default 18. Tahun masuk = (target usia − usia sekarang) tahun lagi.</div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="section-card">
+                    <h2>2. Target Pendidikan — sampai 3 universitas</h2>
+                    <p class="text-xs text-gray-500 mb-4">Mandatory 1, max 3 (buat banding). Tier nentuin inflasi + biaya dari vault.</p>
+                    <div id="uni_list"></div>
+                    <button type="button" class="uni-add-btn" id="uni_add_btn" onclick="addUni()">+ Tambah universitas (max 3)</button>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="section-card">
+                    <h2>3. Dana Pendidikan yang Sudah Jalan</h2>
+                    <p class="text-xs text-gray-500 mb-4">Yang sudah di-earmark khusus buat pendidikan anak ini.</p>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Tabungan/investasi earmark pendidikan (Rp, nilai sekarang)</label>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_dana_existing" placeholder="contoh: 50,000,000">
+                        </div>
+                        <div class="field-row">
+                            <label>Sudah disisihkan per bulan (Rp)</label>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s3_per_bulan" placeholder="contoh: 2,000,000">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>Asuransi pendidikan / unit-link existing?</label>
+                        <input type="text" id="s3_asuransi_pendidikan" placeholder="contoh: ada, unit-link X premi 1jt/bln — atau: tidak ada">
+                    </div>
+                </div>
+
+                <!-- SECTION 4 -->
+                <div class="section-card">
+                    <h2>4. Cashflow / Kapasitas</h2>
+                    <p class="text-xs text-gray-500 mb-4">Auto-fill dari Financial Check-up kalau ada. Override kalau perlu.</p>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Pemasukan bersih bulanan (Rp) <span class="autofill-badge" id="autofill_income" style="display:none;">✓</span></label>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s4_income" placeholder="contoh: 49,000,000">
+                        </div>
+                        <div class="field-row">
+                            <label>Pengeluaran bulanan (Rp) <span class="autofill-badge" id="autofill_expense" style="display:none;">✓</span></label>
+                            <input type="text" inputmode="numeric" class="formatted-number" id="s4_expense" placeholder="contoh: 43,000,000">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>Free cashflow / kapasitas nabung tambahan (Rp/bln)</label>
+                        <input type="text" inputmode="numeric" class="formatted-number" id="s4_free_cashflow" placeholder="contoh: 6,000,000">
+                    </div>
+                </div>
+
+                <!-- SECTION 5 -->
+                <div class="section-card">
+                    <h2>5. Asuransi & Proteksi</h2>
+                    <p class="text-xs text-gray-500 mb-4">Buat hitung gap proteksi (kalau ortu meninggal, dana kuliah tetap aman) + premi.</p>
+                    <div class="field-row">
+                        <label>UP asuransi jiwa ortu existing (Rp)</label>
+                        <input type="text" inputmode="numeric" class="formatted-number" id="s5_up_existing" placeholder="contoh: 1,000,000,000 — atau 0 kalau belum ada">
+                    </div>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Tanggal lahir ortu (tertanggung) <span class="req">*</span></label>
+                            <input type="date" id="s5_dob">
+                            <div class="hint">Buat hitung premi.</div>
+                        </div>
+                        <div class="field-row">
+                            <label>Status merokok</label>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="s5_merokok" value="no"> Tidak</label>
+                                <label><input type="radio" name="s5_merokok" value="yes"> Ya</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>Ada waiver of premium / payor benefit existing?</label>
+                        <div class="radio-inline">
+                            <label><input type="radio" name="s5_waiver" value="no"> Tidak</label>
+                            <label><input type="radio" name="s5_waiver" value="yes"> Ya</label>
+                            <label><input type="radio" name="s5_waiver" value="unknown"> Belum tahu</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 6 -->
+                <div class="section-card">
+                    <h2>6. Asumsi (default per vault KB)</h2>
+                    <p class="text-xs text-gray-500 mb-4">Inflasi pendidikan auto per-tier dari uni yang dipilih. Override kalau perlu.</p>
+                    <div class="field-grid-2">
+                        <div class="field-row">
+                            <label>Inflasi pendidikan default (% p.a.)</label>
+                            <input type="number" id="s6_inflasi_pendidikan" min="2" max="8" step="0.5" value="5.0">
+                            <div class="hint">PTN reguler 3% · PTN mandiri/kedokteran 5% · PTS mid 4% · PTS premium 8%. JANGAN 10%.</div>
+                        </div>
+                        <div class="field-row">
+                            <label>Buffer biaya hidup/kos (%)</label>
+                            <input type="number" id="s6_buffer" min="0" max="40" step="5" value="25">
+                        </div>
+                        <div class="field-row">
+                            <label>Return investasi RD campuran (% p.a.)</label>
+                            <input type="number" id="s6_return_rd" min="4" max="12" step="0.5" value="8.0">
+                        </div>
+                        <div class="field-row">
+                            <label>Inflasi umum (% p.a.)</label>
+                            <input type="number" id="s6_inflasi_umum" min="1" max="8" step="0.1" value="4.0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 7 -->
+                <div class="section-card">
+                    <h2>7. Catatan Khusus</h2>
+                    <div class="field-row">
+                        <label>Catatan</label>
+                        <textarea id="s7_notes" placeholder="contoh:&#10;- Anak minat kedokteran, ortu willing fund full&#10;- Preferensi PTN dulu, PTS premium backup&#10;- Kakek nenek mungkin bantu sebagian&#10;- Ortu ada rencana S2 overseas juga"></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-bar">
+                    <button type="button" onclick="copyPayloadForClaude()">📋 Copy JSON for Claude</button>
+                    <button type="button" onclick="saveState(true)" style="margin-top:0.625rem;width:100%;padding:0.875rem 1.25rem;background:#374151;color:white;font-weight:700;font-size:0.9375rem;border-radius:0.625rem;cursor:pointer;border:0;">💾 Save Draft</button>
+                    <div class="submit-hint">Copy JSON = paste ke Claude chat untuk generate Education Plan PDF. Save Draft = localStorage.</div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div class="save-indicator" id="save-indicator"><span>💾</span><span id="save-text">Auto-save ready</span></div>
+
+<script>
+const STORAGE_KEY_EDU = 'edu_plan_draft_v1';
+const TIER_INFLASI = { ptn_reguler:3.0, ptn_mandiri:5.0, pts_mid:4.0, pts_premium:8.0, kedokteran:6.0 };
+let uniCount = 0;
+
+function fmt(v){ if(v===''||v==null)return ''; const n=String(v).replace(/[^\d]/g,''); return n?Number(n).toLocaleString('en-US'):''; }
+function raw(id){ const e=document.getElementById(id); if(!e)return 0; return Number(String(e.value).replace(/[^\d]/g,''))||0; }
+function val(id){ const e=document.getElementById(id); return e?e.value:''; }
+function radio(n){ const e=document.querySelector(`input[name="${n}"]:checked`); return e?e.value:''; }
+
+function addUni(prefill){
+    if(uniCount>=3) return;
+    uniCount++;
+    const i=uniCount;
+    const wrap=document.createElement('div');
+    wrap.className='uni-card'; wrap.dataset.uni=i;
+    wrap.innerHTML=`
+      <div class="uni-head"><span class="uni-num">Universitas ${i}</span>
+        <button type="button" class="uni-remove" onclick="this.closest('.uni-card').remove(); uniCount--; renumberUni(); refreshAddBtn(); saveState();">✕ hapus</button></div>
+      <div class="field-row"><label>Nama universitas</label><input type="text" data-f="nama" placeholder="contoh: UI / Binus / NUS"></div>
+      <div class="field-grid-2">
+        <div class="field-row"><label>Jurusan/program</label><input type="text" data-f="jurusan" placeholder="contoh: Kedokteran"></div>
+        <div class="field-row"><label>Lokal / Overseas</label>
+          <select data-f="lokasi"><option value="lokal">Lokal</option><option value="overseas">Overseas</option></select></div>
+      </div>
+      <div class="field-grid-2">
+        <div class="field-row"><label>Tier</label>
+          <select data-f="tier" onchange="onTierChange(this)">
+            <option value="">— pilih —</option>
+            <option value="ptn_reguler">PTN reguler (3%)</option>
+            <option value="ptn_mandiri">PTN mandiri (5%)</option>
+            <option value="pts_mid">PTS mid-tier (4%)</option>
+            <option value="pts_premium">PTS premium (8%)</option>
+            <option value="kedokteran">Kedokteran (6%)</option>
+          </select></div>
+        <div class="field-row"><label>Biaya total hari ini (Rp)</label>
+          <input type="text" inputmode="numeric" data-f="biaya" data-num="1" placeholder="contoh: 250,000,000"></div>
+      </div>
+      <div class="field-row"><label>Butuh biaya hidup/kos?</label>
+        <div class="radio-inline">
+          <label><input type="radio" name="uni${i}_kos" value="yes" data-f="kos"> Ya (buffer)</label>
+          <label><input type="radio" name="uni${i}_kos" value="no" data-f="kos"> Tidak</label>
+        </div></div>`;
+    document.getElementById('uni_list').appendChild(wrap);
+    wrap.querySelectorAll('input,select').forEach(el=>{
+        const evt=(el.tagName==='SELECT'||el.type==='radio')?'change':'input';
+        el.addEventListener(evt, ()=>{ if(el.dataset.num) el.value=fmt(el.value); saveState(); });
+    });
+    if(prefill){ Object.entries(prefill).forEach(([k,v])=>{ const el=wrap.querySelector(`[data-f="${k}"]`); if(el){ if(el.type==='radio'){ const r=wrap.querySelector(`[data-f="${k}"][value="${v}"]`); if(r)r.checked=true; } else el.value=(el.dataset.num?fmt(v):v); } }); }
+    refreshAddBtn();
+}
+function renumberUni(){ let n=0; document.querySelectorAll('#uni_list .uni-card').forEach(c=>{ n++; c.querySelector('.uni-num').textContent='Universitas '+n; }); uniCount=n; }
+function refreshAddBtn(){ document.getElementById('uni_add_btn').disabled = uniCount>=3; }
+function onTierChange(sel){ const t=sel.value; if(t&&TIER_INFLASI[t]){ document.getElementById('s6_inflasi_pendidikan').value=TIER_INFLASI[t].toFixed(1); } saveState(); }
+function collectUnis(){ return Array.from(document.querySelectorAll('#uni_list .uni-card')).map(c=>{
+    const o={}; c.querySelectorAll('[data-f]').forEach(el=>{ if(el.type==='radio'){ if(el.checked)o[el.dataset.f]=el.value; } else o[el.dataset.f]=el.dataset.num?(Number(String(el.value).replace(/[^\d]/g,''))||0):el.value; }); return o;
+}).filter(u=>u.nama); }
+
+function buildPayload(){
+    return {
+        klien: val('s1_nama'), pasangan: val('s1_pasangan'),
+        anak: { nama: val('s1_anak_nama'), usia: Number(val('s1_anak_usia'))||0, target_usia_kuliah: Number(val('s1_target_usia_kuliah'))||18 },
+        unis: collectUnis(),
+        dana_existing: { earmark: raw('s3_dana_existing'), per_bulan: raw('s3_per_bulan'), asuransi_pendidikan: val('s3_asuransi_pendidikan') },
+        cashflow: { income: raw('s4_income'), expense: raw('s4_expense'), free_cashflow: raw('s4_free_cashflow') },
+        proteksi: { up_existing: raw('s5_up_existing'), dob: val('s5_dob'), merokok: radio('s5_merokok'), waiver: radio('s5_waiver') },
+        asumsi: { inflasi_pendidikan: Number(val('s6_inflasi_pendidikan'))||5, buffer_pct: Number(val('s6_buffer'))||25, return_rd: Number(val('s6_return_rd'))||8, inflasi_umum: Number(val('s6_inflasi_umum'))||4 },
+        catatan: val('s7_notes')
+    };
+}
+async function copyPayloadForClaude(){
+    const p=buildPayload();
+    if(!p.klien || !p.anak.nama || p.unis.length===0){ alert('Minimal isi: nama klien, nama anak, dan 1 universitas.'); return; }
+    const s=JSON.stringify(p,null,2);
+    try{ await navigator.clipboard.writeText(s); alert('✅ JSON ke-copy. Paste ke Claude chat untuk generate Education Plan PDF.'); }
+    catch(e){ const ta=document.createElement('textarea'); ta.value=s; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); alert('✅ JSON ke-copy (fallback).'); }
+}
+
+function saveState(manual){
+    const st={ form:{}, unis:collectUnis() };
+    document.querySelectorAll('#edu-form input[id],#edu-form select[id],#edu-form textarea[id]').forEach(el=>st.form[el.id]=el.value);
+    ['s5_merokok','s5_waiver'].forEach(n=>st.form[n]=radio(n));
+    localStorage.setItem(STORAGE_KEY_EDU, JSON.stringify(st));
+    const ind=document.getElementById('save-indicator'); ind.classList.add('saved'); document.getElementById('save-text').textContent= manual?'Draft saved ✓':'Auto-saved ✓';
+    if(manual) alert('💾 Draft tersimpan di browser ini.');
+}
+function restoreState(){
+    try{ const raw=localStorage.getItem(STORAGE_KEY_EDU); if(!raw)return; const st=JSON.parse(raw);
+        Object.entries(st.form||{}).forEach(([k,v])=>{ const el=document.getElementById(k); if(el)el.value=v; });
+        ['s5_merokok','s5_waiver'].forEach(n=>{ if(st.form&&st.form[n]){ const r=document.querySelector(`input[name="${n}"][value="${st.form[n]}"]`); if(r)r.checked=true; } });
+        (st.unis||[]).forEach(u=>addUni(u));
+    }catch(e){}
+}
+
+async function lookupKlien(){
+    const email=val('klien_lookup_email').trim(); const box=document.getElementById('klien_lookup_result');
+    if(!email){ alert('Isi email klien dulu.'); return; }
+    box.style.display='block'; box.innerHTML='Mencari…';
+    // NOTE: wire ke endpoint FCU lookup (sama seperti pension). Stub utk sekarang.
+    box.innerHTML='⚠️ Lookup FCU belum di-wire ke endpoint. Isi manual dulu, atau hubungkan ke endpoint yang sama dengan pension builder.';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+    restoreState();
+    if(uniCount===0) addUni();
+    document.querySelectorAll('.formatted-number').forEach(inp=>{ inp.value=fmt(inp.value); inp.addEventListener('input',()=>{ inp.value=fmt(inp.value); saveState(); }); });
+    document.querySelectorAll('#edu-form input:not(.formatted-number),#edu-form select,#edu-form textarea').forEach(el=>{ const evt=(el.tagName==='SELECT'||el.type==='radio')?'change':'input'; el.addEventListener(evt,()=>saveState()); });
+    refreshAddBtn();
+});
+</script>
+</body>
+</html>
