@@ -19,11 +19,16 @@ import sys, os, glob, re
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 PIXEL_MARKER = "pixel.js"
+BEACON_MARKER = "blog-track.js"   # funnel-stage beacon — required on blog pages
 STUB_MARKERS = ('http-equiv="refresh"', "location.replace")
 
 
 def is_stub(html: str) -> bool:
     return any(m in html for m in STUB_MARKERS)
+
+
+def is_blog(rel: str) -> bool:
+    return rel.replace("\\", "/").startswith("blog/")
 
 
 def main() -> int:
@@ -32,7 +37,7 @@ def main() -> int:
         + glob.glob(os.path.join(ROOT, "blog", "*.html"))
         + glob.glob(os.path.join(ROOT, "tools", "**", "*.html"), recursive=True)
     )
-    missing, stubs, ok = [], 0, 0
+    missing_pixel, missing_beacon, stubs, ok = [], [], 0, 0
     for f in files:
         try:
             html = open(f, encoding="utf-8").read()
@@ -43,20 +48,31 @@ def main() -> int:
         if is_stub(html):
             stubs += 1
             continue
-        if PIXEL_MARKER in html:
+        page_ok = True
+        if PIXEL_MARKER not in html:
+            missing_pixel.append(rel); page_ok = False
+        # blog pages must ALSO carry the funnel beacon
+        if is_blog(rel) and BEACON_MARKER not in html:
+            missing_beacon.append(rel); page_ok = False
+        if page_ok:
             ok += 1
-        else:
-            missing.append(rel)
 
-    print(f"Tracker guard — {len(files)} html · {ok} pixeled · {stubs} redirect-stubs · {len(missing)} MISSING")
-    if missing:
-        print("\n❌ Pages missing the Meta Pixel (js/pixel.js):")
-        for m in missing:
-            print(f"    - {m}")
-        print("\nFix: add  <script src=\"/js/pixel.js\"></script>  to <head>.")
-        print("For auto-generated blogs, the template in .github/scripts/publish_blogs.py must carry it.")
+    print(f"Tracker guard — {len(files)} html · {ok} ok · {stubs} redirect-stubs · "
+          f"{len(missing_pixel)} no-pixel · {len(missing_beacon)} blog-no-beacon")
+    if missing_pixel or missing_beacon:
+        if missing_pixel:
+            print("\n❌ Pages missing the Meta Pixel (js/pixel.js):")
+            for m in missing_pixel:
+                print(f"    - {m}")
+            print("   Fix: add  <script src=\"/js/pixel.js\"></script>  to <head>.")
+        if missing_beacon:
+            print("\n❌ Blog pages missing the funnel beacon (js/blog-track.js):")
+            for m in missing_beacon:
+                print(f"    - {m}")
+            print("   Fix: add  <script src=\"/js/blog-track.js\"></script>  before </body>.")
+        print("\nFor auto-generated blogs, the template in .github/scripts/publish_blogs.py must carry BOTH.")
         return 1
-    print("✅ Every real page carries the tracker.")
+    print("✅ Every real page carries the tracker (blogs carry pixel + funnel beacon).")
     return 0
 
 
