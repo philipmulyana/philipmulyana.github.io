@@ -157,7 +157,12 @@ def _cm_content(body):
 
 def fetch_posts():
     T = os.environ["AIRTABLE_TOKEN"]
-    B = os.environ.get("AIRTABLE_BASE_ID", "appKuGZUI8tK4as7n")
+    # 2026-07-23: default base corrected from appKuGZUI8tK4as7n (stale/inaccessible
+    # to the shared token — base likely recreated) to appsyVRgcb35KuTFe (AI Content
+    # Strategist), which holds the "Blog Posts" table and IS accessible. Token
+    # unchanged; only the base ID was stale. Old Website Builder blogs stay live as
+    # static files via the posts.json merge-preserve below.
+    B = os.environ.get("AIRTABLE_BASE_ID", "appsyVRgcb35KuTFe")
     TB = os.environ.get("AIRTABLE_BLOG_TABLE", "Blog Posts")
     today = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=7)).strftime("%Y-%m-%d")
 
