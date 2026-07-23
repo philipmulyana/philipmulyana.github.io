@@ -161,9 +161,18 @@ def fetch_posts():
     TB = os.environ.get("AIRTABLE_BLOG_TABLE", "Blog Posts")
     today = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=7)).strftime("%Y-%m-%d")
 
-    # Source 1: Website Builder "Blog Posts" (Approved checkbox)
-    posts = [r["fields"] for r in _airtable_all(B, TB, T)
-             if r["fields"].get("Approved") and r["fields"].get("Slug")]
+    # Source 1: Website Builder "Blog Posts" (Approved checkbox).
+    # TOLERANT (2026-07-23): the shared Airtable token lost access to the Website
+    # Builder base (403). Don't let that kill the whole publish — those blogs are
+    # already rendered on disk and preserved via the posts.json merge below. Just
+    # skip re-fetching them so Content Machine blogs (incl. today's) still publish.
+    try:
+        posts = [r["fields"] for r in _airtable_all(B, TB, T)
+                 if r["fields"].get("Approved") and r["fields"].get("Slug")]
+    except Exception as e:
+        print(f"  WARNING: Website Builder base read failed ({e}); "
+              f"keeping existing rendered blogs via posts.json merge-preserve.")
+        posts = []
     seen = {p.get("Slug") for p in posts}
 
     # Source 2: Content Machine "Blogs" (Status == Writing Approved)
