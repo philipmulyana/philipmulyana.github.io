@@ -108,6 +108,10 @@ def fmt_date(s):
 CM_BASE = "appqIkiQc23r9UU2T"
 CM_TABLE = "tblZUarT6cG2qIPdY"
 CM_APPROVED = "4 - Writing Approved"
+CM_PUBLISHED = "5 - Published"
+# Render set includes BOTH: status 4 = approved-and-publishing-now, status 5 = already
+# live (kept in the set so promoting 4→5 never drops the page). After a status-4 blog
+# renders, main() promotes it to "5 - Published" + stamps Published URL (write-back).
 TOOL_KEYS = ("tool-retirement.html", "tool-education.html", "tool-proteksi.html", "financial-checkup.html")
 
 
@@ -129,6 +133,15 @@ def _airtable_all(base, table, token):
         if not off:
             break
     return recs
+
+
+def _airtable_patch(base, table, rid, fields, token):
+    u = f"https://api.airtable.com/v0/{base}/{urllib.parse.quote(table)}/{rid}"
+    data = json.dumps({"fields": fields}).encode()
+    req = urllib.request.Request(u, data=data, method="PATCH",
+                                 headers={"Authorization": f"Bearer {token}",
+                                          "Content-Type": "application/json"})
+    urllib.request.urlopen(req)
 
 
 def _excerpt_from_body(body):
@@ -180,10 +193,10 @@ def fetch_posts():
         posts = []
     seen = {p.get("Slug") for p in posts}
 
-    # Source 2: Content Machine "Blogs" (Status == Writing Approved)
+    # Source 2: Content Machine "Blogs" (Status 4 = publishing now, or 5 = already live).
     for r in _airtable_all(CM_BASE, CM_TABLE, T):
         f = r["fields"]
-        if f.get("Status") != CM_APPROVED or not f.get("Slug") or not f.get("Body") or f["Slug"] in seen:
+        if f.get("Status") not in (CM_APPROVED, CM_PUBLISHED) or not f.get("Slug") or not f.get("Body") or f["Slug"] in seen:
             continue
         seen.add(f["Slug"])
         body = f["Body"]
@@ -197,6 +210,8 @@ def fetch_posts():
             "CategoryLabel": "Artikel Kami",
             "Author": "Philip Mulyana",
             "Date": f.get("Publish Date", ""),
+            "_cm_id": r["id"],           # for status write-back in main()
+            "_cm_status": f.get("Status"),
         })
 
     # Date-gate: future-dated posts wait until their publish date (WIB).
@@ -370,6 +385,21 @@ def main():
     for p in posts:
         (BLOG / f"{p['Slug']}.html").write_text(render_page(p, posts), encoding="utf-8")
         print(f"  page: /blog/{p['Slug']}.html")
+
+    # WRITE-BACK: a Content Machine blog rendered from status "4 - Writing Approved" is
+    # now live → promote it to "5 - Published" + stamp Published URL so Airtable reflects
+    # reality. Status 5 stays in the render set (see fetch_posts), so it never drops.
+    # Resilient: a failed patch logs a warning but never blocks the publish/commit.
+    T = os.environ["AIRTABLE_TOKEN"]
+    for p in posts:
+        if p.get("_cm_id") and p.get("_cm_status") == CM_APPROVED:
+            live_url = f"https://philipmulyana.com/blog/{p['Slug']}.html"
+            try:
+                _airtable_patch(CM_BASE, CM_TABLE, p["_cm_id"],
+                                {"Status": CM_PUBLISHED, "Published URL": live_url}, T)
+                print(f"  promoted → 5 - Published: {p['Slug']}")
+            except Exception as ex:
+                print(f"  WARNING: status write-back failed for {p['Slug']}: {ex}")
 
     listing = [{"slug": p.get("Slug",""), "title": p.get("Title",""), "category": p.get("Category",""),
                 "categoryLabel": p.get("CategoryLabel",""), "date": p.get("Date",""),
