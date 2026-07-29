@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "money-date-struktur-dua-jam",
+      "title": "Dua Jam Ngobrol Uang Sebulan Sekali yang Bikin Rumah Tangga Berhenti Ribut",
+      "category": "personal_finance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-07-29",
+      "excerpt": "Dua tulisan sebelumnya membahas apa yang perlu dibicarakan: kenapa cara pandang kalian soal uang bisa berbeda jauh, dan kenapa rumah tangga butuh satu angka ...",
+      "readingTime": "3 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "cara-hitung-dana-pensiun-yang-cukup",
       "title": "Berapa yang Cukup Buat Pensiun Nyaman? Ini Cara Hitung Angka Kamu Sendiri",
       "category": "personal_finance",
