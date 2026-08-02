@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "hal-buruk-cuma-kejadian-ke-orang-lain",
+      "title": "Kenapa Kita Selalu Ngira Hal Buruk Cuma Kejadian ke Orang Lain, Bukan ke Kita",
+      "category": "personal_finance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-08-02",
+      "excerpt": "Coba jujur. Waktu kamu dengar berita orang kena sakit kritis di usia muda, perusahaan tutup dan karyawannya kena PHK massal, atau kepala keluarga meninggal m...",
+      "readingTime": "2 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "berapa-cukup-pensiun-nyaman-indonesia",
       "title": "Berapa Sebenarnya Uang yang Cukup Buat Pensiun Nyaman di Indonesia?",
       "category": "personal_finance",
