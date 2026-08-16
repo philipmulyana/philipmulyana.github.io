@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "makin-rugi-makin-susah-berhenti",
+      "title": "Kenapa Makin Rugi, Kita Malah Makin Susah Berhenti",
+      "category": "personal_finance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-08-16",
+      "excerpt": "Ada satu pola yang saya lihat berulang selama 18 tahun di industri keuangan: makin besar kerugian seseorang, makin susah dia berhenti. Secara logika harusnya...",
+      "readingTime": "2 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "uang-bonus-cepat-habis",
       "title": "Kenapa Uang Bonus Selalu Cepat Habis, Padahal Nominalnya Sama dengan Gaji ",
       "category": "personal_finance",
