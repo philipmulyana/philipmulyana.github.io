@@ -74,9 +74,9 @@
                 <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-5">Yang dibahas</h2>
                 <ul id="w-points" class="space-y-4"></ul>
             </div>
-            <div id="w-prepare-box" class="hidden mt-5 bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <h3 class="text-sm font-bold mb-2">Yang perlu kamu siapkan</h3>
-                <p id="w-prepare" class="text-sm text-gray-600 leading-relaxed"></p>
+            <div id="w-forwhom-box" class="hidden mt-5 bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+                <h3 id="w-forwhom-title" class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-5"></h3>
+                <ul id="w-forwhom" class="space-y-3.5"></ul>
             </div>
         </div>
     </section>
@@ -310,9 +310,16 @@
                     <span class="text-sm text-gray-700 leading-relaxed">${escapeHtml(p)}</span>
                 </li>`).join('');
 
+            if ((w.for_whom || []).length) {
+                document.getElementById('w-forwhom-title').textContent = w.for_whom_title || 'Sesi ini untuk siapa';
+                document.getElementById('w-forwhom').innerHTML = w.for_whom.map(t => `
+                    <li class="flex gap-3">
+                        <svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <span class="text-sm text-gray-700 leading-relaxed">${escapeHtml(t)}</span>
+                    </li>`).join('');
+                document.getElementById('w-forwhom-box').classList.remove('hidden');
+            }
             if (w.prepare) {
-                document.getElementById('w-prepare').textContent = w.prepare;
-                document.getElementById('w-prepare-box').classList.remove('hidden');
                 document.getElementById('prepare-reminder-text').textContent = w.prepare;
                 document.getElementById('prepare-reminder').classList.remove('hidden');
             }

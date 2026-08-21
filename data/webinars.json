@@ -24,10 +24,14 @@
       "points": [
         "Kenapa premi naik: bagaimana harganya dibentuk, dan kenapa usia mengubahnya",
         "Tiga hal yang sering dipercaya soal kenaikan premi — dan kenapa ketiganya keliru",
-        "Aturan OJK yang berlaku sejak Maret 2026: berapa kali premi boleh dinaikkan setahun, dan apa yang wajib tercantum di surat yang kamu terima",
         "Tiga pilihan yang kamu punya kalau preminya naik, beserta konsekuensi masing-masing"
       ],
-      "prepare": "Kalau kamu pernah menerima surat penyesuaian premi — dari perusahaan mana pun — siapkan sebelum sesi dimulai. Ada satu bagian di mana kita membacanya bersama.",
+      "for_whom_title": "Sesi ini untuk siapa",
+      "for_whom": [
+        "Terbuka untuk umum. Kamu tidak perlu jadi nasabah saya, dan polis kamu boleh dari perusahaan mana pun.",
+        "Ditujukan buat kamu yang punya polis asuransi tapi belum pernah mendapat penjelasan utuh soal kenaikan preminya.",
+        "Ini bukan sesi jualan. Murni edukasi — saya tidak menawarkan produk apa pun di dalamnya."
+      ],
       "disclaimer": "Sesi ini murni edukasi. Saya tidak menawarkan produk apa pun di dalamnya."
     }
   ]
