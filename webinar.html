@@ -177,20 +177,6 @@
                         placeholder="Tulis nama perusahaannya">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1.5">Sudah punya polis asuransi kesehatan?</label>
-                    <div class="flex gap-4">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="has_policy" value="Sudah" required class="w-4 h-4 accent-black">
-                            <span class="text-sm">Sudah</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="has_policy" value="Belum" class="w-4 h-4 accent-black">
-                            <span class="text-sm">Belum</span>
-                        </label>
-                    </div>
-                </div>
-
                 <button type="submit" id="submit-btn"
                     class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
                     Daftar Sekarang
@@ -393,7 +379,6 @@
                 zoom_meeting_id: (ACTIVE && ACTIVE.zoom_meeting_id) || '',
                 is_agent:   form.is_agent.value,
                 agent_company: company,
-                has_policy: form.has_policy.value,
                 custom_questions: customQuestions,
             };
 
