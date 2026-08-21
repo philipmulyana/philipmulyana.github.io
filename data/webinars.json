@@ -1,0 +1,34 @@
+{
+  "_note": "Daftar KURASI. Hanya webinar yang Philip perintahkan naik yang ada di sini. JANGAN pernah menarik daftar meeting langsung dari Zoom — daftar itu memuat nama klien asli.",
+  "webinars": [
+    {
+      "id": "repricing-2026-08-28",
+      "status": "upcoming",
+      "title": "Sebelum Kamu Pindah Asuransi Karena Preminya Naik",
+      "subtitle": "Kenapa repricing terjadi, dan tiga pilihan yang kamu punya",
+      "date_label": "Jumat, 28 Agustus 2026",
+      "time_label": "20:00 WIB",
+      "duration_label": "90 menit — 60 menit materi, sisanya tanya jawab",
+      "price_label": "GRATIS",
+      "zoom_meeting_id": "81380340184",
+      "registration_url": "https://us02web.zoom.us/meeting/register/e1omXw3jRo2m6x-jvma2VQ",
+      "_zoom_custom_questions_note": "Pertanyaan kustom yang WAJIB diisi di form Zoom webinar ini. Judul harus sama persis, dan nilainya harus sama persis dengan pilihan di Zoom (pertanyaan tipe Yes/No menjawab 'Yes'/'No' meskipun judulnya Bahasa Indonesia). Kalau salah, Zoom menolak seluruh pendaftaran.",
+      "zoom_custom_questions": [
+        {
+          "title": "Apakah kamu agen asuransi?",
+          "from_field": "is_agent",
+          "map": { "Ya": "Yes", "Bukan": "No" }
+        }
+      ],
+      "intro": "Premi asuransi kesehatan naik, suratnya datang, penjelasannya minim. Sesi ini membedah apa yang sebenarnya terjadi di balik angka itu — dan apa saja yang bisa kamu lakukan setelahnya.",
+      "points": [
+        "Kenapa premi naik: bagaimana harganya dibentuk, dan kenapa usia mengubahnya",
+        "Tiga hal yang sering dipercaya soal kenaikan premi — dan kenapa ketiganya keliru",
+        "Aturan OJK yang berlaku sejak Maret 2026: berapa kali premi boleh dinaikkan setahun, dan apa yang wajib tercantum di surat yang kamu terima",
+        "Tiga pilihan yang kamu punya kalau preminya naik, beserta konsekuensi masing-masing"
+      ],
+      "prepare": "Kalau kamu pernah menerima surat penyesuaian premi — dari perusahaan mana pun — siapkan sebelum sesi dimulai. Ada satu bagian di mana kita membacanya bersama.",
+      "disclaimer": "Sesi ini murni edukasi. Saya tidak menawarkan produk apa pun di dalamnya."
+    }
+  ]
+}

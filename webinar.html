@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webinar Registration — Philip Mulyana</title>
+    <title>Webinar — Philip Mulyana</title>
+    <meta name="description" content="Webinar edukasi personal finance dan asuransi bersama Philip Mulyana.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,52 +31,93 @@
 </head>
 <body class="bg-white text-black font-sans antialiased">
 
-    <!-- Hero -->
-    <section class="pt-32 pb-12 px-6">
-        <div class="max-w-3xl mx-auto text-center">
-            <span class="text-xs text-gray-400 uppercase tracking-wider">Waiting List</span>
-            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Asuransi 101</h1>
-            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Sabtu, 9 Mei 2026 — 10:00 WIB</p>
-            <p class="text-gray-500 mt-1 max-w-xl mx-auto">Hanya 10 orang terpilih, supaya diskusi bisa lebih dalam. Daftar di waiting list — kami akan review & konfirmasi langsung.</p>
-            <div class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-4">GRATIS</div>
+    <!-- ================= LOADING ================= -->
+    <div id="loading" class="pt-40 pb-20 text-center">
+        <p class="text-gray-400 text-sm">Memuat…</p>
+    </div>
+
+    <!-- ================= NO UPCOMING WEBINAR ================= -->
+    <section id="empty-state" class="hidden pt-32 pb-20 px-6">
+        <div class="max-w-2xl mx-auto text-center">
+            <span class="text-xs text-gray-400 uppercase tracking-wider">Webinar</span>
+            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tight mt-2">Belum Ada Jadwal Terdekat</h1>
+            <p class="text-gray-500 mt-4">Saat ini belum ada webinar yang dijadwalkan. Ikuti Instagram saya di
+                <a href="https://instagram.com/philipmulyana" class="underline font-medium">@philipmulyana</a>
+                untuk tahu lebih dulu waktu jadwal berikutnya dibuka.</p>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section id="testimonials-section" class="hidden pb-16 fade-up">
+    <!-- ================= HERO ================= -->
+    <section id="hero" class="hidden pt-32 pb-10 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs text-gray-400 uppercase tracking-wider">Webinar</span>
+            <h1 id="w-title" class="text-3xl md:text-5xl font-black uppercase tracking-tight mt-2 leading-tight"></h1>
+            <p id="w-subtitle" class="text-gray-600 mt-3 text-base md:text-lg max-w-2xl mx-auto"></p>
+
+            <div class="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 mt-6 text-sm text-gray-500">
+                <span id="w-date" class="font-medium text-black"></span>
+                <span class="text-gray-300">•</span>
+                <span id="w-time" class="font-medium text-black"></span>
+                <span class="text-gray-300">•</span>
+                <span id="w-duration"></span>
+            </div>
+
+            <div id="w-price" class="inline-block bg-black text-white text-sm font-medium px-5 py-2 rounded-full mt-5"></div>
+        </div>
+    </section>
+
+    <!-- ================= WHAT YOU GET ================= -->
+    <section id="content-block" class="hidden px-6 pb-12 fade-up">
+        <div class="max-w-2xl mx-auto">
+            <p id="w-intro" class="text-gray-600 leading-relaxed text-center mb-8"></p>
+            <div class="border border-gray-200 rounded-2xl p-6 md:p-8">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-5">Yang dibahas</h2>
+                <ul id="w-points" class="space-y-4"></ul>
+            </div>
+            <div id="w-prepare-box" class="hidden mt-5 bg-gray-50 border border-gray-200 rounded-2xl p-6">
+                <h3 class="text-sm font-bold mb-2">Yang perlu kamu siapkan</h3>
+                <p id="w-prepare" class="text-sm text-gray-600 leading-relaxed"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section id="testimonials-section" class="hidden pb-14 fade-up">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-10 px-6">
                 <span class="text-xs text-gray-400 uppercase tracking-wider">Cerita peserta sebelumnya</span>
                 <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight mt-2">Yang mereka rasakan</h2>
             </div>
-            <!-- Mobile: horizontal snap-scroll. Desktop (md+): grid. -->
             <div id="testimonials-grid"
                  class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory px-6 pb-4 md:pb-0 scroll-smooth">
             </div>
         </div>
     </section>
 
-    <!-- Registration Form -->
-    <section class="px-6 pb-20 fade-up">
+    <!-- ================= REGISTRATION ================= -->
+    <section id="form-section" class="hidden px-6 pb-20 fade-up">
         <div class="max-w-xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Daftar</h2>
+                <p class="text-gray-500 text-sm mt-2">Link Zoom dikirim ke email kamu setelah pendaftaran.</p>
+            </div>
+
             <form id="webinar-form" class="space-y-5">
-                <!-- Name -->
                 <div>
                     <label for="name" class="block text-sm font-medium mb-1.5">Nama Lengkap</label>
                     <input type="text" id="name" name="name" required
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
-                        placeholder="Nama lengkap Anda">
+                        placeholder="Nama lengkap kamu">
                 </div>
 
-                <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium mb-1.5">Email</label>
                     <input type="email" id="email" name="email" required
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm"
                         placeholder="email@example.com">
+                    <p class="text-xs text-gray-400 mt-1.5">Link Zoom dikirim ke alamat ini, jadi pastikan benar.</p>
                 </div>
 
-                <!-- WhatsApp -->
                 <div>
                     <label for="whatsapp" class="block text-sm font-medium mb-1.5">Nomor WhatsApp</label>
                     <input type="tel" id="whatsapp" name="whatsapp" required
@@ -83,12 +125,12 @@
                         placeholder="08xxxxxxxxxx">
                 </div>
 
-                <!-- Webinar (hidden, hardcoded) -->
-                <input type="hidden" name="webinar" value="Asuransi 101 — 9 Mei 2026, 10:00 WIB">
+                <input type="hidden" name="webinar" id="w-hidden-topic" value="">
+                <input type="hidden" name="webinar_id" id="w-hidden-id" value="">
 
-                <!-- Agent or Not -->
+                <!-- Agent filter -->
                 <div>
-                    <label class="block text-sm font-medium mb-1.5">Apakah Anda seorang agen asuransi?</label>
+                    <label class="block text-sm font-medium mb-1.5">Kamu seorang agen asuransi?</label>
                     <div class="flex gap-4">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="is_agent" value="Ya" required class="w-4 h-4 accent-black">
@@ -101,39 +143,64 @@
                     </div>
                 </div>
 
-                <!-- Monthly Income -->
+                <!-- Agent company — muncul hanya kalau "Ya" -->
+                <div id="agent-company-wrap" class="hidden">
+                    <label for="agent_company" class="block text-sm font-medium mb-1.5">Kamu agen dari perusahaan mana?</label>
+                    <select id="agent_company" name="agent_company"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
+                        <option value="" disabled selected>Pilih perusahaan</option>
+                        <option value="AIA">AIA</option>
+                        <option value="Allianz">Allianz</option>
+                        <option value="AXA Financial">AXA Financial</option>
+                        <option value="AXA Mandiri">AXA Mandiri</option>
+                        <option value="BNI Life">BNI Life</option>
+                        <option value="BRI Life">BRI Life</option>
+                        <option value="Cigna">Cigna</option>
+                        <option value="FWD">FWD</option>
+                        <option value="Generali">Generali</option>
+                        <option value="Manulife">Manulife</option>
+                        <option value="Prudential">Prudential</option>
+                        <option value="Prudential Syariah">Prudential Syariah</option>
+                        <option value="Sequis">Sequis</option>
+                        <option value="Sinarmas MSIG">Sinarmas MSIG</option>
+                        <option value="Sun Life">Sun Life</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                    <input type="text" id="agent_company_other" name="agent_company_other"
+                        class="hidden w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm mt-2.5"
+                        placeholder="Tulis nama perusahaannya">
+                </div>
+
                 <div>
                     <label for="income" class="block text-sm font-medium mb-1.5">Penghasilan per Bulan</label>
                     <select id="income" name="income" required
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
-                        <option value="" disabled selected>Pilih range penghasilan</option>
-                        <option value="< 5 Juta">< 5 Juta</option>
+                        <option value="" disabled selected>Pilih rentang penghasilan</option>
+                        <option value="&lt; 5 Juta">&lt; 5 Juta</option>
                         <option value="5 - 10 Juta">5 - 10 Juta</option>
                         <option value="10 - 20 Juta">10 - 20 Juta</option>
                         <option value="20 - 50 Juta">20 - 50 Juta</option>
                         <option value="50 - 100 Juta">50 - 100 Juta</option>
-                        <option value="> 100 Juta">> 100 Juta</option>
+                        <option value="&gt; 100 Juta">&gt; 100 Juta</option>
                     </select>
                 </div>
 
-                <!-- Age -->
                 <div>
                     <label for="age" class="block text-sm font-medium mb-1.5">Usia</label>
                     <select id="age" name="age" required
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-colors text-sm bg-white">
-                        <option value="" disabled selected>Pilih range usia</option>
-                        <option value="< 25 tahun">< 25 tahun</option>
+                        <option value="" disabled selected>Pilih rentang usia</option>
+                        <option value="&lt; 25 tahun">&lt; 25 tahun</option>
                         <option value="25 - 30 tahun">25 - 30 tahun</option>
                         <option value="31 - 35 tahun">31 - 35 tahun</option>
                         <option value="36 - 40 tahun">36 - 40 tahun</option>
                         <option value="41 - 50 tahun">41 - 50 tahun</option>
-                        <option value="> 50 tahun">> 50 tahun</option>
+                        <option value="&gt; 50 tahun">&gt; 50 tahun</option>
                     </select>
                 </div>
 
-                <!-- Has Insurance Policy -->
                 <div>
-                    <label class="block text-sm font-medium mb-1.5">Sudah punya polis asuransi?</label>
+                    <label class="block text-sm font-medium mb-1.5">Sudah punya polis asuransi kesehatan?</label>
                     <div class="flex gap-4">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="has_policy" value="Sudah" required class="w-4 h-4 accent-black">
@@ -146,108 +213,253 @@
                     </div>
                 </div>
 
-                <!-- Submit -->
                 <button type="submit" id="submit-btn"
                     class="w-full bg-black text-white py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-4">
-                    Daftar Waiting List
+                    Daftar Sekarang
                 </button>
+
+                <p id="w-disclaimer" class="text-xs text-gray-400 text-center leading-relaxed pt-1"></p>
             </form>
 
-            <!-- Success Message (hidden by default) -->
-            <div id="success-msg" class="hidden text-center py-12">
-                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+            <!-- Success -->
+            <div id="success-msg" class="hidden text-center py-10">
+                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-5">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
-                <h2 class="text-2xl font-black mb-2">Anda Masuk Waiting List</h2>
-                <p class="text-gray-500 text-sm">Terima kasih sudah mendaftar. Karena kuota terbatas (10 orang), kami akan review pendaftaran Anda dan kirim konfirmasi via email & WhatsApp dalam 1–2 hari.</p>
+                <h2 class="text-2xl font-black mb-3">Kamu Sudah Terdaftar</h2>
+                <p class="text-gray-500 text-sm leading-relaxed">Link Zoom sudah dikirim ke email kamu. Kalau tidak ada di kotak masuk, cek folder promosi atau spam.</p>
+
+                <div id="join-box" class="hidden mt-6">
+                    <p class="text-xs text-gray-400 mb-2">Atau simpan link ini sekarang:</p>
+                    <a id="join-link" href="#" target="_blank" rel="noopener"
+                       class="inline-block bg-black text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-gray-800 transition-colors break-all">
+                        Buka link Zoom saya
+                    </a>
+                </div>
+
+                <div id="prepare-reminder" class="hidden mt-8 bg-gray-50 border border-gray-200 rounded-2xl p-5 text-left">
+                    <h3 class="text-sm font-bold mb-1.5">Sebelum hari-H</h3>
+                    <p id="prepare-reminder-text" class="text-sm text-gray-600 leading-relaxed"></p>
+                </div>
             </div>
 
-            <!-- Error Message (hidden by default) -->
+            <!-- Error -->
             <div id="error-msg" class="hidden text-center py-4">
-                <p class="text-red-500 text-sm">Terjadi kesalahan. Silakan coba lagi.</p>
+                <p id="error-text" class="text-red-500 text-sm">Terjadi kesalahan. Silakan coba lagi.</p>
             </div>
         </div>
     </section>
 
+    <!-- ================= ARCHIVE ================= -->
+    <section id="archive-section" class="hidden px-6 pb-20 fade-up">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-5">Webinar sebelumnya</h2>
+            <div id="archive-list" class="space-y-3"></div>
+        </div>
+    </section>
+
     <script>
-        // Webinar registration form handler
-        const AIRTABLE_ENDPOINT = 'https://philip-mulyana--ai-website-builder-webinar-register.modal.run';
+        const REGISTER_ENDPOINT   = 'https://philip-mulyana--ai-website-builder-webinar-register.modal.run';
         const TESTIMONIALS_ENDPOINT = 'https://philip-mulyana--ai-website-builder-testimonials.modal.run';
-        const WEBINAR_TOPIC = 'Asuransi 101';
 
-        document.getElementById('webinar-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        let ACTIVE = null;
 
-            const btn = document.getElementById('submit-btn');
-            const form = this;
-            const errorMsg = document.getElementById('error-msg');
-            errorMsg.classList.add('hidden');
-
-            // Disable button
-            btn.disabled = true;
-            btn.textContent = 'Mendaftarkan...';
-
-            const data = {
-                name: form.name.value.trim(),
-                email: form.email.value.trim(),
-                whatsapp: form.whatsapp.value.trim(),
-                webinar: form.webinar.value,
-                is_agent: form.is_agent.value,
-                income: form.income.value,
-                age: form.age.value,
-                has_policy: form.has_policy.value,
-            };
-
-            try {
-                const resp = await fetch(AIRTABLE_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                });
-
-                if (!resp.ok) throw new Error('Server error');
-
-                const result = await resp.json();
-
-                // Track with Meta Pixel
-                fbq('track', 'CompleteRegistration', {
-                    content_name: 'Webinar Registration',
-                    status: true,
-                });
-
-                // Show success for everyone (agent status saved to DB but no filtering)
-                form.classList.add('hidden');
-                document.getElementById('success-msg').classList.remove('hidden');
-            } catch (err) {
-                errorMsg.classList.remove('hidden');
-                btn.disabled = false;
-                btn.textContent = 'Daftar Waiting List';
-            }
-        });
-
-        // Fade-up animation
-        document.querySelectorAll('.fade-up').forEach(el => {
-            const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('animate-in'); obs.unobserve(el); } }, { threshold: 0.1 });
-            obs.observe(el);
-        });
-
-        // Load testimonials
         function escapeHtml(s) {
             return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
+
+        // ---------- Render halaman dari data/webinars.json ----------
+        (async function init() {
+            let data = { webinars: [] };
+            try {
+                const resp = await fetch('data/webinars.json?v=' + Date.now());
+                if (resp.ok) data = await resp.json();
+            } catch (e) { /* jatuh ke empty state */ }
+
+            const all      = data.webinars || [];
+            const upcoming = all.filter(w => w.status === 'upcoming');
+            const past     = all.filter(w => w.status === 'past');
+
+            document.getElementById('loading').classList.add('hidden');
+
+            if (!upcoming.length) {
+                document.getElementById('empty-state').classList.remove('hidden');
+            } else {
+                ACTIVE = upcoming[0];
+                renderActive(ACTIVE);
+                loadTestimonials(ACTIVE.title);
+            }
+
+            if (past.length) renderArchive(past);
+            wireFadeUp();
+        })();
+
+        function renderActive(w) {
+            document.title = w.title + ' — Philip Mulyana';
+            document.getElementById('w-title').textContent    = w.title;
+            document.getElementById('w-subtitle').textContent = w.subtitle || '';
+            document.getElementById('w-date').textContent     = w.date_label || '';
+            document.getElementById('w-time').textContent     = w.time_label || '';
+            document.getElementById('w-duration').textContent = w.duration_label || '';
+            document.getElementById('w-price').textContent    = w.price_label || 'GRATIS';
+            document.getElementById('w-intro').textContent    = w.intro || '';
+
+            document.getElementById('w-points').innerHTML = (w.points || []).map(p => `
+                <li class="flex gap-3">
+                    <span class="mt-2 w-1.5 h-1.5 rounded-full bg-black flex-shrink-0"></span>
+                    <span class="text-sm text-gray-700 leading-relaxed">${escapeHtml(p)}</span>
+                </li>`).join('');
+
+            if (w.prepare) {
+                document.getElementById('w-prepare').textContent = w.prepare;
+                document.getElementById('w-prepare-box').classList.remove('hidden');
+                document.getElementById('prepare-reminder-text').textContent = w.prepare;
+                document.getElementById('prepare-reminder').classList.remove('hidden');
+            }
+            document.getElementById('w-disclaimer').textContent = w.disclaimer || '';
+
+            document.getElementById('w-hidden-topic').value = `${w.title} — ${w.date_label}, ${w.time_label}`;
+            document.getElementById('w-hidden-id').value    = w.id || '';
+
+            ['hero', 'content-block', 'form-section'].forEach(id =>
+                document.getElementById(id).classList.remove('hidden'));
+        }
+
+        function renderArchive(past) {
+            document.getElementById('archive-list').innerHTML = past.map(w => `
+                <div class="border border-gray-200 rounded-xl p-4">
+                    <p class="text-sm font-medium">${escapeHtml(w.title)}</p>
+                    <p class="text-xs text-gray-400 mt-1">${escapeHtml(w.date_label || '')}</p>
+                </div>`).join('');
+            document.getElementById('archive-section').classList.remove('hidden');
+        }
+
+        // ---------- Field perusahaan agen: muncul kondisional ----------
+        document.querySelectorAll('input[name="is_agent"]').forEach(r => {
+            r.addEventListener('change', function () {
+                const wrap = document.getElementById('agent-company-wrap');
+                const sel  = document.getElementById('agent_company');
+                if (this.value === 'Ya') {
+                    wrap.classList.remove('hidden');
+                    sel.setAttribute('required', 'required');
+                } else {
+                    wrap.classList.add('hidden');
+                    sel.removeAttribute('required');
+                    sel.value = '';
+                    const other = document.getElementById('agent_company_other');
+                    other.classList.add('hidden');
+                    other.value = '';
+                    other.removeAttribute('required');
+                }
+            });
+        });
+
+        document.getElementById('agent_company').addEventListener('change', function () {
+            const other = document.getElementById('agent_company_other');
+            if (this.value === 'Lainnya') {
+                other.classList.remove('hidden');
+                other.setAttribute('required', 'required');
+                other.focus();
+            } else {
+                other.classList.add('hidden');
+                other.value = '';
+                other.removeAttribute('required');
+            }
+        });
+
+        // ---------- Submit ----------
+        document.getElementById('webinar-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn      = document.getElementById('submit-btn');
+            const form     = this;
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Mendaftarkan…';
+
+            let company = '';
+            if (form.is_agent.value === 'Ya') {
+                company = form.agent_company.value === 'Lainnya'
+                    ? (form.agent_company_other.value || '').trim()
+                    : form.agent_company.value;
+            }
+
+            // Pertanyaan kustom Zoom — dikonfigurasi per webinar di data/webinars.json.
+            // Zoom menolak seluruh pendaftaran kalau pertanyaan wajibnya tidak terisi,
+            // dan nilainya harus sama persis dengan pilihan yang di-set di Zoom.
+            const customQuestions = ((ACTIVE && ACTIVE.zoom_custom_questions) || [])
+                .map(q => {
+                    const raw = (form[q.from_field] && form[q.from_field].value) || '';
+                    const val = (q.map && q.map[raw] !== undefined) ? q.map[raw] : raw;
+                    return val ? { title: q.title, value: val } : null;
+                })
+                .filter(Boolean);
+
+            const payload = {
+                name:       form.name.value.trim(),
+                email:      form.email.value.trim(),
+                whatsapp:   form.whatsapp.value.trim(),
+                webinar:    form.webinar.value,
+                webinar_id: form.webinar_id.value,
+                zoom_meeting_id: (ACTIVE && ACTIVE.zoom_meeting_id) || '',
+                is_agent:   form.is_agent.value,
+                agent_company: company,
+                income:     form.income.value,
+                age:        form.age.value,
+                has_policy: form.has_policy.value,
+                custom_questions: customQuestions,
+            };
+
+            try {
+                const resp = await fetch(REGISTER_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const result = await resp.json().catch(() => ({}));
+                if (!resp.ok || result.ok === false) throw new Error(result.error || 'Server error');
+
+                try {
+                    fbq('track', 'CompleteRegistration', { content_name: payload.webinar, status: true });
+                } catch (_) {}
+
+                if (result.join_url) {
+                    const a = document.getElementById('join-link');
+                    a.href = result.join_url;
+                    document.getElementById('join-box').classList.remove('hidden');
+                }
+
+                form.classList.add('hidden');
+                document.getElementById('success-msg').classList.remove('hidden');
+                document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (err) {
+                document.getElementById('error-text').textContent =
+                    'Pendaftaran gagal terkirim. Coba lagi sebentar, atau hubungi saya lewat WhatsApp kalau tetap gagal.';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Daftar Sekarang';
+            }
+        });
+
+        // ---------- Animasi ----------
+        function wireFadeUp() {
+            document.querySelectorAll('.fade-up').forEach(el => {
+                const obs = new IntersectionObserver(([e]) => {
+                    if (e.isIntersecting) { el.classList.add('animate-in'); obs.unobserve(el); }
+                }, { threshold: 0.1 });
+                obs.observe(el);
+            });
+        }
+
+        // ---------- Testimoni ----------
         function renderStars(n) {
             n = Math.max(0, Math.min(5, parseInt(n) || 0));
             return '★'.repeat(n) + '<span class="text-gray-200">' + '★'.repeat(5 - n) + '</span>';
         }
         function truncBlock(text, limit, classes) {
-            // Returns HTML: short visible part + hidden full + Selengkapnya toggle.
-            // If text fits the limit, returns plain block.
             text = text || '';
             const safe = escapeHtml(text);
-            if (text.length <= limit) {
-                return `<p class="${classes}">${safe}</p>`;
-            }
-            // Find a clean break near the limit (last space before limit)
+            if (text.length <= limit) return `<p class="${classes}">${safe}</p>`;
             let cut = text.lastIndexOf(' ', limit);
             if (cut < limit - 40) cut = limit;
             const shortSafe = escapeHtml(text.slice(0, cut).trim());
@@ -259,13 +471,11 @@
                     <span class="trunc-full hidden">${safe}
                         <button type="button" class="trunc-toggle text-black underline text-xs ml-1">Sembunyikan</button>
                     </span>
-                </div>
-            `;
+                </div>`;
         }
-        (async function loadTestimonials() {
+        async function loadTestimonials(topic) {
             try {
-                const url = `${TESTIMONIALS_ENDPOINT}?webinar=${encodeURIComponent(WEBINAR_TOPIC)}`;
-                const resp = await fetch(url);
+                const resp = await fetch(`${TESTIMONIALS_ENDPOINT}?webinar=${encodeURIComponent(topic)}`);
                 if (!resp.ok) return;
                 const data = await resp.json();
                 const items = data.testimonials || [];
@@ -277,10 +487,7 @@
                         ${truncBlock('"' + (t.quote || '') + '"', 220, 'text-sm text-gray-700 leading-relaxed flex-grow')}
                         ${t.insight ? `<div class="mt-3">${truncBlock('Insight: ' + t.insight, 150, 'text-xs text-gray-500 italic')}</div>` : ''}
                         <p class="text-sm font-medium mt-4">— ${escapeHtml(t.name)}</p>
-                    </div>
-                `).join('');
-
-                // Wire up expand/collapse toggles
+                    </div>`).join('');
                 grid.addEventListener('click', e => {
                     if (!e.target.classList.contains('trunc-toggle')) return;
                     const block = e.target.closest('.trunc-block');
@@ -288,12 +495,9 @@
                     block.querySelector('.trunc-short').classList.toggle('hidden');
                     block.querySelector('.trunc-full').classList.toggle('hidden');
                 });
-
                 document.getElementById('testimonials-section').classList.remove('hidden');
-            } catch (err) {
-                // Fail silently — testimonials are optional social proof
-            }
-        })();
+            } catch (err) { /* testimoni opsional */ }
+        }
     </script>
 </body>
 </html>
