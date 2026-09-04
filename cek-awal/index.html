@@ -283,61 +283,31 @@
             color: var(--fg-body);
         }
 
-        .cal-frame {
-            position: relative;
-            width: 100%;
-            margin-top: 1.5rem;
-            min-height: 680px;
-            border: 1px solid var(--line);
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-
-        .cal-status {
-            position: absolute;
-            inset: 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            text-align: center;
-            font-size: .875rem;
-            font-weight: 400;
-            color: var(--fg-muted);
-        }
-
-        .cal-frame .calendly-inline-widget {
-            position: absolute;
-            inset: 0;
-            min-width: 100%;
-            height: 100%;
-        }
-
-        .cal-frame.is-failed { min-height: 0; }
-
-        .cal-frame.is-failed .cal-status {
-            position: static;
-            display: block;
-            padding: 1.5rem;
-            text-align: left;
-            font-size: .875rem;
-            line-height: 1.65;
-            color: var(--fg-body);
-        }
-
-        .cal-frame.is-failed .calendly-inline-widget { display: none; }
-
-        .cal-direct {
+        .cal-cta {
             display: inline-flex;
             align-items: center;
-            padding: .625rem 0;
-            font-size: .875rem;
-            font-weight: 500;
-            color: var(--fg);
-            text-decoration: underline;
-            text-underline-offset: 2px;
+            justify-content: center;
+            margin-top: 1.5rem;
+            min-height: 52px;
+            padding: .875rem 1.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.4;
+            font-weight: 700;
+            color: var(--bg);
+            background: var(--fg);
+            border: 1px solid var(--fg);
+            border-radius: .75rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 150ms;
         }
+
+        @media (hover: hover) and (pointer: fine) {
+            .cal-cta:hover { opacity: .85; }
+        }
+
+        .cal-cta:active { opacity: .85; }
 
         .cal-privacy {
             margin: 1rem 0 0;
@@ -378,7 +348,6 @@
             .q-text { font-size: 1.0625rem; }
             .result-heading { font-size: 1.5rem; }
             .opt { min-height: 48px; padding: .75rem 1rem; }
-            .cal-frame { min-height: 720px; }
         }
 
         @media (max-height: 480px) {
@@ -402,6 +371,7 @@
                 outline-offset: -3px;
             }
             .fill { background: Highlight; forced-color-adjust: none; }
+            .cal-cta { border-color: ButtonBorder; }
         }
     </style>
     <script>
@@ -569,15 +539,12 @@
                         "Perubahan keluarga",
                         "Tanggungan bertambah",
                         "Keuangan berubah",
-                        "Mau review proteksi",
-                        "Konten ini relevan",
-                        "Mau paham dulu",
-                        "Belum mau menjawab"
+                        "Mau review proteksi"
                     ]
                 },
                 {
                     id: "q2",
-                    text: "Kalau kontribusi finansial kamu berhenti, bagian mana yang paling mungkin terdampak?",
+                    text: "Kalau income kamu berhenti, bagian mana yang paling mungkin terdampak?",
                     options: [
                         "Pasangan / anak",
                         "Orang tua / lainnya",
@@ -603,9 +570,7 @@
                     text: "Saat ini kamu ada di tahap mana?",
                     options: [
                         "Mau memahami dulu",
-                        "Cek dalam 1–3 bulan",
                         "Mau cek sekarang",
-                        "Informasi saja",
                         "Belum tahu"
                     ]
                 },
@@ -621,11 +586,9 @@
         },
         open_route: {
             heading: "Oke, kita atur waktunya",
-            body: "Pilih satu slot 10 menit yang paling pas buat kamu di kalender bawah ini. Obrolannya santai: kita bahas apa yang tadi kamu jawab, dari sisi kamu dulu. Gratis, tanpa presentasi produk.",
+            body: "Obrolannya santai: kita bahas apa yang tadi kamu jawab, dari sisi kamu dulu. Gratis, tanpa presentasi produk.",
             calendly_privacy_line: "Nama, email, dan nomor WhatsApp kamu diisi di kalender Calendly saat konfirmasi jadwal, bukan di form lima pertanyaan tadi. Data itu dipakai untuk mengatur dan mengingatkan jadwal serta menindaklanjuti konsultasi yang kamu setujui, sesuai Kebijakan Privasi dan ketentuan Calendly sebagai penyedia layanan. Memesan jadwal bukan berarti kamu berkewajiban membeli apa pun.",
-            loading: "Memuat kalender…",
-            load_failure: "Kalendernya belum berhasil tampil di sini. Coba muat ulang halaman, atau buka kalendernya langsung lewat tautan di bawah. Form lima pertanyaan tadi tetap tidak meminta data kontak kamu.",
-            direct_link_label: "Buka kalender di tab baru"
+            cta_label: "Pilih jadwal 10 menit"
         },
         closed_route: {
             heading: "Oke, tidak masalah",
@@ -644,14 +607,11 @@
     var TOTAL = 5;
     var DWELL_MS = 180;
     var FADE_OUT_MS = 120;
-    var CAL_TIMEOUT_MS = 8000;
 
-    // Approved Calendly event URL. Used verbatim for both the inline widget
-    // and the failure-state direct link. Injected at route time only.
-    var CAL_URL = 'https://calendly.com/philipmulyana/first-call?hide_event_type_details=1&hide_gdpr_banner=1';
-    var CAL_CSS = 'https://assets.calendly.com/assets/external/widget.css';
-    var CAL_JS = 'https://assets.calendly.com/assets/external/widget.js';
-    var CAL_ORIGIN = 'https://calendly.com';
+    // Approved dedicated Calendly event URL for /cek-awal/. Used verbatim as
+    // the CTA href on the open route only. Nothing is appended to it: no
+    // parent query, UTM, click id, answer, identity, or session value.
+    var CAL_URL = 'https://calendly.com/philipmulyana/first-call-cek-awal';
 
     var OPEN_LABEL = COPY.form.questions[4].options[0];   // "Ya, saya open"
 
@@ -668,7 +628,7 @@
 
     var ALLOWED_EVENTS = [
         'CekAwalView', 'CekAwalStart', 'CekAwalComplete',
-        'CalendlyView', 'CalendlyBookingConfirmed'
+        'CalendlyClick'
     ];
 
     // Values come from the parser-time bootstrap in <head>, which already
@@ -710,8 +670,8 @@
             event: eventName,
             lead_id: LEAD_ID,
             first_touch: FIRST_TOUCH,
-            page_version: 'cek-awal-v1',
-            form_version: 'copy-v3'
+            page_version: 'cek-awal-v1.3',
+            form_version: 'cek-awal-lean-v1.3'
         };
         for (var key in ATTRIBUTION) {
             if (Object.prototype.hasOwnProperty.call(ATTRIBUTION, key)) {
@@ -755,8 +715,7 @@
     var contextRemoved = false;
     var firedStart = false;
     var firedComplete = false;
-    var firedCalendlyView = false;
-    var firedBooking = false;
+    var firedCalendlyClick = false;
 
     /* ---- Helpers ---- */
 
@@ -1107,22 +1066,13 @@
         body.className = 'result-body';
         body.textContent = COPY.open_route.body;
 
-        var frame = document.createElement('div');
-        frame.className = 'cal-frame';
-
-        var status = document.createElement('p');
-        status.className = 'cal-status';
-        status.setAttribute('role', 'status');
-        status.textContent = COPY.open_route.loading;
-
-        var widget = document.createElement('div');
-        widget.className = 'calendly-inline-widget';
-        widget.setAttribute('data-url', CAL_URL);
-        widget.style.minWidth = '100%';
-        widget.style.height = '100%';
-
-        frame.appendChild(status);
-        frame.appendChild(widget);
+        // Plain same-tab anchor. No target=_blank, no widget, no iframe, and
+        // no Calendly asset is ever loaded into this page.
+        var cta = document.createElement('a');
+        cta.className = 'cal-cta';
+        cta.setAttribute('href', CAL_URL);
+        cta.textContent = COPY.open_route.cta_label;
+        cta.addEventListener('click', onCalendlyClick);
 
         var privacyLine = document.createElement('p');
         privacyLine.className = 'cal-privacy';
@@ -1130,109 +1080,26 @@
 
         elQblock.appendChild(h2);
         elQblock.appendChild(body);
-        elQblock.appendChild(frame);
+        elQblock.appendChild(cta);
         elQblock.appendChild(privacyLine);
 
         elLive.textContent = '';
         focusHeading(h2);
         scrollMainIntoView();
-
-        // Assets are injected only after the open route DOM exists, and only
-        // on this route. Nothing Calendly-origin is referenced before here.
-        loadCalendly(frame, status, widget);
     }
 
-    /* ---- Calendly (open route only) ---- */
+    /* ---- Calendly CTA (open route only) ---- */
 
-    function loadCalendly(frame, status, widget) {
-        var settled = false;
-        var observer = null;
-        var timer = null;
-
-        function stopWatching() {
-            if (observer) { observer.disconnect(); observer = null; }
-            if (timer) { window.clearTimeout(timer); timer = null; }
-        }
-
-        function succeed() {
-            if (settled) return;
-            settled = true;
-            stopWatching();
-            if (status.parentNode) status.parentNode.removeChild(status);
-        }
-
-        function fail() {
-            if (settled) return;
-            settled = true;
-            stopWatching();
-            frame.classList.add('is-failed');
-            clear(status);
-            status.appendChild(document.createTextNode(COPY.open_route.load_failure));
-            var a = document.createElement('a');
-            a.className = 'cal-direct';
-            a.setAttribute('href', CAL_URL);
-            a.setAttribute('target', '_blank');
-            a.setAttribute('rel', 'noopener noreferrer');
-            a.textContent = COPY.open_route.direct_link_label;
-            status.appendChild(document.createElement('br'));
-            status.appendChild(a);
-        }
-
-        function checkIframe() {
-            var iframe = widget.querySelector('iframe');
-            if (!iframe) return false;
-            if (iframe.getAttribute('title') === null) {
-                iframe.setAttribute('title', COPY.open_route.heading);
-            }
-            if (iframe.complete === false) { /* no-op */ }
-            iframe.addEventListener('load', succeed);
-            if (iframe.offsetHeight > 0) succeed();
-            return true;
-        }
-
-        if (window.MutationObserver) {
-            observer = new MutationObserver(function () { checkIframe(); });
-            observer.observe(widget, { childList: true, subtree: true });
-        }
-
-        timer = window.setTimeout(function () {
-            var iframe = widget.querySelector('iframe');
-            if (!iframe || iframe.offsetHeight === 0) {
-                fail();
-            } else {
-                succeed();
-            }
-        }, CAL_TIMEOUT_MS);
-
-        // Booking confirmation: origin must be exactly the Calendly origin and
-        // the event name must match. The payload body is never read or emitted.
-        window.addEventListener('message', function (e) {
-            if (e.origin !== CAL_ORIGIN) return;
-            var data = e.data;
-            if (!data || typeof data !== 'object') return;
-            if (data.event !== 'calendly.event_scheduled') return;
-            if (firedBooking) return;
-            firedBooking = true;
-            track('CalendlyBookingConfirmed');
-        });
-
-        if (!firedCalendlyView) {
-            firedCalendlyView = true;
-            track('CalendlyView');
-        }
-
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = CAL_CSS;
-        document.head.appendChild(link);
-
-        var script = document.createElement('script');
-        script.src = CAL_JS;
-        script.async = true;
-        script.onerror = fail;
-        document.head.appendChild(script);
-
-        checkIframe();
+    // Bound to the CTA anchor only, so every call is a genuine activation of
+    // that control — pointer, Enter, or assistive tech all route through the
+    // anchor's click event. Fires at most once, synchronously, before the
+    // browser performs the same-tab navigation. The default action is never
+    // prevented and the href is never rewritten, so nothing from this page
+    // travels to Calendly in the URL.
+    function onCalendlyClick() {
+        if (firedCalendlyClick) return;
+        firedCalendlyClick = true;
+        track('CalendlyClick');
     }
 
     /* ---- Init ---- */
