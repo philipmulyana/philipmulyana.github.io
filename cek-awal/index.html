@@ -404,7 +404,107 @@
             .fill { background: Highlight; forced-color-adjust: none; }
         }
     </style>
-    <script src="/js/pixel.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        /* --------------------------------------------------------------
+           Parser-time privacy bootstrap. Runs before any third-party
+           script on this page.
+
+           Order is load-bearing:
+             1. read the allowlisted query parameters exactly once,
+             2. mint the ephemeral ids,
+             3. strip the ENTIRE query string from the document URL,
+             4. only then load the Pixel.
+
+           Step 3 is what keeps the raw query string — including any
+           click id — out of the Pixel's `dl` parameter and out of the
+           Referer header of every subsequent subresource request.
+
+           Fail closed: if the URL cannot be made query-free, the Pixel is
+           not loaded at all. The form below stays fully usable.
+           -------------------------------------------------------------- */
+
+        var ATTR_KEYS = [
+            'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+            'campaign_id', 'adset_id', 'ad_id', 'placement'
+        ];
+
+        function sanitizeParam(value) {
+            if (typeof value !== 'string') return '';
+            return value
+                .replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+                .trim()
+                .slice(0, 100);
+        }
+
+        function newLeadId() {
+            try {
+                if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                    return window.crypto.randomUUID();
+                }
+            } catch (e) {}
+            try {
+                if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+                    var b = new Uint8Array(16);
+                    window.crypto.getRandomValues(b);
+                    b[6] = (b[6] & 0x0f) | 0x40;
+                    b[8] = (b[8] & 0x3f) | 0x80;
+                    var h = [];
+                    for (var i = 0; i < 16; i++) h.push((b[i] + 0x100).toString(16).slice(1));
+                    return h.slice(0, 4).join('') + '-' + h.slice(4, 6).join('') + '-' +
+                           h.slice(6, 8).join('') + '-' + h.slice(8, 10).join('') + '-' +
+                           h.slice(10, 16).join('');
+                }
+            } catch (e) {}
+            return '';
+        }
+
+        // The one and only read of window.location.search on this page.
+        // The raw query string, the referrer, and fbclid are never retained.
+        var attribution = {};
+        try {
+            var params = new URLSearchParams(window.location.search);
+            for (var i = 0; i < ATTR_KEYS.length; i++) {
+                var key = ATTR_KEYS[i];
+                if (!params.has(key)) continue;
+                var clean = sanitizeParam(params.get(key));
+                if (clean) attribution[key] = clean;
+            }
+            params = null;
+        } catch (e) {}
+
+        // Short-lived page bootstrap. The form script copies these values
+        // and deletes this global immediately. Nothing is persisted.
+        window.__CEK_AWAL_BOOTSTRAP__ = {
+            attribution: attribution,
+            lead_id: newLeadId(),
+            first_touch: new Date().toISOString()
+        };
+
+        // Strip the complete query string. replaceState adds no history
+        // entry; pathname and hash are preserved verbatim.
+        var queryFree = false;
+        try {
+            if (window.location.search &&
+                window.history &&
+                typeof window.history.replaceState === 'function') {
+                window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+            }
+            queryFree = !window.location.search;
+        } catch (e) {
+            queryFree = false;
+        }
+
+        // Guarded parser-time loader: document.write keeps /js/pixel.js
+        // synchronous and ahead of the form script, so the fbq stub exists
+        // before the first custom event is dispatched.
+        if (queryFree) {
+            document.write('<script src="/js/pixel.js"><\/script>');
+        }
+    })();
+    </script>
 </head>
 <body>
 
@@ -571,51 +671,37 @@
         'CalendlyView', 'CalendlyBookingConfirmed'
     ];
 
-    function sanitizeParam(value) {
-        if (typeof value !== 'string') return '';
-        return value.replace(/[\u0000-\u001F\u007F-\u009F]/g, '').slice(0, 100);
-    }
+    // Values come from the parser-time bootstrap in <head>, which already
+    // sanitized them and stripped the query string from the document URL.
+    // This script never reads window.location.search. The allowlist is
+    // re-applied here so the copy cannot widen, then the global is deleted.
+    var ATTRIBUTION = {};
+    var LEAD_ID = '';
+    var FIRST_TOUCH = '';
 
-    function newLeadId() {
-        try {
-            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
-                return window.crypto.randomUUID();
-            }
-        } catch (e) {}
-        try {
-            if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
-                var b = new Uint8Array(16);
-                window.crypto.getRandomValues(b);
-                b[6] = (b[6] & 0x0f) | 0x40;
-                b[8] = (b[8] & 0x3f) | 0x80;
-                var h = [];
-                for (var i = 0; i < 16; i++) h.push((b[i] + 0x100).toString(16).slice(1));
-                return h.slice(0, 4).join('') + '-' + h.slice(4, 6).join('') + '-' +
-                       h.slice(6, 8).join('') + '-' + h.slice(8, 10).join('') + '-' +
-                       h.slice(10, 16).join('');
-            }
-        } catch (e) {}
-        return '';
-    }
+    (function () {
+        var boot = window.__CEK_AWAL_BOOTSTRAP__;
+        if (!boot || typeof boot !== 'object') return;
 
-    // Read the allowlisted params, then drop the parser. The raw query string,
-    // the referrer, and fbclid are never retained or emitted.
-    var ATTRIBUTION = (function () {
-        var out = {};
-        try {
-            var params = new URLSearchParams(window.location.search);
-            for (var i = 0; i < ATTR_KEYS.length; i++) {
-                var key = ATTR_KEYS[i];
-                if (!params.has(key)) continue;
-                var clean = sanitizeParam(params.get(key));
-                if (clean) out[key] = clean;
-            }
-        } catch (e) {}
-        return out;
+        var src = (boot.attribution && typeof boot.attribution === 'object') ? boot.attribution : {};
+        for (var i = 0; i < ATTR_KEYS.length; i++) {
+            var key = ATTR_KEYS[i];
+            if (!Object.prototype.hasOwnProperty.call(src, key)) continue;
+            var value = src[key];
+            if (typeof value === 'string' && value) ATTRIBUTION[key] = value;
+        }
+
+        if (typeof boot.lead_id === 'string') LEAD_ID = boot.lead_id;
+        if (typeof boot.first_touch === 'string') FIRST_TOUCH = boot.first_touch;
     })();
 
-    var LEAD_ID = newLeadId();
-    var FIRST_TOUCH = new Date().toISOString();
+    // The bootstrap is short-lived: nothing on this page can read it after
+    // this point, and it was never written to cookie or storage.
+    try {
+        delete window.__CEK_AWAL_BOOTSTRAP__;
+    } catch (e) {
+        window.__CEK_AWAL_BOOTSTRAP__ = undefined;
+    }
 
     function track(eventName, extra) {
         if (ALLOWED_EVENTS.indexOf(eventName) === -1) return;
