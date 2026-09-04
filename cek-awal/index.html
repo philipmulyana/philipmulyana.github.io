@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Cek Awal Kebutuhan Asuransi Jiwa | 5 Pertanyaan Singkat</title>
+    <meta name="description" content="Jawab 5 pertanyaan singkat seputar asuransi jiwa. Tanpa penilaian dan tanpa rekomendasi produk. Di akhir, kamu bisa pilih apakah mau lanjut ke call gratis 10 menit.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #ffffff;
+            --fg: #000000;
+            --fg-body: #4b5563;
+            --fg-muted: #6b7280;
+            --line: #e5e7eb;
+            --line-soft: #f3f4f6;
+            --line-control: #6b7280;
+            --line-hover: #4b5563;
+            --surface-soft: #f9fafb;
+            --danger: #b91c1c;
+            --focus: #000000;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: auto; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; }
+
+        :focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ---- Frame ---- */
+
+        .site-header { border-bottom: 1px solid var(--line-soft); }
+
+        .header-inner,
+        .main-inner,
+        .footer-inner {
+            width: min(100% - 3rem, 36rem);
+            margin: 0 auto;
+        }
+
+        .header-inner { padding: 1rem 0; }
+
+        .brand {
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -.025em;
+            color: var(--fg);
+            text-decoration: none;
+        }
+
+        .main-inner { padding: 2.5rem 0 4rem; }
+
+        .site-footer {
+            border-top: 1px solid var(--line-soft);
+            padding: 1.5rem 0 2rem;
+        }
+
+        .footer-line {
+            margin: 0;
+            font-size: .75rem;
+            line-height: 1.6;
+            color: var(--fg-muted);
+        }
+
+        .footer-line a,
+        .privacy-note a {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            color: var(--fg-muted);
+        }
+
+        .footer-line a:hover,
+        .privacy-note a:hover { color: var(--fg); }
+
+        /* ---- Context block (S1 only) ---- */
+
+        .context { margin: 0 0 2rem; }
+
+        .context h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -.02em;
+            font-weight: 800;
+            color: var(--fg);
+        }
+
+        .opening-line {
+            margin: .625rem 0 0;
+            max-width: 32rem;
+            font-size: .9375rem;
+            line-height: 1.6;
+            font-weight: 400;
+            color: var(--fg-body);
+        }
+
+        .microcopy {
+            margin: .5rem 0 0;
+            font-size: .8125rem;
+            line-height: 1.5;
+            font-weight: 400;
+            color: var(--fg-muted);
+        }
+
+        /* ---- Progress ---- */
+
+        .progress-region { margin: 0; }
+
+        .progress-caption {
+            display: block;
+            font-size: .75rem;
+            line-height: 1;
+            font-weight: 500;
+            color: var(--fg-muted);
+        }
+
+        .track {
+            margin-top: .5rem;
+            width: 100%;
+            height: 6px;
+            border-radius: 9999px;
+            background: var(--line);
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            width: 20%;
+            border-radius: 9999px;
+            background: var(--fg);
+            transition: width 300ms ease-out;
+        }
+
+        /* ---- Question block ---- */
+
+        .qblock {
+            opacity: 1;
+            transition: opacity 160ms ease-out;
+        }
+
+        .qblock.is-out {
+            opacity: 0;
+            transition: opacity 120ms ease-out;
+        }
+
+        .qblock h2 { outline-offset: 2px; }
+
+        .q-text {
+            margin: 1.25rem 0 0;
+            max-width: 30rem;
+            font-size: 1rem;
+            line-height: 1.45;
+            font-weight: 700;
+            color: var(--fg);
+            text-wrap: balance;
+        }
+
+        .options {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .opt {
+            appearance: none;
+            -webkit-appearance: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 52px;
+            padding: .875rem 1rem;
+            margin: 0;
+            text-align: left;
+            font-family: inherit;
+            font-size: .9375rem;
+            line-height: 1.4;
+            font-weight: 400;
+            color: var(--fg);
+            background: var(--bg);
+            border: 1px solid var(--line-control);
+            border-radius: .75rem;
+            cursor: pointer;
+            transition: border-color 150ms, background-color 150ms;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .opt:hover {
+                border-color: var(--line-hover);
+                background: var(--surface-soft);
+            }
+        }
+
+        .opt:active { background: var(--surface-soft); }
+
+        .opt[aria-checked="true"] {
+            border-color: var(--fg);
+            box-shadow: inset 0 0 0 1px var(--fg);
+            background: var(--surface-soft);
+            font-weight: 500;
+        }
+
+        .err {
+            margin: .75rem 0 0;
+            font-size: .8125rem;
+            line-height: 1.5;
+            font-weight: 500;
+            color: var(--danger);
+        }
+
+        .err[hidden] { display: none; }
+
+        .back {
+            appearance: none;
+            -webkit-appearance: none;
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            min-width: 44px;
+            margin: 1.25rem 0 0 -.25rem;
+            padding: .625rem .25rem;
+            font-family: inherit;
+            font-size: .875rem;
+            font-weight: 400;
+            color: var(--fg-muted);
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .back:hover { color: var(--fg); }
+
+        /* ---- Result states ---- */
+
+        .result-heading {
+            margin: 0;
+            font-size: 1.375rem;
+            line-height: 1.25;
+            letter-spacing: -.02em;
+            font-weight: 800;
+            color: var(--fg);
+        }
+
+        .result-body {
+            margin: .75rem 0 0;
+            max-width: 34rem;
+            font-size: .9375rem;
+            line-height: 1.7;
+            font-weight: 400;
+            color: var(--fg-body);
+        }
+
+        .cal-frame {
+            position: relative;
+            width: 100%;
+            margin-top: 1.5rem;
+            min-height: 680px;
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .cal-status {
+            position: absolute;
+            inset: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: .875rem;
+            font-weight: 400;
+            color: var(--fg-muted);
+        }
+
+        .cal-frame .calendly-inline-widget {
+            position: absolute;
+            inset: 0;
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .cal-frame.is-failed { min-height: 0; }
+
+        .cal-frame.is-failed .cal-status {
+            position: static;
+            display: block;
+            padding: 1.5rem;
+            text-align: left;
+            font-size: .875rem;
+            line-height: 1.65;
+            color: var(--fg-body);
+        }
+
+        .cal-frame.is-failed .calendly-inline-widget { display: none; }
+
+        .cal-direct {
+            display: inline-flex;
+            align-items: center;
+            padding: .625rem 0;
+            font-size: .875rem;
+            font-weight: 500;
+            color: var(--fg);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .cal-privacy {
+            margin: 1rem 0 0;
+            max-width: 34rem;
+            font-size: .8125rem;
+            line-height: 1.65;
+            font-weight: 400;
+            color: var(--fg-muted);
+        }
+
+        /* ---- Persistent privacy note ---- */
+
+        .note-wrap {
+            margin-top: 2.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--line-soft);
+        }
+
+        .privacy-note {
+            max-width: 34rem;
+            font-size: .75rem;
+            line-height: 1.7;
+            font-weight: 400;
+            color: var(--fg-muted);
+        }
+
+        /* ---- Responsive ---- */
+
+        @media (max-width: 400px) {
+            .context h1 { font-size: 1.375rem; }
+            .context { margin-bottom: 1.75rem; }
+        }
+
+        @media (min-width: 768px) {
+            .main-inner { padding: 4rem 0 5rem; }
+            .context { margin-bottom: 2.5rem; }
+            .context h1 { font-size: 1.75rem; }
+            .q-text { font-size: 1.0625rem; }
+            .result-heading { font-size: 1.5rem; }
+            .opt { min-height: 48px; padding: .75rem 1rem; }
+            .cal-frame { min-height: 720px; }
+        }
+
+        @media (max-height: 480px) {
+            .main-inner { padding-top: 1.5rem; }
+            .context { margin-bottom: 1.25rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .qblock,
+            .qblock.is-out,
+            .fill,
+            .opt { transition-duration: 0ms; }
+        }
+
+        @media (forced-colors: active) {
+            .opt { border-color: ButtonBorder; }
+            .opt[aria-checked="true"] {
+                border-color: Highlight;
+                outline: 2px solid Highlight;
+                outline-offset: -3px;
+            }
+            .fill { background: Highlight; forced-color-adjust: none; }
+        }
+    </style>
+    <script src="/js/pixel.js"></script>
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wjulbbpfmx");
+    </script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="brand">Philip Mulyana</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-inner">
+            <div class="context" id="context"></div>
+
+            <div class="progress-region" id="progress-region">
+                <span class="progress-caption" id="progress-caption"></span>
+                <div class="track" id="track" role="progressbar" aria-valuemin="1" aria-valuemax="5">
+                    <div class="fill" id="fill"></div>
+                </div>
+            </div>
+
+            <div class="qblock" id="qblock"></div>
+
+            <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+
+            <div class="note-wrap">
+                <div class="privacy-note" id="privacy-note"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-line" id="footer-line"></p>
+        </div>
+    </footer>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ------------------------------------------------------------------
+       Frozen copy — first-party-paid-form-copy-v3.json, verbatim.
+       No audience-facing string literal appears anywhere else in this file.
+       Protected characters: en dash U+2013, ellipsis U+2026,
+       middle dot U+00B7, copyright U+00A9, slash spacing, commas.
+       ------------------------------------------------------------------ */
+    var COPY = {
+        first_view: {
+            headline: "Cek awal kebutuhan asuransi jiwa kamu",
+            opening_line: "Jawab 5 pertanyaan singkat. Di akhir, kamu bisa pilih apakah mau lanjut ke call gratis 10 menit.",
+            microcopy: "Tanpa data kontak di form ini · Bukan rekomendasi produk"
+        },
+        form: {
+            progress_template: "Pertanyaan {current} dari {total}",
+            back_button: "Kembali",
+            validation_message: "Pilih satu jawaban dulu untuk lanjut.",
+            questions: [
+                {
+                    id: "q1",
+                    text: "Apa yang bikin kamu kepikiran soal perlindungan finansial keluarga sekarang?",
+                    options: [
+                        "Perubahan keluarga",
+                        "Tanggungan bertambah",
+                        "Keuangan berubah",
+                        "Mau review proteksi",
+                        "Konten ini relevan",
+                        "Mau paham dulu",
+                        "Belum mau menjawab"
+                    ]
+                },
+                {
+                    id: "q2",
+                    text: "Kalau kontribusi finansial kamu berhenti, bagian mana yang paling mungkin terdampak?",
+                    options: [
+                        "Pasangan / anak",
+                        "Orang tua / lainnya",
+                        "Cicilan / kebutuhan",
+                        "Bisnis / tanggungan",
+                        "Belum tahu",
+                        "Tidak ada dampak"
+                    ]
+                },
+                {
+                    id: "q3",
+                    text: "Untuk risiko itu, posisi kamu sekarang yang paling mendekati yang mana?",
+                    options: [
+                        "Belum punya",
+                        "Punya, belum dicek",
+                        "Punya, baru dicek",
+                        "Tidak yakin",
+                        "Belum mau menjawab"
+                    ]
+                },
+                {
+                    id: "q4",
+                    text: "Saat ini kamu ada di tahap mana?",
+                    options: [
+                        "Mau memahami dulu",
+                        "Cek dalam 1–3 bulan",
+                        "Mau cek sekarang",
+                        "Informasi saja",
+                        "Belum tahu"
+                    ]
+                },
+                {
+                    id: "q5",
+                    text: "Apakah kamu open untuk explore kebutuhan asuransi kamu dengan 10 minute call gratis?",
+                    options: [
+                        "Ya, saya open",
+                        "Belum sekarang"
+                    ]
+                }
+            ]
+        },
+        open_route: {
+            heading: "Oke, kita atur waktunya",
+            body: "Pilih satu slot 10 menit yang paling pas buat kamu di kalender bawah ini. Obrolannya santai: kita bahas apa yang tadi kamu jawab, dari sisi kamu dulu. Gratis, tanpa presentasi produk.",
+            calendly_privacy_line: "Nama, email, dan nomor WhatsApp kamu diisi di kalender Calendly saat konfirmasi jadwal, bukan di form lima pertanyaan tadi. Data itu dipakai untuk mengatur dan mengingatkan jadwal serta menindaklanjuti konsultasi yang kamu setujui, sesuai Kebijakan Privasi dan ketentuan Calendly sebagai penyedia layanan. Memesan jadwal bukan berarti kamu berkewajiban membeli apa pun.",
+            loading: "Memuat kalender…",
+            load_failure: "Kalendernya belum berhasil tampil di sini. Coba muat ulang halaman, atau buka kalendernya langsung lewat tautan di bawah. Form lima pertanyaan tadi tetap tidak meminta data kontak kamu.",
+            direct_link_label: "Buka kalender di tab baru"
+        },
+        closed_route: {
+            heading: "Oke, tidak masalah",
+            body: "Terima kasih sudah meluangkan waktu menjawab lima pertanyaan tadi. Semoga gambarannya jadi sedikit lebih jelas buat kamu. Kamu bisa menutup halaman ini kapan saja."
+        },
+        privacy: {
+            note: "Form lima pertanyaan ini tidak meminta nama, email, nomor kontak, informasi kesehatan, data polis, identitas, rekening, atau rincian keuangan. Jawaban kamu dipakai untuk menentukan langkah berikutnya di halaman ini dan dapat terekam dalam pengukuran pihak pertama yang aktif di sini, bersama data teknis seperti cookie dan identitas sesi. Penjelasan lengkapnya ada di Kebijakan Privasi.",
+            link_label: "Kebijakan Privasi",
+            link_path: "/privacy-policy/"
+        },
+        footer: "© 2026 Philip Mulyana · Informasi umum untuk edukasi, bukan rekomendasi atau penawaran produk asuransi · Kebijakan Privasi"
+    };
+
+    /* ---- Constants ---- */
+
+    var TOTAL = 5;
+    var DWELL_MS = 180;
+    var FADE_OUT_MS = 120;
+    var CAL_TIMEOUT_MS = 8000;
+
+    // Approved Calendly event URL. Used verbatim for both the inline widget
+    // and the failure-state direct link. Injected at route time only.
+    var CAL_URL = 'https://calendly.com/philipmulyana/first-call?hide_event_type_details=1&hide_gdpr_banner=1';
+    var CAL_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+    var CAL_JS = 'https://assets.calendly.com/assets/external/widget.js';
+    var CAL_ORIGIN = 'https://calendly.com';
+
+    var OPEN_LABEL = COPY.form.questions[4].options[0];   // "Ya, saya open"
+
+    /* ------------------------------------------------------------------
+       Measurement — allowlisted, non-PII, in-memory only.
+       No backend POST, fetch, beacon, XHR. No storage or cookie is written
+       by this page. Answers are never emitted.
+       ------------------------------------------------------------------ */
+
+    var ATTR_KEYS = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+        'campaign_id', 'adset_id', 'ad_id', 'placement'
+    ];
+
+    var ALLOWED_EVENTS = [
+        'CekAwalView', 'CekAwalStart', 'CekAwalComplete',
+        'CalendlyView', 'CalendlyBookingConfirmed'
+    ];
+
+    function sanitizeParam(value) {
+        if (typeof value !== 'string') return '';
+        return value.replace(/[\u0000-\u001F\u007F-\u009F]/g, '').slice(0, 100);
+    }
+
+    function newLeadId() {
+        try {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return window.crypto.randomUUID();
+            }
+        } catch (e) {}
+        try {
+            if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+                var b = new Uint8Array(16);
+                window.crypto.getRandomValues(b);
+                b[6] = (b[6] & 0x0f) | 0x40;
+                b[8] = (b[8] & 0x3f) | 0x80;
+                var h = [];
+                for (var i = 0; i < 16; i++) h.push((b[i] + 0x100).toString(16).slice(1));
+                return h.slice(0, 4).join('') + '-' + h.slice(4, 6).join('') + '-' +
+                       h.slice(6, 8).join('') + '-' + h.slice(8, 10).join('') + '-' +
+                       h.slice(10, 16).join('');
+            }
+        } catch (e) {}
+        return '';
+    }
+
+    // Read the allowlisted params, then drop the parser. The raw query string,
+    // the referrer, and fbclid are never retained or emitted.
+    var ATTRIBUTION = (function () {
+        var out = {};
+        try {
+            var params = new URLSearchParams(window.location.search);
+            for (var i = 0; i < ATTR_KEYS.length; i++) {
+                var key = ATTR_KEYS[i];
+                if (!params.has(key)) continue;
+                var clean = sanitizeParam(params.get(key));
+                if (clean) out[key] = clean;
+            }
+        } catch (e) {}
+        return out;
+    })();
+
+    var LEAD_ID = newLeadId();
+    var FIRST_TOUCH = new Date().toISOString();
+
+    function track(eventName, extra) {
+        if (ALLOWED_EVENTS.indexOf(eventName) === -1) return;
+
+        var payload = {
+            event: eventName,
+            lead_id: LEAD_ID,
+            first_touch: FIRST_TOUCH,
+            page_version: 'cek-awal-v1',
+            form_version: 'copy-v3'
+        };
+        for (var key in ATTRIBUTION) {
+            if (Object.prototype.hasOwnProperty.call(ATTRIBUTION, key)) {
+                payload[key] = ATTRIBUTION[key];
+            }
+        }
+        // Only `route` is allowlisted as extra, and only these two values.
+        if (extra && (extra.route === 'open' || extra.route === 'closed')) {
+            payload.route = extra.route;
+        }
+
+        try {
+            window.dispatchEvent(new CustomEvent('cek-awal:event', { detail: payload }));
+        } catch (e) {}
+        try {
+            if (typeof window.fbq === 'function') {
+                window.fbq('trackCustom', eventName, payload);
+            }
+        } catch (e) {}
+    }
+
+    /* ---- DOM refs ---- */
+
+    var elContext = document.getElementById('context');
+    var elProgressRegion = document.getElementById('progress-region');
+    var elCaption = document.getElementById('progress-caption');
+    var elTrack = document.getElementById('track');
+    var elFill = document.getElementById('fill');
+    var elQblock = document.getElementById('qblock');
+    var elLive = document.getElementById('live');
+    var elNote = document.getElementById('privacy-note');
+    var elFooter = document.getElementById('footer-line');
+    var elMain = document.querySelector('main');
+
+    /* ---- State ---- */
+
+    var answers = [null, null, null, null, null];
+    var step = 0;
+    var route = null;
+    var busy = false;
+    var contextRemoved = false;
+    var firedStart = false;
+    var firedComplete = false;
+    var firedCalendlyView = false;
+    var firedBooking = false;
+
+    /* ---- Helpers ---- */
+
+    function prefersReducedMotion() {
+        try {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function progressLabel(current) {
+        return COPY.form.progress_template
+            .replace('{current}', String(current))
+            .replace('{total}', String(TOTAL));
+    }
+
+    // Controlled construction of the two permitted privacy-policy links:
+    // split the frozen string on its final "Kebijakan Privasi" token and
+    // rebuild with text nodes plus one anchor. No innerHTML, no hand-written
+    // sentence, no re-punctuation.
+    function renderWithPolicyLink(target, text) {
+        var token = COPY.privacy.link_label;
+        var idx = text.lastIndexOf(token);
+        target.textContent = '';
+        if (idx === -1) {
+            target.textContent = text;
+            return;
+        }
+        target.appendChild(document.createTextNode(text.slice(0, idx)));
+        var a = document.createElement('a');
+        a.setAttribute('href', COPY.privacy.link_path);
+        a.textContent = token;
+        target.appendChild(a);
+        target.appendChild(document.createTextNode(text.slice(idx + token.length)));
+    }
+
+    function clear(node) {
+        while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function focusHeading(h) {
+        try {
+            h.focus({ preventScroll: true });
+        } catch (e) {
+            h.focus();
+        }
+    }
+
+    /* ---- Persistent chrome ---- */
+
+    function renderChrome() {
+        var h1 = document.createElement('h1');
+        h1.textContent = COPY.first_view.headline;
+
+        var opening = document.createElement('p');
+        opening.className = 'opening-line';
+        opening.textContent = COPY.first_view.opening_line;
+
+        var micro = document.createElement('p');
+        micro.className = 'microcopy';
+        micro.textContent = COPY.first_view.microcopy;
+
+        elContext.appendChild(h1);
+        elContext.appendChild(opening);
+        elContext.appendChild(micro);
+
+        renderWithPolicyLink(elNote, COPY.privacy.note);
+        renderWithPolicyLink(elFooter, COPY.footer);
+    }
+
+    /* ---- Question rendering ---- */
+
+    function optionNodes() {
+        var group = elQblock.querySelector('[role="radiogroup"]');
+        if (!group) return [];
+        return Array.prototype.slice.call(group.querySelectorAll('.opt'));
+    }
+
+    function showError() {
+        var err = elQblock.querySelector('.err');
+        if (err) err.hidden = false;
+    }
+
+    function hideError() {
+        var err = elQblock.querySelector('.err');
+        if (err) err.hidden = true;
+    }
+
+    function renderQuestion(index, moveFocus, announce) {
+        var q = COPY.form.questions[index];
+
+        elProgressRegion.hidden = false;
+        elCaption.textContent = progressLabel(index + 1);
+        elTrack.setAttribute('aria-valuenow', String(index + 1));
+        elTrack.setAttribute('aria-valuetext', progressLabel(index + 1));
+        elFill.style.width = ((index + 1) * 20) + '%';
+
+        clear(elQblock);
+
+        var headingId = 'q-text-' + q.id;
+
+        var h2 = document.createElement('h2');
+        h2.className = 'q-text';
+        h2.id = headingId;
+        h2.setAttribute('tabindex', '-1');
+        h2.textContent = q.text;
+        elQblock.appendChild(h2);
+
+        var group = document.createElement('div');
+        group.className = 'options';
+        group.setAttribute('role', 'radiogroup');
+        group.setAttribute('aria-labelledby', headingId);
+
+        var checked = answers[index];
+        for (var i = 0; i < q.options.length; i++) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'opt';
+            btn.setAttribute('role', 'radio');
+            btn.setAttribute('data-index', String(i));
+            btn.setAttribute('aria-checked', checked === i ? 'true' : 'false');
+            // Roving tabindex: exactly one option is tabbable — the checked
+            // one, otherwise the first.
+            btn.setAttribute('tabindex', (checked === i || (checked === null && i === 0)) ? '0' : '-1');
+            btn.textContent = q.options[i];
+            group.appendChild(btn);
+        }
+
+        group.addEventListener('click', onGroupClick);
+        group.addEventListener('keydown', onGroupKeydown);
+        elQblock.appendChild(group);
+
+        var err = document.createElement('p');
+        err.className = 'err';
+        err.setAttribute('role', 'alert');
+        err.hidden = true;
+        err.textContent = COPY.form.validation_message;
+        elQblock.appendChild(err);
+
+        // Back control on Q2–Q5 only.
+        if (index > 0) {
+            var back = document.createElement('button');
+            back.type = 'button';
+            back.className = 'back';
+            back.textContent = COPY.form.back_button;
+            back.addEventListener('click', onBack);
+            elQblock.appendChild(back);
+        }
+
+        if (announce) elLive.textContent = progressLabel(index + 1);
+        if (moveFocus) focusHeading(h2);
+    }
+
+    /* ---- Interaction ---- */
+
+    function onGroupClick(e) {
+        var btn = e.target.closest ? e.target.closest('.opt') : null;
+        if (!btn || !elQblock.contains(btn)) return;
+        select(parseInt(btn.getAttribute('data-index'), 10));
+    }
+
+    function focusOption(opts, i) {
+        for (var n = 0; n < opts.length; n++) {
+            opts[n].setAttribute('tabindex', n === i ? '0' : '-1');
+        }
+        opts[i].focus();
+    }
+
+    // Deliberate deviation from the WAI-ARIA radio pattern: arrow keys move
+    // focus WITHOUT checking. Checking auto-advances this form, so a
+    // selection-follows-focus radiogroup would make it impossible for a
+    // keyboard user to read past the first option. Selection therefore
+    // requires an explicit Enter or Space.
+    function onGroupKeydown(e) {
+        var opts = optionNodes();
+        var i = opts.indexOf(document.activeElement);
+
+        if (i === -1) {
+            // Enter on the group itself with nothing chosen — the only path
+            // that surfaces the frozen validation message.
+            if (e.key === 'Enter' && answers[step] === null) {
+                e.preventDefault();
+                showError();
+            }
+            return;
+        }
+
+        switch (e.key) {
+            case 'ArrowDown':
+            case 'ArrowRight':
+                e.preventDefault();
+                focusOption(opts, (i + 1) % opts.length);
+                break;
+            case 'ArrowUp':
+            case 'ArrowLeft':
+                e.preventDefault();
+                focusOption(opts, (i - 1 + opts.length) % opts.length);
+                break;
+            case 'Home':
+                e.preventDefault();
+                focusOption(opts, 0);
+                break;
+            case 'End':
+                e.preventDefault();
+                focusOption(opts, opts.length - 1);
+                break;
+            case 'Enter':
+            case ' ':
+            case 'Spacebar':
+                // preventDefault stops the page scrolling on Space and stops
+                // the button's native click, which would double-activate.
+                e.preventDefault();
+                select(i);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function select(index) {
+        if (busy) return;                       // double-activation guard
+        if (isNaN(index)) return;
+        busy = true;
+
+        answers[step] = index;
+
+        var opts = optionNodes();
+        for (var i = 0; i < opts.length; i++) {
+            opts[i].setAttribute('aria-checked', i === index ? 'true' : 'false');
+            opts[i].setAttribute('tabindex', i === index ? '0' : '-1');
+        }
+        hideError();
+
+        if (!firedStart) {
+            firedStart = true;
+            track('CekAwalStart');
+        }
+
+        window.setTimeout(advance, DWELL_MS);
+    }
+
+    function fadeSwap(fn) {
+        var out = prefersReducedMotion() ? 0 : FADE_OUT_MS;
+        if (out === 0) {
+            fn();
+            elQblock.classList.remove('is-out');
+            busy = false;
+            return;
+        }
+        elQblock.classList.add('is-out');
+        window.setTimeout(function () {
+            fn();
+            elQblock.classList.remove('is-out');
+            busy = false;
+        }, out);
+    }
+
+    function removeContext() {
+        if (contextRemoved) return;
+        contextRemoved = true;
+        if (elContext && elContext.parentNode) {
+            elContext.parentNode.removeChild(elContext);
+        }
+    }
+
+    function advance() {
+        // The context block is removed from the DOM on the first advance and
+        // never returns, including on Kembali back to Q1.
+        removeContext();
+
+        if (step < TOTAL - 1) {
+            fadeSwap(function () {
+                step += 1;
+                renderQuestion(step, true, true);
+            });
+            return;
+        }
+
+        // Q5 branches at the same moment a next question would have rendered.
+        var label = COPY.form.questions[4].options[answers[4]];
+        route = (label === OPEN_LABEL) ? 'open' : 'closed';
+
+        if (!firedComplete) {
+            firedComplete = true;
+            track('CekAwalComplete', { route: route });
+        }
+
+        fadeSwap(renderResult);
+    }
+
+    function onBack() {
+        if (busy) return;
+        if (step <= 0) return;
+        busy = true;
+        fadeSwap(function () {
+            step -= 1;
+            renderQuestion(step, true, true);
+        });
+    }
+
+    /* ---- Result states ---- */
+
+    function renderResult() {
+        elProgressRegion.hidden = true;
+        clear(elQblock);
+        if (route === 'open') {
+            renderOpenRoute();
+        } else {
+            renderClosedRoute();
+        }
+    }
+
+    function scrollMainIntoView() {
+        try {
+            var top = elMain.getBoundingClientRect().top;
+            if (top < 0) {
+                window.scrollTo({ top: window.pageYOffset + top, behavior: 'auto' });
+            }
+        } catch (e) {}
+    }
+
+    function renderClosedRoute() {
+        var h2 = document.createElement('h2');
+        h2.className = 'result-heading';
+        h2.setAttribute('tabindex', '-1');
+        h2.textContent = COPY.closed_route.heading;
+
+        var body = document.createElement('p');
+        body.className = 'result-body';
+        body.textContent = COPY.closed_route.body;
+
+        elQblock.appendChild(h2);
+        elQblock.appendChild(body);
+
+        elLive.textContent = '';
+        focusHeading(h2);
+        // No Calendly asset, link, contact request, or alternative CTA here.
+    }
+
+    function renderOpenRoute() {
+        var h2 = document.createElement('h2');
+        h2.className = 'result-heading';
+        h2.setAttribute('tabindex', '-1');
+        h2.textContent = COPY.open_route.heading;
+
+        var body = document.createElement('p');
+        body.className = 'result-body';
+        body.textContent = COPY.open_route.body;
+
+        var frame = document.createElement('div');
+        frame.className = 'cal-frame';
+
+        var status = document.createElement('p');
+        status.className = 'cal-status';
+        status.setAttribute('role', 'status');
+        status.textContent = COPY.open_route.loading;
+
+        var widget = document.createElement('div');
+        widget.className = 'calendly-inline-widget';
+        widget.setAttribute('data-url', CAL_URL);
+        widget.style.minWidth = '100%';
+        widget.style.height = '100%';
+
+        frame.appendChild(status);
+        frame.appendChild(widget);
+
+        var privacyLine = document.createElement('p');
+        privacyLine.className = 'cal-privacy';
+        privacyLine.textContent = COPY.open_route.calendly_privacy_line;
+
+        elQblock.appendChild(h2);
+        elQblock.appendChild(body);
+        elQblock.appendChild(frame);
+        elQblock.appendChild(privacyLine);
+
+        elLive.textContent = '';
+        focusHeading(h2);
+        scrollMainIntoView();
+
+        // Assets are injected only after the open route DOM exists, and only
+        // on this route. Nothing Calendly-origin is referenced before here.
+        loadCalendly(frame, status, widget);
+    }
+
+    /* ---- Calendly (open route only) ---- */
+
+    function loadCalendly(frame, status, widget) {
+        var settled = false;
+        var observer = null;
+        var timer = null;
+
+        function stopWatching() {
+            if (observer) { observer.disconnect(); observer = null; }
+            if (timer) { window.clearTimeout(timer); timer = null; }
+        }
+
+        function succeed() {
+            if (settled) return;
+            settled = true;
+            stopWatching();
+            if (status.parentNode) status.parentNode.removeChild(status);
+        }
+
+        function fail() {
+            if (settled) return;
+            settled = true;
+            stopWatching();
+            frame.classList.add('is-failed');
+            clear(status);
+            status.appendChild(document.createTextNode(COPY.open_route.load_failure));
+            var a = document.createElement('a');
+            a.className = 'cal-direct';
+            a.setAttribute('href', CAL_URL);
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            a.textContent = COPY.open_route.direct_link_label;
+            status.appendChild(document.createElement('br'));
+            status.appendChild(a);
+        }
+
+        function checkIframe() {
+            var iframe = widget.querySelector('iframe');
+            if (!iframe) return false;
+            if (iframe.getAttribute('title') === null) {
+                iframe.setAttribute('title', COPY.open_route.heading);
+            }
+            if (iframe.complete === false) { /* no-op */ }
+            iframe.addEventListener('load', succeed);
+            if (iframe.offsetHeight > 0) succeed();
+            return true;
+        }
+
+        if (window.MutationObserver) {
+            observer = new MutationObserver(function () { checkIframe(); });
+            observer.observe(widget, { childList: true, subtree: true });
+        }
+
+        timer = window.setTimeout(function () {
+            var iframe = widget.querySelector('iframe');
+            if (!iframe || iframe.offsetHeight === 0) {
+                fail();
+            } else {
+                succeed();
+            }
+        }, CAL_TIMEOUT_MS);
+
+        // Booking confirmation: origin must be exactly the Calendly origin and
+        // the event name must match. The payload body is never read or emitted.
+        window.addEventListener('message', function (e) {
+            if (e.origin !== CAL_ORIGIN) return;
+            var data = e.data;
+            if (!data || typeof data !== 'object') return;
+            if (data.event !== 'calendly.event_scheduled') return;
+            if (firedBooking) return;
+            firedBooking = true;
+            track('CalendlyBookingConfirmed');
+        });
+
+        if (!firedCalendlyView) {
+            firedCalendlyView = true;
+            track('CalendlyView');
+        }
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = CAL_CSS;
+        document.head.appendChild(link);
+
+        var script = document.createElement('script');
+        script.src = CAL_JS;
+        script.async = true;
+        script.onerror = fail;
+        document.head.appendChild(script);
+
+        checkIframe();
+    }
+
+    /* ---- Init ---- */
+
+    renderChrome();
+    renderQuestion(0, false, false);
+    track('CekAwalView');
+})();
+</script>
+
+</body>
+</html>
