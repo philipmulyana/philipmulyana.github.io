@@ -470,7 +470,14 @@
         // Guarded parser-time loader: document.write keeps /js/pixel.js
         // synchronous and ahead of the form script, so the fbq stub exists
         // before the first custom event is dispatched.
+        //
+        // This page-scoped flag tells the shared pixel.js to turn off Meta's
+        // server-configured Automatic Events (which otherwise infer button
+        // clicks and their visible label text — i.e. quiz answers — without
+        // this page's knowledge). It is read once by pixel.js on this same
+        // load and has no effect on any other page, which never sets it.
         if (queryFree) {
+            window.__CEK_AWAL_PIXEL_NO_AUTOCONFIG__ = true;
             document.write('<script src="/js/pixel.js"><\/script>');
         }
     })();
