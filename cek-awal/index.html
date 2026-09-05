@@ -397,7 +397,7 @@
            -------------------------------------------------------------- */
 
         var ATTR_KEYS = [
-            'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+            'utm_source', 'utm_medium', 'utm_campaign', 'utm_content',
             'campaign_id', 'adset_id', 'ad_id', 'placement'
         ];
 
@@ -608,9 +608,11 @@
     var DWELL_MS = 180;
     var FADE_OUT_MS = 120;
 
-    // Approved dedicated Calendly event URL for /cek-awal/. Used verbatim as
-    // the CTA href on the open route only. Nothing is appended to it: no
-    // parent query, UTM, click id, answer, identity, or session value.
+    // Approved dedicated Calendly event URL for /cek-awal/. Used as the base
+    // of the CTA href on the open route only. The only thing ever appended is
+    // the allowlisted, already-sanitized attribution below — never the parent
+    // raw query, a click id, a referrer, an answer, an identity, or a session
+    // value. See buildCalendlyHref().
     var CAL_URL = 'https://calendly.com/philipmulyana/first-call-cek-awal';
 
     var OPEN_LABEL = COPY.form.questions[4].options[0];   // "Ya, saya open"
@@ -622,7 +624,7 @@
        ------------------------------------------------------------------ */
 
     var ATTR_KEYS = [
-        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content',
         'campaign_id', 'adset_id', 'ad_id', 'placement'
     ];
 
@@ -1070,7 +1072,7 @@
         // no Calendly asset is ever loaded into this page.
         var cta = document.createElement('a');
         cta.className = 'cal-cta';
-        cta.setAttribute('href', CAL_URL);
+        cta.setAttribute('href', buildCalendlyHref());
         cta.textContent = COPY.open_route.cta_label;
         cta.addEventListener('click', onCalendlyClick);
 
@@ -1090,12 +1092,41 @@
 
     /* ---- Calendly CTA (open route only) ---- */
 
+    // Builds the CTA href from the exact approved event URL plus only the
+    // allowlisted attribution already sanitized at parser time and held in
+    // memory. Each present, non-empty value is appended exactly once, in
+    // ATTR_KEYS order, percent-encoded by URLSearchParams. With no approved
+    // values the result is CAL_URL verbatim, with no "?". Nothing else from
+    // this page travels to Calendly: not the raw query, fbclid or gclid, the
+    // referrer, question or answer text, lead_id, or any identity value.
+    //
+    // Scope note: this only controls what is safely attached to the outbound
+    // URL. Whether Calendly retains these four custom IDs against a booking
+    // is not established by the approved research and is not claimed here.
+    function buildCalendlyHref() {
+        try {
+            var url = new URL(CAL_URL);
+            var qs = new URLSearchParams();
+            for (var i = 0; i < ATTR_KEYS.length; i++) {
+                var key = ATTR_KEYS[i];
+                if (!Object.prototype.hasOwnProperty.call(ATTRIBUTION, key)) continue;
+                var value = ATTRIBUTION[key];
+                if (typeof value !== 'string' || !value) continue;
+                qs.set(key, value);
+            }
+            var query = qs.toString();
+            url.search = query ? query : '';
+            return url.toString();
+        } catch (e) {
+            return CAL_URL;
+        }
+    }
+
     // Bound to the CTA anchor only, so every call is a genuine activation of
     // that control — pointer, Enter, or assistive tech all route through the
     // anchor's click event. Fires at most once, synchronously, before the
     // browser performs the same-tab navigation. The default action is never
-    // prevented and the href is never rewritten, so nothing from this page
-    // travels to Calendly in the URL.
+    // prevented and the href is not rewritten at click time.
     function onCalendlyClick() {
         if (firedCalendlyClick) return;
         firedCalendlyClick = true;

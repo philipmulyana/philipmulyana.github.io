@@ -13,12 +13,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1408957391027533');
 fbq('track', 'PageView');
 
-// noscript fallback — wait for body to exist
-document.addEventListener('DOMContentLoaded', function() {
-    var img = document.createElement('img');
-    img.height = 1;
-    img.width = 1;
-    img.style.display = 'none';
-    img.src = 'https://www.facebook.com/tr?id=1408957391027533&ev=PageView&noscript=1';
-    document.body.appendChild(img);
-});
+// Exactly one PageView per page load. The previous unconditional image
+// beacon fired a second, duplicate PageView from JavaScript. No noscript
+// image fallback is added here: a <noscript> beacon builds its own URL
+// outside the page's scrub step and could carry an unscrubbed address.
