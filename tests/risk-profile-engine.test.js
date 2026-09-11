@@ -110,9 +110,33 @@ test('limited knowledge is flagged when indicated risk is high', () => {
   assert.ok(result.flags.some((flag) => flag.id === 'knowledge-gap'));
 });
 
-test('evaluation output never contains product recommendations', () => {
-  const serialized = JSON.stringify(evaluate(answersByScore(4))).toLowerCase();
-  for (const forbidden of ['reksa dana', 'saham', 'obligasi', 'deposito', 'asuransi', 'beli ']) {
-    assert.equal(serialized.includes(forbidden), false, `Found forbidden product language: ${forbidden}`);
+test('every category provides educational investment-type guidance', () => {
+  const { CATEGORIES } = require('../js/risk-profile-engine.js');
+  for (const category of CATEGORIES) {
+    assert.ok(Array.isArray(category.investmentTypes));
+    assert.ok(category.investmentTypes.length >= 3, `${category.id} needs at least three investment types`);
+    for (const item of category.investmentTypes) {
+      assert.ok(item.name);
+      assert.ok(item.why);
+      assert.ok(item.watch);
+    }
+  }
+});
+
+test('investment guidance follows the constrained effective profile', () => {
+  const answers = answersByScore(5);
+  QUESTIONS.filter((q) => q.dimension === 'capacity' || q.dimension === 'horizon')
+    .forEach((q) => { answers[q.id] = q.options.find((o) => o.score === 1).value; });
+
+  const result = evaluate(answers);
+  assert.equal(result.category.id, 'sangat-hati-hati');
+  assert.deepEqual(result.investmentTypes, result.category.investmentTypes);
+  assert.ok(result.investmentTypes.some((item) => /deposito|pasar uang/i.test(item.name)));
+});
+
+test('investment guidance names instrument classes without brands or buy commands', () => {
+  const serialized = JSON.stringify(evaluate(answersByScore(5))).toLowerCase();
+  for (const forbidden of ['beli sekarang', 'pasti cocok', 'dijamin', 'bibit', 'bareksa', 'ajaib', 'stockbit']) {
+    assert.equal(serialized.includes(forbidden), false, `Found forbidden promotional language: ${forbidden}`);
   }
 });

@@ -162,22 +162,107 @@
     {
       id: 'sangat-hati-hati', min: 0, max: 24, label: 'Sangat Hati-hati', color: '#2563eb',
       summary: 'Kestabilan nilai, akses dana, dan perlindungan terhadap kerugian menjadi batas utama saat ini.',
+      investmentTypes: [
+        {
+          name: 'Deposito berjangka',
+          why: 'Perubahan nilai terbatas dan tanggal jatuh tempo jelas.',
+          watch: 'Periksa penalti pencairan, bunga bersih setelah pajak, tenor, serta syarat penjaminan simpanan.',
+        },
+        {
+          name: 'Reksa dana pasar uang',
+          why: 'Umumnya likuid dan berfluktuasi lebih rendah dibanding kelas aset berisiko tinggi.',
+          watch: 'Nilai dapat berubah; periksa isi portofolio, biaya, kualitas instrumen, dan waktu pencairan.',
+        },
+        {
+          name: 'SBN tenor pendek hingga jatuh tempo',
+          why: 'Jadwal pembayaran dan jatuh tempo dapat dicocokkan dengan kebutuhan yang relatif dekat.',
+          watch: 'Harga bisa turun jika dijual sebelum jatuh tempo; cek likuiditas dan tanggal kebutuhan dana.',
+        },
+      ],
     },
     {
       id: 'hati-hati', min: 25, max: 44, label: 'Hati-hati', color: '#0891b2',
       summary: 'Kamu dapat menerima sedikit perubahan nilai, tetapi ruang untuk kerugian atau ketidakpastian masih terbatas.',
+      investmentTypes: [
+        {
+          name: 'Reksa dana pasar uang',
+          why: 'Dapat menjadi bagian yang membutuhkan akses relatif mudah dan fluktuasi rendah.',
+          watch: 'Periksa komposisi, biaya, kualitas instrumen, dan waktu pencairannya.',
+        },
+        {
+          name: 'SBN atau obligasi berkualitas tinggi',
+          why: 'Pendapatan berkala dan jatuh tempo dapat membantu membentuk arus dana yang lebih terukur.',
+          watch: 'Nilai pasar dapat berubah; risiko penerbit, tenor, dan rencana menjual sebelum jatuh tempo tetap penting.',
+        },
+        {
+          name: 'Reksa dana pendapatan tetap',
+          why: 'Memberi eksposur obligasi yang dikelola dan terdiversifikasi tanpa memilih satu surat utang sendiri.',
+          watch: 'Bukan instrumen tanpa fluktuasi; cek durasi, kualitas kredit, biaya, dan riwayat penurunan.',
+        },
+      ],
     },
     {
       id: 'seimbang', min: 45, max: 64, label: 'Seimbang', color: '#7c3aed',
       summary: 'Kamu menunjukkan keseimbangan antara kebutuhan stabilitas dan kesediaan menghadapi perubahan nilai.',
+      investmentTypes: [
+        {
+          name: 'Kombinasi pasar uang dan obligasi',
+          why: 'Bagian stabil dan bagian pendapatan tetap dapat dibagi mengikuti kebutuhan likuiditas serta horizon.',
+          watch: 'Proporsi perlu mengikuti tanggal tujuan; obligasi tetap dapat turun saat suku bunga atau risiko kredit berubah.',
+        },
+        {
+          name: 'Reksa dana campuran',
+          why: 'Menggabungkan saham dan obligasi dalam satu strategi untuk menyeimbangkan pertumbuhan dan stabilitas.',
+          watch: 'Komposisi tiap produk dapat sangat berbeda; periksa batas saham, biaya, dan penurunan historis.',
+        },
+        {
+          name: 'Reksa dana indeks atau saham terdiversifikasi untuk porsi jangka panjang',
+          why: 'Dapat menambah potensi pertumbuhan pada dana yang tidak dibutuhkan dalam waktu dekat.',
+          watch: 'Siapkan diri menghadapi penurunan besar dan jangan gunakan untuk kebutuhan jangka pendek atau dana darurat.',
+        },
+      ],
     },
     {
       id: 'bertumbuh', min: 65, max: 84, label: 'Bertumbuh', color: '#db2777',
       summary: 'Kamu cukup siap menghadapi perubahan nilai untuk mengejar pertumbuhan, selama batas waktu dan kapasitas tetap dijaga.',
+      investmentTypes: [
+        {
+          name: 'Reksa dana indeks atau ETF saham yang luas',
+          why: 'Memberi eksposur pertumbuhan saham sekaligus menyebarkan risiko ke banyak perusahaan.',
+          watch: 'Nilai dapat turun tajam; periksa indeks acuan, likuiditas, tracking error, biaya, dan horizon.',
+        },
+        {
+          name: 'Reksa dana saham terdiversifikasi',
+          why: 'Dapat menjadi porsi pertumbuhan jangka panjang tanpa memilih setiap saham sendiri.',
+          watch: 'Periksa konsentrasi portofolio, gaya pengelolaan, biaya, dan konsistensi proses—bukan hanya return terbaru.',
+        },
+        {
+          name: 'Kombinasi saham terdiversifikasi dan obligasi',
+          why: 'Porsi obligasi dapat memberi ruang rebalancing dan membantu membatasi ketergantungan pada satu kelas aset.',
+          watch: 'Tentukan proporsi dari tujuan dan tanggal penggunaan dana, bukan dari tren pasar saat ini.',
+        },
+      ],
     },
     {
       id: 'dinamis', min: 85, max: 100, label: 'Dinamis', color: '#ea580c',
       summary: 'Kamu menunjukkan kenyamanan, kapasitas, dan waktu yang relatif tinggi untuk menghadapi ketidakpastian besar.',
+      investmentTypes: [
+        {
+          name: 'Portofolio saham yang terdiversifikasi luas',
+          why: 'Dapat memaksimalkan eksposur pertumbuhan untuk tujuan panjang dengan kapasitas menghadapi fluktuasi besar.',
+          watch: 'Diversifikasi, valuasi, biaya transaksi, disiplin rebalancing, dan risiko penurunan tetap harus dikendalikan.',
+        },
+        {
+          name: 'Reksa dana indeks atau ETF saham',
+          why: 'Memberi eksposur ekuitas yang transparan dan relatif mudah didiversifikasi.',
+          watch: 'Pilih indeks yang dipahami; periksa likuiditas, biaya, tracking error, dan konsentrasi sektor.',
+        },
+        {
+          name: 'Saham individual sebagai porsi terbatas',
+          why: 'Dapat digunakan bila kamu mampu menganalisis bisnis dan menerima risiko spesifik perusahaan.',
+          watch: 'Jangan menjadikan satu emiten atau sektor sebagai penentu tujuan penting; batasi konsentrasi dan hindari dana jangka pendek.',
+        },
+      ],
     },
   ];
 
@@ -294,13 +379,16 @@
       });
     }
 
+    const category = categoryForScore(score);
+
     return {
       complete: true,
       missingQuestionIds: [],
       score,
       rawScore,
       constraintApplied: score < rawScore,
-      category: categoryForScore(score),
+      category,
+      investmentTypes: category.investmentTypes,
       dimensions,
       flags,
       uncertainCount,

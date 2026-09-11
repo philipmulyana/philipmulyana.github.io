@@ -116,6 +116,16 @@
     return card;
   }
 
+  function createInvestmentCard(item) {
+    const card = document.createElement('article');
+    card.className = 'investment-card';
+    card.innerHTML = `
+      <h3>${item.name}</h3>
+      <p><strong>Kenapa relevan:</strong> ${item.why}</p>
+      <p><strong>Yang perlu dicek:</strong> ${item.watch}</p>`;
+    return card;
+  }
+
   function showResults() {
     const result = engine.evaluate(state.answers);
     if (!result.complete) {
@@ -157,6 +167,17 @@
     }
     results.append(dimensionsSection);
 
+    const investmentsSection = document.createElement('section');
+    investmentsSection.className = 'result-section';
+    investmentsSection.innerHTML = `
+      <h2>Jenis investasi yang dapat dipertimbangkan</h2>
+      <p class="section-intro">Pilihan berikut mengikuti profil efektif <strong>${result.category.label}</strong>. Ini adalah kelas instrumen untuk dipelajari dan dibandingkan—bukan nama produk atau instruksi untuk membeli.</p>
+      <div class="investment-list"></div>
+      <p class="investment-boundary"><strong>Sebelum memilih:</strong> cocokkan lagi setiap instrumen dengan tujuan, tanggal penggunaan dana, kebutuhan pencairan, biaya, pajak, risiko penerbit, dan kemampuanmu memahami produknya. Dana darurat dan kebutuhan jangka pendek tidak boleh dipaksa mengikuti profil risiko yang lebih tinggi.</p>`;
+    const investmentList = investmentsSection.querySelector('.investment-list');
+    result.investmentTypes.forEach((item) => investmentList.append(createInvestmentCard(item)));
+    results.append(investmentsSection);
+
     const flagsSection = document.createElement('section');
     flagsSection.className = 'result-section';
     flagsSection.innerHTML = `
@@ -180,7 +201,7 @@
     boundarySection.className = 'result-section';
     boundarySection.innerHTML = `
       <h2>Cara membaca hasil</h2>
-      <p class="disclaimer">Assessment ini bersifat edukatif dan menggambarkan jawabanmu saat ini. Hasil dapat berubah ketika tujuan, pendapatan, tanggungan, kondisi pasar, horizon, atau kebutuhan likuiditas berubah. Hasil ini bukan rekomendasi produk, bukan penawaran, bukan diagnosis, dan tidak menjamin hasil investasi. Jangan mengambil keputusan hanya berdasarkan satu skor.</p>
+      <p class="disclaimer">Assessment ini bersifat edukatif dan menggambarkan jawabanmu saat ini. Hasil dapat berubah ketika tujuan, pendapatan, tanggungan, kondisi pasar, horizon, atau kebutuhan likuiditas berubah. Daftar jenis investasi adalah panduan umum, bukan rekomendasi produk spesifik, bukan penawaran, bukan diagnosis, dan tidak menjamin hasil investasi. Jangan mengambil keputusan hanya berdasarkan satu skor.</p>
       <p class="source-links">Kerangka faktor merujuk pada prinsip profil investor yang mencakup situasi keuangan, tujuan, pengalaman, horizon waktu, kebutuhan likuiditas, dan toleransi risiko. Baca juga <a href="https://www.investor.gov/introduction-investing/getting-started/assessing-your-risk-tolerance" target="_blank" rel="noopener noreferrer">Investor.gov tentang risk tolerance</a>, <a href="https://www.finra.org/rules-guidance/key-topics/suitability" target="_blank" rel="noopener noreferrer">FINRA tentang investment profile</a>, serta <a href="/privacy-policy/">Kebijakan Privasi</a>.</p>
       <div class="button-row result-actions">
         <button id="print-results" class="button" type="button">Cetak / Simpan PDF</button>

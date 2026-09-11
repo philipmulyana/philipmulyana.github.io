@@ -52,7 +52,8 @@ test('UI includes explicit navigation, print, restart, and educational boundarie
   assert.match(combined, /Lihat Hasil/);
   assert.match(combined, /Cetak \/ Simpan PDF/);
   assert.match(combined, /Ulangi Assessment/);
-  assert.match(combined, /bukan rekomendasi produk/i);
+  assert.match(combined, /Jenis investasi yang dapat dipertimbangkan/);
+  assert.match(combined, /bukan rekomendasi produk spesifik/i);
   assert.match(combined, /tidak menjamin hasil/i);
 });
 
