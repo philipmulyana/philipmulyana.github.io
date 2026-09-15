@@ -36,15 +36,16 @@ def main() -> int:
         glob.glob(os.path.join(ROOT, "*.html"))
         + glob.glob(os.path.join(ROOT, "blog", "*.html"))
         + glob.glob(os.path.join(ROOT, "tools", "**", "*.html"), recursive=True)
+        + glob.glob(os.path.join(ROOT, "product", "**", "*.html"), recursive=True)
     )
-    missing_pixel, missing_beacon, stubs, ok = [], [], 0, 0
+    missing_pixel, missing_beacon, unreadable, stubs, ok = [], [], [], 0, 0
     for f in files:
+        rel = os.path.relpath(f, ROOT)
         try:
             html = open(f, encoding="utf-8").read()
         except Exception as e:
-            print(f"  ⚠️  cannot read {f}: {e}")
+            unreadable.append((rel, str(e)))
             continue
-        rel = os.path.relpath(f, ROOT)
         if is_stub(html):
             stubs += 1
             continue
@@ -58,8 +59,13 @@ def main() -> int:
             ok += 1
 
     print(f"Tracker guard — {len(files)} html · {ok} ok · {stubs} redirect-stubs · "
-          f"{len(missing_pixel)} no-pixel · {len(missing_beacon)} blog-no-beacon")
-    if missing_pixel or missing_beacon:
+          f"{len(missing_pixel)} no-pixel · {len(missing_beacon)} blog-no-beacon · "
+          f"{len(unreadable)} unreadable")
+    if unreadable or missing_pixel or missing_beacon:
+        if unreadable:
+            print("\n❌ HTML files that could not be read:")
+            for rel, error in unreadable:
+                print(f"    - {rel}: {error}")
         if missing_pixel:
             print("\n❌ Pages missing the Meta Pixel (js/pixel.js):")
             for m in missing_pixel:
