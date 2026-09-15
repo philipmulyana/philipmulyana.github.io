@@ -75,11 +75,18 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertNotIn("setTimeout", JS)
         self.assertNotIn("sessionStorage", JS)
 
+    def test_requested_workbook_bullet_is_removed_and_guarantee_is_prominent(self):
+        self.assertNotIn("Dana dan setoran keluarga cukup dimasukkan satu kali.", HTML)
+        self.assertGreaterEqual(HTML.count("7-Day Money-Back Guarantee"), 3)
+        self.assertIn("Kalau setelah membeli kamu merasa course ini tidak cocok", HTML)
+        self.assertRegex(CSS, r"\.guarantee-cue\{[^}]*")
+        self.assertRegex(CSS, r"\.guarantee-box\{[^}]*")
+
     def test_price_access_support_refund_and_next_step_are_clear(self):
         required = [
             "Harga satu kali", "tidak ada biaya berlangganan",
             "selama materi dan platform masih tersedia",
-            "Refund dapat diajukan maksimal 7 hari kalender",
+            "7-Day Money-Back Guarantee",
             "hello@philipmulyana.com", "checkout Mayar",
             "memilih metode pembayaran", "Kebijakan Privasi",
             "Ketentuan Produk", "Batas edukasi"
