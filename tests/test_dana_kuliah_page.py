@@ -54,13 +54,13 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertIn("Course online mandiri", HTML)
         self.assertIn("Workbook Rencana Pendidikan Keluarga", HTML)
         self.assertIn("Rp149.000", HTML)
-        self.assertIn("Contoh fiktif • bukan testimonial", HTML)
+
 
     def test_every_primary_cta_is_literal_and_opens_the_real_checkout(self):
         ctas = [a for a in self.parser.links if "purchase-cta" in a.get("class", "").split()]
-        self.assertEqual(len(ctas), 2)
+        self.assertEqual(len(ctas), 4)
         self.assertTrue(all(a.get("href") == CHECKOUT for a in ctas))
-        self.assertEqual(HTML.count(f">{CTA}</a>"), 2)
+        self.assertEqual(HTML.count(f">{CTA}</a>"), 4)
         self.assertNotIn("preventDefault", JS)
 
     def test_production_contains_no_staging_or_fake_social_proof(self):
@@ -75,8 +75,13 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertNotIn("setTimeout", JS)
         self.assertNotIn("sessionStorage", JS)
 
-    def test_requested_workbook_bullet_is_removed_and_guarantee_is_prominent(self):
-        self.assertNotIn("Dana dan setoran keluarga cukup dimasukkan satu kali.", HTML)
+    def test_requested_sections_are_removed_and_guarantee_is_prominent(self):
+        self.assertNotIn('class="workbook-proof', HTML)
+        self.assertNotIn("Isi datanya di satu tab. Lihat hasilnya di tab yang lain.", HTML)
+        self.assertNotIn('class="scope-card"', HTML)
+        self.assertNotIn("Batas produk dan akses", HTML)
+        self.assertIn('class="conversion-bridge', HTML)
+        self.assertIn('class="final-cta', HTML)
         self.assertGreaterEqual(HTML.count("7-Day Money-Back Guarantee"), 3)
         self.assertIn("Kalau setelah membeli kamu merasa course ini tidak cocok", HTML)
         self.assertRegex(CSS, r"\.guarantee-cue\{[^}]*")
@@ -89,7 +94,7 @@ class DanaKuliahProductionPage(unittest.TestCase):
             "7-Day Money-Back Guarantee",
             "hello@philipmulyana.com", "checkout Mayar",
             "memilih metode pembayaran", "Kebijakan Privasi",
-            "Ketentuan Produk", "Batas edukasi"
+            "Kebijakan Refund", "Batas edukasi"
         ]
         for token in required:
             self.assertIn(token, HTML)
