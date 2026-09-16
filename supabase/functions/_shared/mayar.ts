@@ -18,7 +18,12 @@ export type NormalizedMayarWebhook = {
   updatedAt: string;
 };
 
-export type VerifiedPayment = {
+export type MayarCustomerLookup = {
+  customerName: string;
+  customerEmail: string;
+};
+
+export type VerifiedAccess = {
   transactionId: string;
   productId: string;
   amount: number;
@@ -53,11 +58,14 @@ function isoTimestamp(value: unknown, label: string): string {
   return new Date(milliseconds).toISOString();
 }
 
-export function normalizeMayarWebhook(payload: unknown): NormalizedMayarWebhook {
+function webhookData(payload: unknown): JsonObject {
   const root = object(payload, 'payload');
   if (root.event !== 'payment.received') throw new Error('unsupported event');
+  return object(root.data, 'data');
+}
 
-  const data = object(root.data, 'data');
+export function normalizeMayarWebhook(payload: unknown): NormalizedMayarWebhook {
+  const data = webhookData(payload);
   const normalized: NormalizedMayarWebhook = {
     transactionId: text(data.transactionId, 'data.transactionId'),
     productId: text(data.productId, 'data.productId'),
@@ -70,9 +78,17 @@ export function normalizeMayarWebhook(payload: unknown): NormalizedMayarWebhook 
 
   if (normalized.productId !== DANA_KULIAH.productId) throw new Error('wrong product');
   if (normalized.productType.toLowerCase() !== DANA_KULIAH.productType) throw new Error('wrong product type');
-  if (normalized.transactionStatus !== 'paid') throw new Error('payment is not paid');
-  if (normalized.amount !== DANA_KULIAH.amount) throw new Error('wrong amount');
+  if (!['paid', 'settled'].includes(normalized.transactionStatus)) throw new Error('transaction is not complete');
+  if (normalized.amount < 0) throw new Error('amount cannot be negative');
   return normalized;
+}
+
+export function extractMayarCustomerLookup(payload: unknown): MayarCustomerLookup {
+  const data = webhookData(payload);
+  return {
+    customerName: text(data.customerName, 'data.customerName'),
+    customerEmail: text(data.customerEmail, 'data.customerEmail'),
+  };
 }
 
 export function extractMcpJson(message: unknown): JsonObject {
@@ -83,45 +99,65 @@ export function extractMcpJson(message: unknown): JsonObject {
     return item && typeof item === 'object' && (item as JsonObject).type === 'text';
   }) as JsonObject | undefined;
   if (!part || typeof part.text !== 'string') throw new Error('MCP text result is missing');
-  const parsed = JSON.parse(part.text);
-  return object(parsed, 'MCP JSON result');
+  return object(JSON.parse(part.text), 'MCP JSON result');
 }
 
-export function verifyPaidDanaKuliahTransaction(
+function findTransaction(value: unknown, transactionId: string): JsonObject | null {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = findTransaction(item, transactionId);
+      if (found) return found;
+    }
+    return null;
+  }
+  if (!value || typeof value !== 'object') return null;
+  const item = value as JsonObject;
+  if (item.transactionId === transactionId && 'status' in item && 'amount' in item) return item;
+  for (const child of Object.values(item)) {
+    const found = findTransaction(child, transactionId);
+    if (found) return found;
+  }
+  return null;
+}
+
+export function verifyDanaKuliahAccess(
   webhook: NormalizedMayarWebhook,
   readbackPayload: unknown,
-): VerifiedPayment {
+): VerifiedAccess {
   const root = object(readbackPayload, 'readback');
   if (root.statusCode !== 200) throw new Error('Mayar readback failed');
-  const data = object(root.data, 'readback.data');
-  const paymentLink = object(data.paymentLink, 'readback.data.paymentLink');
+  const transaction = findTransaction(root.data, webhook.transactionId);
+  if (!transaction) throw new Error('transaction mismatch');
 
-  const transactionId = text(data.id, 'readback.data.id');
-  const status = text(data.status, 'readback.data.status').toLowerCase();
-  const readbackAmount = amount(data.amount, 'readback.data.amount');
-  const linkAmount = amount(paymentLink.amount, 'readback.data.paymentLink.amount');
-  const linkId = text(paymentLink.id, 'readback.data.paymentLink.id');
-  const link = text(paymentLink.link, 'readback.data.paymentLink.link');
-  const type = text(paymentLink.type, 'readback.data.paymentLink.type').toLowerCase();
+  const status = text(transaction.status, 'readback.transaction.status').toLowerCase();
+  const readbackAmount = amount(transaction.amount, 'readback.transaction.amount');
+  const paymentLink = transaction.paymentLink && typeof transaction.paymentLink === 'object'
+    ? transaction.paymentLink as JsonObject
+    : {};
+  const linkId = text(
+    transaction.paymentLinkId ?? paymentLink.id,
+    'readback.transaction.paymentLinkId',
+  );
+  const type = text(
+    transaction.balanceHistoryType,
+    'readback.transaction.balanceHistoryType',
+  ).toLowerCase();
 
-  if (transactionId !== webhook.transactionId) throw new Error('transaction mismatch');
-  if (status !== 'paid') throw new Error('readback is not paid');
-  if (readbackAmount !== DANA_KULIAH.amount || linkAmount !== DANA_KULIAH.amount) {
-    throw new Error('readback amount mismatch');
-  }
-  if (
-    linkId !== DANA_KULIAH.productId ||
-    link !== DANA_KULIAH.slug ||
-    type !== DANA_KULIAH.productType
-  ) {
+  if (!['paid', 'settled'].includes(status)) throw new Error('readback transaction is not complete');
+  if (readbackAmount !== webhook.amount) throw new Error('readback amount mismatch');
+  if (readbackAmount < 0) throw new Error('readback amount cannot be negative');
+  if (linkId !== DANA_KULIAH.productId || type !== DANA_KULIAH.productType) {
     throw new Error('readback product mismatch');
   }
 
   return {
-    transactionId,
+    transactionId: webhook.transactionId,
     productId: DANA_KULIAH.productId,
-    amount: DANA_KULIAH.amount,
+    amount: readbackAmount,
     paymentStatus: 'paid',
-    paidAt: isoTimestamp(data.updatedAt, 'readback.data.updatedAt'),
+    paidAt: isoTimestamp(
+      transaction.updatedAt ?? transaction.createdAt,
+      'readback.transaction.timestamp',
+    ),
   };
 }

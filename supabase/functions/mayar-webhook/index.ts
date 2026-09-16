@@ -1,9 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { callMayarReadTool } from '../_shared/mcp-sse.ts';
 import {
+  DANA_KULIAH,
+  extractMayarCustomerLookup,
   extractMcpJson,
   normalizeMayarWebhook,
-  verifyPaidDanaKuliahTransaction,
+  verifyDanaKuliahAccess,
 } from '../_shared/mayar.ts';
 
 const jsonHeaders = { 'Content-Type': 'application/json; charset=utf-8' };
@@ -42,17 +44,26 @@ Deno.serve(async (request) => {
   try {
     const body = await request.text();
     if (body.length > 32_768) return json(413, { error: 'payload_too_large' });
-    const webhook = normalizeMayarWebhook(JSON.parse(body));
+    const payload = JSON.parse(body);
+    const webhook = normalizeMayarWebhook(payload);
+    const customer = extractMayarCustomerLookup(payload);
 
     const mcpAuthorization = Deno.env.get('MAYAR_MCP_AUTHORIZATION') ?? '';
     if (!mcpAuthorization) return json(503, { error: 'verification_unavailable' });
 
     const mcpMessage = await callMayarReadTool(
       mcpAuthorization,
-      'get_payment_detail',
-      { uuId: webhook.transactionId },
+      'get_latest_transactions_by_customer',
+      {
+        customerName: customer.customerName,
+        customerEmail: customer.customerEmail,
+        productName: DANA_KULIAH.productName,
+        productLink: DANA_KULIAH.slug,
+        page: 1,
+        pageSize: 50,
+      },
     );
-    const verified = verifyPaidDanaKuliahTransaction(webhook, extractMcpJson(mcpMessage));
+    const verified = verifyDanaKuliahAccess(webhook, extractMcpJson(mcpMessage));
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
