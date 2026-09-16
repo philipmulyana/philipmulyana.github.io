@@ -71,6 +71,7 @@ class SupabaseSocialProofContract(unittest.TestCase):
         self.assertIn('aria-label="Tutup notifikasi pembelian"', html)
         self.assertIn("orang tua membeli Online Course ini dalam 7 hari terakhir", html)
         self.assertIn("Seseorang baru saja membeli Online Course Dana Kuliah", html)
+        self.assertNotIn("Pembelian terverifikasi", html + js)
         self.assertIn("paid_count_7d", js)
         self.assertIn("latest_purchase_at", js)
         self.assertIn("sessionStorage", js)
