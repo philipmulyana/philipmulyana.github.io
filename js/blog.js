@@ -38,12 +38,14 @@ async function loadBlog() {
         const res = await fetch(MODAL_API);
         if (res.ok) {
             const data = await res.json();
-            const apiPosts = (data.posts || []).map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
+            if (Array.isArray(data.posts) && data.posts.length > 0) {
+                const apiPosts = data.posts.map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
 
-            // Merge: keep blog.json news, replace airtable posts with API data
-            const blogJsonOnly = allItems.filter(i => i.source === 'blog_json');
-            allItems = [...blogJsonOnly, ...apiPosts];
-            sortAndRender();
+                // Merge: keep blog.json news, replace static posts only with valid API data.
+                const blogJsonOnly = allItems.filter(i => i.source === 'blog_json');
+                allItems = [...blogJsonOnly, ...apiPosts];
+                sortAndRender();
+            }
         }
     } catch (err) {
         // Modal API unavailable, static data is already shown
