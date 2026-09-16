@@ -119,7 +119,7 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertRegex(CSS, r"@media\(max-width:600px\).*?\.button\{[^}]*min-height:58px")
         self.assertIn("@media(prefers-reduced-motion:reduce)", CSS)
         self.assertIn('id="purchase-notification-live"', HTML)
-        self.assertIn('aria-label="Tutup notifikasi akses"', HTML)
+        self.assertIn('aria-label="Tutup notifikasi pembelian"', HTML)
 
     def test_assets_are_local_optimized_and_present(self):
         sources = re.findall(r'<img[^>]+src="([^"]+)"', HTML)

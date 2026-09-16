@@ -68,9 +68,9 @@ class SupabaseSocialProofContract(unittest.TestCase):
         self.assertIn('aria-live="polite"', html)
         self.assertIn('id="purchase-notification-live"', html)
         self.assertIn('aria-hidden="true"', html)
-        self.assertIn('aria-label="Tutup notifikasi akses"', html)
-        self.assertIn("akses Dana Kuliah dalam 7 hari terakhir", html)
-        self.assertIn("Seseorang baru saja mendapat akses Dana Kuliah", html)
+        self.assertIn('aria-label="Tutup notifikasi pembelian"', html)
+        self.assertIn("orang tua membeli Online Course ini dalam 7 hari terakhir", html)
+        self.assertIn("Seseorang baru saja membeli Online Course Dana Kuliah", html)
         self.assertIn("paid_count_7d", js)
         self.assertIn("latest_purchase_at", js)
         self.assertIn("sessionStorage", js)
@@ -85,7 +85,7 @@ class SupabaseSocialProofContract(unittest.TestCase):
         policy = self.text(ROOT / "privacy-policy" / "index.html")
         for token in (
             "Mayar", "Supabase", "status pembayaran",
-            "statistik akses anonim", "16 September 2026"
+            "statistik pembelian anonim", "16 September 2026"
         ):
             self.assertIn(token, policy)
 
