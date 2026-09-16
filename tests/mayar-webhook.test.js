@@ -86,6 +86,12 @@ test('accepts a paid Dana Kuliah transaction', () => {
   assert.equal(verified.amount, DANA_KULIAH.amount);
 });
 
+test('deduplicates Mayar internal event ids to the canonical checkout transaction id', () => {
+  const webhook = normalizeMayarWebhook(validWebhook({ transactionId: 'ledger-entry-id' }));
+  const verified = verifyDanaKuliahAccess(webhook, validReadback());
+  assert.equal(verified.transactionId, TRANSACTION_ID);
+});
+
 test('rejects wrong event, product, unfinished status, negative amount, or transaction identifier', () => {
   const invalidPayloads = [
     { ...validWebhook(), event: 'payment.created' },

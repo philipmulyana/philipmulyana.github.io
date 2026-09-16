@@ -112,7 +112,11 @@ function findTransaction(value: unknown, transactionId: string): JsonObject | nu
   }
   if (!value || typeof value !== 'object') return null;
   const item = value as JsonObject;
-  if (item.transactionId === transactionId && 'status' in item && 'amount' in item) return item;
+  if (
+    (item.id === transactionId || item.transactionId === transactionId)
+    && 'status' in item
+    && 'amount' in item
+  ) return item;
   for (const child of Object.values(item)) {
     const found = findTransaction(child, transactionId);
     if (found) return found;
@@ -149,9 +153,13 @@ export function verifyDanaKuliahAccess(
   if (linkId !== DANA_KULIAH.productId || type !== DANA_KULIAH.productType) {
     throw new Error('readback product mismatch');
   }
+  const canonicalTransactionId = text(
+    transaction.transactionId,
+    'readback.transaction.transactionId',
+  );
 
   return {
-    transactionId: webhook.transactionId,
+    transactionId: canonicalTransactionId,
     productId: DANA_KULIAH.productId,
     amount: readbackAmount,
     paymentStatus: 'paid',
