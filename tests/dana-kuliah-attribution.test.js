@@ -34,6 +34,9 @@ function runPage({ search = '', hrefs = [checkout] } = {}) {
     fbq: (...args) => fbqCalls.push(args),
   };
   const document = {
+    querySelector() {
+      return null;
+    },
     querySelectorAll(selector) {
       assert.equal(selector, '.purchase-cta');
       return links;

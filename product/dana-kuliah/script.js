@@ -102,10 +102,10 @@
 
   const relativeTime = (timestamp) => {
     const minutes = Math.max(0, Math.floor((Date.now() - timestamp.getTime()) / 60000));
-    if (minutes < 1) return 'Transaksi terverifikasi kurang dari 1 menit lalu.';
-    if (minutes < 60) return `Transaksi terverifikasi ${minutes} menit lalu.`;
+    if (minutes < 1) return 'Akses terverifikasi kurang dari 1 menit lalu.';
+    if (minutes < 60) return `Akses terverifikasi ${minutes} menit lalu.`;
     const hours = Math.floor(minutes / 60);
-    return `Transaksi terverifikasi ${hours} jam lalu.`;
+    return `Akses terverifikasi ${hours} jam lalu.`;
   };
 
   const startDismissTimer = () => {
@@ -133,7 +133,7 @@
     notice.setAttribute('aria-hidden', 'false');
     rememberShown();
     window.requestAnimationFrame(() => {
-      liveRegion.textContent = `Seseorang membeli Course Dana Kuliah. ${timeText}`;
+      liveRegion.textContent = `Seseorang baru saja mendapat akses Dana Kuliah. ${timeText}`;
     });
     startDismissTimer();
   };

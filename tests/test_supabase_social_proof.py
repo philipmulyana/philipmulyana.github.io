@@ -31,12 +31,14 @@ class SupabaseSocialProofContract(unittest.TestCase):
         source = self.text(WEBHOOK)
         required = [
             "MAYAR_WEBHOOK_SECRET", "MAYAR_MCP_AUTHORIZATION",
-            "verifyPaidDanaKuliahTransaction", "get_payment_detail",
+            "verifyDanaKuliahAccess", "extractMayarCustomerLookup",
+            "get_latest_transactions_by_customer",
             ".insert", "23505", "SUPABASE_SERVICE_ROLE_KEY",
         ]
         for token in required:
             self.assertIn(token, source)
         self.assertNotIn("upsert", source)
+        self.assertIn("amount >= 0", "\n".join(p.read_text() for p in MIGRATIONS.glob("*.sql")))
         mcp = self.text(ROOT / "supabase" / "functions" / "_shared" / "mcp-sse.ts")
         self.assertGreaterEqual(mcp.count("controller.signal"), 4)
         self.assertNotRegex(source, r"console\.(log|info)\([^\n]*(body|payload|customer)")
@@ -66,8 +68,9 @@ class SupabaseSocialProofContract(unittest.TestCase):
         self.assertIn('aria-live="polite"', html)
         self.assertIn('id="purchase-notification-live"', html)
         self.assertIn('aria-hidden="true"', html)
-        self.assertIn('aria-label="Tutup notifikasi pembelian"', html)
-        self.assertIn("pembelian terverifikasi dalam 7 hari terakhir", html)
+        self.assertIn('aria-label="Tutup notifikasi akses"', html)
+        self.assertIn("akses Dana Kuliah dalam 7 hari terakhir", html)
+        self.assertIn("Seseorang baru saja mendapat akses Dana Kuliah", html)
         self.assertIn("paid_count_7d", js)
         self.assertIn("latest_purchase_at", js)
         self.assertIn("sessionStorage", js)
@@ -82,7 +85,7 @@ class SupabaseSocialProofContract(unittest.TestCase):
         policy = self.text(ROOT / "privacy-policy" / "index.html")
         for token in (
             "Mayar", "Supabase", "status pembayaran",
-            "statistik pembelian anonim", "16 September 2026"
+            "statistik akses anonim", "16 September 2026"
         ):
             self.assertIn(token, policy)
 
