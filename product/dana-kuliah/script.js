@@ -44,10 +44,9 @@
   const countCard = document.querySelector('#verified-purchase-count');
   const countValue = document.querySelector('#verified-purchase-count-value');
   const notice = document.querySelector('#purchase-notification');
-  const noticeTime = document.querySelector('#purchase-notification-time');
   const liveRegion = document.querySelector('#purchase-notification-live');
   const closeButton = notice?.querySelector('.purchase-notification-close');
-  if (!countCard || !countValue || !notice || !noticeTime || !liveRegion || !closeButton) return;
+  if (!countCard || !countValue || !notice || !liveRegion || !closeButton) return;
 
   const shownKey = 'dana-kuliah-purchase-notification-shown';
   let shownInMemory = false;
@@ -100,13 +99,6 @@
     });
   };
 
-  const relativeTime = (timestamp) => {
-    const minutes = Math.max(0, Math.floor((Date.now() - timestamp.getTime()) / 60000));
-    if (minutes < 1) return 'Pembelian terverifikasi kurang dari 1 menit lalu.';
-    if (minutes < 60) return `Pembelian terverifikasi ${minutes} menit lalu.`;
-    const hours = Math.floor(minutes / 60);
-    return `Pembelian terverifikasi ${hours} jam lalu.`;
-  };
 
   const startDismissTimer = () => {
     clearHideTimer();
@@ -119,9 +111,6 @@
 
   const tryToShow = () => {
     if (!readyToShow || !verifiedLatestPurchase || wasShown() || document.hidden) return;
-    const timeText = relativeTime(verifiedLatestPurchase);
-    noticeTime.textContent = timeText;
-
     notice.style.visibility = 'hidden';
     notice.hidden = false;
     if (notificationOverlapsPurchaseAction()) {
@@ -133,7 +122,7 @@
     notice.setAttribute('aria-hidden', 'false');
     rememberShown();
     window.requestAnimationFrame(() => {
-      liveRegion.textContent = `Seseorang baru saja membeli Online Course Dana Kuliah. ${timeText}`;
+      liveRegion.textContent = 'Seseorang baru saja membeli Online Course Dana Kuliah';
     });
     startDismissTimer();
   };
