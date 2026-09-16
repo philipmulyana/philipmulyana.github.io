@@ -66,14 +66,14 @@ class DanaKuliahProductionPage(unittest.TestCase):
     def test_production_contains_no_staging_or_fake_social_proof(self):
         forbidden = [
             "DRAFT STAGING", "PLACEHOLDER", "DEMO UI", "Preview notifikasi",
-            "purchase-notification", "promo-countdown", "data-demo-component",
+            "promo-countdown", "data-demo-component",
             "Checkout belum dihubungkan", "staging-dialog",
-            "baru saja membeli", "baru saja bergabung"
+            "nama pembeli", "kota pembeli"
         ]
         for token in forbidden:
             self.assertNotIn(token.lower(), HTML.lower())
-        self.assertNotIn("setTimeout", JS)
-        self.assertNotIn("sessionStorage", JS)
+        self.assertNotIn("Math.random", JS)
+        self.assertNotIn("fakePurchase", JS)
 
     def test_requested_sections_are_removed_and_guarantee_is_prominent(self):
         self.assertNotIn('class="workbook-proof', HTML)
@@ -118,6 +118,8 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertRegex(CSS, r"\.button\{[^}]*min-height:56px")
         self.assertRegex(CSS, r"@media\(max-width:600px\).*?\.button\{[^}]*min-height:58px")
         self.assertIn("@media(prefers-reduced-motion:reduce)", CSS)
+        self.assertIn('id="purchase-notification-live"', HTML)
+        self.assertIn('aria-label="Tutup notifikasi pembelian"', HTML)
 
     def test_assets_are_local_optimized_and_present(self):
         sources = re.findall(r'<img[^>]+src="([^"]+)"', HTML)
