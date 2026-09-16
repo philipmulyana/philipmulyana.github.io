@@ -111,21 +111,12 @@ test('decorates every purchase CTA', () => {
   }
 });
 
-test('keeps one InitiateCheckout event per click with the approved payload', () => {
+test('delegates InitiateCheckout to Mayar and does not fire it from the landing page', () => {
   const { links, fbqCalls } = runPage();
 
-  assert.equal(links[0].listeners.get('click').length, 1);
+  assert.equal(links[0].listeners.has('click'), false);
   links[0].click();
-  assert.equal(fbqCalls.length, 1);
-  assert.equal(fbqCalls[0][0], 'track');
-  assert.equal(fbqCalls[0][1], 'InitiateCheckout');
-  assert.deepEqual(
-    JSON.parse(JSON.stringify(fbqCalls[0][2])),
-    {
-      content_name: 'Course Dana Kuliah',
-      currency: 'IDR',
-      value: 149000,
-    }
-  );
+  assert.equal(fbqCalls.length, 0);
+  assert.doesNotMatch(source, /['"]InitiateCheckout['"]/);
   assert.doesNotMatch(source, /['"](?:PageView|Purchase)['"]/);
 });

@@ -103,9 +103,7 @@ class DanaKuliahProductionPage(unittest.TestCase):
         self.assertIn('<meta name="robots" content="noindex,nofollow">', HTML)
         self.assertIn('rel="canonical" href="https://philipmulyana.com/product/dana-kuliah/"', HTML)
         self.assertIn('<script src="/js/pixel.js"></script>', HTML)
-        self.assertIn("InitiateCheckout", JS)
-        self.assertIn("value: 149000", JS)
-        self.assertIn("currency: 'IDR'", JS)
+        self.assertNotIn("InitiateCheckout", JS)
 
     def test_accessibility_basics(self):
         self.assertEqual(len(self.parser.h1), 1)
