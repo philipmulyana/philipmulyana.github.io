@@ -160,11 +160,33 @@ class ConsultationContract(unittest.TestCase):
         ):
             self.assertNotIn(rejected, self.html)
 
-    def test_unverified_testimonials_are_not_published(self):
+    def test_existing_testimonials_are_published_verbatim_near_first_call(self):
         testimonials = json.loads(read("data/testimonials.json"))
-        for testimonial in testimonials:
-            self.assertNotIn(testimonial["text"], self.html)
-            self.assertNotIn(testimonial["name"], self.html)
+        selected = testimonials[:3]
+        withheld = testimonials[3:]
+
+        for page in ("index.html", "consultation.html"):
+            with self.subTest(page=page):
+                html = read(page)
+                section_match = re.search(
+                    r'<section[^>]+id="first-call".*?</section>', html, re.S
+                )
+                self.assertIsNotNone(section_match)
+                assert section_match is not None
+                section = section_match.group(0)
+
+                self.assertIn('Pengalaman berdiskusi dengan Philip', section)
+                self.assertEqual(section.count('<blockquote'), 3)
+                self.assertNotIn('Testimonial First Call', section)
+                self.assertNotIn('carousel', section.lower())
+
+                for testimonial in selected:
+                    self.assertEqual(section.count(testimonial["text"]), 1)
+                    self.assertEqual(section.count(testimonial["name"]), 1)
+
+                for testimonial in withheld:
+                    self.assertNotIn(testimonial["text"], section)
+                    self.assertNotIn(testimonial["name"], section)
 
 
 class BlogContract(unittest.TestCase):

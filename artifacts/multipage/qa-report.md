@@ -9,6 +9,7 @@ Branch: `feat/multipage-brand-system`
 - About Me rewrite from verified bio
 - Blog visual redesign with editorial preservation
 - Consultation rewrite around First Call
+- Three existing consultation testimonials shown verbatim near First Call
 - Tools catalog redesign without formula changes
 - Local Barlow design system and article reading shell
 
@@ -62,6 +63,8 @@ Desktop 1440×900:
 - `artifacts/multipage/screenshots/home-desktop.png`
 - `artifacts/multipage/screenshots/about-desktop.png`
 - `artifacts/multipage/screenshots/consultation-desktop.png`
+- `artifacts/multipage/screenshots/home-testimonials-desktop.png`
+- `artifacts/multipage/screenshots/consultation-testimonials-desktop.png`
 - `artifacts/multipage/screenshots/tools-desktop.png`
 
 Mobile 390×844:
@@ -69,10 +72,12 @@ Mobile 390×844:
 - `artifacts/multipage/screenshots/home-mobile.png`
 - `artifacts/multipage/screenshots/blog-mobile.png`
 - `artifacts/multipage/screenshots/consultation-mobile.png`
+- `artifacts/multipage/screenshots/home-testimonials-mobile.png`
+- `artifacts/multipage/screenshots/consultation-testimonials-mobile.png`
 
 ## Intentional safeguards
 
-- Testimonials are **not published** because the repository does not contain proof of website-publication permission.
+- Three existing testimonial names and quotes from `data/testimonials.json` are published verbatim under the honest label **“Pengalaman berdiskusi dengan Philip”**. They are not described as First Call testimonials, and publication authorization is owner-managed.
 - Policy Review is shown only as a possible step after First Call, not as a parallel entry CTA.
 - Individual tool formulas and assumptions are unchanged.
 - Hosted Mayar checkout and product route behavior are unchanged.

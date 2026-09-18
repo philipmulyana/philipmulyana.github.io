@@ -3,6 +3,7 @@
 - menyusun ulang homepage menjadi Hero → pengalaman/kredensial → Artikel Terbaru → Online Course → First Call → Tentang Philip
 - menyederhanakan header menjadi logo + Konsultasi
 - mengganti entry consultation menjadi First Call dan menempatkan Policy Review hanya sebagai kemungkinan tahap lanjut
+- menampilkan tiga testimonial konsultasi existing secara verbatim dekat First Call dengan label “Pengalaman berdiskusi dengan Philip”
 - membuat ulang About dan Konsultasi berdasarkan brief/copy terverifikasi
 - redesign katalog Tools tanpa mengubah formula enam tool
 - redesign Blog dan 42 reading shells tanpa mengubah copy editorial, CTA, URL, atau canonical
@@ -10,7 +11,7 @@
 
 ## Batasan yang sengaja dijaga
 
-- Testimonial belum ditampilkan karena repository tidak menyimpan bukti izin publikasi website.
+- Testimonial tidak ditulis ulang dan tidak diklaim sebagai pengalaman First Call; izin publikasi dikelola oleh pemilik website.
 - Blog hanya berubah secara visual/teknis. Perbandingan otomatis terhadap `main` menemukan 0 perbedaan editorial pada 42 artikel aktif.
 - Individual tool formulas/assumptions tidak berubah.
 - Mayar checkout dan entitlement flow tidak berubah.
@@ -25,6 +26,7 @@
 - [x] Calendly First Call returned HTTP 200
 - [x] 1440×900 desktop screenshots
 - [x] 390×844 mobile screenshots
+- [x] testimonial screenshots at 1440px and 390px with no clipping or overlap
 - [x] no horizontal overflow on checked routes
 - [x] one H1, no broken images, one Meta Pixel loader on checked routes
 - [x] browser console: no JavaScript errors
