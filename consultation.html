@@ -1,203 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insurance Consultation — Philip Mulyana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
-    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-    <script src="js/pixel.js"></script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
-        }
-    </script>
-    <style>
-        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ceritakan situasimu dalam First Call gratis 10 menit lewat telepon dan lihat apakah Konsultasi Asuransi bersama Philip Mulyana relevan untukmu.">
+  <title>Konsultasi Asuransi &amp; First Call | Philip Mulyana</title>
+  <link rel="canonical" href="https://philipmulyana.com/consultation.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site/site.css">
+  <script src="/js/sanitize-attribution.js"></script>
+  <script src="/js/pixel.js"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wjulbbpfmx");</script>
 </head>
-<body class="bg-white text-black font-sans antialiased">
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+  <header class="site-header">
+    <div class="container navigation">
+      <a class="brand" href="/" aria-label="Philip Mulyana — Homepage"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181"></a>
+      <nav aria-label="Navigasi utama"><a href="/consultation.html" aria-current="page">Konsultasi</a></nav>
+    </div>
+  </header>
 
-    <div id="navbar-placeholder"></div>
-
-    <!-- 1. Hero -->
-    <section class="pt-32 pb-12 px-6">
-        <div class="max-w-3xl mx-auto text-center">
-            <span class="text-xs text-gray-400 uppercase tracking-wider">Insurance Consultation</span>
-            <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2">Bingung Pilih Asuransi?<br>Mulai dari Sini.</h1>
-            <p class="text-gray-500 mt-4 max-w-xl mx-auto">Konsultasi gratis 10 menit. Tanpa kewajiban beli.</p>
-        </div>
+  <main id="main-content">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Konsultasi Asuransi</span>
+        <h1>Cari langkah perlindungan yang sesuai tanpa harus memutuskan semuanya sekaligus.</h1>
+        <p>Konsultasi Asuransi cocok untuk kamu yang ingin memahami kebutuhan perlindungan dengan lebih jelas—terutama saat tanggungan bertambah, sudah memiliki polis, atau belum yakin langkah mana yang relevan.</p>
+        <div class="actions"><a class="button button-red" href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>Jadwalkan First Call</a></div>
+        <p style="margin-top:18px;font-size:16px">Gratis 10 menit lewat telepon. Ceritakan situasimu dan lihat apakah Konsultasi Asuransi relevan untukmu.</p>
+      </div>
     </section>
 
-    <!-- 2a. Testimonials Summary (rating distribution + click to expand) -->
-    <section class="px-6 pb-12 fade-up">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-2xl font-black uppercase tracking-tight text-center mb-8">What Clients Say</h2>
-            <div id="testimonials-summary">
-                <!-- Skeleton while loading -->
-                <div class="bg-gray-50 rounded-3xl p-8 animate-pulse">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <div class="h-12 bg-gray-200 rounded w-32"></div>
-                            <div class="h-4 bg-gray-200 rounded w-40"></div>
-                            <div class="h-3 bg-gray-200 rounded w-48"></div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="h-3 bg-gray-200 rounded"></div>
-                            <div class="h-3 bg-gray-200 rounded"></div>
-                            <div class="h-3 bg-gray-200 rounded"></div>
-                            <div class="h-3 bg-gray-200 rounded"></div>
-                            <div class="h-3 bg-gray-200 rounded"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="section section-dark" id="first-call" aria-labelledby="first-call-heading">
+      <div class="container">
+        <div class="first-call-panel">
+          <div>
+            <span class="eyebrow">Langkah pertama</span>
+            <h2 id="first-call-heading">First Call.</h2>
+            <p class="lead">First Call adalah panggilan gratis selama 10 menit untuk mendengar situasimu dan melihat apakah Konsultasi Asuransi relevan sebelum masuk ke sesi berikutnya.</p>
+            <dl class="fact-grid" style="border-color:#555">
+              <div class="fact"><dt>Format</dt><dd>Telepon</dd></div>
+              <div class="fact"><dt>Durasi</dt><dd>10 menit</dd></div>
+              <div class="fact"><dt>Biaya</dt><dd>Gratis</dd></div>
+            </dl>
+            <div class="actions"><a class="button button-light" href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>Jadwalkan First Call</a></div>
+          </div>
+          <div>
+            <h3 style="font-size:30px;margin-top:0">Apa yang terjadi dalam 10 menit ini?</h3>
+            <ul class="boundary-list">
+              <li>Kamu menceritakan situasi atau pertanyaan utama secara singkat.</li>
+              <li>Philip mendengarkan konteks awal yang kamu sampaikan.</li>
+              <li>Kamu dan Philip melihat apakah Konsultasi Asuransi relevan untuk dilanjutkan.</li>
+            </ul>
+            <p class="disclosure">Kamu tidak perlu menyiapkan formulir terlebih dahulu dan tidak perlu melewati WhatsApp sebelum menjadwalkan panggilan.</p>
+          </div>
         </div>
-    </section>
 
-    <!-- 2b. Featured Testimonials (5 cherry-picked, horizontal auto-scroll) -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-5xl mx-auto">
-            <div id="testimonials-featured">
-                <!-- Rendered by testimonials.js (horizontal scroll, auto-slide) -->
-            </div>
+        <div style="margin-top:90px" aria-labelledby="not-included-heading">
+          <div class="section-heading"><h2 id="not-included-heading">Bukan konsultasi lengkap dalam 10 menit.</h2><p>First Call bukan sesi diagnosis lengkap, RPG, gap map, financial plan, rekomendasi produk, proposal, perbandingan seluruh pasar, laporan, atau hasil tertulis.</p></div>
         </div>
-    </section>
 
-    <!-- 2b. Booking CTA (after testimonials) -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-2xl mx-auto text-center">
-            <div class="bg-black text-white rounded-3xl p-8 md:p-10">
-                <h2 class="text-2xl font-black mb-2">Start with a 10-Minute WhatsApp Call</h2>
-                <p class="text-gray-400 text-sm mb-6">Tanpa kewajiban. Ceritakan kebutuhan Anda, dan kita lihat apakah bisa bantu.</p>
-                <button type="button"
-                    onclick="fbq('track', 'Schedule', {content_name: 'Book a Call - Top CTA'}); Calendly.initPopupWidget({url: 'https://calendly.com/philipmulyana/first-call'}); return false;"
-                    class="inline-flex items-center bg-white text-black px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors">
-                    Book a Call
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </button>
-            </div>
+        <div id="policy-review" style="margin-top:90px" aria-labelledby="after-heading">
+          <div class="section-heading"><h2 id="after-heading">Lanjut hanya bila ada tahap yang relevan.</h2><div><p>Setelah First Call, kamu bisa melanjutkan ke tahap yang relevan, tidak melanjutkan, atau—jika sudah memiliki polis—Policy Review dapat menjadi salah satu kemungkinan tahap berikutnya.</p><p style="margin-top:18px">First Call tidak mewajibkan kamu masuk ke sesi berikutnya atau membeli produk.</p></div></div>
         </div>
-    </section>
 
-    <!-- 3. Stats -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-3xl mx-auto">
-            <div class="bg-black text-white rounded-3xl p-8 flex flex-col md:flex-row items-center justify-around gap-6">
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black">500Jt+</p>
-                    <p class="text-gray-400 text-sm mt-1">Klaim Berhasil</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black" id="stat-financial-services"></p>
-                    <p class="text-gray-400 text-sm mt-1">Tahun di Financial Services</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black" id="stat-financial-advisor"></p>
-                    <p class="text-gray-400 text-sm mt-1">Tahun sebagai Financial Advisor</p>
-                </div>
-            </div>
+        <div class="testimonial-proof" aria-labelledby="consultation-testimonials-heading">
+          <h2 id="consultation-testimonials-heading">Pengalaman berdiskusi dengan Philip</h2>
+          <div class="quote-list">
+            <figure class="quote"><blockquote><p>Ga maksa nawarin, tapi mengedukasi. Jadi kita beli asuransi itu karena kesadaran. Memberikan opsi yang sesuai kebutuhan. Tim juga membantu mengawal sampai polis terbit dan layanan after sales yang baik. Semua sudah tersistem.</p></blockquote><figcaption><cite>Aprilia</cite></figcaption></figure>
+            <figure class="quote"><blockquote><p>Penjelasan yang diberikan Ko Phillip sangat gamblang tanpa ada sesuatu yang disembunyikan. Worst case dijelaskan sebaik mungkin, dan tidak ada sugar coating nya.</p></blockquote><figcaption><cite>Dwicky S.P.</cite></figcaption></figure>
+            <figure class="quote"><blockquote><p>Ko Philip tdk jualan asuransi, tapi Koko memberikan saya informasi produk asuransi yg saya butuhkan dengan cara yg baik, informatif, komunikatif dan mudah dipahami.</p></blockquote><figcaption><cite>Fina</cite></figcaption></figure>
+          </div>
         </div>
-    </section>
 
-    <!-- 4. What You Get -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-black uppercase tracking-tight text-center mb-8">What You Get</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-gray-50 rounded-2xl p-6">
-                    <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    </div>
-                    <h3 class="font-bold mb-2">Needs Analysis</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Analisis menyeluruh terhadap kebutuhan proteksi berdasarkan kondisi finansial, tanggungan, dan tujuan Anda.</p>
-                </div>
-                <div class="bg-gray-50 rounded-2xl p-6">
-                    <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <h3 class="font-bold mb-2">Product Recommendation</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Rekomendasi produk yang sesuai kebutuhan dan budget Anda, bukan yang paling mahal atau paling menguntungkan buat saya.</p>
-                </div>
-                <div class="bg-gray-50 rounded-2xl p-6">
-                    <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
-                    </div>
-                    <h3 class="font-bold mb-2">No Pressure</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Edukasi dulu, keputusan di tangan Anda. Konsultasi ini gratis dan tanpa kewajiban untuk membeli apapun.</p>
-                </div>
-            </div>
+        <div style="margin-top:72px;padding-top:34px;border-top:1px solid #555">
+          <h2 style="font-size:28px;margin:0 0 12px">Informasi penting sebelum melanjutkan</h2>
+          <p style="margin:0;color:#c6c6c6">Philip adalah agen Prudential.</p>
+          <p class="disclosure">Pembelian produk tidak wajib. First Call digunakan untuk mendengar situasimu dan melihat apakah Konsultasi Asuransi relevan, bukan untuk mewajibkan pembelian atau memberikan rekomendasi produk dalam 10 menit.</p>
+          <div class="actions"><a class="button button-red" href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>Jadwalkan First Call</a></div>
         </div>
+      </div>
     </section>
+  </main>
 
-    <!-- 5. How It Works -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-2xl font-black uppercase tracking-tight text-center mb-8">How It Works</h2>
-            <div class="space-y-6">
-                <div class="flex gap-4">
-                    <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</div>
-                    <div>
-                        <h3 class="font-bold">Book a Call</h3>
-                        <p class="text-gray-500 text-sm mt-1">Sesi pertama via WhatsApp call selama 10 menit. Tanpa kewajiban, tanpa tekanan.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</div>
-                    <div>
-                        <h3 class="font-bold">Needs Assessment</h3>
-                        <p class="text-gray-500 text-sm mt-1">Kita review kondisi finansial, tanggungan, hutang, dan proteksi yang sudah ada.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</div>
-                    <div>
-                        <h3 class="font-bold">Personalized Plan</h3>
-                        <p class="text-gray-500 text-sm mt-1">Sesi via Zoom selama 60 menit untuk analisa kebutuhan dan rekomendasi yang sesuai situasi Anda.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. Booking CTA -->
-    <section id="consultation" class="px-6 pb-16 fade-up">
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-gray-50 rounded-3xl p-8 md:p-10 text-center">
-                <h2 class="text-2xl font-black mb-2">Start with a 10-Minute WhatsApp Call</h2>
-                <p class="text-gray-500 text-sm mb-6">Ceritakan situasi Anda, dan kita lihat langkah terbaik selanjutnya.</p>
-                <button type="button"
-                    onclick="fbq('track', 'Schedule', {content_name: 'Book a Call - Bottom CTA'}); Calendly.initPopupWidget({url: 'https://calendly.com/philipmulyana/first-call'}); return false;"
-                    class="inline-flex items-center bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                    Book a Call
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </button>
-                <p class="text-xs text-gray-400 mt-4">10 menit. Tanpa kewajiban.</p>
-            </div>
-        </div>
-    </section>
-
-    <div id="footer-placeholder"></div>
-
-    <script src="js/main.js"></script>
-    <script src="js/testimonials.js?v=20260603c"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            loadTestimonialsSummary('testimonials-summary', 'testimonials-featured', { type: 'consultation' });
-
-            // Dynamic experience years
-            const year = new Date().getFullYear();
-            document.getElementById('stat-financial-services').textContent = (year - 2008) + '+';
-            document.getElementById('stat-financial-advisor').textContent = (year - 2015) + '+';
-        });
-    </script>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181" loading="lazy"><p>Mulai dengan percakapan singkat untuk melihat apakah layanan ini relevan.</p></div>
+      <div><h2>Belajar</h2><a href="/blog.html">Artikel</a><a href="/tools/">Tools</a><a href="/product/dana-kuliah/">Online Course</a></div>
+      <div><h2>Konsultasi</h2><a href="/consultation.html">Konsultasi Asuransi</a><a href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>First Call</a></div>
+      <div><h2>Tentang</h2><a href="/about.html">Tentang Philip</a><a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer">Instagram</a><a href="/privacy-policy/">Kebijakan Privasi</a></div>
+    </div>
+  </footer>
+  <script src="/js/site.js" defer></script>
 </body>
 </html>

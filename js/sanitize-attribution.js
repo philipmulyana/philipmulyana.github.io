@@ -12,11 +12,12 @@
   const safeParams = new URLSearchParams();
   const allowedAnchors = new Set([
     'main-content',
-    'pilih',
+    'credentials',
+    'artikel-terbaru',
     'course',
+    'first-call',
+    'policy-review',
     'tentang',
-    'discovery-meeting',
-    'protection-review',
   ]);
 
   allowedAttributionFields.forEach((field) => {

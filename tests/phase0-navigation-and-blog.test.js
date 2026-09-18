@@ -17,7 +17,8 @@ function jsonResponse(payload) {
 }
 
 async function renderBlog({ apiPayload, blogArticles = [], staticPosts }) {
-  const grid = { innerHTML: '' };
+  const list = { innerHTML: '', setAttribute() {} };
+  const status = { textContent: '' };
   const fallbackPosts = staticPosts || [{
     slug: 'artikel-statis',
     title: 'Artikel statis tetap tampil',
@@ -29,8 +30,8 @@ async function renderBlog({ apiPayload, blogArticles = [], staticPosts }) {
   }];
 
   const fetch = async (url) => {
-    if (url === 'data/blog.json') return jsonResponse({ articles: blogArticles });
-    if (url === 'data/posts.json') return jsonResponse({ posts: fallbackPosts });
+    if (url === '/data/blog.json') return jsonResponse({ articles: blogArticles });
+    if (url === '/data/posts.json') return jsonResponse({ posts: fallbackPosts });
     if (url.includes('modal.run')) return jsonResponse(apiPayload);
     throw new Error(`Unexpected URL: ${url}`);
   };
@@ -38,18 +39,19 @@ async function renderBlog({ apiPayload, blogArticles = [], staticPosts }) {
   const document = {
     addEventListener() {},
     getElementById(id) {
-      assert.equal(id, 'blog-grid');
-      return grid;
+      if (id === 'blog-list') return list;
+      if (id === 'blog-status') return status;
+      throw new Error(`Unexpected id: ${id}`);
     },
     querySelectorAll() {
       return [];
     },
   };
 
-  const context = vm.createContext({ document, fetch, Date, Intl, console });
+  const context = vm.createContext({ document, fetch, Date, Intl, URL, console });
   vm.runInContext(blogSource, context);
   await context.loadBlog();
-  return grid.innerHTML;
+  return list.innerHTML;
 }
 
 test('keeps static blog posts when the background API reports an error with no posts', async () => {
@@ -58,6 +60,8 @@ test('keeps static blog posts when the background API reports an error with no p
   });
 
   assert.match(html, /Artikel statis tetap tampil/);
+  assert.match(html, /Artikel Kami · Personal Finance/);
+  assert.doesNotMatch(html, /Artikel Kami · Artikel Kami/);
   assert.doesNotMatch(html, /Tidak ada artikel di kategori ini/);
 });
 

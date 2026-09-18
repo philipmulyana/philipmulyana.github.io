@@ -11,7 +11,7 @@ test('scrubs PII and unknown fields from the address before trackers load', () =
   let replacedUrl = null;
   const window = {
     location: {
-      href: 'https://philipmulyana.com/?utm_source=meta&utm_campaign=family&fbclid=click-123&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET&unknown=value#pilih',
+      href: 'https://philipmulyana.com/?utm_source=meta&utm_campaign=family&fbclid=click-123&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET&unknown=value#first-call',
     },
     history: {
       replaceState(_state, _title, url) {
@@ -24,7 +24,7 @@ test('scrubs PII and unknown fields from the address before trackers load', () =
 
   assert.equal(
     replacedUrl,
-    '/?utm_source=meta&utm_campaign=family&fbclid=click-123#pilih',
+    '/?utm_source=meta&utm_campaign=family&fbclid=click-123#first-call',
   );
   for (const excluded of ['name', 'email', 'phone', 'whatsapp', 'coupon', 'unknown']) {
     assert.equal(new URL(replacedUrl, 'https://philipmulyana.com').searchParams.has(excluded), false);
@@ -64,8 +64,8 @@ test('drops malformed fragments without stopping the sanitizer', () => {
   assert.equal(replacedUrl, '/?utm_source=meta');
 });
 
-test('preserves approved service anchors while removing PII query fields', () => {
-  for (const anchor of ['discovery-meeting', 'protection-review']) {
+test('preserves approved public anchors while removing PII query fields', () => {
+  for (const anchor of ['first-call', 'artikel-terbaru', 'course', 'tentang', 'policy-review']) {
     let replacedUrl = null;
     const window = {
       location: { href: `https://philipmulyana.com/?email=qa@example.com#${anchor}` },
