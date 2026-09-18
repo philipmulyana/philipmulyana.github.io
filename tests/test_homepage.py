@@ -126,6 +126,14 @@ class HomepageProductionPage(unittest.TestCase):
         self.assertIn('@font-face', CSS)
         self.assertIn("font-family: 'Barlow'", CSS)
 
+    def test_portrait_frame_has_no_white_gutters_and_balanced_accent(self):
+        self.assertRegex(
+            CSS,
+            r"\.stage-portrait\{[^}]*background:var\(--black\)[^}]*\}",
+        )
+        self.assertRegex(CSS, r"\.stage::before\{[^}]*width:8px[^}]*\}")
+        self.assertRegex(CSS, r"\.stage-portrait::after\{[^}]*height:8px[^}]*\}")
+
     def test_tracking_is_preserved_without_duplicate_pixel_loader(self):
         self.assertEqual(HTML.count('/js/pixel.js'), 1)
         self.assertIn('wjulbbpfmx', HTML)

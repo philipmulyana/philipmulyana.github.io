@@ -41,8 +41,8 @@ a{color:inherit}
 .start span{display:block;margin-top:4px;color:var(--gray);font-size:15px}
 .start b{font-size:25px;font-weight:400}
 .start:hover strong{text-decoration:underline;text-underline-offset:4px}
-.stage-portrait{position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:var(--soft)}
-.stage-portrait::after{position:absolute;right:0;bottom:0;left:0;height:17px;background:var(--red);content:''}
+.stage-portrait{position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:var(--black)}
+.stage-portrait::after{position:absolute;right:0;bottom:0;left:0;height:8px;background:var(--red);content:''}
 .stage-portrait img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:grayscale(100%)}
 .proof-line{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .proof-item{padding:23px 28px}
