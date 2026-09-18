@@ -30,6 +30,7 @@ img{display:block;max-width:100%}
 .link-item-primary:hover{border-color:var(--white);background:#a90100}
 .link-label{font-size:13px;font-weight:600;line-height:1.2}
 .link-copy{display:block;min-width:0}
+.link-copy strong,.link-copy small{overflow-wrap:anywhere}
 .link-copy strong{display:block;font-size:19px;letter-spacing:-.015em;line-height:1.1}
 .link-copy small{display:block;margin-top:6px;color:#5b5b5b;font-size:13px;line-height:1.35}
 .link-item:hover .link-copy small{color:inherit;opacity:.82}

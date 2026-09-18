@@ -75,17 +75,20 @@ class FirstPartyLinksPageContract(unittest.TestCase):
         stack = re.search(r'<nav\b[^>]*class="link-stack"[^>]*>.*?</nav>', self.html, re.S)
         self.assertIsNotNone(stack)
         assert stack is not None
-        actual = re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>.*?<strong>(.*?)</strong>', stack.group(0), re.S)
+        actual = re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>.*?<strong\b[^>]*>(.*?)</strong>', stack.group(0), re.S)
         actual = [(href, re.sub(r'<[^>]+>', '', label).strip()) for href, label in actual]
         expected = [
             ("https://calendly.com/philipmulyana/first-call", "Jadwalkan First Call"),
+            ("/blog.html", "Artikel Terbaru"),
             ("https://wa.me/6281226604199", "FOR COLLAB"),
             ("https://www.youtube.com/c/philipmulyana?sub_confirmation=1", "Subscribe to My YouTube"),
             ("https://www.tiktok.com/@philipmulyana", "Follow me on TikTok"),
             ("https://www.instagram.com/philipmulyana", "Follow me on Instagram"),
-            ("https://open.spotify.com/episode/5nSN7bUIm1I4uD7VmJt7EP", "Podcast"),
         ]
         self.assertEqual(actual, expected)
+        self.assertIn('data-latest-blog', stack.group(0))
+        self.assertIn('data-latest-blog-title', stack.group(0))
+        self.assertIn('data-latest-blog-meta', stack.group(0))
         self.assertEqual(self.html.count('data-forward-attribution'), 1)
         self.assertIn('href="/"', self.html)
 
@@ -97,6 +100,8 @@ class FirstPartyLinksPageContract(unittest.TestCase):
             "First call via WA call",
             "6282123391967",
             "Join philipmulyana on Linktree",
+            "Podcast",
+            "Spotify",
         )
         for token in forbidden:
             self.assertNotIn(token.lower(), self.html.lower())
@@ -113,6 +118,7 @@ class FirstPartyLinksPageContract(unittest.TestCase):
         self.assertLess(pixel, clarity)
         self.assertEqual(self.html.count('/js/pixel.js'), 1)
         self.assertIn('/js/site.js', self.html)
+        self.assertIn('/js/links.js', self.html)
         for dependency in (
             "cdn.tailwindcss.com", "fonts.googleapis.com", "linktr.ee/",
             "jquery", "bootstrap", "swiper", "slick",
@@ -129,6 +135,7 @@ class FirstPartyLinksPageContract(unittest.TestCase):
         self.assertIn('@media (min-width: 760px)', self.css)
         self.assertIn("font-family:'Barlow'", self.css)
         self.assertIn('.link-item-primary .link-copy small{color:inherit;opacity:.9}', self.css)
+        self.assertIn('.link-copy strong,.link-copy small{overflow-wrap:anywhere}', self.css)
         self.assertNotIn("overflow-x:auto", self.css.replace(" ", ""))
 
 
