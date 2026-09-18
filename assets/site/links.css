@@ -1,0 +1,61 @@
+@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/homepage/fonts/barlow-400.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/homepage/fonts/barlow-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/homepage/fonts/barlow-700.woff2') format('woff2')}
+
+:root{--black:#000;--white:#fff;--red:#cc0100;--muted:#aaa;--line:#3f3f3f}
+*{box-sizing:border-box}
+html{background:var(--black)}
+body{min-width:320px;min-height:100vh;margin:0;background:var(--black);color:var(--white);font-family:'Barlow',Arial,sans-serif;font-size:16px;line-height:1.45;text-rendering:optimizeLegibility}
+body::before{position:fixed;z-index:0;top:0;right:0;left:0;height:5px;background:var(--red);content:''}
+a{color:inherit}
+img{display:block;max-width:100%}
+.skip-link{position:fixed;z-index:20;top:12px;left:12px;padding:10px 14px;background:var(--white);color:var(--black);transform:translateY(-180%)}
+.skip-link:focus{transform:none}
+.links-shell{position:relative;z-index:1;width:min(100% - 32px,680px);margin-inline:auto;padding:32px 0 40px}
+.identity{margin-bottom:28px}
+.identity-logo{display:block;width:116px;margin-bottom:28px}
+.identity-logo img{width:116px;height:58px;object-fit:contain;object-position:left center}
+.identity-profile{display:grid;grid-template-columns:104px minmax(0,1fr);gap:20px;align-items:end}
+.identity-portrait{position:relative;height:132px;overflow:hidden;background:#151515}
+.identity-portrait::after{position:absolute;right:0;bottom:0;left:0;height:5px;background:var(--red);content:''}
+.identity-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:grayscale(100%)}
+.identity-copy{min-width:0}
+.identity h1{margin:0;font-size:clamp(36px,11vw,54px);font-weight:700;letter-spacing:-.045em;line-height:.9}
+.identity-role{margin:10px 0 0;font-size:14px;font-weight:600;line-height:1.25}
+.identity-intro{grid-column:1/-1;margin:18px 0 0;color:#c8c8c8;font-size:16px}
+.link-stack{display:grid;gap:12px}
+.link-item{display:grid;grid-template-columns:minmax(72px,.28fr) minmax(0,1fr) 22px;gap:14px;align-items:center;min-height:88px;padding:17px 18px;border:1px solid var(--line);background:var(--white);color:var(--black);text-decoration:none;transition:background-color .16s ease,color .16s ease,border-color .16s ease}
+.link-item:hover{border-color:var(--white);background:var(--black);color:var(--white)}
+.link-item-primary{min-height:118px;border-color:var(--red);background:var(--red);color:var(--white)}
+.link-item-primary:hover{border-color:var(--white);background:#a90100}
+.link-label{font-size:13px;font-weight:600;line-height:1.2}
+.link-copy{display:block;min-width:0}
+.link-copy strong{display:block;font-size:19px;letter-spacing:-.015em;line-height:1.1}
+.link-copy small{display:block;margin-top:6px;color:#5b5b5b;font-size:13px;line-height:1.35}
+.link-item:hover .link-copy small{color:inherit;opacity:.82}
+.link-item-primary .link-copy small{color:inherit;opacity:.9}
+.link-arrow{font-size:22px;line-height:1;text-align:right}
+.links-footer{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:28px;color:var(--muted);font-size:13px}
+.links-footer a{text-underline-offset:4px}
+:focus-visible{outline:3px solid var(--red);outline-offset:4px}
+.link-item-primary:focus-visible,.identity-logo:focus-visible{outline-color:var(--white)}
+
+@media (min-width: 760px){
+  .links-shell{padding:54px 0 64px}
+  .identity{margin-bottom:34px}
+  .identity-logo{width:136px;margin-bottom:34px}
+  .identity-logo img{width:136px;height:66px}
+  .identity-profile{grid-template-columns:132px minmax(0,1fr);gap:28px}
+  .identity-portrait{height:160px}
+  .identity h1{font-size:58px}
+  .identity-role{font-size:15px}
+  .identity-intro{grid-column:2;margin-top:12px;font-size:17px}
+  .link-item{grid-template-columns:110px minmax(0,1fr) 28px;min-height:94px;padding:19px 22px}
+  .link-item-primary{min-height:124px}
+  .link-copy strong{font-size:21px}
+  .link-copy small{font-size:14px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}

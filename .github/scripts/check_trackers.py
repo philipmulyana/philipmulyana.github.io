@@ -37,6 +37,7 @@ def main() -> int:
         + glob.glob(os.path.join(ROOT, "blog", "*.html"))
         + glob.glob(os.path.join(ROOT, "tools", "**", "*.html"), recursive=True)
         + glob.glob(os.path.join(ROOT, "product", "**", "*.html"), recursive=True)
+        + glob.glob(os.path.join(ROOT, "links", "**", "*.html"), recursive=True)
     )
     missing_pixel, missing_beacon, unreadable, stubs, ok = [], [], [], 0, 0
     for f in files:
