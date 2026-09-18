@@ -61,12 +61,10 @@ class HomepageProductionPage(unittest.TestCase):
 
     def test_homepage_routes_visitors_without_placeholder_links(self):
         required_copy = [
-            "Belajar dengan ritmemu sendiri",
-            "Bicarakan kebutuhan yang baru muncul",
-            "Tinjau perlindungan yang sudah kamu punya",
+            "Artikel Terbaru",
             "Online Course",
-            "Discovery Meeting",
-            "Protection Review",
+            "First Call",
+            "Policy Review",
             "Pengalaman panjang, penjelasan tetap sederhana.",
         ]
         for text in required_copy:
@@ -74,15 +72,13 @@ class HomepageProductionPage(unittest.TestCase):
 
         hrefs = [link.get("href", "") for link in self.parser.links]
         self.assertIn("/product/dana-kuliah/", hrefs)
-        self.assertIn("#pilih", hrefs)
-        self.assertIn("#course", hrefs)
-        self.assertIn("#tentang", hrefs)
-        self.assertIn("#discovery-meeting", hrefs)
-        self.assertIn("#protection-review", hrefs)
+        self.assertIn("#credentials", hrefs)
+        self.assertIn("/consultation.html", hrefs)
+        self.assertIn("/about.html", hrefs)
+        self.assertIn("/blog.html", hrefs)
         self.assertNotIn("#", hrefs)
-
-        for legacy_destination in ("/consultation.html", "/about.html", "/contact.html"):
-            self.assertNotIn(legacy_destination, hrefs)
+        self.assertNotIn("#discovery-meeting", hrefs)
+        self.assertNotIn("#protection-review", hrefs)
 
     def test_homepage_has_no_fake_company_proof_or_wrong_course_title(self):
         forbidden = [
@@ -96,8 +92,7 @@ class HomepageProductionPage(unittest.TestCase):
         for token in forbidden:
             self.assertNotIn(token.lower(), HTML.lower())
 
-        self.assertIn('id="company-proof"', HTML)
-        self.assertIn('hidden aria-label="Bukti kerja sama perusahaan menunggu data terverifikasi"', HTML)
+        self.assertNotIn('id="company-proof"', HTML)
 
     def test_semantics_accessibility_and_metadata_are_present(self):
         self.assertIn('<html lang="id">', HTML)

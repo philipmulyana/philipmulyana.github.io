@@ -1,220 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Philip Mulyana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="js/pixel.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-up.animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kenali Philip Mulyana, Financial Coach dan Certified Financial Planner yang membantu menjelaskan keuangan dengan bahasa yang jelas dan mudah dipahami.">
+  <title>Tentang Philip Mulyana | Financial Coach &amp; Certified Financial Planner</title>
+  <link rel="canonical" href="https://philipmulyana.com/about.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/homepage/profile-photo.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="/assets/site/site.css">
+  <script src="/js/sanitize-attribution.js"></script>
+  <script src="/js/pixel.js"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wjulbbpfmx");</script>
 </head>
-<body class="bg-white text-black font-sans antialiased">
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+  <header class="site-header">
+    <div class="container navigation">
+      <a class="brand" href="/" aria-label="Philip Mulyana — Homepage"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181"></a>
+      <nav aria-label="Navigasi utama"><a href="/consultation.html">Konsultasi</a></nav>
+    </div>
+  </header>
 
-    <!-- Navbar -->
-    <div id="navbar-placeholder"></div>
-
-    <!-- Bio Section -->
-    <section class="pt-32 pb-16 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Photo -->
-                <div class="fade-up">
-                    <img src="https://placehold.co/600x700/f5f5f5/999999?text=Philip+Mulyana" alt="Philip Mulyana"
-                        class="w-full rounded-3xl object-cover">
-                </div>
-                <!-- Bio -->
-                <div class="fade-up">
-                    <span class="text-xs text-gray-400 uppercase tracking-wider">About Me</span>
-                    <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mt-2 mb-6">Philip Mulyana</h1>
-                    <div class="space-y-4 text-gray-600 leading-relaxed">
-                        <p>I'm an insurance consultant and public speaker passionate about making financial planning accessible to everyone. With years of experience in the insurance industry, I help individuals and families make informed decisions about their financial protection.</p>
-                        <p>As a speaker, I've delivered keynotes, workshops, and seminars for corporate audiences, universities, and community organizations. My talks focus on practical financial literacy — not abstract theory, but actionable steps people can take today.</p>
-                        <p>I also build AI-powered tools that simplify complex financial decisions. I believe technology should empower people, not replace the human touch that makes financial planning truly personal.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-3 mt-8">
-                        <span class="px-4 py-2 bg-gray-100 rounded-full text-xs font-medium text-gray-600">Insurance Consultant</span>
-                        <span class="px-4 py-2 bg-gray-100 rounded-full text-xs font-medium text-gray-600">Public Speaker</span>
-                        <span class="px-4 py-2 bg-gray-100 rounded-full text-xs font-medium text-gray-600">AI Tools Builder</span>
-                        <span class="px-4 py-2 bg-gray-100 rounded-full text-xs font-medium text-gray-600">Financial Educator</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <main id="main-content">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Tentang Philip Mulyana</span>
+        <h1>Lebih tenang mengambil keputusan saat keuangan terasa lebih jelas.</h1>
+        <p>Mengatur uang bukan soal terlihat paling pintar. Yang penting, kamu memahami pilihan yang ada, tahu risikonya, dan bisa memilih langkah yang sesuai dengan keadaanmu.</p>
+      </div>
     </section>
 
-    <!-- Speaking Events Gallery -->
-    <section id="events" class="px-6 pb-20">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-center mb-12 fade-up">Speaking Events</h2>
-
-            <!-- Timeline -->
-            <div class="space-y-6 max-w-4xl mx-auto fade-up">
-                <!-- Event 1 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                        <div class="w-px h-full bg-gray-200 min-h-[80px]"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/667eea/ffffff?text=Financial+Literacy+Summit+2025" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2025</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Keynote Speaker</span>
-                            </div>
-                            <h3 class="text-lg font-bold">Financial Literacy Summit 2025</h3>
-                            <p class="text-gray-500 text-sm mt-1">Keynote on building financial resilience through smart insurance planning. 500+ attendees.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 2 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                        <div class="w-px h-full bg-gray-200 min-h-[80px]"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/f5576c/ffffff?text=Corporate+Wellness+Workshop" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2024</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Workshop Facilitator</span>
-                            </div>
-                            <h3 class="text-lg font-bold">Corporate Financial Wellness Program</h3>
-                            <p class="text-gray-500 text-sm mt-1">Half-day workshop series for 200+ employees on budgeting, insurance, and retirement planning.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 3 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                        <div class="w-px h-full bg-gray-200 min-h-[80px]"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/764ba2/ffffff?text=University+Guest+Lecture" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2024</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Guest Lecturer</span>
-                            </div>
-                            <h3 class="text-lg font-bold">University Guest Lecture Series</h3>
-                            <p class="text-gray-500 text-sm mt-1">Guest lectures at top universities on insurance career paths and financial planning for students.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 4 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                        <div class="w-px h-full bg-gray-200 min-h-[80px]"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/fda085/000000?text=Community+Outreach" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2023</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Community Speaker</span>
-                            </div>
-                            <h3 class="text-lg font-bold">Financial Literacy Community Outreach</h3>
-                            <p class="text-gray-500 text-sm mt-1">Free community sessions teaching insurance basics and financial protection fundamentals.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 5 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                        <div class="w-px h-full bg-gray-200 min-h-[80px]"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/0d9488/ffffff?text=Insurance+Industry+Conference" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2023</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Panel Speaker</span>
-                            </div>
-                            <h3 class="text-lg font-bold">Insurance Industry Conference</h3>
-                            <p class="text-gray-500 text-sm mt-1">Panel discussion on the future of AI in insurance consulting and digital transformation.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event 6 -->
-                <div class="flex gap-6 items-start">
-                    <div class="hidden sm:flex flex-col items-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 rounded-2xl overflow-hidden">
-                        <img src="https://placehold.co/800x300/1e40af/ffffff?text=Startup+Meetup" alt="Event" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-xs font-medium text-gray-400">2022</span>
-                                <span class="text-xs text-gray-300">|</span>
-                                <span class="text-xs text-gray-400">Speaker</span>
-                            </div>
-                            <h3 class="text-lg font-bold">InsurTech Startup Meetup</h3>
-                            <p class="text-gray-500 text-sm mt-1">Talk on leveraging AI tools to modernize traditional insurance consulting practices.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="section" aria-labelledby="about-intro-heading">
+      <div class="container split">
+        <div class="portrait-frame"><img src="/assets/homepage/profile-photo.webp" alt="Philip Mulyana, Financial Coach dan Certified Financial Planner" width="1000" height="1400"></div>
+        <div>
+          <span class="eyebrow">Tentang Philip</span>
+          <h2 class="display-heading" id="about-intro-heading">Pengalaman di dunia keuangan, dibawa ke percakapan sehari-hari.</h2>
+          <div class="prose" style="margin-top:28px">
+            <p>Saya Philip Mulyana. Saya membantu menjelaskan topik keuangan dengan bahasa yang sederhana agar kamu bisa melihat persoalan dengan lebih jernih sebelum mengambil keputusan.</p>
+            <p>Karier saya dimulai sebagai Broker Saham di sebuah sekuritas sejak 2008. Pada 2014, saya menjadi Financial Advisor. Sejak 2019, saya juga membagikan edukasi sebagai Financial Coach di Instagram.</p>
+            <p>Perjalanan itu mempertemukan saya dengan banyak pertanyaan yang dekat dengan kehidupan sehari-hari: harus mulai dari mana, kebutuhan mana yang perlu didahulukan, dan bagaimana memilih langkah yang tetap masuk akal untuk dijalankan.</p>
+          </div>
+          <div class="fact-grid" aria-label="Pengalaman dan kredensial Philip Mulyana">
+            <div class="fact"><strong><span data-years-since="2008">18</span>+</strong><span>tahun di industri keuangan</span></div>
+            <div class="fact"><strong><span data-years-since="2014">12</span>+</strong><span>tahun sebagai Financial Advisor</span></div>
+            <div class="fact"><strong>CFP</strong><span>Certified Financial Planner</span></div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- My Approach -->
-    <section class="px-6 pb-20 fade-up">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-6">My Approach</h2>
-            <p class="text-gray-600 leading-relaxed text-lg">
-                I combine deep insurance expertise with modern AI tools to give my clients the best of both worlds — data-driven insights paired with genuine human understanding. Financial planning isn't just about numbers; it's about protecting the people and things you care about most.
-            </p>
-            <div class="mt-10">
-                <a href="contact.html" class="inline-flex items-center bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                    Let's work together
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-            </div>
+    <section class="section section-soft" aria-labelledby="timeline-heading">
+      <div class="container">
+        <div class="section-heading"><h2 id="timeline-heading">Perjalanan singkat.</h2><p>Tiga titik yang membentuk cara Philip menjelaskan pilihan keuangan hari ini.</p></div>
+        <div class="timeline">
+          <article class="timeline-item"><time datetime="2008">2008</time><div><h3>Memulai karier sebagai Broker Saham</h3><p>Memulai karier di industri keuangan sebagai Broker Saham di sebuah sekuritas.</p></div></article>
+          <article class="timeline-item"><time datetime="2014">2014</time><div><h3>Menjadi Financial Advisor</h3><p>Mulai mendampingi percakapan tentang kebutuhan dan pilihan finansial sebagai Financial Advisor.</p></div></article>
+          <article class="timeline-item"><time datetime="2019">2019</time><div><h3>Berbagi sebagai Financial Coach</h3><p>Mulai membagikan edukasi keuangan melalui Instagram dengan penjelasan yang dekat dengan situasi sehari-hari.</p></div></article>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <div id="footer-placeholder"></div>
+    <section class="section" aria-labelledby="approach-heading">
+      <div class="container section-heading">
+        <h2 id="approach-heading">Memahami pilihan, bukan sekadar menghafal istilah.</h2>
+        <div class="prose"><p>Philip adalah Certified Financial Planner. Penjelasan keuangan yang berguna harus membuat hal yang rumit lebih mudah diikuti, lalu mengembalikannya pada situasi, pilihan, risiko, dan langkah yang bisa dipertimbangkan.</p><p>Tujuannya bukan melakukan semuanya sekaligus, tetapi memiliki arah yang lebih jelas untuk menentukan apa yang perlu dilakukan lebih dulu.</p></div>
+      </div>
+    </section>
 
-    <script src="js/main.js"></script>
+    <section class="section section-red" aria-labelledby="next-heading">
+      <div class="container section-heading">
+        <h2 id="next-heading">Pilih langkah yang sesuai dengan kebutuhanmu sekarang.</h2>
+        <div><p>Kalau kamu ingin memahami satu topik lebih dulu, mulai dari Artikel. Kalau ingin menceritakan situasimu, mulai dari First Call gratis selama 10 menit lewat telepon.</p><div class="actions"><a class="button button-light" href="/blog.html">Baca Artikel</a><a class="button button-outline" href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>Jadwalkan First Call</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181" loading="lazy"><p>Penjelasan yang jelas untuk membantu kamu memilih langkah berikutnya.</p></div>
+      <div><h2>Belajar</h2><a href="/blog.html">Artikel</a><a href="/tools/">Tools</a><a href="/product/dana-kuliah/">Online Course</a></div>
+      <div><h2>Konsultasi</h2><a href="/consultation.html">Konsultasi Asuransi</a><a href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>First Call</a></div>
+      <div><h2>Tentang</h2><a href="/about.html">Tentang Philip</a><a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer">Instagram</a><a href="/privacy-policy/">Kebijakan Privasi</a></div>
+    </div>
+  </footer>
+  <script src="/js/site.js" defer></script>
 </body>
 </html>

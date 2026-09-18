@@ -67,16 +67,28 @@
     return null; // not a funnel CTA -> don't track
   }
 
+  function coarseTarget(href) {
+    try {
+      var url = new URL(href, location.origin);
+      return url.origin === location.origin
+        ? url.pathname
+        : url.hostname + url.pathname;
+    } catch (e) {
+      return '(unknown)';
+    }
+  }
+
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
-    var type = classify(a.getAttribute('href'));
+    var href = a.getAttribute('href');
+    var type = classify(href);
     if (!type) return;
     beacon({
       action: 'blog_click',
       slug: SLUG,
       target_type: type,
-      target: a.getAttribute('href').slice(0, 200),
+      target: coarseTarget(href).slice(0, 200),
     });
   }, true);
 })();

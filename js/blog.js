@@ -4,189 +4,178 @@ let activeType = 'all';
 
 const MODAL_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
 
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function safePostUrl(slug = '') {
+  const safeSlug = String(slug).match(/^[a-z0-9-]+$/)?.[0];
+  return safeSlug ? `/blog/${safeSlug}.html` : '/blog.html';
+}
+
+function safeExternalUrl(value = '') {
+  try {
+    const url = new URL(value);
+    return ['https:', 'http:'].includes(url.protocol) ? url.toString() : '/blog.html';
+  } catch {
+    return '/blog.html';
+  }
+}
+
 function assignType(post) {
-    return post.categoryLabel === 'News Insight' ? 'news' : 'original';
+  return post.categoryLabel === 'News Insight' ? 'news' : 'original';
 }
 
 async function loadBlog() {
-    // 1. Load from static JSON first (instant)
-    try {
-        const [newsRes, postsRes] = await Promise.all([
-            fetch('data/blog.json').catch(() => ({ ok: false })),
-            fetch('data/posts.json').catch(() => ({ ok: false }))
-        ]);
+  allItems = [];
+  const list = document.getElementById('blog-list');
+  if (list) list.setAttribute('aria-busy', 'true');
 
-        if (newsRes.ok) {
-            const newsData = await newsRes.json();
-            const newsItems = (newsData.articles || []).map(a => ({ ...a, type: 'news', source: 'blog_json' }));
-            allItems.push(...newsItems);
-        }
+  try {
+    const [newsRes, postsRes] = await Promise.all([
+      fetch('/data/blog.json').catch(() => ({ ok: false })),
+      fetch('/data/posts.json').catch(() => ({ ok: false })),
+    ]);
 
-        if (postsRes.ok) {
-            const postsData = await postsRes.json();
-            const postItems = (postsData.posts || []).map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
-            allItems.push(...postItems);
-        }
+    if (newsRes.ok) {
+      const newsData = await newsRes.json();
+      const newsItems = Array.isArray(newsData.articles)
+        ? newsData.articles.map((article) => ({ ...article, type: 'news', source: 'blog_json' }))
+        : [];
+      allItems.push(...newsItems);
+    }
 
+    if (postsRes.ok) {
+      const postsData = await postsRes.json();
+      const postItems = Array.isArray(postsData.posts)
+        ? postsData.posts.map((post) => ({ ...post, type: assignType(post), source: 'airtable' }))
+        : [];
+      allItems.push(...postItems);
+    }
+
+    sortAndRender();
+  } catch {
+    sortAndRender();
+  }
+
+  try {
+    const res = await fetch(MODAL_API);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.posts) && data.posts.length > 0) {
+        const apiPosts = data.posts.map((post) => ({ ...post, type: assignType(post), source: 'airtable' }));
+        const blogJsonOnly = allItems.filter((item) => item.source === 'blog_json');
+        allItems = [...blogJsonOnly, ...apiPosts];
         sortAndRender();
-    } catch (err) {
-        // Static files failed, will rely on Modal API below
+      }
     }
-
-    // 2. Fetch from Modal API in background (always up-to-date)
-    try {
-        const res = await fetch(MODAL_API);
-        if (res.ok) {
-            const data = await res.json();
-            if (Array.isArray(data.posts) && data.posts.length > 0) {
-                const apiPosts = data.posts.map(p => ({ ...p, type: assignType(p), source: 'airtable' }));
-
-                // Merge: keep blog.json news, replace static posts only with valid API data.
-                const blogJsonOnly = allItems.filter(i => i.source === 'blog_json');
-                allItems = [...blogJsonOnly, ...apiPosts];
-                sortAndRender();
-            }
-        }
-    } catch (err) {
-        // Modal API unavailable, static data is already shown
-    }
+  } catch {
+    // Static approved posts stay visible.
+  }
 }
 
 function sortAndRender() {
-    allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
-    renderItems();
+  allItems.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  renderItems();
+}
+
+function updatePressedState(selector, key, value) {
+  document.querySelectorAll(selector).forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset[key] === value));
+  });
 }
 
 function filterType(type) {
-    activeType = type;
-    document.querySelectorAll('.type-btn').forEach(btn => {
-        if (btn.dataset.type === type) {
-            btn.classList.remove('bg-gray-100', 'text-gray-600');
-            btn.classList.add('bg-black', 'text-white');
-        } else {
-            btn.classList.remove('bg-black', 'text-white');
-            btn.classList.add('bg-gray-100', 'text-gray-600');
-        }
-    });
-    renderItems();
+  activeType = type;
+  updatePressedState('.type-btn', 'type', type);
+  renderItems();
 }
 
 function filterCategory(category) {
-    activeCategory = category;
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.category === category) {
-            btn.classList.remove('bg-gray-100', 'text-gray-600');
-            btn.classList.add('bg-black', 'text-white');
-        } else {
-            btn.classList.remove('bg-black', 'text-white');
-            btn.classList.add('bg-gray-100', 'text-gray-600');
-        }
-    });
-    renderItems();
+  activeCategory = category;
+  updatePressedState('.filter-btn', 'category', category);
+  renderItems();
+}
+
+function filteredItems() {
+  return allItems.filter((item) => {
+    const typeMatches = activeType === 'all' || item.type === activeType;
+    const categoryMatches = activeCategory === 'all' || item.category === activeCategory;
+    return typeMatches && categoryMatches;
+  });
 }
 
 function renderItems() {
-    let filtered = allItems;
+  const list = document.getElementById('blog-list');
+  const status = document.getElementById('blog-status');
+  if (!list) return;
 
-    if (activeType === 'original') {
-        filtered = filtered.filter(item => item.type === 'original');
-    } else if (activeType === 'news') {
-        filtered = filtered.filter(item => item.type === 'news');
-    }
+  const items = filteredItems();
+  list.setAttribute('aria-busy', 'false');
 
-    if (activeCategory !== 'all') {
-        filtered = filtered.filter(item => item.category === activeCategory);
-    }
+  if (items.length === 0) {
+    list.innerHTML = '<div class="row-item"><div><h3>Tidak ada artikel di kategori ini.</h3></div></div>';
+    if (status) status.textContent = '';
+    return;
+  }
 
-    const grid = document.getElementById('blog-grid');
+  list.innerHTML = items.map((item) => (
+    item.source === 'blog_json' ? renderNewsRow(item) : renderPostRow(item)
+  )).join('');
 
-    if (filtered.length === 0) {
-        grid.innerHTML = `
-            <div class="col-span-full text-center py-12 text-gray-400">
-                <p>Tidak ada artikel di kategori ini.</p>
-            </div>
-        `;
-        return;
-    }
-
-    grid.innerHTML = filtered.map(item => {
-        // blog.json external news → renderNewsCard; Airtable articles → renderPostCard
-        return item.source === 'blog_json' ? renderNewsCard(item) : renderPostCard(item);
-    }).join('');
+  if (status) status.textContent = `${items.length} artikel`;
 }
 
-function renderPostCard(post) {
-    const categoryColors = {
-        insurance: 'bg-purple-100 text-purple-700',
-        investment: 'bg-blue-100 text-blue-700',
-        personal_finance: 'bg-green-100 text-green-700',
-        economy: 'bg-orange-100 text-orange-700'
-    };
-    const categoryLabels = {
-        insurance: 'Insurance',
-        investment: 'Investment',
-        personal_finance: 'Personal Finance',
-        economy: 'Economy'
-    };
-    const badgeClass = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
-    const isNewsInsight = post.categoryLabel === 'News Insight';
-    const typeBadge = isNewsInsight ? 'Berita Keuangan' : 'Artikel Kami';
-    const topicLabel = categoryLabels[post.category] || post.categoryLabel;
-    const formattedDate = formatDate(post.date);
-    const postUrl = `/blog/${post.slug}.html`;
+function renderPostRow(post) {
+  const formattedDate = formatDate(post.date);
+  const typeBadge = post.categoryLabel === 'News Insight' ? 'Berita Keuangan' : 'Artikel Kami';
+  const categoryLabels = {
+    insurance: 'Insurance',
+    investment: 'Investment',
+    personal_finance: 'Personal Finance',
+    economy: 'Economy',
+  };
+  const topicLabel = categoryLabels[post.category] || post.categoryLabel;
+  const meta = [typeBadge, topicLabel, formattedDate, post.readingTime].filter(Boolean).map(escapeHtml).join(' · ');
 
-    return `
-        <a href="${postUrl}" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 border-l-4 border-black cursor-pointer">
-            <div class="flex flex-wrap items-center gap-2 mb-2">
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${topicLabel}</span>
-            </div>
-            <div class="text-xs text-gray-400 mb-3">${formattedDate}</div>
-            <h3 class="font-bold text-lg leading-snug mb-3">${post.title}</h3>
-            <p class="text-sm text-gray-600 leading-relaxed mb-4">${post.excerpt}</p>
-            <div class="flex items-center justify-between">
-                <span class="inline-flex items-center text-sm font-medium text-black">
-                    Baca selengkapnya
-                    <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </span>
-                <span class="text-xs text-gray-400">${post.readingTime}</span>
-            </div>
-        </a>
-    `;
+  return `
+    <a href="${safePostUrl(post.slug)}" class="row-link">
+      <span class="meta">${meta}</span>
+      <span><h3>${escapeHtml(post.title)}</h3><p>${escapeHtml(post.excerpt)}</p><span class="text-link">Baca selengkapnya</span></span>
+      <span class="row-arrow" aria-hidden="true">›</span>
+    </a>`;
 }
 
-function renderNewsCard(article) {
-    const categoryColors = {
-        insurance: 'bg-purple-100 text-purple-700',
-        investment: 'bg-blue-100 text-blue-700',
-        personal_finance: 'bg-green-100 text-green-700',
-        economy: 'bg-orange-100 text-orange-700'
-    };
-    const badgeClass = categoryColors[article.category] || 'bg-gray-100 text-gray-700';
-    const formattedDate = formatDate(article.date);
+function renderNewsRow(article) {
+  const formattedDate = formatDate(article.date);
+  const meta = [article.categoryLabel, formattedDate, article.source].filter(Boolean).map(escapeHtml).join(' · ');
 
-    return `
-        <a href="${article.url}" target="_blank" rel="noopener" class="block bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-            <div class="flex flex-wrap items-center gap-2 mb-2">
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${badgeClass}">${article.categoryLabel}</span>
-            </div>
-            <div class="text-xs text-gray-400 mb-3">${formattedDate} · ${article.source}</div>
-            <h3 class="font-bold text-lg leading-snug mb-3">${article.title}</h3>
-            <p class="text-sm text-gray-600 leading-relaxed mb-4">${article.hook}</p>
-            <div class="flex items-center justify-between">
-                <span class="inline-flex items-center text-sm font-medium text-gray-500">
-                    Read full article
-                    <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </span>
-            </div>
-        </a>
-    `;
+  return `
+    <a href="${escapeHtml(safeExternalUrl(article.url))}" target="_blank" rel="noopener noreferrer" class="row-link">
+      <span class="meta">${meta}</span>
+      <span><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.hook)}</p><span class="text-link">Read full article</span></span>
+      <span class="row-arrow" aria-hidden="true">↗</span>
+    </a>`;
 }
 
 function formatDate(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-document.addEventListener('DOMContentLoaded', loadBlog);
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.type-btn').forEach((button) => {
+    button.addEventListener('click', () => filterType(button.dataset.type));
+  });
+  document.querySelectorAll('.filter-btn').forEach((button) => {
+    button.addEventListener('click', () => filterCategory(button.dataset.category));
+  });
+  loadBlog();
+});
