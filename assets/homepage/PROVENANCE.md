@@ -3,10 +3,10 @@
 ## Official Philip Mulyana assets
 
 - `logo-white.png`
-  - Source: `/home/ubuntu/.hermes/profiles/webdeveloper/assets/brand/philip-mulyana/official/logo-white.png`
+  - Source: confirmed official brand master `official/logo-white.png`, supplied by Philip Mulyana.
   - Treatment: copied without visual modification for use on dark backgrounds.
 - `profile-photo.webp`
-  - Source: `/home/ubuntu/.hermes/profiles/webdeveloper/assets/brand/philip-mulyana/official/profile-photo.png`
+  - Source: confirmed official brand master `official/profile-photo.png`, supplied by Philip Mulyana.
   - Treatment: resized proportionally to 1000 × 1400 and encoded as WebP for website performance. The official master remains unchanged.
 
 Canonical provenance and usage notes remain in the read-only brand library.
