@@ -18,6 +18,8 @@ APPROVED_SUPPORT = (
 
 
 class HomepageParser(HTMLParser):
+    VOID_ELEMENTS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+
     def __init__(self):
         super().__init__()
         self.h1_text = []
@@ -26,9 +28,11 @@ class HomepageParser(HTMLParser):
         self.ids = []
         self.links = []
         self.images = []
+        self._element_stack = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        inside_hidden_group = any(is_hidden for _, is_hidden in self._element_stack)
         if tag == "h1":
             self.h1_count += 1
             self._in_h1 = True
@@ -37,11 +41,18 @@ class HomepageParser(HTMLParser):
         if tag == "a":
             self.links.append(attrs)
         if tag == "img":
+            attrs["_inside_aria_hidden"] = "true" if inside_hidden_group or attrs.get("aria-hidden") == "true" else "false"
             self.images.append(attrs)
+        if tag not in self.VOID_ELEMENTS:
+            self._element_stack.append((tag, attrs.get("aria-hidden") == "true"))
 
     def handle_endtag(self, tag):
         if tag == "h1":
             self._in_h1 = False
+        if self._element_stack:
+            opening_tag, _ = self._element_stack.pop()
+            if opening_tag != tag:
+                raise AssertionError(f"Unexpected closing tag {tag}; expected {opening_tag}")
 
     def handle_data(self, data):
         if self._in_h1:
@@ -80,7 +91,7 @@ class HomepageProductionPage(unittest.TestCase):
         self.assertNotIn("#discovery-meeting", hrefs)
         self.assertNotIn("#protection-review", hrefs)
 
-    def test_homepage_has_no_fake_company_proof_or_wrong_course_title(self):
+    def test_homepage_company_proof_has_no_placeholders_or_wrong_course_title(self):
         forbidden = [
             "Dana Kuliah",
             "Nama Course",
@@ -88,11 +99,18 @@ class HomepageProductionPage(unittest.TestCase):
             "PLACEHOLDER",
             "Trusted by",
             "Dipercaya oleh",
+            "Brand 1",
+            "Brand 2",
+            "Brand 3",
+            "Brand 4",
+            "Brand 5",
+            "Brand 6",
         ]
         for token in forbidden:
             self.assertNotIn(token.lower(), HTML.lower())
 
-        self.assertNotIn('id="company-proof"', HTML)
+        self.assertIn('id="company-proof"', HTML)
+        self.assertIn('Pernah bekerja sama dengan.', HTML)
 
     def test_semantics_accessibility_and_metadata_are_present(self):
         self.assertIn('<html lang="id">', HTML)
@@ -109,7 +127,10 @@ class HomepageProductionPage(unittest.TestCase):
         for image in self.parser.images:
             source = image.get("src", "")
             sources.append(source)
-            self.assertTrue(image.get("alt", "").strip())
+            if image.get("_inside_aria_hidden") == "true":
+                self.assertEqual(image.get("alt"), "")
+            else:
+                self.assertTrue(image.get("alt", "").strip())
             self.assertTrue(image.get("width"))
             self.assertTrue(image.get("height"))
             self.assertFalse(source.startswith(("http://", "https://")))

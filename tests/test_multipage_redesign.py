@@ -82,6 +82,7 @@ class HomepageContract(unittest.TestCase):
         order = [
             'id="hero"',
             'id="credentials"',
+            'id="company-proof"',
             'id="artikel-terbaru"',
             'id="course"',
             'id="first-call"',
@@ -89,6 +90,85 @@ class HomepageContract(unittest.TestCase):
         ]
         positions = [self.html.index(marker) for marker in order]
         self.assertEqual(positions, sorted(positions))
+
+    def test_homepage_partner_proof_is_lightweight_accessible_logo_carousel(self):
+        expected_partners = {
+            "Bank BCA": "bca.png",
+            "Bank Mandiri": "bank-mandiri.png",
+            "Bank CIMB Niaga": "cimb-niaga.png",
+            "BSI (Bank Syariah Indonesia)": "bsi.png",
+            "HSBC": "hsbc.svg",
+            "Pertamina": "pertamina.png",
+            "UOB": "uob.png",
+            "Visa": "visa.svg",
+        }
+        excluded_insurance_brands = (
+            "AIA", "Allianz", "AXA Mandiri", "BNI Life", "Prudential", "Zurich"
+        )
+        section_match = re.search(
+            r'<section[^>]+id="company-proof"([^>]*)>(.*?)</section>',
+            self.html,
+            re.S,
+        )
+        self.assertIsNotNone(section_match)
+        assert section_match is not None
+        attributes, section = section_match.groups()
+        self.assertNotIn("hidden", attributes)
+        self.assertIn("Pernah bekerja sama dengan", section)
+        self.assertNotIn("49 brand", section)
+        self.assertIn('class="partner-carousel"', section)
+        self.assertIn('aria-describedby="partner-motion-note"', section)
+        self.assertIn('id="partner-motion-note" class="sr-only">Fokus pada carousel untuk menghentikan animasi.', section)
+        self.assertNotIn("swiper", section.lower())
+        self.assertNotIn("slick", section.lower())
+
+        visible_group = re.search(
+            r'<ul class="partner-logo-group" aria-label="Brand yang pernah bekerja sama dengan Philip Mulyana">(.*?)</ul>',
+            section,
+            re.S,
+        )
+        duplicate_group = re.search(
+            r'<ul class="partner-logo-group" aria-hidden="true">(.*?)</ul>',
+            section,
+            re.S,
+        )
+        self.assertIsNotNone(visible_group)
+        self.assertIsNotNone(duplicate_group)
+        assert visible_group is not None and duplicate_group is not None
+        self.assertEqual(visible_group.group(1).count("<img"), len(expected_partners))
+        self.assertEqual(duplicate_group.group(1).count("<img"), len(expected_partners))
+
+        for partner, filename in expected_partners.items():
+            src = f'/assets/partners/{filename}'
+            self.assertIn(f'src="{src}"', visible_group.group(1), partner)
+            self.assertIn(f'alt="{partner}"', visible_group.group(1), partner)
+            self.assertIn(f'src="{src}"', duplicate_group.group(1), partner)
+            self.assertTrue((ROOT / src.lstrip("/")).is_file(), filename)
+        duplicate_images = re.findall(r'<img\b[^>]+>', duplicate_group.group(1))
+        for image in duplicate_images:
+            alt_match = re.search(r'alt="([^"]*)"', image)
+            self.assertIsNotNone(alt_match)
+            assert alt_match is not None
+            self.assertEqual(alt_match.group(1), "")
+        for image in re.findall(r'<img\b[^>]+>', section):
+            self.assertRegex(image, r'\bwidth="\d+"')
+            self.assertRegex(image, r'\bheight="\d+"')
+            self.assertIn('loading="lazy"', image)
+            self.assertIn('decoding="async"', image)
+
+        css = read("assets/site/site.css")
+        compact_css = re.sub(r"\s+", "", css)
+        self.assertIn("@keyframespartner-marquee", compact_css)
+        self.assertIn("prefers-reduced-motion:reduce", compact_css)
+        self.assertIn("animation-play-state:paused", compact_css)
+        self.assertIn('.partner-logo-group:first-child{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}', compact_css)
+        self.assertIn('.partner-logo-group[aria-hidden="true"]{display:none}', compact_css)
+        self.assertIn('@media(max-width:720px)and(prefers-reduced-motion:reduce){.partner-logo-group:first-child{grid-template-columns:repeat(2,minmax(0,1fr))}', compact_css)
+        self.assertTrue((ROOT / "assets/partners/PROVENANCE.md").is_file())
+        for insurance_brand in excluded_insurance_brands:
+            self.assertNotIn(insurance_brand, section)
+        for placeholder in ("Brand 1", "Brand 2", "Brand 3", "Brand 4", "Brand 5", "Brand 6"):
+            self.assertNotIn(placeholder, section)
 
     def test_homepage_latest_articles_match_three_latest_valid_static_posts(self):
         posts = json.loads(read("data/posts.json"))["posts"]
