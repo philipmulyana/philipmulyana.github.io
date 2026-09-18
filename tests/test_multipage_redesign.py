@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 import unittest
@@ -93,11 +94,11 @@ class HomepageContract(unittest.TestCase):
 
     def test_homepage_partner_proof_is_lightweight_accessible_logo_carousel(self):
         expected_partners = {
-            "Bank BCA": "bca.png",
+            "Bank BCA": "bca-official.png",
             "Bank Mandiri": "bank-mandiri.png",
             "Bank CIMB Niaga": "cimb-niaga.png",
             "BSI (Bank Syariah Indonesia)": "bsi.png",
-            "HSBC": "hsbc.svg",
+            "HSBC": "hsbc-wordmark.svg",
             "Pertamina": "pertamina.png",
             "UOB": "uob.png",
             "Visa": "visa.svg",
@@ -115,6 +116,7 @@ class HomepageContract(unittest.TestCase):
         attributes, section = section_match.groups()
         self.assertNotIn("hidden", attributes)
         self.assertIn("Pernah bekerja sama dengan", section)
+        self.assertNotIn("2023–2026", section)
         self.assertNotIn("49 brand", section)
         self.assertIn('class="partner-carousel"', section)
         self.assertIn('aria-describedby="partner-motion-note"', section)
@@ -169,6 +171,36 @@ class HomepageContract(unittest.TestCase):
             self.assertNotIn(insurance_brand, section)
         for placeholder in ("Brand 1", "Brand 2", "Brand 3", "Brand 4", "Brand 5", "Brand 6"):
             self.assertNotIn(placeholder, section)
+
+    def test_homepage_partner_carousel_uses_fresh_css_and_verified_full_wordmarks(self):
+        self.assertIn(
+            'href="/assets/site/site.css?v=20260918-carousel2"',
+            self.html,
+        )
+
+        expected_asset_hashes = {
+            "assets/partners/bca-official.png": "d9eca606e2b56eff45e708150a7a3fd80e2d1ad3215345f4428d39c49869176d",
+            "assets/partners/hsbc-wordmark.svg": "004c7f9d3b35dbd7312c8e15d42af3b0396426cccdb1626b4ff12238f57193b1",
+        }
+        for relative_path, expected_hash in expected_asset_hashes.items():
+            actual_hash = hashlib.sha256((ROOT / relative_path).read_bytes()).hexdigest()
+            self.assertEqual(actual_hash, expected_hash, relative_path)
+
+        provenance = read("assets/partners/PROVENANCE.md")
+        self.assertIn("https://www.bca.co.id/id/tentang-bca/media-riset/pressroom/Brand-Assets", provenance)
+        self.assertIn("https://commons.wikimedia.org/wiki/File:HSBC_logo_(2018).svg", provenance)
+        self.assertNotIn("File:BCA_logo.svg", provenance)
+        self.assertNotIn("simple-icons/simple-icons/blob/16.31.0/icons/hsbc.svg", provenance)
+
+        css = read("assets/site/site.css")
+        partner_css = css[css.index(".partner-proof"):css.index(".timeline")]
+        compact_partner_css = re.sub(r"\s+", "", partner_css)
+        self.assertIn("filter:grayscale(1)", compact_partner_css)
+        self.assertIn("opacity:.56", compact_partner_css)
+        self.assertIn("mask-image:linear-gradient", compact_partner_css)
+        self.assertIn("-webkit-mask-image:linear-gradient", compact_partner_css)
+        self.assertNotIn("border-right", compact_partner_css)
+        self.assertNotIn("background:var(--white)", compact_partner_css)
 
     def test_homepage_latest_articles_match_three_latest_valid_static_posts(self):
         posts = json.loads(read("data/posts.json"))["posts"]
