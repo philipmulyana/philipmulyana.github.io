@@ -85,7 +85,7 @@ class SharedUiAuditContract(unittest.TestCase):
             r"\.quoteblockquote\{[^}]*line-height:1\.35",
         )
 
-    def test_homepage_partner_proof_is_a_static_logo_grid_without_controls(self):
+    def test_homepage_partner_proof_is_an_automatic_carousel_without_controls(self):
         html = read("index.html")
         section = re.search(
             r'<section[^>]+id="company-proof".*?</section>', html, re.S
@@ -93,9 +93,11 @@ class SharedUiAuditContract(unittest.TestCase):
         self.assertIsNotNone(section)
         assert section is not None
         proof = section.group(0)
-        self.assertIn('class="partner-logo-grid"', proof)
-        self.assertEqual(proof.count('class="partner-logo-group"'), 1)
-        self.assertEqual(proof.count('<img '), 8)
+        self.assertIn('class="partner-carousel"', proof)
+        self.assertIn('class="partner-track"', proof)
+        self.assertEqual(proof.count('class="partner-logo-group"'), 2)
+        self.assertEqual(proof.count('<img '), 16)
+        self.assertIn('aria-hidden="true"', proof)
         self.assertNotIn('data-carousel', proof)
         self.assertNotIn('carousel-control', proof)
         self.assertNotIn('aria-live="polite"', proof)
@@ -254,6 +256,11 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertIn('.corporate-hero h1{max-width:720px;margin:16px 0 26px;font-size:clamp(54px,5.4vw,78px)', css)
         self.assertIn('.corporate-logo-carousel{overflow:hidden;', compact)
         self.assertIn('.corporate-partner-grid{display:grid;grid-template-rows:repeat(3,132px);grid-auto-flow:column;', compact)
+        self.assertIn('.corporate-proof{overflow:hidden;background:var(--soft)}', compact)
+        self.assertIn('mask-image:linear-gradient', compact)
+        self.assertIn('filter:grayscale(1)', compact)
+        self.assertIn('opacity:.56', compact)
+        self.assertNotIn('border-right:1pxsolidvar(--line)', compact)
         self.assertIn('.corporate-partner-track.is-ready{animation:corporate-logo-marquee', compact)
         self.assertIn('animation-play-state:paused', compact)
         self.assertIn('@media(max-width:800px)', compact)
