@@ -1,6 +1,8 @@
 let allItems = [];
 let activeCategory = 'all';
 let activeType = 'all';
+const PAGE_SIZE = 12;
+let visibleCount = PAGE_SIZE;
 
 const MODAL_API = 'https://philip-mulyana--ai-website-builder-approved-posts.modal.run';
 
@@ -92,12 +94,14 @@ function updatePressedState(selector, key, value) {
 
 function filterType(type) {
   activeType = type;
+  visibleCount = PAGE_SIZE;
   updatePressedState('.type-btn', 'type', type);
   renderItems();
 }
 
 function filterCategory(category) {
   activeCategory = category;
+  visibleCount = PAGE_SIZE;
   updatePressedState('.filter-btn', 'category', category);
   renderItems();
 }
@@ -113,6 +117,7 @@ function filteredItems() {
 function renderItems() {
   const list = document.getElementById('blog-list');
   const status = document.getElementById('blog-status');
+  const loadMore = document.getElementById('blog-load-more');
   if (!list) return;
 
   const items = filteredItems();
@@ -121,24 +126,27 @@ function renderItems() {
   if (items.length === 0) {
     list.innerHTML = '<div class="row-item"><div><h3>Tidak ada artikel di kategori ini.</h3></div></div>';
     if (status) status.textContent = '';
+    if (loadMore) loadMore.hidden = true;
     return;
   }
 
-  list.innerHTML = items.map((item) => (
+  const visibleItems = items.slice(0, visibleCount);
+  list.innerHTML = visibleItems.map((item) => (
     item.source === 'blog_json' ? renderNewsRow(item) : renderPostRow(item)
   )).join('');
 
-  if (status) status.textContent = `${items.length} artikel`;
+  if (status) status.textContent = `Menampilkan ${visibleItems.length} dari ${items.length} artikel`;
+  if (loadMore) loadMore.hidden = visibleItems.length >= items.length;
 }
 
 function renderPostRow(post) {
   const formattedDate = formatDate(post.date);
   const typeBadge = post.categoryLabel === 'News Insight' ? 'Berita Keuangan' : 'Artikel Kami';
   const categoryLabels = {
-    insurance: 'Insurance',
-    investment: 'Investment',
-    personal_finance: 'Personal Finance',
-    economy: 'Economy',
+    insurance: 'Asuransi',
+    investment: 'Investasi',
+    personal_finance: 'Keuangan Pribadi',
+    economy: 'Ekonomi',
   };
   const topicLabel = categoryLabels[post.category] || post.categoryLabel;
   const meta = [typeBadge, topicLabel, formattedDate, post.readingTime].filter(Boolean).map(escapeHtml).join(' · ');
@@ -158,7 +166,7 @@ function renderNewsRow(article) {
   return `
     <a href="${escapeHtml(safeExternalUrl(article.url))}" target="_blank" rel="noopener noreferrer" class="row-link">
       <span class="meta">${meta}</span>
-      <span><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.hook)}</p><span class="text-link">Read full article</span></span>
+      <span><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.hook)}</p><span class="text-link">Baca artikel lengkap</span></span>
       <span class="row-arrow" aria-hidden="true">↗</span>
     </a>`;
 }
@@ -176,6 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.querySelectorAll('.filter-btn').forEach((button) => {
     button.addEventListener('click', () => filterCategory(button.dataset.category));
+  });
+  document.getElementById('blog-load-more')?.addEventListener('click', () => {
+    visibleCount += PAGE_SIZE;
+    renderItems();
   });
   loadBlog();
 });
