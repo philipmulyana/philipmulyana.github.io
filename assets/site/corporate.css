@@ -36,14 +36,17 @@
 .credential-facts div{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.45)}
 .credential-facts dt{font-size:22px;font-weight:700}
 .credential-facts dd{margin:0}
-.corporate-proof{overflow:hidden}
-.corporate-partner-carousel{overflow:hidden;outline-offset:6px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%)}
-.corporate-partner-track{display:flex;width:max-content;animation:corporate-partner-marquee 64s linear infinite;will-change:transform}
-.corporate-partner-group{display:flex;flex:none;gap:26px;margin:0;padding:16px 13px;list-style:none}
-.corporate-partner-group li{display:grid;width:180px;height:94px;padding:16px;border:1px solid var(--line);background:#fff;place-items:center}
-.corporate-partner-name{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;color:#4b4b4b;font-size:17px;font-weight:700;line-height:1.1;text-align:center}
-.corporate-partner-carousel:hover .corporate-partner-track,.corporate-partner-carousel:focus-within .corporate-partner-track{animation-play-state:paused}
-@keyframes corporate-partner-marquee{to{transform:translateX(-50%)}}
+.corporate-logo-carousel{overflow:hidden;outline-offset:6px}
+.corporate-partner-track{display:flex;width:max-content;will-change:transform}
+.corporate-partner-track.is-ready{animation:corporate-logo-marquee 42s linear infinite}
+.corporate-logo-carousel:hover .corporate-partner-track,.corporate-logo-carousel:focus .corporate-partner-track,.corporate-logo-carousel:focus-within .corporate-partner-track,.corporate-logo-carousel:active .corporate-partner-track{animation-play-state:paused}
+.corporate-partner-grid{display:grid;grid-template-rows:repeat(3,132px);grid-auto-flow:column;grid-auto-columns:220px;flex:none;margin:0;padding:0;border-top:1px solid var(--line);border-left:1px solid var(--line);background:#fff;list-style:none}
+.corporate-partner-grid li{display:flex;align-items:center;justify-content:center;min-width:0;height:132px;padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.corporate-partner-grid img{display:block;width:100%;height:76px;object-fit:contain}
+.corporate-partner-grid .logo-tile-dark{background:#101827}
+.corporate-partner-grid .logo-tile-pair{flex-direction:column;gap:8px;padding:14px 20px}
+.corporate-partner-grid .logo-tile-pair img{height:43px}
+@keyframes corporate-logo-marquee{to{transform:translateX(-50%)}}
 .corporate-process{display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:0;border-top:1px solid #555;list-style:none}
 .corporate-process li{padding:30px 30px 0 0}
 .corporate-process li+li{padding-left:30px;border-left:1px solid #555}
@@ -80,9 +83,10 @@
   .corporate-process{grid-template-columns:1fr}
   .corporate-process li,.corporate-process li+li{padding:24px 0;border-left:0;border-bottom:1px solid #555}
   .corporate-process span{margin-bottom:18px;font-size:24px}
-  .corporate-partner-group{gap:14px;padding:12px 7px}
-  .corporate-partner-group li{width:148px;height:82px;padding:12px}
-  .corporate-partner-name{min-height:48px;font-size:15px}
+  .corporate-partner-track.is-ready{animation-duration:70s}
+  .corporate-partner-grid{grid-template-rows:116px;grid-auto-columns:154px}
+  .corporate-partner-grid li{height:116px;padding:18px}
+  .corporate-partner-grid img{height:68px}
 }
 
 @media (max-width:410px){
@@ -92,14 +96,8 @@
   .corporate-final h2{font-size:44px}
 }
 
-@media (prefers-reduced-motion: reduce){
-  .corporate-partner-carousel{overflow:visible;-webkit-mask-image:none;mask-image:none}
-  .corporate-partner-track{animation:none!important;display:block;width:auto;will-change:auto}
-  .corporate-partner-group{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:0}
-  .corporate-partner-group li{width:auto}
-  .corporate-partner-group[aria-hidden="true"]{display:none}
-}
-
-@media (max-width:720px) and (prefers-reduced-motion: reduce){
-  .corporate-partner-group{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (prefers-reduced-motion:reduce){
+  .corporate-logo-carousel{overflow-x:auto}
+  .corporate-partner-track{animation:none!important;will-change:auto}
+  .corporate-partner-grid[aria-hidden="true"]{display:none}
 }

@@ -10,8 +10,8 @@
   <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/site/corporate-profile.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="/assets/site/site.css">
-  <link rel="stylesheet" href="/assets/site/corporate.css">
+  <link rel="stylesheet" href="/assets/site/site.css?v=20260919-static-logos">
+  <link rel="stylesheet" href="/assets/site/corporate.css?v=20260919-auto-logos">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="id_ID">
   <meta property="og:title" content="Corporate Speaker — Philip Mulyana">
@@ -94,9 +94,9 @@
           <p>Philip Mulyana adalah Financial Coach dan Certified Financial Planner. Ia berkarier di industri keuangan sejak 2008, menjadi Financial Advisor sejak 2014, dan berbagi edukasi keuangan sejak 2019.</p>
         </div>
         <dl class="credential-facts">
-          <div><dt>Sejak 2008</dt><dd>Berkarier di industri keuangan</dd></div>
-          <div><dt>Sejak 2014</dt><dd>Menjadi Financial Advisor</dd></div>
-          <div><dt>CFP</dt><dd>Certified Financial Planner</dd></div>
+          <div><dt>18 tahun</dt><dd>Di industri keuangan</dd></div>
+          <div><dt>10 tahun</dt><dd>Financial Advisor</dd></div>
+          <div><dt>50+ brand</dt><dd>Pernah berkolaborasi</dd></div>
         </dl>
       </div>
     </section>
@@ -107,49 +107,43 @@
           <h2 id="corporate-proof-heading">Pernah bekerja sama dengan</h2>
           <p>Beberapa brand dan organisasi yang pernah berkolaborasi bersama Philip.</p>
         </div>
-        <p id="corporate-motion-note" class="sr-only">Gunakan kontrol untuk menjeda atau menggeser carousel. Pada perangkat dengan Reduced Motion, seluruh brand ditampilkan sebagai grid.</p>
-        <div class="partner-carousel corporate-partner-carousel" data-carousel tabindex="0" aria-label="Brand dan organisasi yang pernah berkolaborasi bersama Philip" aria-describedby="corporate-motion-note">
-          <div class="partner-track corporate-partner-track" id="corporate-partner-track">
-            <ul class="corporate-partner-group" aria-label="Daftar brand dan organisasi">
-              <li data-brand="AIA"><span class="corporate-partner-name">AIA</span></li>
-              <li data-brand="Allianz"><span class="corporate-partner-name">Allianz</span></li>
-              <li data-brand="AXA Mandiri"><span class="corporate-partner-name">AXA Mandiri</span></li>
-              <li data-brand="BNI Life"><span class="corporate-partner-name">BNI Life</span></li>
-              <li data-brand="Prudential"><span class="corporate-partner-name">Prudential</span></li>
-              <li data-brand="Zurich"><span class="corporate-partner-name">Zurich</span></li>
-              <li data-brand="Ajaib"><span class="corporate-partner-name">Ajaib</span></li>
-              <li data-brand="Bank BCA"><span class="corporate-partner-name">Bank BCA</span></li>
-              <li data-brand="Bank CIMB Niaga"><span class="corporate-partner-name">Bank CIMB Niaga</span></li>
-              <li data-brand="Bank Danamon"><span class="corporate-partner-name">Bank Danamon</span></li>
-              <li data-brand="Bank Mandiri"><span class="corporate-partner-name">Bank Mandiri</span></li>
-              <li data-brand="Bank OCBC"><span class="corporate-partner-name">Bank OCBC</span></li>
-              <li data-brand="BSI"><span class="corporate-partner-name">BSI</span></li>
-              <li data-brand="Bibit"><span class="corporate-partner-name">Bibit</span></li>
-              <li data-brand="HSBC"><span class="corporate-partner-name">HSBC</span></li>
-              <li data-brand="IDX"><span class="corporate-partner-name">IDX</span></li>
-              <li data-brand="IPOT"><span class="corporate-partner-name">IPOT</span></li>
-              <li data-brand="KBank"><span class="corporate-partner-name">KBank</span></li>
-              <li data-brand="Mirae Asset Sekuritas"><span class="corporate-partner-name">Mirae Asset Sekuritas</span></li>
-              <li data-brand="Pegadaian × Tring"><span class="corporate-partner-name">Pegadaian × Tring</span></li>
-              <li data-brand="Pintu"><span class="corporate-partner-name">Pintu</span></li>
-              <li data-brand="Sucor Asset Management"><span class="corporate-partner-name">Sucor Asset Management</span></li>
-              <li data-brand="UOB"><span class="corporate-partner-name">UOB</span></li>
-              <li data-brand="Visa"><span class="corporate-partner-name">Visa</span></li>
-              <li data-brand="Komdigi"><span class="corporate-partner-name">Komdigi</span></li>
-              <li data-brand="Mekari"><span class="corporate-partner-name">Mekari</span></li>
-              <li data-brand="Pertamina"><span class="corporate-partner-name">Pertamina</span></li>
-              <li data-brand="PLN EPI"><span class="corporate-partner-name">PLN EPI</span></li>
-              <li data-brand="Polytron"><span class="corporate-partner-name">Polytron</span></li>
-              <li data-brand="Sushi Tei"><span class="corporate-partner-name">Sushi Tei</span></li>
+        <p id="corporate-logo-motion-note" class="sr-only">Sentuh, arahkan pointer, atau fokuskan daftar logo untuk menghentikan gerakan.</p>
+        <div class="corporate-logo-carousel" data-logo-marquee tabindex="0" aria-label="Brand dan organisasi yang pernah berkolaborasi bersama Philip" aria-describedby="corporate-logo-motion-note">
+          <div class="corporate-partner-track">
+            <ul class="corporate-partner-grid" aria-label="Daftar brand dan organisasi">
+          <li data-brand="AIA"><img src="/assets/partners/corporate/aia.svg" alt="AIA" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Allianz"><img src="/assets/partners/corporate/allianz.svg" alt="Allianz" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="AXA Mandiri"><img src="/assets/partners/corporate/axa-mandiri.svg" alt="AXA Mandiri" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="BNI Life"><img src="/assets/partners/corporate/bni-life.svg" alt="BNI Life" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Prudential"><img src="/assets/partners/corporate/prudential.svg" alt="Prudential Indonesia" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Zurich"><img src="/assets/partners/corporate/zurich.svg" alt="Zurich" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Ajaib"><img src="/assets/partners/corporate/ajaib.svg" alt="Ajaib" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bank BCA"><img src="/assets/partners/bca-official.png" alt="Bank BCA" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bank CIMB Niaga"><img src="/assets/partners/cimb-niaga.png" alt="Bank CIMB Niaga" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bank Danamon"><img src="/assets/partners/corporate/bank-danamon.webp" alt="Bank Danamon" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bank Mandiri"><img src="/assets/partners/bank-mandiri.png" alt="Bank Mandiri" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bank OCBC"><img src="/assets/partners/corporate/bank-ocbc.webp" alt="Bank OCBC Indonesia" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="BSI"><img src="/assets/partners/bsi.png" alt="BSI" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Bibit"><img src="/assets/partners/corporate/bibit.svg" alt="Bibit" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="HSBC"><img src="/assets/partners/hsbc-wordmark.svg" alt="HSBC" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="IDX"><img src="/assets/partners/corporate/idx.webp" alt="Indonesia Stock Exchange (IDX)" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="IPOT"><img src="/assets/partners/corporate/ipot.webp" alt="IPOT" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="KBank"><img src="/assets/partners/corporate/kbank.webp" alt="KBank" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li class="logo-tile-dark" data-brand="Mirae Asset Sekuritas"><img src="/assets/partners/corporate/mirae-asset.webp" alt="Mirae Asset Sekuritas" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li class="logo-tile-pair" data-brand="Pegadaian × Tring"><img src="/assets/partners/corporate/pegadaian.webp" alt="Pegadaian" width="130" height="52" loading="lazy" decoding="async"><img src="/assets/partners/corporate/tring.webp" alt="Tring by Pegadaian" width="130" height="52" loading="lazy" decoding="async"></li>
+          <li data-brand="Pintu"><img src="/assets/partners/corporate/pintu.svg" alt="PINTU" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Sucor Asset Management"><img src="/assets/partners/corporate/sucor.svg" alt="Sucor Asset Management" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="UOB"><img src="/assets/partners/uob.png" alt="UOB" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Visa"><img src="/assets/partners/visa.svg" alt="Visa" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Komdigi"><img src="/assets/partners/corporate/komdigi.svg" alt="Kementerian Komunikasi dan Digital Republik Indonesia" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Mekari"><img src="/assets/partners/corporate/mekari.svg" alt="Mekari" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Pertamina"><img src="/assets/partners/pertamina.png" alt="Pertamina" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="PLN EPI"><img src="/assets/partners/corporate/pln-epi.webp" alt="PLN Energi Primer Indonesia" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li data-brand="Polytron"><img src="/assets/partners/corporate/polytron.webp" alt="Polytron" width="180" height="72" loading="lazy" decoding="async"></li>
+          <li class="logo-tile-dark" data-brand="Sushi Tei"><img src="/assets/partners/corporate/sushi-tei.webp" alt="Sushi Tei" width="180" height="72" loading="lazy" decoding="async"></li>
             </ul>
           </div>
         </div>
-        <div class="carousel-controls" aria-label="Kontrol carousel brand">
-          <button class="carousel-control" type="button" data-carousel-action="previous" aria-controls="corporate-partner-track" aria-label="Brand sebelumnya">←</button>
-          <button class="carousel-control" type="button" data-carousel-action="toggle" aria-controls="corporate-partner-track" aria-pressed="false">Jeda</button>
-          <button class="carousel-control" type="button" data-carousel-action="next" aria-controls="corporate-partner-track" aria-label="Brand berikutnya">→</button>
-        </div>
-        <p class="sr-only" data-carousel-status role="status" aria-live="polite"></p>
       </div>
     </section>
 
@@ -192,6 +186,6 @@
     </div>
   </footer>
   <script src="/js/site.js" defer></script>
-  <script src="/js/corporate.js" defer></script>
+  <script src="/js/corporate.js?v=20260919-auto-logos" defer></script>
 </body>
 </html>

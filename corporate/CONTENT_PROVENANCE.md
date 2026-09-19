@@ -14,6 +14,14 @@ Philip directly approved building a production **Corporate Speaker** page as par
 
 The approved primary action is **“Diskusikan Acara dengan Tim Philip”** through a Corporate collaboration route that stays separate from the personal First Call and Consultation funnel.
 
+On 2026-09-19, Philip directly approved these public Corporate profile facts:
+
+- **18 tahun** di industri keuangan;
+- **10 tahun** sebagai Financial Advisor;
+- **50+ brand** pernah berkolaborasi.
+
+These owner-provided figures are displayed as concise profile proof. The collaboration count is not presented as 50 speaking clients, sponsorships, or endorsements.
+
 ## Confirmed biography source
 
 Canonical bio: `/home/ubuntu/.hermes/profiles/webdeveloper/assets/brand/philip-mulyana/official/bio.md` (read-only).

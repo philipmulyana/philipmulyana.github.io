@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-19",
+  "url": "http://127.0.0.1:8769/corporate/",
+  "profile": "Lighthouse 13.5.0 default mobile",
+  "runs": [
+    {
+      "performance": 99,
+      "accessibility": 100,
+      "best_practices": 100,
+      "seo": 100,
+      "fcp_ms": 1364,
+      "lcp_ms": 1889,
+      "tbt_ms": 0,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 143780
+    },
+    {
+      "performance": 99,
+      "accessibility": 100,
+      "best_practices": 100,
+      "seo": 100,
+      "fcp_ms": 1371,
+      "lcp_ms": 1896,
+      "tbt_ms": 0,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 143780
+    },
+    {
+      "performance": 99,
+      "accessibility": 100,
+      "best_practices": 100,
+      "seo": 100,
+      "fcp_ms": 1359,
+      "lcp_ms": 1884,
+      "tbt_ms": 0,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 143780
+    }
+  ],
+  "median": {
+    "performance": 99,
+    "accessibility": 100,
+    "best_practices": 100,
+    "seo": 100,
+    "fcp_ms": 1364,
+    "lcp_ms": 1889,
+    "tbt_ms": 0,
+    "cls": 0.0001147559731588184,
+    "transfer_bytes": 143780
+  },
+  "baseline_delta": {
+    "lcp_ms": 155,
+    "tbt_ms": 0,
+    "cls": 0,
+    "transfer_bytes": -883
+  }
+}

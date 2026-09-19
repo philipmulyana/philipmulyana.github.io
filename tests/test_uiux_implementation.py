@@ -85,7 +85,7 @@ class SharedUiAuditContract(unittest.TestCase):
             r"\.quoteblockquote\{[^}]*line-height:1\.35",
         )
 
-    def test_homepage_partner_carousel_has_visible_controls(self):
+    def test_homepage_partner_proof_is_a_static_logo_grid_without_controls(self):
         html = read("index.html")
         section = re.search(
             r'<section[^>]+id="company-proof".*?</section>', html, re.S
@@ -93,14 +93,17 @@ class SharedUiAuditContract(unittest.TestCase):
         self.assertIsNotNone(section)
         assert section is not None
         proof = section.group(0)
-        self.assertIn('data-carousel-action="previous"', proof)
-        self.assertIn('data-carousel-action="toggle"', proof)
-        self.assertIn('data-carousel-action="next"', proof)
-        self.assertIn('aria-live="polite"', proof)
+        self.assertIn('class="partner-logo-grid"', proof)
+        self.assertEqual(proof.count('class="partner-logo-group"'), 1)
+        self.assertEqual(proof.count('<img '), 8)
+        self.assertNotIn('data-carousel', proof)
+        self.assertNotIn('carousel-control', proof)
+        self.assertNotIn('aria-live="polite"', proof)
+        self.assertNotIn('Jeda', proof)
 
         script = read("js/site.js")
-        self.assertIn("initCarousels", script)
-        self.assertIn("prefers-reduced-motion", script)
+        self.assertNotIn("initCarousels", script)
+        self.assertNotIn("data-carousel-action", script)
 
     def test_blog_uses_indonesian_filters_and_progressive_reveal(self):
         html = read("blog.html")
@@ -201,26 +204,46 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertEqual(set(found), set(self.brands))
         self.assertIn('data-brand="Prudential"', html)
 
-        marks = re.findall(
-            r'<li\b[^>]*data-brand="([^"]+)"[^>]*>\s*<span class="corporate-partner-name">([^<]+)</span>',
+        items = re.findall(
+            r'<li\b[^>]*data-brand="([^"]+)"[^>]*>(.*?)</li>',
             html,
+            re.S,
         )
-        self.assertEqual(len(marks), 30)
-        self.assertEqual({brand for brand, _label in marks}, set(self.brands))
-        self.assertNotIn('data-partner-logo', html)
-        self.assertNotRegex(html, r'<img\b[^>]+assets/partners/corporate')
+        self.assertEqual(len(items), 30)
+        self.assertEqual({brand for brand, _content in items}, set(self.brands))
+        for brand, content in items:
+            with self.subTest(brand=brand):
+                images = re.findall(r'<img\b[^>]+src="([^"]+)"[^>]+alt="([^"]+)"', content)
+                self.assertGreaterEqual(len(images), 1)
+                for source, alt in images:
+                    self.assertTrue(source.startswith('/assets/partners/'))
+                    self.assertNotIn('://', source)
+                    self.assertTrue(alt.strip())
+                    self.assertTrue((ROOT / source.removeprefix('/')).is_file())
+
+        self.assertNotIn('corporate-partner-name', html)
+        self.assertNotIn('data-carousel', html)
+        self.assertNotIn('carousel-control', html)
+        self.assertNotIn('>Jeda<', html)
+        self.assertIn('<script src="/js/corporate.js?v=20260919-auto-logos" defer></script>', html)
 
         provenance = read("assets/partners/corporate/PROVENANCE.md")
-        self.assertIn('typographic', provenance.lower())
-        self.assertIn('no third-party logo artwork', provenance.lower())
+        self.assertIn('source url', provenance.lower())
+        self.assertIn('retrieved', provenance.lower())
+        self.assertIn('trademark', provenance.lower())
 
-    def test_corporate_carousel_and_portrait_respect_accessibility_contracts(self):
+    def test_corporate_automatic_logo_carousel_profile_and_portrait_respect_contracts(self):
         html = read("corporate/index.html")
-        self.assertIn('data-carousel', html)
-        self.assertIn('data-carousel-action="previous"', html)
-        self.assertIn('data-carousel-action="toggle"', html)
-        self.assertIn('data-carousel-action="next"', html)
-        self.assertIn('aria-live="polite"', html)
+        self.assertIn('class="corporate-logo-carousel"', html)
+        self.assertIn('tabindex="0"', html)
+        self.assertIn('data-logo-marquee', html)
+        self.assertIn('class="corporate-partner-grid"', html)
+        self.assertNotIn('data-carousel', html)
+        self.assertNotIn('carousel-control', html)
+        self.assertNotIn('aria-live="polite"', html)
+        self.assertIn('<dt>18 tahun</dt><dd>Di industri keuangan</dd>', html)
+        self.assertIn('<dt>10 tahun</dt><dd>Financial Advisor</dd>', html)
+        self.assertIn('<dt>50+ brand</dt><dd>Pernah berkolaborasi</dd>', html)
         self.assertRegex(html, r'<img[^>]+corporate-profile\.webp[^>]+width="510"[^>]+height="714"[^>]+fetchpriority="high"')
         self.assertEqual(html.count('/assets/site/logo-white-320.png'), 2)
         self.assertLess((ROOT / 'assets/site/corporate-profile.webp').stat().st_size, 45_000)
@@ -229,8 +252,19 @@ class CorporateSpeakerContract(unittest.TestCase):
         css = read("assets/site/corporate.css")
         compact = re.sub(r'\s+', '', css)
         self.assertIn('.corporate-hero h1{max-width:720px;margin:16px 0 26px;font-size:clamp(54px,5.4vw,78px)', css)
+        self.assertIn('.corporate-logo-carousel{overflow:hidden;', compact)
+        self.assertIn('.corporate-partner-grid{display:grid;grid-template-rows:repeat(3,132px);grid-auto-flow:column;', compact)
+        self.assertIn('.corporate-partner-track.is-ready{animation:corporate-logo-marquee', compact)
+        self.assertIn('animation-play-state:paused', compact)
+        self.assertIn('@media(max-width:800px)', compact)
+        self.assertIn('.corporate-partner-grid{grid-template-rows:116px;grid-auto-columns:154px}', compact)
+        self.assertIn('@keyframescorporate-logo-marquee', compact)
         self.assertIn('@media(prefers-reduced-motion:reduce)', compact)
-        self.assertIn('.corporate-partner-track{animation:none', compact)
+
+        script = read("js/corporate.js")
+        self.assertIn("cloneNode(true)", script)
+        self.assertIn("aria-hidden", script)
+        self.assertIn("removeAttribute('data-brand')", script)
 
     def test_legacy_speaking_route_redirects_to_corporate_canonical(self):
         html = read("speaking.html")
