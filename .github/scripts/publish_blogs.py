@@ -2,10 +2,9 @@
 """
 Blog publisher — runs in GitHub Actions daily (~07:40 WIB, before /today at 07:45).
 
-Ported from AI Website Builder/tools/generate_blog_static.py. Reads Airtable
-"Blog Posts" (Website Builder base), renders every Approved post to /blog/{slug}.html
-(self-contained: nav/footer/style inline, tool-CTA auto-injected), and regenerates
-data/posts.json. The workflow commits any changes.
+Reads approved Airtable posts, renders each one into the shared production article
+shell at /blog/{slug}.html, and regenerates data/posts.json. The workflow commits
+any changes.
 
 Runs FLAT in the site repo (repo root = site root), env from GitHub Actions:
   AIRTABLE_TOKEN (secret) · AIRTABLE_BASE_ID (default Website Builder) · AIRTABLE_BLOG_TABLE
@@ -21,13 +20,8 @@ socket.setdefaulttimeout(30)
 SITE = pathlib.Path(__file__).resolve().parents[2]   # .github/scripts/ -> repo root
 BLOG = SITE / "blog"
 POSTS_JSON = SITE / "data" / "posts.json"
+SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
-CATEGORY_COLORS = {
-    "insurance": "bg-purple-100 text-purple-700",
-    "investment": "bg-blue-100 text-blue-700",
-    "personal_finance": "bg-green-100 text-green-700",
-    "economy": "bg-orange-100 text-orange-700",
-}
 CATEGORY_LABELS = {
     "insurance": "Insurance", "investment": "Investment",
     "personal_finance": "Personal Finance", "economy": "Economy",
@@ -35,65 +29,16 @@ CATEGORY_LABELS = {
 MONTHS_ID = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
              "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
-NAV = '''    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="/index.html" class="text-lg font-bold tracking-tight text-black">PM</a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/tools/" class="text-sm text-gray-500 hover:text-black transition-colors">Tools</a>
-                    <a href="/blog.html" class="text-sm text-black font-medium">Blog</a>
-                    <a href="/consultation.html" class="text-sm bg-black text-white px-5 py-2 rounded-full transition-colors">Consultation</a>
-                </div>
-                <div class="flex md:hidden items-center gap-3">
-                    <a href="/consultation.html" class="text-xs bg-black text-white px-4 py-1.5 rounded-full font-medium">Book Now</a>
-                    <button id="mobile-menu-btn" class="p-2 rounded-md hover:bg-gray-100" aria-label="Toggle menu">
-                        <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
-            <div class="px-6 py-4 space-y-1">
-                <a href="/tools/" class="block px-3 py-2 rounded-lg text-gray-500 hover:text-black">Tools</a>
-                <a href="/blog.html" class="block px-3 py-2 rounded-lg text-black font-medium">Blog</a>
-                <a href="/consultation.html" class="block px-3 py-2 rounded-lg text-gray-500 hover:text-black">Consultation</a>
-            </div>
-        </div>
-    </nav>
-    <script>
-        document.getElementById('mobile-menu-btn')?.addEventListener('click', function () {
-            document.getElementById('mobile-menu')?.classList.toggle('hidden');
-        });
-    </script>'''
 
-FOOTER = '''    <footer class="bg-black text-white py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-800">
-                <p class="text-gray-500 text-sm">&copy; 2026 Philip Mulyana</p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
-                    <a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-white transition-colors text-sm">Instagram</a>
-                    <a href="/contact.html" class="text-gray-500 hover:text-white transition-colors text-sm">Contact</a>
-                </div>
-            </div>
-        </div>
-    </footer>'''
-
-STYLE = '''    <style>
-        .article-content p { color: #4b5563; line-height: 1.75; margin-bottom: 1rem; font-size: 1.0625rem; }
-        .article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; color: #000; }
-        .article-content h3 { font-size: 1.2rem; font-weight: 700; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #111827; }
-        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #4b5563; }
-        .article-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; color: #4b5563; }
-        .article-content li { margin-bottom: 0.5rem; line-height: 1.75; font-size: 1.0625rem; }
-        .article-content blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; margin: 1.5rem 0; color: #6b7280; font-style: italic; }
-        .article-content strong { color: #111827; font-weight: 600; }
-        .article-content a { color: #111827; text-decoration: underline; font-weight: 600; }
-        .article-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
-        .article-content th, .article-content td { border: 1px solid #e5e7eb; padding: 0.6rem 0.85rem; text-align: left; color: #4b5563; vertical-align: top; }
-        .article-content th { background: #f9fafb; font-weight: 600; color: #111827; }
-        .article-content td strong { color: #111827; }
-    </style>'''
-
+def blog_output_path(slug):
+    """Return a blog output path only for canonical, traversal-safe slugs."""
+    value = str(slug or "")
+    if not SLUG_PATTERN.fullmatch(value):
+        raise ValueError(f"Unsafe blog slug: {value!r}")
+    output = (BLOG / f"{value}.html").resolve()
+    if output.parent != BLOG.resolve():
+        raise ValueError(f"Blog slug escapes output directory: {value!r}")
+    return output
 
 def fmt_date(s):
     try:
@@ -101,6 +46,62 @@ def fmt_date(s):
         return f"{int(d)} {MONTHS_ID[int(m)]} {y}"
     except Exception:
         return s
+
+
+def _json_ld(data):
+    """Serialize JSON-LD without allowing source text to close the script tag."""
+    return (json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+            .replace("&", "\\u0026")
+            .replace("<", "\\u003c")
+            .replace(">", "\\u003e"))
+
+
+def seo_head(post):
+    """Return source-backed social metadata and dated BlogPosting schema."""
+    title = str(post.get("Title", ""))
+    description = str(post.get("Excerpt", ""))
+    slug = str(post.get("Slug", ""))
+    published = str(post.get("Date", "")).strip()
+    author_name = str(post.get("Author") or "Philip Mulyana")
+    canonical = f"https://philipmulyana.com/blog/{slug}.html"
+
+    lines = [
+        '    <meta property="og:type" content="article">',
+        '    <meta property="og:locale" content="id_ID">',
+        f'    <meta property="og:title" content="{_html.escape(title, quote=True)}">',
+        f'    <meta property="og:description" content="{_html.escape(description, quote=True)}">',
+        f'    <meta property="og:url" content="{_html.escape(canonical, quote=True)}">',
+        '    <meta name="twitter:card" content="summary">',
+        f'    <meta name="twitter:title" content="{_html.escape(title, quote=True)}">',
+        f'    <meta name="twitter:description" content="{_html.escape(description, quote=True)}">',
+    ]
+    if not published:
+        return "\n".join(lines)
+
+    lines.append(f'    <meta property="article:published_time" content="{_html.escape(published, quote=True)}">')
+    author = {"@type": "Person", "name": author_name}
+    if author_name == "Philip Mulyana":
+        author.update({
+            "@id": "https://philipmulyana.com/#person",
+            "url": "https://philipmulyana.com/about.html",
+        })
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": title,
+        "description": description,
+        "datePublished": published,
+        "inLanguage": "id-ID",
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
+        "author": author,
+        "publisher": {"@id": "https://philipmulyana.com/#person"},
+    }
+    lines.extend([
+        '    <script type="application/ld+json">',
+        f'    {_json_ld(schema)}',
+        '    </script>',
+    ])
+    return "\n".join(lines)
 
 
 # Content Machine "Blogs" authoring table (Content Strategist base) — second source.
@@ -158,14 +159,8 @@ def _reading_time(body):
 
 
 def _cm_content(body):
-    """Strip tool-CTA markdown links (auto-CTA injects styled buttons) but keep a
-    marker comment so cta_block()/mid_cta() still detect the tool."""
-    body = body or ""
-    tool = next((k for k in TOOL_KEYS if k in body), None)
-    body = re.sub(r"\[([^\]]+)\]\((https?://[^)]*(?:tool-retirement|tool-education|tool-proteksi|financial-checkup)[^)]*)\)", r"\1", body)
-    if tool:
-        body += f"\n\n<!-- {tool} -->"
-    return body
+    """Keep approved Content Machine links intact in the shared article shell."""
+    return body or ""
 
 
 def fetch_posts():
@@ -221,159 +216,101 @@ def fetch_posts():
 
 
 def render_body(content_md):
-    body = md.markdown(content_md or "", extensions=["tables", "fenced_code", "sane_lists"])
-    body = re.sub(r"<p>", '<p class="text-lg text-gray-600 leading-relaxed">', body, count=1)
-    return body
+    return md.markdown(content_md or "", extensions=["tables", "fenced_code", "sane_lists"])
 
 
 def baca_juga(post, all_posts):
     others = [p for p in all_posts if p.get("Slug") != post.get("Slug")][:2]
     cards = []
-    for o in others:
-        cat = o.get("Category", "")
-        type_badge = "Berita Keuangan" if o.get("CategoryLabel") == "News Insight" else "Artikel Kami"
-        topic = CATEGORY_LABELS.get(cat, o.get("CategoryLabel", ""))
-        color = CATEGORY_COLORS.get(cat, "bg-gray-100 text-gray-700")
-        cards.append(f'''                <a href="/blog/{o.get("Slug")}.html" class="bg-gray-50 rounded-2xl p-5 hover:shadow-lg transition-shadow duration-300 block">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">{type_badge}</span>
-                        <span class="text-xs font-medium px-2.5 py-1 rounded-full {color}">{topic}</span>
-                    </div>
-                    <h3 class="font-bold mt-1 leading-snug">{_html.escape(o.get("Title",""))}</h3>
-                    <p class="text-sm text-gray-500 mt-2">{o.get("ReadingTime","")}</p>
-                </a>''')
+    for other in others:
+        category = other.get("Category", "")
+        type_badge = "Berita Keuangan" if other.get("CategoryLabel") == "News Insight" else "Artikel Kami"
+        topic = CATEGORY_LABELS.get(category, other.get("CategoryLabel", ""))
+        cards.append(f'''        <a href="/blog/{_html.escape(str(other.get("Slug", "")), quote=True)}.html">
+          <span>{_html.escape(str(type_badge))} · {_html.escape(str(topic or ""))}</span>
+          <h3>{_html.escape(str(other.get("Title", "")))}</h3>
+          <p>{_html.escape(str(other.get("ReadingTime", "")))}</p>
+        </a>''')
     return "\n".join(cards)
 
 
-TOOL_CTA = {
-    "tool-education.html": ("Hitung Dana Pendidikan Anak Kamu", "https://philipmulyana.com/tools/education/"),
-    "tool-retirement.html": ("Cek Gap Dana Pensiun Kamu", "https://philipmulyana.com/tools/retirement/"),
-    "tool-proteksi.html": ("Hitung Kebutuhan Proteksi Kamu", "https://philipmulyana.com/tools/proteksi/"),
-    "financial-checkup.html": ("Mulai Financial Check-up Gratis", "https://philipmulyana.com/financial-checkup.html"),
-}
-
-
-def cta_block(post):
-    content = post.get("Content", "") or ""
-    for key, (label, url) in TOOL_CTA.items():
-        if key in content:
-            return f'''    <!-- CTA -->
-    <section class="px-6 pb-20">
-        <div class="max-w-3xl mx-auto">
-            <div class="bg-black text-white rounded-3xl p-8 md:p-10 text-center">
-                <p class="text-2xl font-black mb-3">Cek angka kamu sendiri — gratis, 2 menit.</p>
-                <p class="text-gray-300 text-sm mb-6 max-w-lg mx-auto">Jangan cuma baca. Lihat persis berapa yang kamu butuhkan dan berapa yang harus kamu sisihkan mulai sekarang — sebelum waktunya makin sempit.</p>
-                <a href="{url}" class="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full text-sm font-bold hover:bg-gray-100 transition-colors">🧮 {label}</a>
-            </div>
-            <p class="text-center text-sm text-gray-400 mt-6">Ada pertanyaan? <a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer" class="text-black underline font-medium">DM saya di Instagram</a></p>
-        </div>
-    </section>'''
-    return '''    <!-- CTA -->
-    <section class="px-6 pb-20">
-        <div class="max-w-3xl mx-auto text-center">
-            <p class="text-xl font-bold mb-4">Ada pertanyaan tentang keuangan?</p>
-            <a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">DM Saya di Instagram</a>
-        </div>
-    </section>'''
-
-
-def mid_cta(post):
-    content = post.get("Content", "") or ""
-    for key, (label, url) in TOOL_CTA.items():
-        if key in content:
-            return ('<div style="margin:2.5rem 0;padding:1.25rem 1.5rem;border:1px solid #e5e7eb;'
-                    'border-radius:1rem;background:#f9fafb;display:flex;flex-wrap:wrap;align-items:center;'
-                    'justify-content:space-between;gap:1rem;">'
-                    '<span style="font-size:0.95rem;font-weight:600;color:#111827;">Mau langsung tahu angka kamu sendiri?</span>'
-                    f'<a href="{url}" style="text-decoration:none;white-space:nowrap;background:#000;color:#fff;'
-                    f'padding:0.6rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;">&#129518; {label}</a>'
-                    '</div>')
-    return ""
-
-
-def inject_mid_cta(body_html, post):
-    cta = mid_cta(post)
-    if not cta:
-        return body_html
-    positions = [m.start() for m in re.finditer(r"<h2", body_html)]
-    if len(positions) < 2:
-        return body_html
-    mid = positions[len(positions) // 2]
-    return body_html[:mid] + cta + "\n" + body_html[mid:]
-
-
 def render_page(post, all_posts):
-    title = post.get("Title", "")
+    title = str(post.get("Title", ""))
+    slug = str(post.get("Slug", ""))
+    blog_output_path(slug)
+    description = str(post.get("Excerpt", ""))
     cat = post.get("Category", "")
     type_badge = "Berita Keuangan" if post.get("CategoryLabel") == "News Insight" else "Artikel Kami"
     topic = CATEGORY_LABELS.get(cat, post.get("CategoryLabel", ""))
-    color = CATEGORY_COLORS.get(cat, "bg-gray-100 text-gray-700")
-    return f'''<!DOCTYPE html>
+    meta_parts = [fmt_date(str(post.get("Date", ""))), str(post.get("ReadingTime", "")), str(post.get("Author") or "Philip Mulyana")]
+    article_meta = " · ".join(_html.escape(value) for value in meta_parts if value)
+    return f'''<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{_html.escape(title)} — Philip Mulyana</title>
-    <meta name="description" content="{_html.escape(post.get("Excerpt",""))}">
-    <link rel="canonical" href="https://philipmulyana.com/blog/{post.get("Slug")}.html">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="/js/pixel.js"></script>
-    <script>
-        tailwind.config = {{ theme: {{ extend: {{ fontFamily: {{ sans: ['Inter', 'system-ui', 'sans-serif'] }} }} }} }}
-    </script>
-{STYLE}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{_html.escape(title)} — Philip Mulyana</title>
+  <meta name="description" content="{_html.escape(description, quote=True)}">
+  <link rel="canonical" href="https://philipmulyana.com/blog/{_html.escape(slug, quote=True)}.html">
+{seo_head(post)}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site/site.css">
+  <link rel="stylesheet" href="/assets/site/article.css">
+  <script src="/js/sanitize-attribution.js"></script>
+  <script src="/js/pixel.js"></script>
+  <script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)}})(window,document,"clarity","script","wjulbbpfmx");</script>
 </head>
-<body class="bg-white text-black font-sans antialiased">
-
-{NAV}
-
-    <!-- Breadcrumb + Header -->
-    <section class="pt-28 pb-8 px-6">
-        <div class="max-w-3xl mx-auto">
-            <a href="/blog.html" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-6">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                Blog
-            </a>
-            <div class="flex items-center gap-2 mb-3">
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">{type_badge}</span>
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full {color}">{topic}</span>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-black leading-tight">{_html.escape(title)}</h1>
-            <div class="flex items-center gap-3 mt-4 text-sm text-gray-400">
-                <span>{fmt_date(post.get("Date",""))}</span>
-                <span>&middot;</span>
-                <span>{post.get("ReadingTime","")}</span>
-                <span>&middot;</span>
-                <span>{_html.escape(post.get("Author","Philip Mulyana"))}</span>
-            </div>
-        </div>
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+  <header class="site-header">
+    <div class="container navigation">
+      <a class="brand" href="/" aria-label="Philip Mulyana — Homepage"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181"></a>
+      <nav aria-label="Navigasi utama"><a href="/consultation.html">Konsultasi Asuransi</a></nav>
+    </div>
+  </header>
+  <main id="main-content">
+    <header class="article-hero">
+      <div class="container-reading">
+        <a class="article-back" href="/blog.html">← Blog</a>
+        <div class="article-kicker">{_html.escape(type_badge)} · {_html.escape(str(topic or ""))}</div>
+        <h1>{_html.escape(title)}</h1>
+        <div class="article-meta">{article_meta}</div>
+      </div>
+    </header>
+    <article class="article-layout">
+      <div class="container-reading article-content">
+{render_body(str(post.get("Content", "")))}
+      </div>
+    </article>
+    <section class="article-cta" aria-labelledby="article-consultation-heading">
+      <div>
+        <span class="eyebrow">Konsultasi Asuransi</span>
+        <p id="article-consultation-heading">Ingin membahas situasimu lebih lanjut?</p>
+        <div class="article-cta-copy">Pelajari lebih dulu cara Konsultasi Asuransi berjalan. First Call adalah langkah awal untuk mendengar situasimu dan melihat apakah layanan ini relevan sebelum masuk ke sesi berikutnya.</div>
+        <a href="/consultation.html" data-forward-attribution>Pelajari Konsultasi Asuransi</a>
+      </div>
     </section>
-
-    <!-- Article Content -->
-    <section class="px-6 pb-8">
-        <div class="max-w-3xl mx-auto article-content">
-{inject_mid_cta(render_body(post.get("Content","")), post)}
-        </div>
-    </section>
-
-{cta_block(post)}
-
-    <!-- Baca Juga -->
-    <section class="px-6 pb-16">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-xl font-bold mb-6">Baca Juga</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section class="article-related" aria-labelledby="related-heading">
+      <div>
+        <h2 id="related-heading">Baca Juga</h2>
+        <div class="grid">
 {baca_juga(post, all_posts)}
-            </div>
         </div>
+      </div>
     </section>
-
-{FOOTER}
-    <script src="/js/blog-track.js"></script>
+  </main>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181" loading="lazy"><p>Artikel tentang keputusan keuangan dalam kehidupan sehari-hari.</p></div>
+      <div><h2>Belajar</h2><a href="/blog.html">Artikel</a><a href="/tools/">Tools</a><a href="/product/dana-kuliah/">Online Course</a></div>
+      <div><h2>Konsultasi</h2><a href="/consultation.html">Konsultasi Asuransi</a><a href="https://calendly.com/philipmulyana/first-call" data-forward-attribution>First Call</a></div>
+      <div><h2>Tentang</h2><a href="/about.html">Tentang Philip</a><a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer">Instagram</a><a href="/privacy-policy/">Kebijakan Privasi</a></div>
+    </div>
+  </footer>
+  <script src="/js/blog-track.js" defer></script>
+  <script src="/js/site.js" defer></script>
 </body>
 </html>
 '''
@@ -382,8 +319,17 @@ def render_page(post, all_posts):
 def main():
     posts = fetch_posts()
     BLOG.mkdir(parents=True, exist_ok=True)
+    safe_posts = []
     for p in posts:
-        (BLOG / f"{p['Slug']}.html").write_text(render_page(p, posts), encoding="utf-8")
+        try:
+            blog_output_path(p.get("Slug"))
+        except ValueError as ex:
+            print(f"  WARNING: skipping post with unsafe slug ({ex})")
+            continue
+        safe_posts.append(p)
+    posts = safe_posts
+    for p in posts:
+        blog_output_path(p["Slug"]).write_text(render_page(p, posts), encoding="utf-8")
         print(f"  page: /blog/{p['Slug']}.html")
 
     # WRITE-BACK: a Content Machine blog rendered from status "4 - Writing Approved" is
@@ -412,9 +358,15 @@ def main():
         try:
             for e in json.load(open(POSTS_JSON)).get("posts", []):
                 s = e.get("slug")
-                if s and s not in at_slugs and (BLOG / f"{s}.html").exists():
-                    listing.append(e)
-                    print(f"  preserved (local-render, not in Airtable): /blog/{s}.html")
+                if s and s not in at_slugs:
+                    try:
+                        existing_page = blog_output_path(s)
+                    except ValueError:
+                        print(f"  WARNING: skipped unsafe local slug: {s!r}")
+                        continue
+                    if existing_page.exists():
+                        listing.append(e)
+                        print(f"  preserved (local-render, not in Airtable): /blog/{s}.html")
         except Exception as ex:
             print("  (posts.json merge skipped:", ex, ")")
     listing.sort(key=lambda x: x.get("date", ""), reverse=True)
