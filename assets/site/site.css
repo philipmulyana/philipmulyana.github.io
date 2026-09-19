@@ -29,6 +29,17 @@ button,input,select{font:inherit}
 .page-hero h1{max-width:920px;margin:10px 0 24px;font-size:clamp(48px,6vw,82px);font-weight:700;letter-spacing:-.045em;line-height:.96}
 .page-hero p{max-width:690px;margin:0;color:#c6c6c6;font-size:21px}
 .hero-reassurance{margin-top:16px!important;color:#fff!important;font-size:16px!important;font-weight:600}
+.consultation-proof{background:var(--soft)}
+.consultation-proof .eyebrow{color:var(--red)}
+.consultation-proof h2{max-width:760px;margin:0 0 40px;font-size:clamp(38px,4.5vw,58px);letter-spacing:-.04em;line-height:.98}
+.consultation-proof-grid{display:grid;grid-template-columns:repeat(4,1fr);margin:0;border-top:1px solid var(--black);border-bottom:1px solid var(--line)}
+.consultation-proof-grid div{min-width:0;padding:28px 24px}
+.consultation-proof-grid div:first-child{padding-left:0}
+.consultation-proof-grid div+div{border-left:1px solid var(--line)}
+.consultation-proof-grid dt,.consultation-proof-grid dd{margin:0}
+.consultation-proof-grid strong{display:block;font-size:clamp(28px,3vw,40px);letter-spacing:-.035em;line-height:1}
+.consultation-proof-grid dd{margin-top:10px;color:var(--muted);font-size:15px}
+.consultation-proof-note{max-width:760px;margin:26px 0 0;color:var(--muted);font-size:16px}
 .eyebrow{display:block;margin:0 0 12px;font-size:14px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
 .section{padding:112px 0}
 .section-soft{background:var(--soft)}
@@ -130,6 +141,11 @@ button,input,select{font:inherit}
   .page-hero h1{font-size:44px}
   .page-hero p{font-size:18px}
   .section{padding:76px 0}
+  .consultation-proof-grid{grid-template-columns:repeat(2,1fr)}
+  .consultation-proof-grid div{padding:22px 18px}
+  .consultation-proof-grid div:first-child,.consultation-proof-grid div:nth-child(3){padding-left:0;border-left:0}
+  .consultation-proof-grid div:nth-child(3),.consultation-proof-grid div:nth-child(4){border-top:1px solid var(--line)}
+  .consultation-proof-grid strong{font-size:30px}
   .section-heading,.split,.first-call-panel{display:block}
   .section-heading{margin-bottom:40px}
   .section-heading h2,.display-heading{font-size:47px}

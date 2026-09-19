@@ -263,6 +263,41 @@ class ConsultationContract(unittest.TestCase):
         self.assertIn('Philip adalah agen Prudential.', self.html)
         self.assertIn('Policy Review', self.html)
 
+    def test_consultation_places_approved_brand_proof_between_hero_and_first_call(self):
+        hero = self.html.index('class="page-hero"')
+        proof = self.html.index('id="consultation-proof"')
+        first_call = self.html.index('id="first-call"')
+        self.assertLess(hero, proof)
+        self.assertLess(proof, first_call)
+        self.assertIn('/assets/site/site.css?v=20260919-consultation-proof', self.html)
+
+        section = re.search(
+            r'<section[^>]+id="consultation-proof".*?</section>', self.html, re.S
+        )
+        self.assertIsNotNone(section)
+        assert section is not None
+        proof_html = section.group(0)
+        self.assertIn('Pengalaman Philip dalam Angka', proof_html)
+        self.assertIn('18+ tahun', proof_html)
+        self.assertIn('di financial services, sejak 2008', proof_html)
+        self.assertIn('12+ tahun', proof_html)
+        self.assertIn('sebagai Financial Advisor, sejak 2014', proof_html)
+        proof_text = re.sub(r'<[^>]+>', '', proof_html)
+        self.assertIn('Tahun ke-4', proof_text)
+        self.assertIn('data-year-number-since="2023"', proof_html)
+        self.assertIn('bersama Prudential, sejak 2023', proof_html)
+        self.assertIn('100+ klien', proof_html)
+        self.assertIn('telah dilayani', proof_html)
+        self.assertNotIn('90+ klien', proof_html)
+        self.assertNotIn('100+ pemegang polis', proof_html)
+        self.assertNotIn('100+ keluarga terlindungi', proof_html)
+        self.assertIn('kamu tidak wajib membeli produk apa pun', proof_html)
+
+        compact_css = re.sub(r'\s+', '', read("assets/site/site.css"))
+        self.assertIn('.consultation-proof-grid{display:grid;grid-template-columns:repeat(4,1fr)', compact_css)
+        self.assertIn('@media(max-width:760px)', compact_css)
+        self.assertIn('.consultation-proof-grid{grid-template-columns:repeat(2,1fr)', compact_css)
+
     def test_consultation_does_not_overpromise_first_call(self):
         for rejected in (
             'WhatsApp Call',
