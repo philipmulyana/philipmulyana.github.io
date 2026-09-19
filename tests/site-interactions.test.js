@@ -6,6 +6,10 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'js', 'site.js'), 'utf8');
 
+test('site runtime does not rewrite the approved static Prudential tenure', () => {
+  assert.equal(source.includes('data-year-number-since'), false);
+});
+
 test('site forwarding drops PII-shaped values while homepage carousel has no controls', () => {
   const link = { href: 'https://philipmulyana.com/links/#link-list' };
   const document = {

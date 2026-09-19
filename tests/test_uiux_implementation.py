@@ -127,7 +127,17 @@ class SharedUiAuditContract(unittest.TestCase):
             compact_css,
         )
         consultation = read("consultation.html")
-        self.assertIn('class="hero-reassurance"', consultation)
+        hero = re.search(
+            r'<section[^>]+id="consultation-hero".*?</section>', consultation, re.S
+        )
+        self.assertIsNotNone(hero)
+        assert hero is not None
+        hero_html = hero.group(0)
+        self.assertIn('class="consultation-support"', hero_html)
+        self.assertLess(
+            hero_html.index('>Jadwalkan First Call</a>'),
+            hero_html.index('class="consultation-support"'),
+        )
 
     def test_links_skip_and_footer_targets_are_at_least_44px(self):
         css = re.sub(r'\s+', '', read("assets/site/links.css"))
