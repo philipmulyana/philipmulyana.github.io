@@ -8,13 +8,6 @@
     }
   });
 
-  document.querySelectorAll('[data-year-number-since]').forEach((element) => {
-    const startYear = Number(element.dataset.yearNumberSince);
-    if (Number.isFinite(startYear)) {
-      element.textContent = Math.max(1, currentYear - startYear + 1).toString();
-    }
-  });
-
   const allowedAttributionFields = [
     'utm_source',
     'utm_medium',

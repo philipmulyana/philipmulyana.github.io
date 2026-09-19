@@ -6,32 +6,8 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'js', 'site.js'), 'utf8');
 
-test('inclusive tenure renders 2023 as year 4 in 2026', () => {
-  const tenure = {
-    dataset: { yearNumberSince: '2023' },
-    textContent: '',
-  };
-  const document = {
-    querySelectorAll(selector) {
-      if (selector === '[data-year-number-since]') return [tenure];
-      return [];
-    },
-  };
-  const window = {
-    location: {
-      href: 'https://philipmulyana.com/consultation.html',
-      search: '',
-    },
-  };
-  class FixedDate {
-    getFullYear() { return 2026; }
-  }
-
-  vm.runInNewContext(source, {
-    document, window, URL, URLSearchParams, Number, Math, Date: FixedDate, decodeURIComponent,
-  });
-
-  assert.equal(tenure.textContent, '4');
+test('site runtime does not rewrite the approved static Prudential tenure', () => {
+  assert.equal(source.includes('data-year-number-since'), false);
 });
 
 test('site forwarding drops PII-shaped values while homepage carousel has no controls', () => {

@@ -250,7 +250,36 @@ class ConsultationContract(unittest.TestCase):
     def setUp(self):
         self.html = read("consultation.html")
 
-    def test_consultation_uses_approved_first_call_contract(self):
+    def test_consultation_uses_approved_seo_and_hero(self):
+        self.assertIn(
+            '<title>Konsultasi Asuransi: First Call Gratis 10 Menit | Philip Mulyana</title>',
+            self.html,
+        )
+        self.assertIn(
+            'Mulai dengan First Call gratis 10 menit lewat telepon untuk melihat '
+            'apakah Konsultasi Asuransi bersama Philip Mulyana relevan dengan situasimu.',
+            self.html,
+        )
+        self.assertEqual(self.html.count('<h1>'), 1)
+        self.assertIn('<h1>Cek Dulu, Baru Putuskan</h1>', self.html)
+        self.assertIn('Kamu tidak perlu memutuskan apa pun sekarang.', self.html)
+
+    def test_consultation_uses_approved_section_order(self):
+        markers = (
+            'id="consultation-hero"',
+            'id="situation"',
+            'id="first-call"',
+            'id="first-call-boundaries"',
+            'id="next-steps"',
+            'id="consultation-proof"',
+            'id="consultation-testimonials"',
+            'id="consultation-faq"',
+            'id="consultation-final-cta"',
+        )
+        positions = [self.html.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+
+    def test_consultation_uses_approved_first_call_contract_and_ctas(self):
         expected = (
             'First Call adalah panggilan gratis selama 10 menit untuk mendengar '
             'situasimu dan melihat apakah Konsultasi Asuransi relevan sebelum '
@@ -258,18 +287,35 @@ class ConsultationContract(unittest.TestCase):
         )
         self.assertIn(expected, self.html)
         self.assertIn('Gratis 10 menit lewat telepon.', self.html)
-        self.assertIn('Jadwalkan First Call', self.html)
-        self.assertIn('https://calendly.com/philipmulyana/first-call', self.html)
-        self.assertIn('Philip adalah agen Prudential.', self.html)
-        self.assertIn('Policy Review', self.html)
+        self.assertIn('Tidak ada pre-form dan tidak ada WhatsApp gate.', self.html)
+        ctas = re.findall(
+            r'<a[^>]+href="https://calendly\.com/philipmulyana/first-call"[^>]*>'
+            r'Jadwalkan First Call</a>',
+            self.html,
+        )
+        self.assertEqual(len(ctas), 4)
+        for cta in ctas:
+            self.assertIn('data-forward-attribution', cta)
+        self.assertNotIn('<form', self.html)
+        self.assertNotIn('<input', self.html)
 
-    def test_consultation_places_approved_brand_proof_between_hero_and_first_call(self):
-        hero = self.html.index('class="page-hero"')
-        proof = self.html.index('id="consultation-proof"')
-        first_call = self.html.index('id="first-call"')
-        self.assertLess(hero, proof)
-        self.assertLess(proof, first_call)
-        self.assertIn('/assets/site/site.css?v=20260919-consultation-proof', self.html)
+    def test_consultation_explains_all_three_possible_next_steps(self):
+        section = re.search(
+            r'<section[^>]+id="next-steps".*?</section>', self.html, re.S
+        )
+        self.assertIsNotNone(section)
+        assert section is not None
+        next_steps = section.group(0)
+        for expected in ('Discovery Meeting', 'Policy Review', 'Tidak lanjut'):
+            self.assertIn(expected, next_steps)
+        self.assertIn('tidak ada tahap lanjutan yang otomatis atau dijamin', next_steps)
+
+    def test_consultation_places_static_approved_proof_after_next_steps(self):
+        self.assertLess(
+            self.html.index('id="next-steps"'),
+            self.html.index('id="consultation-proof"'),
+        )
+        self.assertIn('/assets/site/site.css?v=20260919-consultation-approved', self.html)
 
         section = re.search(
             r'<section[^>]+id="consultation-proof".*?</section>', self.html, re.S
@@ -277,49 +323,55 @@ class ConsultationContract(unittest.TestCase):
         self.assertIsNotNone(section)
         assert section is not None
         proof_html = section.group(0)
-        self.assertIn('Pengalaman Philip dalam Angka', proof_html)
         self.assertIn('18+ tahun', proof_html)
         self.assertIn('di financial services, sejak 2008', proof_html)
         self.assertIn('12+ tahun', proof_html)
         self.assertIn('sebagai Financial Advisor, sejak 2014', proof_html)
-        proof_text = re.sub(r'<[^>]+>', '', proof_html)
-        self.assertIn('Tahun ke-4', proof_text)
-        self.assertIn('data-year-number-since="2023"', proof_html)
+        self.assertIn('Tahun ke-4', proof_html)
+        self.assertNotIn('data-year-number-since', proof_html)
         self.assertIn('bersama Prudential, sejak 2023', proof_html)
         self.assertIn('100+ klien', proof_html)
         self.assertIn('telah dilayani', proof_html)
         self.assertNotIn('90+ klien', proof_html)
         self.assertNotIn('100+ pemegang polis', proof_html)
         self.assertNotIn('100+ keluarga terlindungi', proof_html)
-        self.assertIn('kamu tidak wajib membeli produk apa pun', proof_html)
+        self.assertIn('/assets/homepage/profile-photo.webp', proof_html)
+        self.assertRegex(proof_html, r'<img\b[^>]+width="1000"[^>]+height="1400"')
+        self.assertIn('loading="lazy"', proof_html)
 
-        compact_css = re.sub(r'\s+', '', read("assets/site/site.css"))
-        self.assertIn('.consultation-proof-grid{display:grid;grid-template-columns:repeat(4,1fr)', compact_css)
-        self.assertIn('@media(max-width:760px)', compact_css)
-        self.assertIn('.consultation-proof-grid{grid-template-columns:repeat(2,1fr)', compact_css)
-
-    def test_consultation_does_not_overpromise_first_call(self):
-        for rejected in (
-            'WhatsApp Call',
-            '500Jt+',
-            'Needs Analysis',
-            'Product Recommendation',
-            'Personalized Plan',
-            'Discovery Meeting',
-            'Protection Review',
-        ):
+    def test_consultation_states_first_call_boundaries_and_disclosures(self):
+        self.assertIn('First Call tidak mencakup diagnosis proteksi lengkap', self.html)
+        self.assertIn('Tidak ada hasil atau tahap lanjutan tertentu yang dijamin', self.html)
+        self.assertIn('Philip adalah agen Prudential.', self.html)
+        self.assertIn('Membeli produk tidak wajib.', self.html)
+        for rejected in ('500Jt+', 'Protection Review', '100+ pemegang polis', '100+ keluarga terlindungi'):
             self.assertNotIn(rejected, self.html)
 
-    def test_existing_testimonials_are_published_verbatim_near_first_call(self):
+    def test_consultation_faq_uses_native_disclosures(self):
+        section = re.search(
+            r'<section[^>]+id="consultation-faq".*?</section>', self.html, re.S
+        )
+        self.assertIsNotNone(section)
+        assert section is not None
+        faq = section.group(0)
+        self.assertEqual(faq.count('<details'), 4)
+        self.assertEqual(faq.count('<summary>'), 4)
+        self.assertIn('Apakah saya harus membeli produk setelah First Call?', faq)
+        self.assertIn('Apakah Philip penasihat independen?', faq)
+
+    def test_existing_testimonials_are_published_verbatim_with_context(self):
         testimonials = json.loads(read("data/testimonials.json"))
         selected = testimonials[:3]
         withheld = testimonials[3:]
 
-        for page in ("index.html", "consultation.html"):
+        for page, section_id in (
+            ("index.html", "first-call"),
+            ("consultation.html", "consultation-testimonials"),
+        ):
             with self.subTest(page=page):
                 html = read(page)
                 section_match = re.search(
-                    r'<section[^>]+id="first-call".*?</section>', html, re.S
+                    rf'<section[^>]+id="{section_id}".*?</section>', html, re.S
                 )
                 self.assertIsNotNone(section_match)
                 assert section_match is not None
@@ -329,6 +381,9 @@ class ConsultationContract(unittest.TestCase):
                 self.assertEqual(section.count('<blockquote'), 3)
                 self.assertNotIn('Testimonial First Call', section)
                 self.assertNotIn('carousel', section.lower())
+                if page == "consultation.html":
+                    self.assertIn('bukan ulasan khusus tentang First Call', section)
+                    self.assertIn('bukan jaminan hasil', section)
 
                 for testimonial in selected:
                     self.assertEqual(section.count(testimonial["text"]), 1)
