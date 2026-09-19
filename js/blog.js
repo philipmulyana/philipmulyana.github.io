@@ -15,6 +15,12 @@ function escapeHtml(value = '') {
     .replaceAll("'", '&#039;');
 }
 
+function plainTextExcerpt(value = '') {
+  return String(value)
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\\(["'])/g, '$1');
+}
+
 function safePostUrl(slug = '') {
   const safeSlug = String(slug).match(/^[a-z0-9-]+$/)?.[0];
   return safeSlug ? `/blog/${safeSlug}.html` : '/blog.html';
@@ -154,7 +160,7 @@ function renderPostRow(post) {
   return `
     <a href="${safePostUrl(post.slug)}" class="row-link">
       <span class="meta">${meta}</span>
-      <span><h3>${escapeHtml(post.title)}</h3><p>${escapeHtml(post.excerpt)}</p><span class="text-link">Baca selengkapnya</span></span>
+      <span><h3>${escapeHtml(post.title)}</h3><p>${escapeHtml(plainTextExcerpt(post.excerpt))}</p><span class="text-link">Baca selengkapnya</span></span>
       <span class="row-arrow" aria-hidden="true">›</span>
     </a>`;
 }
@@ -166,7 +172,7 @@ function renderNewsRow(article) {
   return `
     <a href="${escapeHtml(safeExternalUrl(article.url))}" target="_blank" rel="noopener noreferrer" class="row-link">
       <span class="meta">${meta}</span>
-      <span><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.hook)}</p><span class="text-link">Baca artikel lengkap</span></span>
+      <span><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(plainTextExcerpt(article.hook))}</p><span class="text-link">Baca artikel lengkap</span></span>
       <span class="row-arrow" aria-hidden="true">↗</span>
     </a>`;
 }

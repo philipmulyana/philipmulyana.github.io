@@ -51,11 +51,11 @@ test('copies every allowed attribution parameter to the Mayar checkout', () => {
   const allowed = {
     utm_source: 'facebook',
     utm_medium: 'paid_social',
-    utm_campaign: 'dana_kuliah_moms',
-    utm_content: 'video_a',
-    utm_term: 'orang_tua_sd',
-    placement: 'instagram_story',
-    fbclid: 'QA-fbclid-123',
+    utm_campaign: 'cmp_a1b2c3d4e5f6a7b8',
+    utm_content: 'ad_1a2b3c4d5e6f7a8b',
+    utm_term: 'kw_8b7a6f5e4d3c2b1a',
+    placement: 'stories',
+    fbclid: 'IwAR0abc123xyz456def789',
   };
   const search = `?${new URLSearchParams(allowed)}`;
   const { links } = runPage({ search });
@@ -77,21 +77,31 @@ test('does not forward unknown parameters or PII', () => {
 
 test('retains existing checkout query parameters', () => {
   const existingCheckout = `${checkout}?ref=existing&lang=id`;
-  const { links } = runPage({ search: '?utm_campaign=qa', hrefs: [existingCheckout] });
+  const { links } = runPage({ search: '?utm_campaign=cmp_a1b2c3d4e5f6a7b8', hrefs: [existingCheckout] });
   const params = new URL(links[0].href).searchParams;
 
   assert.equal(params.get('ref'), 'existing');
   assert.equal(params.get('lang'), 'id');
-  assert.equal(params.get('utm_campaign'), 'qa');
+  assert.equal(params.get('utm_campaign'), 'cmp_a1b2c3d4e5f6a7b8');
 });
 
-test('safely URL-encodes special characters', () => {
+test('rejects free-text and obfuscated PII inside attribution values', () => {
   const value = 'orang tua & kuliah/2026?';
-  const search = `?utm_content=${encodeURIComponent(value)}`;
+  const search = `?utm_content=${encodeURIComponent(value)}&utm_campaign=user_at_example.com&utm_term=1-212-555-0198&fbclid=14155552671`;
   const { links } = runPage({ search });
+  const params = new URL(links[0].href).searchParams;
 
-  assert.equal(new URL(links[0].href).searchParams.get('utm_content'), value);
-  assert.match(links[0].href, /utm_content=orang\+tua\+%26\+kuliah%2F2026%3F/);
+  for (const field of ['utm_content', 'utm_campaign', 'utm_term', 'fbclid']) {
+    assert.equal(params.has(field), false, `${field} must not be forwarded`);
+  }
+});
+
+test('canonicalizes encoded safe values before Mayar forwarding', () => {
+  const { links } = runPage({ search: '?utm_source=%256deta&utm_campaign=%2563mp_a1b2c3d4e5f6a7b8' });
+  const params = new URL(links[0].href).searchParams;
+
+  assert.equal(params.get('utm_source'), 'meta');
+  assert.equal(params.get('utm_campaign'), 'cmp_a1b2c3d4e5f6a7b8');
 });
 
 test('leaves the clean checkout URL unchanged when no allowed parameters exist', () => {

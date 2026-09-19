@@ -1,0 +1,34 @@
+{
+  "home": {
+    "sampled": 71,
+    "failures": []
+  },
+  "about": {
+    "sampled": 42,
+    "failures": []
+  },
+  "consultation": {
+    "sampled": 41,
+    "failures": []
+  },
+  "blog": {
+    "sampled": 110,
+    "failures": []
+  },
+  "article": {
+    "sampled": 47,
+    "failures": []
+  },
+  "tools": {
+    "sampled": 65,
+    "failures": []
+  },
+  "links": {
+    "sampled": 37,
+    "failures": []
+  },
+  "corporate": {
+    "sampled": 141,
+    "failures": []
+  }
+}

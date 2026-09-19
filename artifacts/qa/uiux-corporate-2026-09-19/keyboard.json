@@ -1,0 +1,981 @@
+{
+  "results": {
+    "home": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 130,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Mulai dari Sini",
+        "href": "#credentials",
+        "w": 358,
+        "h": 54,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "DIV",
+        "text": "Carousel brand yang pernah bekerja sama dengan Philip Mulyana",
+        "href": null,
+        "w": 358,
+        "h": 112,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "←",
+        "href": null,
+        "w": 49,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Jeda",
+        "href": null,
+        "w": 67,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "→",
+        "href": null,
+        "w": 49,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "7 September 2026 · 5 menit baca Dana Darurat Ada, Pos Anak Ada. Yang Nggak Ada C",
+        "href": "/blog/semua-orang-punya-pos-nama-kamu-ada.html",
+        "w": 358,
+        "h": 168,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "26 Agustus 2026 · 5 menit baca Biaya Rumah Sakit Naik Jauh Lebih Cepat dari Gaji",
+        "href": "/blog/biaya-rumah-sakit-naik-lebih-cepat-dari-gaji.html",
+        "w": 358,
+        "h": 168,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "24 Agustus 2026 · 3 menit baca Kamu Pindah Asuransi Biar Preminya Murah, tapi Ma",
+        "href": "/blog/kamu-pindah-asuransi-masa-tunggu-balik-ke-nol.html",
+        "w": 358,
+        "h": 168,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Lihat Semua Artikel",
+        "href": "/blog.html",
+        "w": 192,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "about": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 121,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Baca Artikel",
+        "href": "/blog.html",
+        "w": 139,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Jadwalkan First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 195,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel",
+        "href": "/blog.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Tools",
+        "href": "/tools/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Online Course",
+        "href": "/product/dana-kuliah/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Tentang Philip",
+        "href": "/about.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Instagram",
+        "href": "https://instagram.com/philipmulyana",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "consultation": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 121,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Jadwalkan First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 195,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Jadwalkan First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 195,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Jadwalkan First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 195,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel",
+        "href": "/blog.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Tools",
+        "href": "/tools/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Online Course",
+        "href": "/product/dana-kuliah/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Tentang Philip",
+        "href": "/about.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "blog": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 121,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Semua",
+        "href": null,
+        "w": 83,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Artikel Kami",
+        "href": null,
+        "w": 118,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Berita Keuangan",
+        "href": null,
+        "w": 147,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Semua",
+        "href": null,
+        "w": 83,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Asuransi",
+        "href": null,
+        "w": 96,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Investasi",
+        "href": null,
+        "w": 97,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Keuangan Pribadi",
+        "href": null,
+        "w": 153,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Ekonomi",
+        "href": null,
+        "w": 95,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel Kami · Keuangan Pribadi · 7 September 2026 · 5 menit baca Dana Darurat A",
+        "href": "/blog/semua-orang-punya-pos-nama-kamu-ada.html",
+        "w": 358,
+        "h": 311,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "article": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 121,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "← Blog",
+        "href": "/blog.html",
+        "w": 48,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Pelajari Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 242,
+        "h": 50,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel Kami · Personal Finance Biaya Rumah Sakit Naik Jauh Lebih Cepat dari Gaj",
+        "href": "/blog/biaya-rumah-sakit-naik-lebih-cepat-dari-gaji.html",
+        "w": 358,
+        "h": 159,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel Kami · Personal Finance Kamu Pindah Asuransi Biar Preminya Murah, tapi M",
+        "href": "/blog/kamu-pindah-asuransi-masa-tunggu-balik-ke-nol.html",
+        "w": 358,
+        "h": 184,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel",
+        "href": "/blog.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Tools",
+        "href": "/tools/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Online Course",
+        "href": "/product/dana-kuliah/",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "tools": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Konsultasi Asuransi",
+        "href": "/consultation.html",
+        "w": 121,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "HITUNG Kalkulator Pensiun Buat perkiraan awal kebutuhan dana pensiun berdasarkan",
+        "href": "/tools/retirement/",
+        "w": 358,
+        "h": 164,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "HITUNG Kalkulator Dana Kuliah Buat perkiraan awal kebutuhan dana kuliah berdasar",
+        "href": "/tools/education/",
+        "w": 358,
+        "h": 164,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "HITUNG Kalkulator Kebutuhan Proteksi Buat perkiraan awal kebutuhan proteksi berd",
+        "href": "/tools/proteksi/",
+        "w": 358,
+        "h": 193,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "PROFIL Profil Risiko Dapatkan gambaran awal tentang profil risikomu. ›",
+        "href": "/tools/risk-profile/",
+        "w": 358,
+        "h": 141,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "ASSESSMENT Assessment Kesiapan Pensiun Dapatkan gambaran awal tentang kesiapan p",
+        "href": "/tools/assessment/",
+        "w": 358,
+        "h": 193,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "ASSESSMENT Assessment Kesiapan Proteksi Jiwa Dapatkan gambaran awal tentang kesi",
+        "href": "/tools/assessment-jiwa/",
+        "w": 358,
+        "h": 193,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Baca Artikel",
+        "href": "/blog.html",
+        "w": 139,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Jadwalkan First Call",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 195,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Artikel",
+        "href": "/blog.html",
+        "w": 358,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "links": [
+      {
+        "tag": "A",
+        "text": "Lewati ke daftar link",
+        "href": "#link-list",
+        "w": 167,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Kunjungi homepage Philip Mulyana",
+        "href": "/",
+        "w": 116,
+        "h": 58,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "First Call Jadwalkan First Call Gratis 10 menit lewat telepon. Ceritakan situasi",
+        "href": "https://calendly.com/philipmulyana/first-call",
+        "w": 358,
+        "h": 133,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Blog Dana Darurat Ada, Pos Anak Ada. Yang Nggak Ada Cuma Satu Nama Artikel Terba",
+        "href": "/blog/semua-orang-punya-pos-nama-kamu-ada.html",
+        "w": 358,
+        "h": 122,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Kolaborasi FOR COLLAB Business Account ↗",
+        "href": "https://wa.me/6281226604199",
+        "w": 358,
+        "h": 88,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "YouTube Subscribe to My YouTube @PhilipMulyana ↗",
+        "href": "https://www.youtube.com/c/philipmulyana?sub_confirmation=1",
+        "w": 358,
+        "h": 101,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "TikTok Follow me on TikTok @philipmulyana ↗",
+        "href": "https://www.tiktok.com/@philipmulyana",
+        "w": 358,
+        "h": 88,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Instagram Follow me on Instagram @philipmulyana ↗",
+        "href": "https://www.instagram.com/philipmulyana",
+        "w": 358,
+        "h": 88,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Kunjungi philipmulyana.com",
+        "href": "/",
+        "w": 174,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Kebijakan Privasi",
+        "href": "/privacy-policy/",
+        "w": 112,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BODY",
+        "text": "Lewati ke daftar link Philip Mulyana Financial Coach · Certified Financial Plann",
+        "href": null,
+        "w": 390,
+        "h": 1125,
+        "outline": "none 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Lewati ke daftar link",
+        "href": "#link-list",
+        "w": 167,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "corporate": [
+      {
+        "tag": "A",
+        "text": "Lewati ke konten utama",
+        "href": "#main-content",
+        "w": 192,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Philip Mulyana — Homepage",
+        "href": "/",
+        "w": 125,
+        "h": 48,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Hubungi Tim",
+        "href": "#inquiry",
+        "w": 77,
+        "h": 44,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Diskusikan Acara dengan Tim Philip",
+        "href": "/links/#collaboration",
+        "w": 358,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "DIV",
+        "text": "AIA Allianz AXA Mandiri BNI Life Prudential Zurich Ajaib Bank BCA Bank CIMB Niag",
+        "href": null,
+        "w": 358,
+        "h": 106,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "←",
+        "href": null,
+        "w": 49,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Jeda",
+        "href": null,
+        "w": 67,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "text": "→",
+        "href": null,
+        "w": 49,
+        "h": 46,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "SUMMARY",
+        "text": "Apakah pembahasan bisa disesuaikan dengan peserta?",
+        "href": null,
+        "w": 358,
+        "h": 98,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "SUMMARY",
+        "text": "Apakah ini sama dengan Konsultasi Asuransi?",
+        "href": null,
+        "w": 358,
+        "h": 98,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "SUMMARY",
+        "text": "Bagaimana mengetahui format, jadwal, dan biaya?",
+        "href": null,
+        "w": 358,
+        "h": 98,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "text": "Diskusikan Acara dengan Tim Philip",
+        "href": "/links/#collaboration",
+        "w": 302,
+        "h": 52,
+        "outline": "solid 3px",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ]
+  },
+  "failures": []
+}

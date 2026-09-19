@@ -55,4 +55,17 @@ async function updateLatestBlog() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', updateLatestBlog);
+function focusCollaborationTarget() {
+  if (window.location.hash !== '#collaboration') return;
+  const target = document.querySelector('#collaboration');
+  if (!target) return;
+  document.body.classList.add('collaboration-target');
+  window.requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+}
+
+function initializeLinksPage() {
+  updateLatestBlog();
+  focusCollaborationTarget();
+}
+
+document.addEventListener('DOMContentLoaded', initializeLinksPage);

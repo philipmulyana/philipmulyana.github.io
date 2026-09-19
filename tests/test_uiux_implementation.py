@@ -124,6 +124,137 @@ class SharedUiAuditContract(unittest.TestCase):
         consultation = read("consultation.html")
         self.assertIn('class="hero-reassurance"', consultation)
 
+    def test_links_skip_and_footer_targets_are_at_least_44px(self):
+        css = re.sub(r'\s+', '', read("assets/site/links.css"))
+        self.assertIn('.skip-link{', css)
+        self.assertRegex(css, r'\.skip-link\{[^}]*min-height:44px')
+        self.assertIn('.links-footera{display:inline-flex;align-items:center;min-height:44px;', css)
+        self.assertIn('.collaboration-target.links-shell{padding-bottom:calc(40px+50vh)}', css)
+
+    def test_article_back_link_has_a_44px_touch_target(self):
+        css = re.sub(r'\s+', '', read("assets/site/article.css"))
+        self.assertIn('.article-back{display:inline-flex;align-items:center;min-height:44px;', css)
+
+
+class CorporateSpeakerContract(unittest.TestCase):
+    brands = (
+        "AIA", "Allianz", "AXA Mandiri", "BNI Life", "Prudential", "Zurich",
+        "Ajaib", "Bank BCA", "Bank CIMB Niaga", "Bank Danamon", "Bank Mandiri",
+        "Bank OCBC", "BSI", "Bibit", "HSBC", "IDX", "IPOT", "KBank",
+        "Mirae Asset Sekuritas", "Pegadaian × Tring", "Pintu",
+        "Sucor Asset Management", "UOB", "Visa", "Komdigi", "Mekari",
+        "Pertamina", "PLN EPI", "Polytron", "Sushi Tei",
+    )
+
+    def test_corporate_page_is_a_separate_accessible_funnel(self):
+        html = read("corporate/index.html")
+        self.assertIn('<html lang="id">', html)
+        self.assertIn('<link rel="canonical" href="https://philipmulyana.com/corporate/">', html)
+        self.assertIn('/assets/site/site.css', html)
+        self.assertIn('/assets/site/corporate.css', html)
+        self.assertIn('class="skip-link"', html)
+        self.assertIn('<main id="main-content"', html)
+        self.assertIn('>Corporate Speaker<', html)
+        self.assertIn('id="audience"', html)
+        self.assertIn('id="topics"', html)
+        self.assertIn('id="credentials"', html)
+        self.assertIn('id="proof"', html)
+        self.assertIn('id="process"', html)
+        self.assertIn('id="faq"', html)
+
+        sanitizer = html.index('/js/sanitize-attribution.js')
+        deferred_trackers = html.index('/js/deferred-trackers.js')
+        self.assertLess(sanitizer, deferred_trackers)
+        self.assertIn('<script src="/js/deferred-trackers.js" defer></script>', html)
+        self.assertNotIn('<script src="/js/pixel.js"></script>', html)
+        self.assertNotIn('clarity.ms/tag/', html)
+
+    def test_corporate_cta_never_uses_the_personal_consultation_path(self):
+        html = read("corporate/index.html")
+        ctas = re.findall(
+            r'<a\b[^>]*data-corporate-inquiry[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+            html,
+            re.S,
+        )
+        self.assertGreaterEqual(len(ctas), 2)
+        cta_tags = re.findall(r'<a\b[^>]*data-corporate-inquiry[^>]*>', html)
+        self.assertEqual(len(cta_tags), len(ctas))
+        for tag in cta_tags:
+            self.assertIn('data-forward-attribution', tag)
+        for href, label in ctas:
+            self.assertIn('Diskusikan Acara dengan Tim Philip', re.sub(r'<[^>]+>', '', label))
+            self.assertEqual(href, '/links/#collaboration')
+            self.assertNotIn('calendly.com', href)
+            self.assertNotIn('/consultation.html', href)
+            self.assertNotIn('6282123391967', href)
+
+    def test_corporate_proof_is_neutral_complete_and_local(self):
+        html = read("corporate/index.html")
+        self.assertIn('>Pernah bekerja sama dengan<', html)
+        self.assertIn('Beberapa brand dan organisasi yang pernah berkolaborasi bersama Philip.', html)
+        self.assertNotIn('Dipercaya oleh 30', html)
+        self.assertNotIn('corporate speaking clients', html.lower())
+
+        found = re.findall(r'<li\b[^>]*data-brand="([^"]+)"', html)
+        self.assertEqual(len(found), 30)
+        self.assertEqual(len(set(found)), 30)
+        self.assertEqual(set(found), set(self.brands))
+        self.assertIn('data-brand="Prudential"', html)
+
+        marks = re.findall(
+            r'<li\b[^>]*data-brand="([^"]+)"[^>]*>\s*<span class="corporate-partner-name">([^<]+)</span>',
+            html,
+        )
+        self.assertEqual(len(marks), 30)
+        self.assertEqual({brand for brand, _label in marks}, set(self.brands))
+        self.assertNotIn('data-partner-logo', html)
+        self.assertNotRegex(html, r'<img\b[^>]+assets/partners/corporate')
+
+        provenance = read("assets/partners/corporate/PROVENANCE.md")
+        self.assertIn('typographic', provenance.lower())
+        self.assertIn('no third-party logo artwork', provenance.lower())
+
+    def test_corporate_carousel_and_portrait_respect_accessibility_contracts(self):
+        html = read("corporate/index.html")
+        self.assertIn('data-carousel', html)
+        self.assertIn('data-carousel-action="previous"', html)
+        self.assertIn('data-carousel-action="toggle"', html)
+        self.assertIn('data-carousel-action="next"', html)
+        self.assertIn('aria-live="polite"', html)
+        self.assertRegex(html, r'<img[^>]+corporate-profile\.webp[^>]+width="510"[^>]+height="714"[^>]+fetchpriority="high"')
+        self.assertEqual(html.count('/assets/site/logo-white-320.png'), 2)
+        self.assertLess((ROOT / 'assets/site/corporate-profile.webp').stat().st_size, 45_000)
+        self.assertLess((ROOT / 'assets/site/logo-white-320.png').stat().st_size, 15_000)
+
+        css = read("assets/site/corporate.css")
+        compact = re.sub(r'\s+', '', css)
+        self.assertIn('.corporate-hero h1{max-width:720px;margin:16px 0 26px;font-size:clamp(54px,5.4vw,78px)', css)
+        self.assertIn('@media(prefers-reduced-motion:reduce)', compact)
+        self.assertIn('.corporate-partner-track{animation:none', compact)
+
+    def test_legacy_speaking_route_redirects_to_corporate_canonical(self):
+        html = read("speaking.html")
+        self.assertIn('url=/corporate/', html.lower())
+        self.assertIn('<link rel="canonical" href="https://philipmulyana.com/corporate/">', html)
+        self.assertIn('href="/corporate/"', html)
+
+    def test_homepage_offers_corporate_without_mixing_it_with_first_call(self):
+        html = read("index.html")
+        self.assertIn('href="/corporate/"', html)
+        self.assertIn('Corporate Speaker', html)
+
+    def test_corporate_content_has_an_owner_approved_source_contract(self):
+        brief = read("corporate/CONTENT_PROVENANCE.md")
+        self.assertIn('Owner approval', brief)
+        self.assertIn('Corporate Speaker', brief)
+        self.assertIn('HR', brief)
+        self.assertIn('Personal Finance', brief)
+        self.assertIn('no guaranteed', brief.lower())
+
+        links = read("links/index.html")
+        self.assertIn('id="collaboration"', links)
+        self.assertIn('>FOR COLLAB<', links)
+
 
 if __name__ == "__main__":
     unittest.main()

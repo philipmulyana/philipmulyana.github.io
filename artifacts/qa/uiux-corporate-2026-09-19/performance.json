@@ -1,0 +1,65 @@
+{
+  "tool": "Lighthouse 13 mobile navigation",
+  "url": "http://127.0.0.1:8766/corporate/",
+  "before": [
+    {
+      "score": 0.67,
+      "lcp_ms": 3901,
+      "tbt_ms": 912,
+      "fcp_ms": 1513,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 482913
+    },
+    {
+      "score": 0.61,
+      "lcp_ms": 5589,
+      "tbt_ms": 744,
+      "fcp_ms": 1509,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 482835
+    },
+    {
+      "score": 0.63,
+      "lcp_ms": 4999,
+      "tbt_ms": 740,
+      "fcp_ms": 1515,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 482818
+    }
+  ],
+  "after": [
+    {
+      "score": 1,
+      "lcp_ms": 1734,
+      "tbt_ms": 0,
+      "fcp_ms": 1209,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 144663
+    },
+    {
+      "score": 1,
+      "lcp_ms": 1733,
+      "tbt_ms": 0,
+      "fcp_ms": 1208,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 144663
+    },
+    {
+      "score": 1,
+      "lcp_ms": 1737,
+      "tbt_ms": 0,
+      "fcp_ms": 1212,
+      "cls": 0.0001147559731588184,
+      "transfer_bytes": 144663
+    }
+  ],
+  "lighthouse_version": "13.0.1",
+  "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "command": "lighthouse http://127.0.0.1:8766/corporate/ --only-categories=performance --output=json --chrome-flags='--headless=new --no-sandbox --disable-gpu' --quiet",
+  "conditions": "Lighthouse mobile navigation defaults; local Python HTTP server on 127.0.0.1:8766",
+  "after_fetch_times": [
+    "2026-09-19T05:12:43.764Z",
+    "2026-09-19T05:13:14.895Z",
+    "2026-09-19T05:13:27.269Z"
+  ]
+}

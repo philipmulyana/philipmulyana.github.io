@@ -1,5 +1,5 @@
 .article-hero{padding:72px 0 58px;border-bottom:1px solid var(--line)}
-.article-back{display:inline-block;margin-bottom:34px;color:var(--muted);font-size:15px;font-weight:600;text-decoration:none}
+.article-back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:34px;color:var(--muted);font-size:15px;font-weight:600;text-decoration:none}
 .article-back:hover{text-decoration:underline;text-underline-offset:4px}
 .article-kicker{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;color:var(--muted);font-size:14px}
 .article-hero h1{max-width:900px;margin:0;font-size:clamp(44px,6vw,76px);letter-spacing:-.045em;line-height:.96}

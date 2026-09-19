@@ -47,6 +47,46 @@ async function runUpdate({ payload, reject = false }) {
   return { link, title, meta };
 }
 
+test('focuses the collaboration card without exposing the personal first-call card', () => {
+  let domReadyHandler;
+  let scrolled = false;
+  const classes = new Set();
+  const collaboration = {
+    scrollIntoView(options) {
+      assert.equal(options.block, 'start');
+      scrolled = true;
+    },
+  };
+  const document = {
+    body: { classList: { add(value) { classes.add(value); } } },
+    addEventListener(event, handler) {
+      if (event === 'DOMContentLoaded') domReadyHandler = handler;
+    },
+    querySelector(selector) {
+      if (selector === '#collaboration') return collaboration;
+      return null;
+    },
+  };
+  const window = {
+    location: { hash: '#collaboration' },
+    requestAnimationFrame(handler) { handler(); },
+  };
+  const context = vm.createContext({
+    document,
+    window,
+    fetch: async () => { throw new Error('not needed'); },
+    Date,
+    console,
+  });
+
+  vm.runInContext(linksSource, context);
+  assert.equal(typeof context.focusCollaborationTarget, 'function');
+  assert.equal(typeof domReadyHandler, 'function');
+  context.focusCollaborationTarget();
+  assert.equal(classes.has('collaboration-target'), true);
+  assert.equal(scrolled, true);
+});
+
 test('shows the newest published blog even when posts.json is not ordered', async () => {
   const result = await runUpdate({
     payload: {

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Tracker guard — enforces Philip's standing rule:
-  EVERY published page must include the Meta Pixel (js/pixel.js).
+  EVERY published page must include the Meta Pixel, either directly
+  (js/pixel.js) or through the approved first-party deferred loader.
 
 Why this exists: the rule lived only as a comment in pixel.js ("include in
 every page"). Nothing enforced it, so hand-authored pages (and legacy
@@ -18,7 +19,7 @@ Exit 0 = all real pages carry the pixel. Exit 1 = at least one is missing.
 import sys, os, glob, re
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
-PIXEL_MARKER = "pixel.js"
+PIXEL_MARKERS = ("pixel.js", "deferred-trackers.js")
 BEACON_MARKER = "blog-track.js"   # funnel-stage beacon — required on blog pages
 STUB_MARKERS = ('http-equiv="refresh"', "location.replace")
 
@@ -51,7 +52,7 @@ def main() -> int:
             stubs += 1
             continue
         page_ok = True
-        if PIXEL_MARKER not in html:
+        if not any(marker in html for marker in PIXEL_MARKERS):
             missing_pixel.append(rel); page_ok = False
         # blog pages must ALSO carry the funnel beacon
         if is_blog(rel) and BEACON_MARKER not in html:
@@ -71,7 +72,7 @@ def main() -> int:
             print("\n❌ Pages missing the Meta Pixel (js/pixel.js):")
             for m in missing_pixel:
                 print(f"    - {m}")
-            print("   Fix: add  <script src=\"/js/pixel.js\"></script>  to <head>.")
+            print("   Fix: add pixel.js directly or the approved deferred-trackers.js loader to <head>.")
         if missing_beacon:
             print("\n❌ Blog pages missing the funnel beacon (js/blog-track.js):")
             for m in missing_beacon:

@@ -104,6 +104,29 @@ test('shows twelve articles first and reveals the remainder on request', async (
   assert.match(state.status.textContent, /13 dari 13 artikel/);
 });
 
+test('removes markdown markers from card excerpts without rendering HTML', async () => {
+  const html = await renderBlog({
+    apiPayload: { posts: [] },
+    staticPosts: [
+      {
+        slug: 'plain-excerpt',
+        title: 'Plain excerpt',
+        excerpt: 'Aturan ini **wajib** dipahami sebelum memilih.',
+        date: '2026-09-20',
+        readingTime: 2,
+        type: 'article',
+        typeLabel: 'Artikel Kami',
+        category: 'insurance',
+        categoryLabel: 'Insurance'
+      }
+    ]
+  });
+
+  assert.match(html, /Aturan ini wajib dipahami sebelum memilih\./);
+  assert.doesNotMatch(html, /\*\*/);
+  assert.doesNotMatch(html, /<strong>/);
+});
+
 test('uses valid API posts while preserving blog.json news', async () => {
   const html = await renderBlog({
     apiPayload: {
