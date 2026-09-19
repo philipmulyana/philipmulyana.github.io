@@ -46,8 +46,8 @@ test('forwards only approved attribution fields to internal funnel links', () =>
   };
   const window = {
     location: {
-      href: 'https://philipmulyana.com/?utm_source=meta&utm_campaign=family&placement=feed&fbclid=click-123&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET',
-      search: '?utm_source=meta&utm_campaign=family&placement=feed&fbclid=click-123&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET',
+      href: 'https://philipmulyana.com/?utm_source=meta&utm_campaign=cmp_a1b2c3d4e5f6a7b8&placement=feed&fbclid=IwAR0abc123xyz456def789&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET',
+      search: '?utm_source=meta&utm_campaign=cmp_a1b2c3d4e5f6a7b8&placement=feed&fbclid=IwAR0abc123xyz456def789&name=Philip&email=qa%40example.com&phone=08123&whatsapp=08123&coupon=SECRET',
     },
   };
 
@@ -56,9 +56,9 @@ test('forwards only approved attribution fields to internal funnel links', () =>
   for (const link of links) {
     const params = new URL(link.href).searchParams;
     assert.equal(params.get('utm_source'), 'meta');
-    assert.equal(params.get('utm_campaign'), 'family');
+    assert.equal(params.get('utm_campaign'), 'cmp_a1b2c3d4e5f6a7b8');
     assert.equal(params.get('placement'), 'feed');
-    assert.equal(params.get('fbclid'), 'click-123');
+    assert.equal(params.get('fbclid'), 'IwAR0abc123xyz456def789');
     for (const excluded of ['name', 'email', 'phone', 'whatsapp', 'coupon']) {
       assert.equal(params.has(excluded), false, `${excluded} must not be forwarded`);
     }

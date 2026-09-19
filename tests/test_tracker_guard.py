@@ -40,6 +40,19 @@ class TrackerGuardRecursiveInventory(unittest.TestCase):
             self.assertIn("1 html", present.stdout)
             self.assertIn("0 no-pixel", present.stdout)
 
+            nested.write_text(
+                '<!doctype html><title>Nested page</title><script src="/js/deferred-trackers.js" defer></script>',
+                encoding="utf-8",
+            )
+            deferred = subprocess.run(
+                ["python3", str(GUARD), str(site)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(deferred.returncode, 0, deferred.stdout + deferred.stderr)
+            self.assertIn("0 no-pixel", deferred.stdout)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

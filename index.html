@@ -26,7 +26,7 @@
   <header class="site-header">
     <div class="container navigation">
       <a class="brand" href="/" aria-label="Philip Mulyana — Homepage"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181"></a>
-      <nav aria-label="Navigasi utama"><a href="/consultation.html">Konsultasi</a></nav>
+      <nav aria-label="Navigasi utama"><a href="/consultation.html">Konsultasi Asuransi</a></nav>
     </div>
   </header>
 
@@ -65,8 +65,8 @@
           <p>Beberapa brand yang pernah berkolaborasi bersama Philip.</p>
         </div>
         <p id="partner-motion-note" class="sr-only">Fokus pada carousel untuk menghentikan animasi.</p>
-        <div class="partner-carousel" tabindex="0" aria-label="Carousel brand yang pernah bekerja sama dengan Philip Mulyana" aria-describedby="partner-motion-note">
-          <div class="partner-track">
+        <div class="partner-carousel" data-carousel tabindex="0" aria-label="Carousel brand yang pernah bekerja sama dengan Philip Mulyana" aria-describedby="partner-motion-note">
+          <div class="partner-track" id="partner-carousel-track">
             <ul class="partner-logo-group" aria-label="Brand yang pernah bekerja sama dengan Philip Mulyana">
               <li><img src="/assets/partners/bca-official.png" alt="Bank BCA" width="180" height="72" loading="lazy" decoding="async"></li>
               <li><img src="/assets/partners/bank-mandiri.png" alt="Bank Mandiri" width="180" height="72" loading="lazy" decoding="async"></li>
@@ -89,6 +89,12 @@
             </ul>
           </div>
         </div>
+        <div class="carousel-controls" aria-label="Kontrol carousel brand">
+          <button class="carousel-control" type="button" data-carousel-action="previous" aria-controls="partner-carousel-track" aria-label="Brand sebelumnya">←</button>
+          <button class="carousel-control" type="button" data-carousel-action="toggle" aria-controls="partner-carousel-track" aria-pressed="false">Jeda</button>
+          <button class="carousel-control" type="button" data-carousel-action="next" aria-controls="partner-carousel-track" aria-label="Brand berikutnya">→</button>
+        </div>
+        <p class="sr-only" data-carousel-status role="status" aria-live="polite"></p>
       </div>
     </section>
 
@@ -101,6 +107,13 @@
           <a class="row-link" href="/blog/kamu-pindah-asuransi-masa-tunggu-balik-ke-nol.html"><span class="meta"><time datetime="2026-08-24">24 Agustus 2026</time> · 3 menit baca</span><span><h3>Kamu Pindah Asuransi Biar Preminya Murah, tapi Masa Tunggu Kamu Balik ke Nol</h3></span><span class="row-arrow" aria-hidden="true">›</span></a>
         </div>
         <div class="actions"><a class="button" href="/blog.html">Lihat Semua Artikel</a></div>
+      </div>
+    </section>
+
+    <section class="section section-red" id="corporate-speaker" aria-labelledby="corporate-speaker-heading">
+      <div class="container section-heading">
+        <div><span class="eyebrow">Untuk organisasi</span><h2 id="corporate-speaker-heading">Corporate Speaker.</h2></div>
+        <div><p>Untuk HR, Learning &amp; Development, internal communications, event organizer, dan tim yang ingin membawa topik finansial ke percakapan yang lebih jelas.</p><div class="actions"><a class="button button-light" href="/corporate/">Lihat Corporate Speaker</a></div></div>
       </div>
     </section>
 

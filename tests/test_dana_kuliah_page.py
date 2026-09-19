@@ -102,7 +102,9 @@ class DanaKuliahProductionPage(unittest.TestCase):
     def test_soft_launch_metadata_and_tracking_are_present(self):
         self.assertIn('<meta name="robots" content="noindex,nofollow">', HTML)
         self.assertIn('rel="canonical" href="https://philipmulyana.com/product/dana-kuliah/"', HTML)
+        self.assertIn('<script src="/js/sanitize-attribution.js"></script>', HTML)
         self.assertIn('<script src="/js/pixel.js"></script>', HTML)
+        self.assertLess(HTML.index('/js/sanitize-attribution.js'), HTML.index('/js/pixel.js'))
         self.assertNotIn("InitiateCheckout", JS)
 
     def test_accessibility_basics(self):

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "home",
+    "reduced": true,
+    "animation": "none",
+    "trackDisplay": "block",
+    "controlsDisplay": "none",
+    "groups": 2,
+    "visibleGroups": 1,
+    "firstGroupDisplay": "grid",
+    "overflow": false
+  },
+  {
+    "name": "corporate",
+    "reduced": true,
+    "animation": "none",
+    "trackDisplay": "block",
+    "controlsDisplay": "none",
+    "groups": 1,
+    "visibleGroups": 1,
+    "firstGroupDisplay": "grid",
+    "overflow": false
+  }
+]

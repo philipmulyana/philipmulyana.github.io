@@ -55,7 +55,7 @@ class SharedMultipageContract(unittest.TestCase):
                 assert header is not None
                 header_html = header.group(0)
                 self.assertIn('href="/consultation.html"', header_html)
-                self.assertIn('>Konsultasi<', header_html)
+                self.assertIn('>Konsultasi Asuransi<', header_html)
                 self.assertNotIn('>Online Course<', header_html)
                 self.assertNotIn('>Tentang Philip<', header_html)
                 self.assertNotIn('>Artikel<', header_html)

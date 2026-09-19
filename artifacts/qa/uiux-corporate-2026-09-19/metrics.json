@@ -1,0 +1,512 @@
+[
+  {
+    "url": "http://127.0.0.1:8766/",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Ketika tanggung jawab bertambah, arah keuangan keluarga perlu ikut berubah.",
+    "h1Size": "43px",
+    "h1Lines": 5,
+    "cta": {
+      "text": "Mulai dari Sini",
+      "top": 502,
+      "bottom": 556,
+      "w": 358,
+      "h": 54,
+      "aboveFold": true
+    },
+    "reassurance": null,
+    "quote": {
+      "fontSize": "20px",
+      "lineHeight": "27px"
+    },
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "home",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Ketika tanggung jawab bertambah, arah keuangan keluarga perlu ikut berubah.",
+    "h1Size": "94px",
+    "h1Lines": 4,
+    "cta": {
+      "text": "Mulai dari Sini",
+      "top": 668,
+      "bottom": 720,
+      "w": 150,
+      "h": 52,
+      "aboveFold": true
+    },
+    "reassurance": null,
+    "quote": {
+      "fontSize": "28px",
+      "lineHeight": "37.8px"
+    },
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "home",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/about.html",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Lebih tenang mengambil keputusan saat keuangan terasa lebih jelas.",
+    "h1Size": "40px",
+    "h1Lines": 4,
+    "cta": {
+      "text": "Baca Artikel",
+      "top": 4233,
+      "bottom": 4285,
+      "w": 139,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "about",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/about.html",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Lebih tenang mengambil keputusan saat keuangan terasa lebih jelas.",
+    "h1Size": "82px",
+    "h1Lines": 3,
+    "cta": {
+      "text": "Baca Artikel",
+      "top": 3429,
+      "bottom": 3481,
+      "w": 139,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "about",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/consultation.html",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Cari langkah perlindungan yang sesuai tanpa harus memutuskan semuanya sekaligus.",
+    "h1Size": "40px",
+    "h1Lines": 5,
+    "cta": {
+      "text": "Jadwalkan First Call",
+      "top": 556,
+      "bottom": 608,
+      "w": 195,
+      "h": 52,
+      "aboveFold": true
+    },
+    "reassurance": {
+      "top": 624,
+      "bottom": 696,
+      "aboveFold": true
+    },
+    "quote": {
+      "fontSize": "20px",
+      "lineHeight": "27px"
+    },
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "consultation",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/consultation.html",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Cari langkah perlindungan yang sesuai tanpa harus memutuskan semuanya sekaligus.",
+    "h1Size": "82px",
+    "h1Lines": 4,
+    "cta": {
+      "text": "Jadwalkan First Call",
+      "top": 682,
+      "bottom": 734,
+      "w": 195,
+      "h": 52,
+      "aboveFold": true
+    },
+    "reassurance": {
+      "top": 750,
+      "bottom": 798,
+      "aboveFold": true
+    },
+    "quote": {
+      "fontSize": "28px",
+      "lineHeight": "37.8px"
+    },
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "consultation",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/blog.html",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Blog & Insights",
+    "h1Size": "40px",
+    "h1Lines": 1,
+    "cta": {
+      "text": "Muat lebih banyak",
+      "top": 4480,
+      "bottom": 4532,
+      "w": 179,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": {
+      "hidden": false,
+      "text": "Muat lebih banyak"
+    },
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "blog",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/blog.html",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Blog & Insights",
+    "h1Size": "82px",
+    "h1Lines": 1,
+    "cta": {
+      "text": "Muat lebih banyak",
+      "top": 2982,
+      "bottom": 3034,
+      "w": 179,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": {
+      "hidden": false,
+      "text": "Muat lebih banyak"
+    },
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "blog",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/blog/semua-orang-punya-pos-nama-kamu-ada.html",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Dana Darurat Ada, Pos Anak Ada. Yang Nggak Ada Cuma Satu Nama",
+    "h1Size": "43px",
+    "h1Lines": 4,
+    "cta": null,
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "article",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/blog/semua-orang-punya-pos-nama-kamu-ada.html",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Dana Darurat Ada, Pos Anak Ada. Yang Nggak Ada Cuma Satu Nama",
+    "h1Size": "76px",
+    "h1Lines": 3,
+    "cta": null,
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "article",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/tools/",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Tools.",
+    "h1Size": "40px",
+    "h1Lines": 1,
+    "cta": {
+      "text": "Baca Artikel",
+      "top": 3357,
+      "bottom": 3409,
+      "w": 139,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "tools",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/tools/",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Tools.",
+    "h1Size": "82px",
+    "h1Lines": 1,
+    "cta": {
+      "text": "Baca Artikel",
+      "top": 2740,
+      "bottom": 2792,
+      "w": 139,
+      "h": 52,
+      "aboveFold": false
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "tools",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/links/",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Philip Mulyana",
+    "h1Size": "42.9px",
+    "h1Lines": 2,
+    "cta": null,
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "links",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/links/",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Philip Mulyana",
+    "h1Size": "58px",
+    "h1Lines": 1,
+    "cta": null,
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 0,
+    "carouselGroups": 0,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "links",
+    "view": "desktop",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/corporate/",
+    "viewport": [
+      390,
+      844
+    ],
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "h1": "Pembahasan finansial yang terasa dekat, bukan menggurui.",
+    "h1Size": "43px",
+    "h1Lines": 4,
+    "cta": {
+      "text": "Diskusikan Acara dengan Tim Philip",
+      "top": 474,
+      "bottom": 526,
+      "w": 358,
+      "h": 52,
+      "aboveFold": true
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 30,
+    "carouselGroups": 2,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "corporate",
+    "view": "mobile",
+    "consoleErrors": 0
+  },
+  {
+    "url": "http://127.0.0.1:8766/corporate/",
+    "viewport": [
+      1440,
+      900
+    ],
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "h1": "Pembahasan finansial yang terasa dekat, bukan menggurui.",
+    "h1Size": "77.76px",
+    "h1Lines": 4,
+    "cta": {
+      "text": "Diskusikan Acara dengan Tim Philip",
+      "top": 670,
+      "bottom": 722,
+      "w": 302,
+      "h": 52,
+      "aboveFold": true
+    },
+    "reassurance": null,
+    "quote": null,
+    "articleRows": 0,
+    "loadMore": null,
+    "brandItems": 30,
+    "carouselGroups": 2,
+    "failedImages": [],
+    "smallTargets": [],
+    "key": "corporate",
+    "view": "desktop",
+    "consoleErrors": 0
+  }
+]
