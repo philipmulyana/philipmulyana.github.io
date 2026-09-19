@@ -6,7 +6,7 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'js', 'site.js'), 'utf8');
 
-test('site forwarding drops PII-shaped values without carousel controls', () => {
+test('site forwarding drops PII-shaped values while homepage carousel has no controls', () => {
   const link = { href: 'https://philipmulyana.com/links/#link-list' };
   const document = {
     querySelectorAll(selector) {
@@ -32,4 +32,5 @@ test('site forwarding drops PII-shaped values without carousel controls', () => 
   assert.equal(params.has('utm_campaign'), false);
   assert.equal(params.has('utm_content'), false);
   assert.equal(source.includes('data-carousel-action'), false);
+  assert.equal(source.includes('initCarousels'), false);
 });

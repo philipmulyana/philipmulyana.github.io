@@ -10,7 +10,7 @@
   <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/homepage/profile-photo.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="/assets/site/site.css?v=20260919-static-logos">
+  <link rel="stylesheet" href="/assets/site/site.css?v=20260919-big-alpha-carousel">
   <link rel="stylesheet" href="/assets/homepage/homepage.css">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="id_ID">
@@ -64,7 +64,9 @@
           <h2 id="company-proof-heading">Pernah bekerja sama dengan.</h2>
           <p>Beberapa brand yang pernah berkolaborasi bersama Philip.</p>
         </div>
-        <div class="partner-logo-grid" aria-label="Brand yang pernah bekerja sama dengan Philip Mulyana">
+        <p id="partner-motion-note" class="sr-only">Sentuh, arahkan pointer, atau fokuskan daftar logo untuk menghentikan gerakan.</p>
+        <div class="partner-carousel" tabindex="0" aria-label="Brand yang pernah bekerja sama dengan Philip Mulyana" aria-describedby="partner-motion-note">
+          <div class="partner-track">
             <ul class="partner-logo-group">
               <li><img src="/assets/partners/bca-official.png" alt="Bank BCA" width="180" height="72" loading="lazy" decoding="async"></li>
               <li><img src="/assets/partners/bank-mandiri.png" alt="Bank Mandiri" width="180" height="72" loading="lazy" decoding="async"></li>
@@ -75,6 +77,17 @@
               <li><img src="/assets/partners/visa.svg" alt="Visa" width="180" height="72" loading="lazy" decoding="async"></li>
               <li><img src="/assets/partners/pertamina.png" alt="Pertamina" width="180" height="72" loading="lazy" decoding="async"></li>
             </ul>
+            <ul class="partner-logo-group" aria-hidden="true">
+              <li><img src="/assets/partners/bca-official.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/bank-mandiri.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/cimb-niaga.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/bsi.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/hsbc-wordmark.svg" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/uob.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/visa.svg" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/partners/pertamina.png" alt="" width="180" height="72" loading="lazy" decoding="async"></li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>

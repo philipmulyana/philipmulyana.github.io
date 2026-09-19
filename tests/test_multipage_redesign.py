@@ -92,7 +92,7 @@ class HomepageContract(unittest.TestCase):
         positions = [self.html.index(marker) for marker in order]
         self.assertEqual(positions, sorted(positions))
 
-    def test_homepage_partner_proof_is_lightweight_accessible_static_logo_grid(self):
+    def test_homepage_partner_proof_restores_automatic_monochrome_carousel_without_controls(self):
         expected_partners = {
             "Bank BCA": "bca-official.png",
             "Bank Mandiri": "bank-mandiri.png",
@@ -118,7 +118,8 @@ class HomepageContract(unittest.TestCase):
         self.assertIn("Pernah bekerja sama dengan", section)
         self.assertNotIn("2023–2026", section)
         self.assertNotIn("49 brand", section)
-        self.assertIn('class="partner-logo-grid"', section)
+        self.assertIn('class="partner-carousel"', section)
+        self.assertIn('class="partner-track"', section)
         self.assertNotIn('data-carousel', section)
         self.assertNotIn('carousel-controls', section)
         self.assertNotIn('>Jeda<', section)
@@ -126,13 +127,27 @@ class HomepageContract(unittest.TestCase):
         self.assertNotIn("slick", section.lower())
 
         visible_group = re.search(
-            r'<ul class="partner-logo-group">(.*?)</ul>',
+            r'<ul class="partner-logo-group"[^>]*>(.*?)</ul>',
             section,
             re.S,
         )
         self.assertIsNotNone(visible_group)
         assert visible_group is not None
         self.assertEqual(visible_group.group(1).count("<img"), len(expected_partners))
+        self.assertEqual(section.count('class="partner-logo-group"'), 2)
+        self.assertEqual(section.count('<img '), len(expected_partners) * 2)
+        self.assertIn('aria-hidden="true"', section)
+        duplicate_group = re.search(
+            r'<ul class="partner-logo-group" aria-hidden="true">(.*?)</ul>',
+            section,
+            re.S,
+        )
+        self.assertIsNotNone(duplicate_group)
+        assert duplicate_group is not None
+        duplicate_images = re.findall(r'<img\b[^>]+>', duplicate_group.group(1))
+        self.assertEqual(len(duplicate_images), len(expected_partners))
+        for image in duplicate_images:
+            self.assertIn('alt=""', image)
 
         for partner, filename in expected_partners.items():
             src = f'/assets/partners/{filename}'
@@ -147,20 +162,23 @@ class HomepageContract(unittest.TestCase):
 
         css = read("assets/site/site.css")
         compact_css = re.sub(r"\s+", "", css)
-        self.assertNotIn("@keyframespartner-marquee", compact_css)
-        self.assertNotIn("animation-play-state:paused", compact_css)
-        self.assertIn('.partner-logo-group{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));', compact_css)
+        self.assertIn("@keyframespartner-marquee", compact_css)
+        self.assertIn("animation-play-state:paused", compact_css)
+        self.assertIn('.partner-logo-group{display:flex;', compact_css)
         self.assertIn('@media(max-width:760px)', compact_css)
-        self.assertIn('.partner-logo-group{grid-template-columns:repeat(2,minmax(0,1fr))}', compact_css)
+        self.assertIn('filter:grayscale(1)', compact_css)
+        self.assertIn('opacity:.56', compact_css)
+        self.assertIn('.partner-track{display:block;width:auto;animation:none!important;will-change:auto}', compact_css)
+        self.assertIn('.partner-logo-group[aria-hidden="true"]{display:none}', compact_css)
         self.assertTrue((ROOT / "assets/partners/PROVENANCE.md").is_file())
         for insurance_brand in excluded_insurance_brands:
             self.assertNotIn(insurance_brand, section)
         for placeholder in ("Brand 1", "Brand 2", "Brand 3", "Brand 4", "Brand 5", "Brand 6"):
             self.assertNotIn(placeholder, section)
 
-    def test_homepage_partner_grid_uses_fresh_css_and_verified_full_wordmarks(self):
+    def test_homepage_partner_carousel_uses_restored_treatment_and_verified_full_wordmarks(self):
         self.assertIn(
-            'href="/assets/site/site.css?v=20260919-static-logos"',
+            'href="/assets/site/site.css?v=20260919-big-alpha-carousel"',
             self.html,
         )
 
@@ -181,11 +199,11 @@ class HomepageContract(unittest.TestCase):
         css = read("assets/site/site.css")
         partner_css = css[css.index(".partner-proof"):css.index(".timeline")]
         compact_partner_css = re.sub(r"\s+", "", partner_css)
-        self.assertNotIn("filter:grayscale", compact_partner_css)
-        self.assertNotIn("opacity:.56", compact_partner_css)
-        self.assertNotIn("mask-image:linear-gradient", compact_partner_css)
-        self.assertIn("border-right", compact_partner_css)
-        self.assertIn("background:var(--white)", compact_partner_css)
+        self.assertIn("filter:grayscale(1)", compact_partner_css)
+        self.assertIn("opacity:.56", compact_partner_css)
+        self.assertIn("mask-image:linear-gradient", compact_partner_css)
+        self.assertNotIn("border-right", compact_partner_css)
+        self.assertNotIn("background:var(--white)", compact_partner_css)
 
     def test_homepage_latest_articles_match_three_latest_valid_static_posts(self):
         posts = json.loads(read("data/posts.json"))["posts"]
