@@ -76,4 +76,5 @@
   if (safeAddress !== currentAddress) {
     window.history.replaceState(window.history.state, '', safeAddress);
   }
+  window.__pmAttributionSanitized = true;
 })();
