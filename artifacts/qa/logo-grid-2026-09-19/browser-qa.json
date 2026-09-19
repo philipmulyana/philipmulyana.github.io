@@ -1,0 +1,217 @@
+[
+  {
+    "url": "http://127.0.0.1:8769/corporate/",
+    "title": "Corporate Speaker — Philip Mulyana",
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 3970.0625,
+      "width": 390,
+      "height": 467.21875
+    },
+    "logoItems": 30,
+    "groups": 2,
+    "duplicateHidden": "true",
+    "gridRows": "116px",
+    "transform": "matrix(1, 0, 0, 1, -31.9024, 0)",
+    "images": 62,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 1,
+    "credentials": [],
+    "text": "Pernah bekerja sama dengan\n\nBeberapa brand dan organisasi yang pernah berkolaborasi bersama Philip.\n\nSentuh, arahkan pointer, atau fokuskan daftar logo untuk menghentikan gerakan.",
+    "transformAfter": "matrix(1, 0, 0, 1, -52.8107, 0)",
+    "pausedTransform": "matrix(1, 0, 0, 1, -53.905, 0)",
+    "pausedTransformAfter": "matrix(1, 0, 0, 1, -53.905, 0)",
+    "consoleErrors": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "name": "corporate"
+  },
+  {
+    "url": "http://127.0.0.1:8769/corporate/",
+    "title": "Corporate Speaker — Philip Mulyana",
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 3169.125,
+      "width": 390,
+      "height": 800.9375
+    },
+    "logoItems": 0,
+    "groups": 0,
+    "duplicateHidden": null,
+    "gridRows": null,
+    "transform": null,
+    "images": 0,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 0,
+    "credentials": [
+      "18 tahun",
+      "10 tahun",
+      "50+ brand"
+    ],
+    "text": "TENTANG PEMBICARA\nPengalaman panjang, penjelasan tetap sederhana.\n\nPhilip Mulyana adalah Financial Coach dan Certified Financial Planner. Ia berkarier di industri keuangan sejak 2008, menjadi Financial Advisor sejak 2014, dan berbagi edukasi keuangan sejak 2019.\n\n18 tahun\nDi industri keuangan\n10 tahun\nFinancial Advisor\n50+ brand\nPernah berkolaborasi",
+    "transformAfter": null,
+    "consoleErrors": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "name": "corporate-credentials"
+  },
+  {
+    "url": "http://127.0.0.1:8769/",
+    "title": "Philip Mulyana | Belajar dan Menata Langkah Keuangan Keluarga",
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 1831.765625,
+      "width": 390,
+      "height": 767.21875
+    },
+    "logoItems": 8,
+    "groups": 0,
+    "duplicateHidden": null,
+    "gridRows": null,
+    "transform": null,
+    "images": 8,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 0,
+    "credentials": [],
+    "text": "Pernah bekerja sama dengan.\n\nBeberapa brand yang pernah berkolaborasi bersama Philip.",
+    "transformAfter": null,
+    "consoleErrors": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "name": "home"
+  },
+  {
+    "url": "http://127.0.0.1:8769/corporate/",
+    "title": "Corporate Speaker — Philip Mulyana",
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 2924.484375,
+      "width": 1440,
+      "height": 821.0625
+    },
+    "logoItems": 30,
+    "groups": 2,
+    "duplicateHidden": "true",
+    "gridRows": "132px 132px 132px",
+    "transform": "matrix(1, 0, 0, 1, -30.5679, 0)",
+    "images": 62,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 1,
+    "credentials": [],
+    "text": "Pernah bekerja sama dengan\n\nBeberapa brand dan organisasi yang pernah berkolaborasi bersama Philip.\n\nSentuh, arahkan pointer, atau fokuskan daftar logo untuk menghentikan gerakan.",
+    "transformAfter": "matrix(1, 0, 0, 1, -46.2905, 0)",
+    "pausedTransform": "matrix(1, 0, 0, 1, -47.1593, 0)",
+    "pausedTransformAfter": "matrix(1, 0, 0, 1, -47.1593, 0)",
+    "consoleErrors": [],
+    "viewport": [
+      1440,
+      900
+    ],
+    "name": "corporate"
+  },
+  {
+    "url": "http://127.0.0.1:8769/corporate/",
+    "title": "Corporate Speaker — Philip Mulyana",
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 2342.15625,
+      "width": 1440,
+      "height": 582.328125
+    },
+    "logoItems": 0,
+    "groups": 0,
+    "duplicateHidden": null,
+    "gridRows": null,
+    "transform": null,
+    "images": 0,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 0,
+    "credentials": [
+      "18 tahun",
+      "10 tahun",
+      "50+ brand"
+    ],
+    "text": "TENTANG PEMBICARA\nPengalaman panjang, penjelasan tetap sederhana.\n\nPhilip Mulyana adalah Financial Coach dan Certified Financial Planner. Ia berkarier di industri keuangan sejak 2008, menjadi Financial Advisor sejak 2014, dan berbagi edukasi keuangan sejak 2019.\n\n18 tahun\nDi industri keuangan\n10 tahun\nFinancial Advisor\n50+ brand\nPernah berkolaborasi",
+    "transformAfter": null,
+    "consoleErrors": [],
+    "viewport": [
+      1440,
+      900
+    ],
+    "name": "corporate-credentials"
+  },
+  {
+    "url": "http://127.0.0.1:8769/",
+    "title": "Philip Mulyana | Belajar dan Menata Langkah Keuangan Keluarga",
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "section": {
+      "x": 0,
+      "y": 1710.890625,
+      "width": 1440,
+      "height": 661.0625
+    },
+    "logoItems": 8,
+    "groups": 0,
+    "duplicateHidden": null,
+    "gridRows": null,
+    "transform": null,
+    "images": 8,
+    "brokenImages": [],
+    "controls": 0,
+    "runningAnimations": 0,
+    "credentials": [],
+    "text": "Pernah bekerja sama dengan.\n\nBeberapa brand yang pernah berkolaborasi bersama Philip.",
+    "transformAfter": null,
+    "consoleErrors": [],
+    "viewport": [
+      1440,
+      900
+    ],
+    "name": "home"
+  },
+  {
+    "name": "corporate-reduced",
+    "viewport": [
+      390,
+      844
+    ],
+    "reducedMotion": true,
+    "groups": 1,
+    "runningAnimations": 0,
+    "carouselOverflowX": "auto",
+    "carouselScrollable": true,
+    "logoItems": 30,
+    "controls": 0,
+    "overflow": false,
+    "consoleErrors": [],
+    "brokenImages": []
+  }
+]
