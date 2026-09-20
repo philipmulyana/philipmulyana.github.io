@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import re
 import unittest
@@ -19,6 +20,30 @@ TRACKER_MARKERS = (
 SAFE_LEGACY_REDIRECTS = {
     "tool-eduplan.html": "/tools/eduplan/",
 }
+INTERNAL_ONLY_ARTIFACTS = {
+    "education-plan-internal.html",
+    "pension-plan-internal.html",
+    "commission-structure.html",
+    "js/pension.js",
+    "js/commission.js",
+}
+INTERNAL_ONLY_FINGERPRINTS = {
+    "3629ecffaed7c0e9fb2cf5737e06e0e41727e1827562a57e164aa8c6aad5d7ea",
+    "9c43b34a8165337ed99aed6f36dff6b6e97175fcf9fadb56087b0dfbca57ea61",
+    "3b948bebe10ed53b2ef1cc9563c98f89411be4b7cc53ceaa08d31e48c35227b2",
+    "2d6c9b39c9399e94e3a685ac1dddb96c8878fc71f3287cac02be0cd76a0c0d8a",
+    "09cf89d2fa3068cdecab5311e3ae276521415203c323541da34a0347f4eff7c4",
+}
+INTERNAL_ONLY_MARKER_GROUPS = (
+    ("INTERNAL ADVISOR TOOL.", "Copy JSON for Claude"),
+    (
+        "INTERNAL RECRUITMENT TOOL.",
+        "Struktur Income Agent",
+        "Simulasi Komisi &amp; Overriding",
+    ),
+    ("STORAGE_KEY_PEN", "pension_plan_draft", "LOOKUP_ENDPOINT"),
+    ("function computeF()", "function computeR()", "const RATES ="),
+)
 
 
 class PageParser(HTMLParser):
@@ -99,6 +124,50 @@ def load_publisher():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+class InternalToolPublicationContract(unittest.TestCase):
+    def test_internal_only_tools_are_not_in_the_public_artifact(self):
+        published = {
+            path.relative_to(ROOT).as_posix(): path
+            for path in ROOT.rglob("*")
+            if path.is_file() and not any(
+                part in EXCLUDED_PARTS for part in path.relative_to(ROOT).parts
+            )
+        }
+        self.assertEqual(INTERNAL_ONLY_ARTIFACTS & published.keys(), set())
+
+        leaked_fingerprints = []
+        leaked_markers = []
+        leaked_route_references = []
+        blocked_route_names = tuple(
+            artifact for artifact in INTERNAL_ONLY_ARTIFACTS if artifact.endswith(".html")
+        )
+        for relative, path in published.items():
+            if path.suffix.lower() not in {
+                ".html",
+                ".js",
+                ".json",
+                ".md",
+                ".toml",
+                ".xml",
+                ".yaml",
+                ".yml",
+            }:
+                continue
+            raw = path.read_bytes()
+            if hashlib.sha256(raw).hexdigest() in INTERNAL_ONLY_FINGERPRINTS:
+                leaked_fingerprints.append(relative)
+            text = raw.decode("utf-8", errors="ignore")
+            if any(route_name in text for route_name in blocked_route_names):
+                leaked_route_references.append(relative)
+            for marker_group in INTERNAL_ONLY_MARKER_GROUPS:
+                if all(marker in text for marker in marker_group):
+                    leaked_markers.append((relative, marker_group))
+
+        self.assertEqual(leaked_fingerprints, [])
+        self.assertEqual(leaked_markers, [])
+        self.assertEqual(leaked_route_references, [])
 
 
 class RedirectIntegrityContract(unittest.TestCase):
