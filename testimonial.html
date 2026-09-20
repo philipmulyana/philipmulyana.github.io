@@ -1,14 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Redirecting…</title>
-    <script src="/js/pixel.js"></script>
-    <meta http-equiv="refresh" content="0; url=/testimonials/webinar/">
-    <link rel="canonical" href="https://philipmulyana.com/testimonials/webinar/">
-    <script>window.location.replace("/testimonials/webinar/");</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testimonial Webinar — Philip Mulyana</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://philipmulyana.com/testimonials/webinar/">
+  <meta http-equiv="refresh" content="0; url=/testimonials/webinar/">
+  <script src="/js/sanitize-attribution.js"></script>
+  <script>
+    const safeSuffix = window.__pmAttributionSanitized === true
+      ? `${window.location.search}${window.location.hash}`
+      : '';
+    window.location.replace(`/testimonials/webinar/${safeSuffix}`);
+  </script>
 </head>
 <body>
-    <p>Halaman ini sudah pindah ke <a href="/testimonials/webinar/">/testimonials/webinar/</a>.</p>
+  <p>Halaman ini sudah pindah ke <a href="/testimonials/webinar/">https://philipmulyana.com/testimonials/webinar/</a>.</p>
 </body>
 </html>

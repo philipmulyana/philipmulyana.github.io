@@ -114,6 +114,14 @@ CM_PUBLISHED = "5 - Published"
 # live (kept in the set so promoting 4→5 never drops the page). After a status-4 blog
 # renders, main() promotes it to "5 - Published" + stamps Published URL (write-back).
 TOOL_KEYS = ("tool-retirement.html", "tool-education.html", "tool-proteksi.html", "financial-checkup.html")
+LEGACY_INTERNAL_LINKS = {
+    "tool-retirement.html": "/tools/retirement/",
+    "tool-education.html": "/tools/education/",
+    "tool-proteksi.html": "/tools/proteksi/",
+    "tool-assessment.html": "/tools/assessment/",
+    "tool-assessment-jiwa.html": "/tools/assessment-jiwa/",
+    "tool-eduplan.html": "/tools/eduplan/",
+}
 
 
 def _airtable_all(base, table, token):
@@ -158,9 +166,36 @@ def _reading_time(body):
     return f"{max(2, round(len((body or '').split()) / 200))} menit baca"
 
 
+def _normalize_internal_links(body):
+    """Point known first-party link destinations at canonical routes."""
+    normalized = body or ""
+    for legacy, destination in LEGACY_INTERNAL_LINKS.items():
+        url_boundary = r"(?=$|[?#\s)\]\"'<])"
+        first_party_target = (
+            rf"(?:https?://(?:www\.)?philipmulyana\.com)?/{re.escape(legacy)}"
+        )
+        markdown_pattern = rf"(?P<prefix>\]\(){first_party_target}{url_boundary}"
+        normalized = re.sub(
+            markdown_pattern,
+            lambda match: f"{match.group('prefix')}{destination}",
+            normalized,
+            flags=re.I,
+        )
+        html_pattern = (
+            rf"(?P<prefix>\b(?:href|src)\s*=\s*[\"']){first_party_target}{url_boundary}"
+        )
+        normalized = re.sub(
+            html_pattern,
+            lambda match: f"{match.group('prefix')}{destination}",
+            normalized,
+            flags=re.I,
+        )
+    return normalized
+
+
 def _cm_content(body):
-    """Keep approved Content Machine links intact in the shared article shell."""
-    return body or ""
+    """Keep approved links while normalizing known first-party redirect hops."""
+    return _normalize_internal_links(body)
 
 
 def fetch_posts():
@@ -216,7 +251,7 @@ def fetch_posts():
 
 
 def render_body(content_md):
-    return md.markdown(content_md or "", extensions=["tables", "fenced_code", "sane_lists"])
+    return md.markdown(_normalize_internal_links(content_md), extensions=["tables", "fenced_code", "sane_lists"])
 
 
 def baca_juga(post, all_posts):

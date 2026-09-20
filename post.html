@@ -5,8 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading... — Philip Mulyana</title>
+    <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="">
-    <script src="js/pixel.js"></script>
+    <script>
+      window.__legacyPostSlug = new URLSearchParams(window.location.search).get('slug');
+    </script>
+    <script src="/js/sanitize-attribution.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,85 +115,37 @@
     }
 
     async function loadPost() {
-        const slug = new URLSearchParams(window.location.search).get('slug');
-        if (slug) { window.location.replace('/blog/' + encodeURIComponent(slug) + '.html'); return; }
-        if (!slug) {
-            document.getElementById('post-title').textContent = 'Artikel tidak ditemukan';
+        const slug = window.__legacyPostSlug;
+        window.__legacyPostSlug = null;
+        const canonicalSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+        const title = document.getElementById('post-title');
+        const content = document.getElementById('post-content');
+
+        if (!slug || !canonicalSlug.test(slug)) {
+            title.textContent = 'Artikel tidak ditemukan';
             return;
         }
 
         try {
-            const res = await fetch(MODAL_API);
-            if (!res.ok) throw new Error('API error');
-            const data = await res.json();
-            const post = (data.posts || []).find(p => p.slug === slug);
-
-            if (!post) {
-                document.getElementById('post-title').textContent = 'Artikel tidak ditemukan';
-                document.getElementById('post-content').innerHTML = '<p>Artikel ini tidak tersedia atau belum diapprove.</p>';
+            const response = await fetch('data/posts.json', { cache: 'no-store' });
+            if (!response.ok) throw new Error('Post index unavailable');
+            const data = await response.json();
+            const published = (data.posts || []).some(post => post.slug === slug);
+            if (!published) {
+                title.textContent = 'Artikel tidak ditemukan';
                 return;
             }
-
-            // Update page title and meta
-            document.title = `${post.title} — Philip Mulyana`;
-            document.querySelector('meta[name="description"]').content = post.excerpt || '';
-
-            // Badge — show content type + topic category
-            const isNewsInsight = post.categoryLabel === 'News Insight';
-            const typeBadge = isNewsInsight ? 'Berita Keuangan' : 'Artikel Kami';
-            const topicColor = categoryColors[post.category] || 'bg-gray-100 text-gray-700';
-            const topicLabel = categoryLabels[post.category] || post.categoryLabel;
-            document.getElementById('post-badge').innerHTML = `
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${typeBadge}</span>
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full ${topicColor}">${topicLabel}</span>
-            `;
-
-            // Title
-            document.getElementById('post-title').textContent = post.title;
-
-            // Meta
-            document.getElementById('post-meta').innerHTML = `
-                <span>${formatDate(post.date)}</span>
-                <span>&middot;</span>
-                <span>${post.readingTime}</span>
-                <span>&middot;</span>
-                <span>${post.author}</span>
-            `;
-
-            // Content — render markdown
-            if (post.content) {
-                document.getElementById('post-content').innerHTML = marked.parse(post.content);
-            } else {
-                document.getElementById('post-content').innerHTML = '<p>Konten artikel belum tersedia.</p>';
-            }
-
-            // Baca Juga — other approved articles
-            const others = (data.posts || []).filter(p => p.slug !== slug).slice(0, 2);
-            document.getElementById('baca-juga').innerHTML = others.map(o => {
-                const oIsNews = o.categoryLabel === 'News Insight';
-                const oType = oIsNews ? 'Berita Keuangan' : 'Artikel Kami';
-                const oColor = categoryColors[o.category] || 'bg-gray-100 text-gray-700';
-                const oTopic = categoryLabels[o.category] || o.categoryLabel;
-                return `
-                    <a href="post.html?slug=${o.slug}" class="bg-gray-50 rounded-2xl p-5 hover:shadow-lg transition-shadow duration-300 block">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-black text-white">${oType}</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-full ${oColor}">${oTopic}</span>
-                        </div>
-                        <h3 class="font-bold mt-1 leading-snug">${o.title}</h3>
-                        <p class="text-sm text-gray-500 mt-2">${o.readingTime}</p>
-                    </a>
-                `;
-            }).join('');
-
-        } catch (err) {
-            document.getElementById('post-title').textContent = 'Gagal memuat artikel';
-            document.getElementById('post-content').innerHTML = '<p>Coba refresh halaman ini.</p>';
+            const safeSuffix = window.__pmAttributionSanitized === true
+              ? `${window.location.search}${window.location.hash}`
+              : '';
+            window.location.replace(`/blog/${slug}.html${safeSuffix}`);
+        } catch (error) {
+            title.textContent = 'Gagal memuat artikel';
+            content.innerHTML = '<p>Coba refresh halaman ini.</p>';
         }
     }
 
     document.addEventListener('DOMContentLoaded', loadPost);
     </script>
-    <script src="/js/blog-track.js"></script>
 </body>
 </html>

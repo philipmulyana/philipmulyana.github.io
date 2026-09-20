@@ -6,7 +6,13 @@
     <link rel="canonical" href="https://philipmulyana.com/tools/assessment/">
     <meta name="robots" content="noindex, follow">
     <meta http-equiv="refresh" content="0; url=/tools/assessment/">
-    <script>window.location.replace('/tools/assessment/');</script>
+  <script src="/js/sanitize-attribution.js"></script>
+  <script>
+    const safeSuffix = window.__pmAttributionSanitized === true
+      ? `${window.location.search}${window.location.hash}`
+      : '';
+    window.location.replace(`/tools/assessment/${safeSuffix}`);
+  </script>
 </head>
 <body>
     <p>Halaman ini sudah pindah ke <a href="/tools/assessment/">philipmulyana.com/tools/assessment/</a>.</p>

@@ -6,7 +6,13 @@
     <link rel="canonical" href="https://philipmulyana.com/tools/retirement/">
     <meta name="robots" content="noindex, follow">
     <meta http-equiv="refresh" content="0; url=/tools/retirement/">
-    <script>window.location.replace('/tools/retirement/');</script>
+  <script src="/js/sanitize-attribution.js"></script>
+  <script>
+    const safeSuffix = window.__pmAttributionSanitized === true
+      ? `${window.location.search}${window.location.hash}`
+      : '';
+    window.location.replace(`/tools/retirement/${safeSuffix}`);
+  </script>
 </head>
 <body>
     <p>Halaman ini sudah pindah ke <a href="/tools/retirement/">philipmulyana.com/tools/retirement/</a>.</p>
