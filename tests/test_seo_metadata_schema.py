@@ -225,10 +225,12 @@ class BlogMetadataContract(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     module.blog_output_path(slug)
 
-    def test_content_machine_links_are_preserved(self):
+    def test_content_machine_links_keep_anchor_text_and_use_final_destination(self):
         module = load_publisher()
         body = "Baca [tool pensiun](https://philipmulyana.com/tool-retirement.html) sekarang."
-        self.assertEqual(module._cm_content(body), body)
+        normalized = module._cm_content(body)
+        self.assertEqual(normalized, "Baca [tool pensiun](/tools/retirement/) sekarang.")
+        self.assertIn("[tool pensiun]", normalized)
 
 
 if __name__ == "__main__":

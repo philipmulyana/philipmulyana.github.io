@@ -9,8 +9,10 @@
   <meta http-equiv="refresh" content="0; url=/tools/">
   <script src="/js/sanitize-attribution.js"></script>
   <script>
-    const destination = `/tools/${window.location.search}`;
-    window.location.replace(destination);
+    const safeSuffix = window.__pmAttributionSanitized === true
+      ? `${window.location.search}${window.location.hash}`
+      : '';
+    window.location.replace(`/tools/${safeSuffix}`);
   </script>
 </head>
 <body>

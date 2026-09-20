@@ -6,7 +6,13 @@
     <link rel="canonical" href="https://philipmulyana.com/tools/eduplan/">
     <meta name="robots" content="noindex, follow">
     <meta http-equiv="refresh" content="0; url=/tools/eduplan/">
-    <script>window.location.replace('/tools/eduplan/');</script>
+  <script src="/js/sanitize-attribution.js"></script>
+  <script>
+    const safeSuffix = window.__pmAttributionSanitized === true
+      ? `${window.location.search}${window.location.hash}`
+      : '';
+    window.location.replace(`/tools/eduplan/${safeSuffix}`);
+  </script>
 </head>
 <body>
     <p>Halaman ini sudah pindah ke <a href="/tools/eduplan/">philipmulyana.com/tools/eduplan/</a>.</p>
