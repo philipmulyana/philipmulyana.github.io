@@ -1,0 +1,84 @@
+.corporate-feedback-page{--feedback-ink:#0a0a0a;--feedback-paper:#fff;--feedback-soft:#f3f3f3;--feedback-red:#cc0100;--feedback-muted:#555;--feedback-line:#d0d0d0;min-width:0;background:var(--feedback-paper);color:var(--feedback-ink);overflow-wrap:anywhere}
+.feedback-shell{width:min(1240px,calc(100% - 64px));margin-inline:auto}
+.feedback-header{height:116px;border-bottom:1px solid #242424;background:#000;color:#fff}
+.feedback-navigation{display:flex;height:100%;align-items:center;justify-content:space-between;gap:32px}
+.feedback-brand{display:flex;width:120px;height:78px;align-items:center}
+.feedback-brand img{width:116px;height:64px;object-fit:contain;object-position:left center}
+.feedback-back{display:inline-flex;min-height:44px;align-items:center;font-size:14px;font-weight:700;text-decoration:none}
+.feedback-back:hover,.feedback-footer a:hover{text-decoration:underline;text-underline-offset:5px}
+.feedback-main{display:grid;min-height:calc(100vh - 116px);grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+.feedback-intro{display:flex;min-width:0;align-items:center;overflow:hidden;background:#000;color:#fff}
+.feedback-intro-inner{width:min(620px,100%);margin-left:max(32px,calc((100vw - 1240px)/2));padding:88px 72px 88px 0}
+.feedback-kicker{margin:0 0 24px;font-size:13px;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
+.feedback-intro h1{max-width:640px;margin:0 0 32px;font-size:clamp(48px,5.35vw,78px);font-weight:700;letter-spacing:-.055em;line-height:.94}
+.feedback-intro p:not(.feedback-kicker){max-width:590px;margin:0 0 18px;color:#c9c9c9;font-size:18px;line-height:1.6}
+.feedback-intro p:not(.feedback-kicker):last-of-type{margin-bottom:0}
+.feedback-intro-rule{display:block;width:84px;height:5px;margin-top:46px;background:var(--feedback-red)}
+.feedback-panel{display:flex;min-width:0;align-items:center;background:var(--feedback-soft)}
+.feedback-form-wrap{width:min(660px,calc(100% - 64px));margin:74px auto;padding:64px 68px;border-top:7px solid var(--feedback-red);background:#fff;box-shadow:0 18px 56px rgba(0,0,0,.09)}
+.feedback-form-wrap>.feedback-kicker{margin-bottom:12px;color:var(--feedback-red)}
+.feedback-form-wrap h2{margin:0;font-size:clamp(34px,3.2vw,48px);letter-spacing:-.035em;line-height:1}
+.feedback-instruction{margin:15px 0 36px;color:var(--feedback-muted);font-size:15px}
+.feedback-field{margin-bottom:24px}
+.feedback-field label{display:block;margin-bottom:9px;font-size:15px;font-weight:700}
+.feedback-field input,.feedback-field textarea{display:block;width:100%;border:1px solid #aaa;border-radius:0;background:#fff;color:#111;font:inherit;font-size:17px;outline:none;transition:border-color .15s ease,box-shadow .15s ease}
+.feedback-field input{height:52px;padding:0 14px}
+.feedback-field textarea{min-height:145px;padding:13px 14px;line-height:1.5;resize:vertical}
+.feedback-field input:focus,.feedback-field textarea:focus{border-color:#000;box-shadow:0 0 0 3px rgba(204,1,0,.2)}
+.feedback-field [aria-invalid="true"]{border-color:#9b0000;box-shadow:0 0 0 2px rgba(155,0,0,.12)}
+.feedback-field-error{min-height:0;margin:7px 0 0;color:#8f0000;font-size:14px;font-weight:600}
+.feedback-error-summary{margin:0 0 28px;padding:17px 19px;border-left:5px solid #9b0000;background:#fff1f1;color:#760000;font-size:15px}
+.feedback-error-summary p{margin:0;font-weight:700}
+.feedback-error-summary ul{margin:10px 0 0;padding-left:20px}
+.feedback-error-summary li+li{margin-top:5px}
+.feedback-error-summary a{font-weight:600;text-underline-offset:3px}
+.feedback-submit{display:inline-flex;width:100%;min-height:54px;align-items:center;justify-content:center;border:0;border-radius:0;background:#000;color:#fff;cursor:pointer;font:inherit;font-size:16px;font-weight:700;transition:background-color .15s ease,transform .15s ease}
+.feedback-submit:hover{background:#202020}
+.feedback-submit:active{transform:translateY(1px)}
+.feedback-submit:disabled{cursor:wait;opacity:.65}
+.feedback-submit-status{min-height:24px;margin:12px 0 0;color:#760000;font-size:14px;font-weight:600}
+.feedback-success{padding:22px 0}
+.feedback-success h2{max-width:540px;margin-bottom:20px}
+.feedback-success p{color:var(--feedback-muted)}
+.feedback-success a{display:inline-flex;min-height:44px;align-items:center;margin-top:8px;font-weight:700;text-underline-offset:4px}
+.feedback-footer{padding:34px 0;border-top:1px solid #242424;background:#000;color:#fff}
+.feedback-footer a{display:inline-flex;min-height:44px;align-items:center;font-size:14px;font-weight:700;text-decoration:none}
+.corporate-feedback-page :focus-visible{outline:3px solid var(--feedback-red);outline-offset:4px}
+.corporate-feedback-page .feedback-header :focus-visible,.corporate-feedback-page .feedback-footer :focus-visible{outline-color:#fff}
+
+@media (max-width:920px){
+  .feedback-shell{width:calc(100% - 40px)}
+  .feedback-header{height:92px}
+  .feedback-brand{height:64px}
+  .feedback-main{display:block;min-height:0}
+  .feedback-intro{min-height:500px}
+  .feedback-intro-inner{width:min(720px,calc(100% - 64px));margin-inline:auto;padding:76px 0}
+  .feedback-panel{padding:72px 0}
+  .feedback-form-wrap{width:min(680px,calc(100% - 64px));margin:0}
+}
+
+@media (max-width:560px){
+  .feedback-shell{width:calc(100% - 32px)}
+  .feedback-header{height:84px}
+  .feedback-brand{width:90px;height:56px}
+  .feedback-brand img{width:88px;height:50px}
+  .feedback-back{max-width:160px;text-align:right}
+  .feedback-intro{min-height:0}
+  .feedback-intro-inner{width:calc(100% - 40px);padding:60px 0 62px}
+  .feedback-kicker{margin-bottom:20px;font-size:12px}
+  .feedback-intro h1{margin-bottom:26px;font-size:42px;line-height:.97}
+  .feedback-intro p:not(.feedback-kicker){font-size:16px;line-height:1.58}
+  .feedback-intro-rule{margin-top:36px}
+  .feedback-panel{padding:0;background:#fff}
+  .feedback-form-wrap{width:100%;margin:0;padding:54px 20px 58px;border-top-width:6px;box-shadow:none}
+  .feedback-form-wrap h2{font-size:36px}
+  .feedback-instruction{margin-bottom:32px}
+  .feedback-field{margin-bottom:22px}
+  .feedback-field input{height:54px}
+  .feedback-field textarea{min-height:154px}
+  .feedback-footer{padding:28px 0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .feedback-field input,.feedback-field textarea,.feedback-submit{transition:none}
+}

@@ -38,3 +38,9 @@ test('site forwarding drops PII-shaped values while homepage carousel has no con
   assert.equal(source.includes('data-carousel-action'), false);
   assert.equal(source.includes('initCarousels'), false);
 });
+
+test('pixel supports a page-scoped automatic form collection opt-out', () => {
+  const pixel = fs.readFileSync(path.join(__dirname, '..', 'js', 'pixel.js'), 'utf8');
+  assert.match(pixel, /window\.__PM_PIXEL_NO_AUTOCONFIG__/);
+  assert.match(pixel, /fbq\('set', 'autoConfig', false/);
+});
