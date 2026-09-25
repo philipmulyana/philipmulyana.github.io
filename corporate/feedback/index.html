@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Form testimonial untuk tim HR, L&D, dan penyelenggara acara yang pernah bekerja sama dengan Philip Mulyana.">
+  <meta name="robots" content="noindex,follow">
+  <title>Bagikan Testimonial Corporate — Philip Mulyana</title>
+  <link rel="canonical" href="https://philipmulyana.com/corporate/feedback/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site/site.css">
+  <link rel="stylesheet" href="/assets/site/corporate-feedback.css">
+  <script src="/js/sanitize-attribution.js"></script>
+  <script>window.__PM_PIXEL_NO_AUTOCONFIG__ = true;</script>
+  <script src="/js/deferred-trackers.js" defer></script>
+  <script src="/js/corporate-feedback.js" defer></script>
+</head>
+<body class="corporate-feedback-page">
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+  <header class="feedback-header">
+    <div class="feedback-shell feedback-navigation">
+      <a class="feedback-brand" href="/corporate/" aria-label="Philip Mulyana — halaman Corporate">
+        <img src="/assets/site/logo-white-320.png" alt="Philip Mulyana" width="320" height="262">
+      </a>
+      <a class="feedback-back" href="/corporate/">Kembali ke halaman Corporate</a>
+    </div>
+  </header>
+
+  <main id="main-content" class="feedback-main">
+    <section class="feedback-intro" aria-labelledby="feedback-heading">
+      <div class="feedback-intro-inner">
+        <p class="feedback-kicker">Corporate Testimonial</p>
+        <h1 id="feedback-heading">Pengalaman Anda membantu kami menjaga kualitas.</h1>
+        <p>Form ini ditujukan kepada tim HR, L&amp;D, dan penyelenggara acara yang pernah bekerja sama dengan Philip Mulyana.</p>
+        <p>Ceritakan konteks acara atau program, lalu tuliskan testimonial Anda di formulir berikut.</p>
+        <p>Testimonial Anda membantu kami memahami bagian yang paling relevan dan berguna bagi organisasi Anda.</p>
+        <span class="feedback-intro-rule" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="feedback-panel" aria-labelledby="form-heading">
+      <div class="feedback-form-wrap">
+        <p class="feedback-kicker">Form testimonial</p>
+        <h2 id="form-heading">Bagikan pengalaman Anda.</h2>
+        <p class="feedback-instruction">Semua kolom perlu diisi sebelum testimonial dikirim.</p>
+
+        <div class="feedback-error-summary" id="form-errors" role="alert" tabindex="-1" hidden>
+          <p>Lengkapi kolom yang masih kosong sebelum mengirim testimonial.</p>
+          <ul></ul>
+        </div>
+
+        <form data-corporate-feedback-form data-clarity-mask="true" novalidate method="post" action="https://philip-mulyana--corporate-testimonial-api-web.modal.run/submit">
+          <div class="feedback-field">
+            <label for="name">Nama</label>
+            <input id="name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="120" aria-describedby="name-error">
+            <p class="feedback-field-error" id="name-error"></p>
+          </div>
+
+          <div class="feedback-field">
+            <label for="job_title">Jabatan</label>
+            <input id="job_title" name="job_title" type="text" autocomplete="organization-title" required minlength="2" maxlength="160" aria-describedby="job_title-error">
+            <p class="feedback-field-error" id="job_title-error"></p>
+          </div>
+
+          <div class="feedback-field">
+            <label for="company">Nama perusahaan</label>
+            <input id="company" name="company" type="text" autocomplete="organization" required minlength="2" maxlength="160" aria-describedby="company-error">
+            <p class="feedback-field-error" id="company-error"></p>
+          </div>
+
+          <div class="feedback-field">
+            <label for="event_program">Acara/program yang diikuti</label>
+            <input id="event_program" name="event_program" type="text" required minlength="2" maxlength="200" aria-describedby="event_program-error">
+            <p class="feedback-field-error" id="event_program-error"></p>
+          </div>
+
+          <div class="feedback-field">
+            <label for="testimonial">Isi testimonial</label>
+            <textarea id="testimonial" name="testimonial" required minlength="20" maxlength="3000" aria-describedby="testimonial-error"></textarea>
+            <p class="feedback-field-error" id="testimonial-error"></p>
+          </div>
+
+          <button class="feedback-submit" type="submit">Kirim testimonial</button>
+          <p class="feedback-submit-status" id="submit-status" aria-live="polite" tabindex="-1"></p>
+        </form>
+
+        <div class="feedback-success" id="success-state" tabindex="-1" hidden>
+          <h2>Terima kasih. Testimonial Anda sudah kami terima.</h2>
+          <p>Tim kami akan menghubungi Anda jika membutuhkan informasi tambahan.</p>
+          <a href="/corporate/">Kembali ke halaman Corporate</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="feedback-footer">
+    <div class="feedback-shell"><a href="/corporate/">Kembali ke halaman Corporate</a></div>
+  </footer>
+</body>
+</html>

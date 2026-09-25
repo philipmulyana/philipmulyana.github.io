@@ -11,11 +11,9 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 
-// Page-scoped opt-out of Meta's server-configured Automatic Events, set by
-// /cek-awal/index.html only. Must precede 'init' — autoConfig applies to how
-// the pixel configures itself for this init call. No other page sets this
-// flag, so autoConfig stays on (default) everywhere else.
-if (window.__CEK_AWAL_PIXEL_NO_AUTOCONFIG__) {
+// Page-scoped opt-out of Meta's server-configured automatic form/event
+// collection. Must precede 'init'. The legacy cek-awal flag remains supported.
+if (window.__CEK_AWAL_PIXEL_NO_AUTOCONFIG__ || window.__PM_PIXEL_NO_AUTOCONFIG__) {
     fbq('set', 'autoConfig', false, '1408957391027533');
 }
 fbq('init', '1408957391027533');
