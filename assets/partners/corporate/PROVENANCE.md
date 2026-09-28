@@ -4,7 +4,7 @@ Retrieved: **2026-09-19**
 
 ## Relationship and presentation
 
-The 30 displayed collaboration names come from Philip's owner-provided and owner-approved list. They appear under the neutral wording **“Pernah bekerja sama dengan”** and do not claim that every relationship was a speaking engagement, partnership, sponsorship, or endorsement.
+The 31 displayed collaboration names come from Philip's owner-provided and owner-approved list. They appear under the neutral wording **“Pernah bekerja sama dengan”** and do not claim that every relationship was a speaking engagement, partnership, sponsorship, or endorsement. Philip explicitly approved adding Bank Indonesia to this neutral list on 2026-09-28.
 
 All names and logos remain trademarks of their respective owners. Logo use identifies confirmed collaborations only. Local website files are served from this repository; there is no runtime hotlinking.
 
@@ -22,6 +22,7 @@ All names and logos remain trademarks of their respective owners. Logo use ident
 | Bank BCA | `assets/partners/bca-official.png` | https://www.bca.co.id/id/tentang-bca/media-riset/pressroom/Brand-Assets | Existing official derivative; details in `../PROVENANCE.md` |
 | Bank CIMB Niaga | `assets/partners/cimb-niaga.png` | https://commons.wikimedia.org/wiki/File:CIMB_Niaga_logo.svg | Existing derivative; details in `../PROVENANCE.md` |
 | Bank Danamon | `assets/partners/corporate/bank-danamon.webp` | https://commons.wikimedia.org/wiki/File:Danamon.svg | Lossless 480px WebP derivative because source SVG embeds large rasters; aspect ratio and colors preserved |
+| Bank Indonesia | `assets/partners/corporate/bank-indonesia.png` | https://www.bi.go.id/id/SiteAssets/bi-b.png?rev=43 | Official first-party PNG; aspect-preserving Lanczos downsample to 520 × 165 RGBA PNG; no crop, recolor, redrawing, filtering, or lockup change; SHA-256 `78eb8cc9ea226e3d7cfa8dcafa794e3549e076cdb73682cd3117af292534da26`; retrieved 2026-09-28 |
 | Bank Mandiri | `assets/partners/bank-mandiri.png` | https://commons.wikimedia.org/wiki/File:Bank_Mandiri_logo_2016.svg | Existing derivative; details in `../PROVENANCE.md` |
 | Bank OCBC Indonesia | `assets/partners/corporate/bank-ocbc.webp` | https://cdn1.ocbc.id/asset/media/Project/OCBC/OCBCID/V1/Header/Logo-Menu/ocbc-red.png | Official Indonesian-site PNG converted to lossless WebP |
 | BSI | `assets/partners/bsi.png` | https://commons.wikimedia.org/wiki/File:Bank_Syariah_Indonesia.svg | Existing derivative; details in `../PROVENANCE.md` |
@@ -48,5 +49,7 @@ All names and logos remain trademarks of their respective owners. Logo use ident
 
 - Official or provenance-backed artwork is copied locally once; browsers do not call third-party logo servers.
 - SVG derivatives remove comments, processing instructions, executable elements, event handlers, and external/data references. Shapes, aspect ratios, and colors are not redesigned.
-- Raster derivatives remove transparent outer canvas only, preserve the visible logo, retain aspect ratio, and use lossless WebP at a maximum 480 × 240 production canvas.
+- Raster derivatives remove transparent outer canvas only, preserve the visible logo, retain aspect ratio, and use a lossless format at a maximum 520 × 240 production canvas.
 - Master assets in Philip's canonical brand library are untouched.
+
+First-party hosting establishes current identity and provenance; it does not imply trademark permission or endorsement. Bank Indonesia is shown as one standard neutral tile with the same grid footprint as peer organizations, followed by the page-wide non-endorsement note.
