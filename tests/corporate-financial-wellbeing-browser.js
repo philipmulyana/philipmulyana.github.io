@@ -151,27 +151,69 @@ const fillValidForm = async (page) => {
     await page.goto(BASE_URL, { waitUntil: 'networkidle' });
     await loadAllImages(page);
     const proof = await page.evaluate(() => {
-      const grid = document.querySelector('.logo-grid');
-      const tiles = [...grid.children];
+      const group = document.querySelector('.corporate-partner-grid');
+      const tiles = [...group.children];
       const bank = document.querySelector('.bi-proof');
       const peer = bank.nextElementSibling;
       const bankBox = bank.getBoundingClientRect();
       const peerBox = peer.getBoundingClientRect();
       return {
-        columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+        rows: getComputedStyle(group).gridTemplateRows.split(' ').length,
         count: tiles.length,
+        groups: document.querySelectorAll('.corporate-partner-grid').length,
         bank: { width: bankBox.width, height: bankBox.height, background: getComputedStyle(bank).backgroundColor },
         peer: { width: peerBox.width, height: peerBox.height, background: getComputedStyle(peer).backgroundColor },
         order: [...document.querySelectorAll('main > section')].slice(0, 3).map((section) => section.id || [...section.classList].find((value) => value !== 'section')),
         imageFailures: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
       };
     });
-    assert.equal(proof.columns, 3);
+    assert.equal(proof.rows, 1);
     assert.equal(proof.count, 31);
+    assert.equal(proof.groups, 1, 'reduced motion must not clone the logo group');
     assert.deepEqual(proof.bank, proof.peer);
     assert.deepEqual(proof.order, ['top', 'audience', 'proof']);
     assert.deepEqual(proof.imageFailures, []);
-    pass('proof contract', '31 static tiles; 3 mobile columns; Bank Indonesia matches peer tile; hero → audience → proof');
+    pass('proof reduced motion', '31 logos; one mobile row; no clone or movement; Bank Indonesia matches peer tile');
+
+    const motionContext = await browser.newContext({ reducedMotion: 'no-preference' });
+    const motionPage = await motionContext.newPage();
+    await motionPage.route('**/*', async (route) => {
+      const requestUrl = new URL(route.request().url());
+      if (requestUrl.origin === new URL(BASE_URL).origin) await route.continue();
+      else await route.fulfill({ status: 204, contentType: 'application/javascript', body: '' });
+    });
+    await motionPage.setViewportSize({ width: 1440, height: 900 });
+    await motionPage.goto(BASE_URL, { waitUntil: 'networkidle' });
+    await motionPage.locator('.corporate-logo-carousel').scrollIntoViewIfNeeded();
+    await motionPage.waitForFunction(() => document.querySelector('.corporate-partner-track')?.classList.contains('is-ready'));
+    const motionBefore = await motionPage.evaluate(() => {
+      const track = document.querySelector('.corporate-partner-track');
+      const original = document.querySelector('.corporate-partner-grid:not([aria-hidden="true"])');
+      const duplicate = document.querySelector('.corporate-partner-grid[aria-hidden="true"]');
+      return {
+        rows: getComputedStyle(original).gridTemplateRows.split(' ').length,
+        count: original.children.length,
+        groups: document.querySelectorAll('.corporate-partner-grid').length,
+        duplicateAltText: [...duplicate.querySelectorAll('img')].filter((image) => image.alt).length,
+        animationName: getComputedStyle(track).animationName,
+        animationState: getComputedStyle(track).animationPlayState,
+        transform: getComputedStyle(track).transform,
+      };
+    });
+    await motionPage.waitForTimeout(250);
+    const movedTransform = await motionPage.locator('.corporate-partner-track').evaluate((track) => getComputedStyle(track).transform);
+    await motionPage.locator('.corporate-logo-carousel').hover();
+    const pausedState = await motionPage.locator('.corporate-partner-track').evaluate((track) => getComputedStyle(track).animationPlayState);
+    assert.equal(motionBefore.rows, 3);
+    assert.equal(motionBefore.count, 31);
+    assert.equal(motionBefore.groups, 2);
+    assert.equal(motionBefore.duplicateAltText, 0);
+    assert.equal(motionBefore.animationName, 'corporate-logo-marquee');
+    assert.equal(motionBefore.animationState, 'running');
+    assert.notEqual(movedTransform, motionBefore.transform, 'carousel transform did not move');
+    assert.equal(pausedState, 'paused');
+    await motionContext.close();
+    pass('proof auto-carousel', 'desktop renders 3 rows; loop moves; duplicate is hidden from assistive tech; hover pauses');
 
     const keyboardPage = await context.newPage();
     await keyboardPage.setViewportSize({ width: 390, height: 844 });

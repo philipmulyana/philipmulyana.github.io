@@ -214,7 +214,7 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertIn('bukan sebagai pernyataan dukungan terhadap penawaran ini', html)
         self.assertNotIn('corporate speaking clients', html.lower())
 
-        grid_match = re.search(r'<ul class="logo-grid"[^>]*>(.*?)</ul>', html, re.S)
+        grid_match = re.search(r'<ul class="corporate-partner-grid"[^>]*>(.*?)</ul>', html, re.S)
         self.assertIsNotNone(grid_match)
         grid = grid_match.group(1)
         tiles = re.findall(r'<li\b[^>]*>(.*?)</li>', grid, re.S)
@@ -229,8 +229,8 @@ class CorporateSpeakerContract(unittest.TestCase):
                 self.assertTrue((ROOT / source.removeprefix('/')).is_file())
 
         self.assertIn('alt="Bank Indonesia"', grid)
-        self.assertNotIn('data-logo-marquee', html)
-        self.assertNotIn('corporate-partner-track', html)
+        self.assertIn('data-logo-marquee', html)
+        self.assertIn('corporate-partner-track', html)
         self.assertNotIn('carousel-control', html)
         self.assertIn('<script src="/js/corporate.js?v=20260928-financial-wellbeing" defer></script>', html)
 
@@ -241,10 +241,10 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertIn('Bank Indonesia', provenance)
         self.assertIn('78eb8cc9ea226e3d7cfa8dcafa794e3549e076cdb73682cd3117af292534da26', provenance)
 
-    def test_corporate_static_logo_grid_profile_and_portrait_respect_contracts(self):
+    def test_corporate_logo_carousel_profile_and_portrait_respect_contracts(self):
         html = read("corporate/index.html")
-        self.assertIn('class="logo-grid"', html)
-        self.assertNotIn('data-logo-marquee', html)
+        self.assertIn('class="corporate-partner-grid"', html)
+        self.assertIn('data-logo-marquee', html)
         self.assertIn('<dt>18 tahun</dt><dd>Di industri keuangan</dd>', html)
         self.assertIn('<dt>10 tahun</dt><dd>Financial Advisor</dd>', html)
         self.assertIn('<dt>50+ brand</dt><dd>Pernah berkolaborasi</dd>', html)
@@ -254,16 +254,16 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertLess((ROOT / 'assets/site/logo-white-320.png').stat().st_size, 15_000)
 
         compact = re.sub(r'\s+', '', read("assets/site/corporate.css"))
-        self.assertIn('.logo-grid{display:grid;grid-template-columns:repeat(4,1fr)', compact)
-        self.assertIn('.logo-grid{grid-template-columns:repeat(3,1fr)}', compact)
-        self.assertIn('.logo-grid.tile-dark', compact)
+        self.assertIn('.corporate-partner-grid{display:grid;grid-template-rows:repeat(3,132px)', compact)
+        self.assertIn('.corporate-partner-grid{grid-template-rows:116px;grid-auto-columns:154px}', compact)
+        self.assertIn('.corporate-partner-grid.tile-dark', compact)
         self.assertIn('filter:grayscale(1)', compact)
         self.assertIn('@media(prefers-reduced-motion:reduce)', compact)
-        self.assertNotIn('corporate-logo-marquee', compact)
+        self.assertIn('corporate-logo-marquee', compact)
 
         script = read("js/corporate.js")
-        self.assertNotIn('cloneNode', script)
-        self.assertNotIn('IntersectionObserver', script)
+        self.assertIn('cloneNode(true)', script)
+        self.assertIn('IntersectionObserver', script)
 
     def test_legacy_speaking_route_redirects_to_corporate_canonical(self):
         html = read("speaking.html")

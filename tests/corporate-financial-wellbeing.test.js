@@ -44,18 +44,19 @@ test('corporate page uses the approved Financial Wellbeing hierarchy and exact p
   assert.ok(!html.includes('ROI'));
 });
 
-test('corporate proof is a static 31-tile grid with neutral Bank Indonesia treatment', () => {
-  const gridMatch = html.match(/<ul class="logo-grid"[\s\S]*?<\/ul>/);
-  assert.ok(gridMatch, 'static logo grid is required');
-  const tiles = gridMatch[0].match(/<li(?:\s|>)/g) || [];
+test('corporate proof keeps the production three-row carousel with neutral Bank Indonesia treatment', () => {
+  const groupMatch = html.match(/<ul class="corporate-partner-grid"[\s\S]*?<\/ul>/);
+  assert.ok(groupMatch, 'production partner group is required');
+  const tiles = groupMatch[0].match(/<li(?:\s|>)/g) || [];
   assert.equal(tiles.length, 31);
-  assert.equal((gridMatch[0].match(/alt="Bank Indonesia"/g) || []).length, 1);
-  assert.ok(gridMatch[0].includes('/assets/partners/corporate/bank-indonesia.png'));
+  assert.equal((groupMatch[0].match(/alt="Bank Indonesia"/g) || []).length, 1);
+  assert.ok(groupMatch[0].includes('/assets/partners/corporate/bank-indonesia.png'));
   assert.ok(html.includes('Nama dan logo ditampilkan sebagai catatan kolaborasi, bukan sebagai pernyataan dukungan terhadap penawaran ini.'));
-  assert.match(css, /\.logo-grid\{[^}]*grid-template-columns:repeat\(4,1fr\)/);
-  assert.match(css, /@media \(max-width:767px\)[\s\S]*\.logo-grid\{grid-template-columns:repeat\(3,1fr\)\}/);
-  assert.ok(!html.includes('data-logo-marquee'));
-  assert.ok(!script.includes('cloneNode'));
+  assert.ok(html.includes('data-logo-marquee'));
+  assert.match(css, /\.corporate-partner-grid\{[^}]*grid-template-rows:repeat\(3,132px\)/);
+  assert.match(css, /\.corporate-partner-track\.is-ready\{[^}]*animation:corporate-logo-marquee/);
+  assert.ok(script.includes('cloneNode(true)'));
+  assert.ok(script.includes('IntersectionObserver'));
 
   assert.ok(provenance.includes('Bank Indonesia'));
   assert.ok(provenance.includes('https://www.bi.go.id/id/SiteAssets/bi-b.png?rev=43'));
