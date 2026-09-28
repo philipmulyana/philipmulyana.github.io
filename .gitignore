@@ -3,3 +3,6 @@
 
 __pycache__/
 *.pyc
+
+# Generated browser QA evidence (kept locally and linked from PR notes)
+artifacts/corporate-financial-wellbeing/

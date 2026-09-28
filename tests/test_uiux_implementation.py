@@ -152,30 +152,31 @@ class SharedUiAuditContract(unittest.TestCase):
 
 
 class CorporateSpeakerContract(unittest.TestCase):
-    brands = (
-        "AIA", "Allianz", "AXA Mandiri", "BNI Life", "Prudential", "Zurich",
-        "Ajaib", "Bank BCA", "Bank CIMB Niaga", "Bank Danamon", "Bank Mandiri",
-        "Bank OCBC", "BSI", "Bibit", "HSBC", "IDX", "IPOT", "KBank",
-        "Mirae Asset Sekuritas", "Pegadaian × Tring", "Pintu",
-        "Sucor Asset Management", "UOB", "Visa", "Komdigi", "Mekari",
-        "Pertamina", "PLN EPI", "Polytron", "Sushi Tei",
+    logo_alts = (
+        "AIA", "Allianz", "AXA Mandiri", "BNI Life", "Prudential Indonesia", "Zurich",
+        "Ajaib", "Bank BCA", "Bank CIMB Niaga", "Bank Danamon", "Bank Indonesia",
+        "Bank Mandiri", "Bank OCBC Indonesia", "BSI", "Bibit", "HSBC",
+        "Indonesia Stock Exchange (IDX)", "IPOT", "KBank", "Mirae Asset Sekuritas",
+        "Pegadaian", "Tring by Pegadaian", "PINTU", "Sucor Asset Management", "UOB",
+        "Visa", "Kementerian Komunikasi dan Digital Republik Indonesia", "Mekari",
+        "Pertamina", "PLN Energi Primer Indonesia", "Polytron", "Sushi Tei",
     )
 
     def test_corporate_page_is_a_separate_accessible_funnel(self):
         html = read("corporate/index.html")
         self.assertIn('<html lang="id">', html)
         self.assertIn('<link rel="canonical" href="https://philipmulyana.com/corporate/">', html)
-        self.assertIn('/assets/site/site.css', html)
+        self.assertIn('Corporate Financial Wellbeing — Philip Mulyana', html)
         self.assertIn('/assets/site/corporate.css', html)
         self.assertIn('class="skip-link"', html)
         self.assertIn('<main id="main-content"', html)
-        self.assertIn('>Corporate Speaker<', html)
-        self.assertIn('id="audience"', html)
-        self.assertIn('id="topics"', html)
-        self.assertIn('id="credentials"', html)
-        self.assertIn('id="proof"', html)
-        self.assertIn('id="process"', html)
-        self.assertIn('id="faq"', html)
+        for marker in (
+            'id="top"', 'class="audience"', 'id="proof"', 'id="format"',
+            'id="modules"', 'id="faq"', 'id="inquiry"',
+        ):
+            self.assertIn(marker, html)
+        self.assertIn('data-clarity-mask="true"', html)
+        self.assertIn('window.__PM_PIXEL_NO_AUTOCONFIG__ = true', html)
 
         sanitizer = html.index('/js/sanitize-attribution.js')
         deferred_trackers = html.index('/js/deferred-trackers.js')
@@ -186,18 +187,21 @@ class CorporateSpeakerContract(unittest.TestCase):
 
     def test_corporate_cta_never_uses_the_personal_consultation_path(self):
         html = read("corporate/index.html")
-        ctas = re.findall(
-            r'<a\b[^>]*data-corporate-inquiry[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+        primary_links = re.findall(r'<a\b[^>]*href="#inquiry"[^>]*>(.*?)</a>', html, re.S)
+        primary_ctas = [
+            label for label in primary_links
+            if 'Isi Form Kebutuhan Organisasi' in re.sub(r'<[^>]+>', '', label)
+        ]
+        self.assertGreaterEqual(len(primary_ctas), 3)
+
+        whatsapp_ctas = re.findall(
+            r'<a\b[^>]*data-forward-attribution[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
             html,
             re.S,
         )
-        self.assertGreaterEqual(len(ctas), 2)
-        cta_tags = re.findall(r'<a\b[^>]*data-corporate-inquiry[^>]*>', html)
-        self.assertEqual(len(cta_tags), len(ctas))
-        for tag in cta_tags:
-            self.assertIn('data-forward-attribution', tag)
-        for href, label in ctas:
-            self.assertIn('Diskusikan Acara dengan Tim Philip', re.sub(r'<[^>]+>', '', label))
+        self.assertGreaterEqual(len(whatsapp_ctas), 2)
+        for href, label in whatsapp_ctas:
+            self.assertIn('WhatsApp', re.sub(r'<[^>]+>', '', label))
             self.assertEqual(href, '/links/#collaboration')
             self.assertNotIn('calendly.com', href)
             self.assertNotIn('/consultation.html', href)
@@ -207,52 +211,40 @@ class CorporateSpeakerContract(unittest.TestCase):
         html = read("corporate/index.html")
         self.assertIn('>Pernah bekerja sama dengan<', html)
         self.assertIn('Beberapa brand dan organisasi yang pernah berkolaborasi bersama Philip.', html)
-        self.assertNotIn('Dipercaya oleh 30', html)
+        self.assertIn('bukan sebagai pernyataan dukungan terhadap penawaran ini', html)
         self.assertNotIn('corporate speaking clients', html.lower())
 
-        found = re.findall(r'<li\b[^>]*data-brand="([^"]+)"', html)
-        self.assertEqual(len(found), 30)
-        self.assertEqual(len(set(found)), 30)
-        self.assertEqual(set(found), set(self.brands))
-        self.assertIn('data-brand="Prudential"', html)
+        grid_match = re.search(r'<ul class="logo-grid"[^>]*>(.*?)</ul>', html, re.S)
+        self.assertIsNotNone(grid_match)
+        grid = grid_match.group(1)
+        tiles = re.findall(r'<li\b[^>]*>(.*?)</li>', grid, re.S)
+        self.assertEqual(len(tiles), 31)
+        images = re.findall(r'<img\b[^>]+src="([^"]+)"[^>]+alt="([^"]+)"', grid)
+        self.assertEqual(len(images), 32)
+        self.assertEqual({alt for _source, alt in images}, set(self.logo_alts))
+        for source, alt in images:
+            with self.subTest(logo=alt):
+                self.assertTrue(source.startswith('/assets/partners/'))
+                self.assertNotIn('://', source)
+                self.assertTrue((ROOT / source.removeprefix('/')).is_file())
 
-        items = re.findall(
-            r'<li\b[^>]*data-brand="([^"]+)"[^>]*>(.*?)</li>',
-            html,
-            re.S,
-        )
-        self.assertEqual(len(items), 30)
-        self.assertEqual({brand for brand, _content in items}, set(self.brands))
-        for brand, content in items:
-            with self.subTest(brand=brand):
-                images = re.findall(r'<img\b[^>]+src="([^"]+)"[^>]+alt="([^"]+)"', content)
-                self.assertGreaterEqual(len(images), 1)
-                for source, alt in images:
-                    self.assertTrue(source.startswith('/assets/partners/'))
-                    self.assertNotIn('://', source)
-                    self.assertTrue(alt.strip())
-                    self.assertTrue((ROOT / source.removeprefix('/')).is_file())
-
-        self.assertNotIn('corporate-partner-name', html)
-        self.assertNotIn('data-carousel', html)
+        self.assertIn('alt="Bank Indonesia"', grid)
+        self.assertNotIn('data-logo-marquee', html)
+        self.assertNotIn('corporate-partner-track', html)
         self.assertNotIn('carousel-control', html)
-        self.assertNotIn('>Jeda<', html)
-        self.assertIn('<script src="/js/corporate.js?v=20260919-auto-logos" defer></script>', html)
+        self.assertIn('<script src="/js/corporate.js?v=20260928-financial-wellbeing" defer></script>', html)
 
         provenance = read("assets/partners/corporate/PROVENANCE.md")
         self.assertIn('source url', provenance.lower())
         self.assertIn('retrieved', provenance.lower())
         self.assertIn('trademark', provenance.lower())
+        self.assertIn('Bank Indonesia', provenance)
+        self.assertIn('78eb8cc9ea226e3d7cfa8dcafa794e3549e076cdb73682cd3117af292534da26', provenance)
 
-    def test_corporate_automatic_logo_carousel_profile_and_portrait_respect_contracts(self):
+    def test_corporate_static_logo_grid_profile_and_portrait_respect_contracts(self):
         html = read("corporate/index.html")
-        self.assertIn('class="corporate-logo-carousel"', html)
-        self.assertIn('tabindex="0"', html)
-        self.assertIn('data-logo-marquee', html)
-        self.assertIn('class="corporate-partner-grid"', html)
-        self.assertNotIn('data-carousel', html)
-        self.assertNotIn('carousel-control', html)
-        self.assertNotIn('aria-live="polite"', html)
+        self.assertIn('class="logo-grid"', html)
+        self.assertNotIn('data-logo-marquee', html)
         self.assertIn('<dt>18 tahun</dt><dd>Di industri keuangan</dd>', html)
         self.assertIn('<dt>10 tahun</dt><dd>Financial Advisor</dd>', html)
         self.assertIn('<dt>50+ brand</dt><dd>Pernah berkolaborasi</dd>', html)
@@ -261,27 +253,17 @@ class CorporateSpeakerContract(unittest.TestCase):
         self.assertLess((ROOT / 'assets/site/corporate-profile.webp').stat().st_size, 45_000)
         self.assertLess((ROOT / 'assets/site/logo-white-320.png').stat().st_size, 15_000)
 
-        css = read("assets/site/corporate.css")
-        compact = re.sub(r'\s+', '', css)
-        self.assertIn('.corporate-hero h1{max-width:720px;margin:16px 0 26px;font-size:clamp(54px,5.4vw,78px)', css)
-        self.assertIn('.corporate-logo-carousel{overflow:hidden;', compact)
-        self.assertIn('.corporate-partner-grid{display:grid;grid-template-rows:repeat(3,132px);grid-auto-flow:column;', compact)
-        self.assertIn('.corporate-proof{overflow:hidden;background:var(--soft)}', compact)
-        self.assertIn('mask-image:linear-gradient', compact)
+        compact = re.sub(r'\s+', '', read("assets/site/corporate.css"))
+        self.assertIn('.logo-grid{display:grid;grid-template-columns:repeat(4,1fr)', compact)
+        self.assertIn('.logo-grid{grid-template-columns:repeat(3,1fr)}', compact)
+        self.assertIn('.logo-grid.tile-dark', compact)
         self.assertIn('filter:grayscale(1)', compact)
-        self.assertIn('opacity:.56', compact)
-        self.assertNotIn('border-right:1pxsolidvar(--line)', compact)
-        self.assertIn('.corporate-partner-track.is-ready{animation:corporate-logo-marquee', compact)
-        self.assertIn('animation-play-state:paused', compact)
-        self.assertIn('@media(max-width:800px)', compact)
-        self.assertIn('.corporate-partner-grid{grid-template-rows:116px;grid-auto-columns:154px}', compact)
-        self.assertIn('@keyframescorporate-logo-marquee', compact)
         self.assertIn('@media(prefers-reduced-motion:reduce)', compact)
+        self.assertNotIn('corporate-logo-marquee', compact)
 
         script = read("js/corporate.js")
-        self.assertIn("cloneNode(true)", script)
-        self.assertIn("aria-hidden", script)
-        self.assertIn("removeAttribute('data-brand')", script)
+        self.assertNotIn('cloneNode', script)
+        self.assertNotIn('IntersectionObserver', script)
 
     def test_legacy_speaking_route_redirects_to_corporate_canonical(self):
         html = read("speaking.html")
