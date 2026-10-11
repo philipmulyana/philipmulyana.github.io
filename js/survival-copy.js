@@ -144,34 +144,80 @@ export function twoSentenceParagraphs(text) {
   return out;
 }
 
+// Education costs rise faster than prices; same 10% a year Philip uses on his education plan
+// calculator (philipmulyana.com/tools/eduplan, js/eduplan.js INFLASI_PENDIDIKAN).
+export const EDUCATION_INFLATION = 0.10;
+
 /**
- * Plain-text report for the WhatsApp reply Philip sends. Every paragraph holds at most two
- * sentences, with a blank line between paragraphs; each moment on the timeline gets its own
- * bold label line instead of sharing a paragraph with others.
+ * WhatsApp report Philip sends after a prospect asks for it. It does NOT repeat the page: a two-line
+ * recap, then what the page did not show (university cost in the year it is due, what the current
+ * cover does not pay for), the cost of waiting, and one clear next step. Every paragraph holds at
+ * most two sentences, with a blank line between paragraphs.
+ *
+ * @param {object} result calculateSurvival() output
+ * @param {string|null} name first name, or null
+ * @param {{ code?: string, bookingUrl?: string, currentYear?: number }} opts
  */
-export function whatsappReport(result, name) {
-  const c = resultCopy(result, { merge: false });
-  const block = (s) => {
-    const lines = [`*${s.tab}*`, "", ...twoSentenceParagraphs(s.headline).flatMap((x) => [x, ""])];
-    // Moments in the same month share one label; each keeps its own paragraph(s) under it.
-    s.items.forEach((i, n) => {
-      if (n === 0 || s.items[n - 1].when !== i.when) lines.push(`*${i.when}*`);
-      else lines.pop(); // join with the label above: one blank line between paragraphs, not a new label
-      const paras = twoSentenceParagraphs(i.text);
-      if (n > 0 && s.items[n - 1].when === i.when) lines.push("");
-      paras.forEach((x, k) => lines.push(...(k ? ["", x] : [x])));
-      lines.push("");
-    });
-    if (s.closing) lines.push(...twoSentenceParagraphs(s.closing).flatMap((x) => [x, ""]));
-    return lines;
-  };
-  return [
-    `Halo${name ? ` ${name}` : ""}, ini laporan Survival Test kamu.`,
-    "",
-    ...block(c.death),
-    ...block(c.critical_illness),
-    "Angka di atas dihitung dari jawaban kamu dan masih perkiraan kasar.",
-    "",
-    "Mau dikirimi tips keuangan keluarga sebulan sekali? Balas YA kalau mau.",
-  ].join("\n");
+export function whatsappReport(result, name, opts = {}) {
+  const p = people(result);
+  const year = opts.currentYear ?? new Date().getFullYear();
+  const d = result.death, c = result.critical_illness;
+  const ev = (s, k) => s.events.find((e) => e.kind === k);
+  const out = [];
+  const para = (text) => { for (const x of twoSentenceParagraphs(text)) out.push(x, ""); };
+  const label = (text) => out.push(`*${text}*`);
+
+  para(`Halo${name ? ` ${name}` : ""}, terima kasih sudah mengisi Survival Test.`);
+
+  // Recap: two sentences, the numbers they already saw.
+  const deathLine = d.runway_months === null
+    ? `Kalau penghasilan ${p.earner} terhenti, pemasukan lain di rumah masih menutup biaya hidup bulanan.`
+    : d.covered
+      ? `Kalau penghasilan ${p.earner} terhenti, dana yang ada cukup sampai keluarga tidak lagi bergantung padanya.`
+      : `Kalau penghasilan ${p.earner} terhenti, keluarga kamu bertahan sekitar ${duration(d.runway_months)}.`;
+  const ciOut = ev(c, "money_runs_out_in_recovery");
+  const ciLine = ciOut
+    ? `Kalau terhentinya karena sakit kritis, tabungan habis di bulan ${ciOut.at}, saat ${p.earner} masih dalam pemulihan.`
+    : "Kalau terhentinya karena sakit kritis, dana yang ada cukup untuk masa pemulihan.";
+  label("Ringkasnya");
+  para(`${deathLine} ${ciLine}`);
+
+  // What the page did not show.
+  const extra = [];
+  const uni = ev(d, "university_unfunded");
+  if (uni) {
+    const yearsLeft = Math.max(1, uni.year - year);
+    const future = Math.round(uni.cost * Math.pow(1 + EDUCATION_INFLATION, yearsLeft));
+    extra.push(`Biaya kuliah anak bungsu hari ini sekitar ${rupiah(uni.cost)}. Dengan kenaikan biaya kuliah sekitar 10% per tahun, di ${uni.year} angkanya jadi sekitar ${rupiah(future)}.`);
+    extra.push(`Waktu untuk menyiapkannya tinggal ${yearsLeft} tahun. Setiap tahun yang lewat tanpa rencana, waktunya berkurang satu tahun dan biayanya naik lagi.`);
+  }
+  if (ev(c, "life_cover_does_not_pay")) {
+    extra.push(`Asuransi jiwa ${p.earner} hanya cair kalau ${p.earner} meninggal. Untuk sakit kritis, keluarga hanya bergantung pada tabungan.`);
+  }
+  const kpr = ev(d, "mortgage_unpaid");
+  if (kpr && !uni) {
+    extra.push(`Cicilan rumah masih berjalan ${duration(kpr.monthsLeft)} setelah dana habis. Rumah itu ikut dipertaruhkan kalau tidak ada yang menyiapkan.`);
+  }
+  if (extra.length) {
+    label("Yang tidak terlihat di halaman hasil");
+    for (const x of extra) para(x);
+  }
+
+  // Cost of waiting: true for any life or critical illness cover, no product named.
+  const exposed = !d.covered || !c.covered;
+  if (exposed) {
+    label("Kenapa sebaiknya tidak ditunda");
+    para("Perlindungan untuk risiko seperti ini dihitung dari usia dan kondisi kesehatan saat mendaftar. Makin lama ditunda, makin mahal, dan kalau kondisi kesehatan berubah, pengajuannya bisa ditolak.");
+  }
+
+  // One clear next step.
+  label("Langkah berikutnya");
+  para(exposed
+    ? "Mau ngobrol 10 menit lewat telepon WhatsApp untuk melihat apa yang bisa disiapkan dari sekarang?"
+    : "Kalau mau dicek ulang bersama, kita bisa ngobrol 10 menit lewat telepon WhatsApp.");
+  if (opts.bookingUrl) para(`Pilih jamnya di sini: ${opts.bookingUrl}${opts.code ? `?code=${opts.code}` : ""}`);
+  para("Atau balas TELEPON, nanti saya hubungi untuk atur waktunya.");
+  para("P.S. Kalau belum mau ngobrol sekarang, balas YA untuk tips keuangan keluarga sebulan sekali.");
+
+  return out.join("\n").trim();
 }
