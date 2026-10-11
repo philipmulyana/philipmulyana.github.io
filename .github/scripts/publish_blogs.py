@@ -119,7 +119,7 @@ LEGACY_INTERNAL_LINKS = {
     "tool-education.html": "/tools/education/",
     "tool-proteksi.html": "/tools/proteksi/",
     "tool-assessment.html": "/tools/assessment/",
-    "tool-assessment-jiwa.html": "/tools/assessment-jiwa/",
+    "tool-assessment-jiwa.html": "/tools/survival/",
     "tool-eduplan.html": "/tools/eduplan/",
 }
 

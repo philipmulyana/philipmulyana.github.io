@@ -433,6 +433,7 @@ class BlogContract(unittest.TestCase):
 
 class ToolsContract(unittest.TestCase):
     def test_tools_catalog_contains_only_existing_six_routes_and_clear_boundary(self):
+        # assessment-jiwa was replaced by the Survival Test (12 Oct 2026); its route now redirects.
         html = read("tools/index.html")
         expected_routes = (
             '/tools/risk-profile/',
@@ -440,7 +441,7 @@ class ToolsContract(unittest.TestCase):
             '/tools/education/',
             '/tools/proteksi/',
             '/tools/assessment/',
-            '/tools/assessment-jiwa/',
+            '/tools/survival/',
         )
         for route in expected_routes:
             self.assertIn(f'href="{route}"', html)
