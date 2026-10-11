@@ -125,27 +125,51 @@ function mergeSameWhen(section) {
   return { ...section, items };
 }
 
-export function resultCopy(result) {
+export function resultCopy(result, { merge = true } = {}) {
   const p = people(result);
   const self = result.earner !== "partner";
+  const m = merge ? mergeSameWhen : (s) => s;
   return {
-    death: { tab: "Kalau terhenti karena meninggal", ...mergeSameWhen(deathCopy(result.death, p)) },
-    critical_illness: { tab: "Kalau terhenti karena sakit kritis", ...mergeSameWhen(ciCopy(result.critical_illness, p, self)) },
+    death: { tab: "Kalau terhenti karena meninggal", ...m(deathCopy(result.death, p)) },
+    critical_illness: { tab: "Kalau terhenti karena sakit kritis", ...m(ciCopy(result.critical_illness, p, self)) },
     bridge: "Garis waktu ini masih bisa diubah, selama penghasilan itu masih berjalan.",
   };
 }
 
-/** Plain-text report for the WhatsApp reply Philip sends (manual mode). */
+/** Splits text into paragraphs of at most two sentences, so a WhatsApp message stays easy to read. */
+export function twoSentenceParagraphs(text) {
+  const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z0-9"“])/).filter(Boolean);
+  const out = [];
+  for (let i = 0; i < sentences.length; i += 2) out.push(sentences.slice(i, i + 2).join(" "));
+  return out;
+}
+
+/**
+ * Plain-text report for the WhatsApp reply Philip sends. Every paragraph holds at most two
+ * sentences, with a blank line between paragraphs; each moment on the timeline gets its own
+ * bold label line instead of sharing a paragraph with others.
+ */
 export function whatsappReport(result, name) {
-  const c = resultCopy(result);
-  const block = s => [`*${s.tab}*`, s.headline, ...s.items.map(i => `${i.when}: ${i.text}`), ...(s.closing ? [s.closing] : [])].join("\n");
+  const c = resultCopy(result, { merge: false });
+  const block = (s) => {
+    const lines = [`*${s.tab}*`, "", ...twoSentenceParagraphs(s.headline).flatMap((x) => [x, ""])];
+    // Moments in the same month share one label; each keeps its own paragraph(s) under it.
+    s.items.forEach((i, n) => {
+      if (n === 0 || s.items[n - 1].when !== i.when) lines.push(`*${i.when}*`);
+      else lines.pop(); // join with the label above: one blank line between paragraphs, not a new label
+      const paras = twoSentenceParagraphs(i.text);
+      if (n > 0 && s.items[n - 1].when === i.when) lines.push("");
+      paras.forEach((x, k) => lines.push(...(k ? ["", x] : [x])));
+      lines.push("");
+    });
+    if (s.closing) lines.push(...twoSentenceParagraphs(s.closing).flatMap((x) => [x, ""]));
+    return lines;
+  };
   return [
     `Halo${name ? ` ${name}` : ""}, ini laporan Survival Test kamu.`,
     "",
-    block(c.death),
-    "",
-    block(c.critical_illness),
-    "",
+    ...block(c.death),
+    ...block(c.critical_illness),
     "Angka di atas dihitung dari jawaban kamu dan masih perkiraan kasar.",
     "",
     "Mau dikirimi tips keuangan keluarga sebulan sekali? Balas YA kalau mau.",
