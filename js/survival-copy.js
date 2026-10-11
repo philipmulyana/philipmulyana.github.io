@@ -216,7 +216,6 @@ export function whatsappReport(result, name, opts = {}) {
     ? "Mau ngobrol 10 menit lewat telepon WhatsApp untuk melihat apa yang bisa disiapkan dari sekarang?"
     : "Kalau mau dicek ulang bersama, kita bisa ngobrol 10 menit lewat telepon WhatsApp.");
   if (opts.bookingUrl) para(`Pilih jamnya di sini: ${opts.bookingUrl}${opts.code ? `?code=${opts.code}` : ""}`);
-  para("Atau balas TELEPON, nanti saya hubungi untuk atur waktunya.");
   para("P.S. Kalau belum mau ngobrol sekarang, balas YA untuk tips keuangan keluarga sebulan sekali.");
 
   return out.join("\n").trim();
