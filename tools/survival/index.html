@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <title>Survival Test: Keluarga Bisa Bertahan Berapa Lama? - Philip Mulyana</title>
-<meta name="description" content="Kalau penghasilan kamu terhenti karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan? Simulasi gratis 2 menit, hasil langsung keluar.">
+<meta name="description" content="Kalau penghasilan utama keluarga terhenti karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan? Simulasi gratis 2 menit, hasil langsung keluar.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,8 +40,8 @@
 <section id="screen-intro" class="px-5 pt-28 pb-16">
   <div class="max-w-xl mx-auto">
     <span class="text-xs text-blue-600 font-medium uppercase tracking-wider block">Simulasi gratis · 2 menit</span>
-    <h1 class="text-3xl md:text-4xl font-black mt-2 leading-tight">Kalau penghasilan kamu terhenti besok karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan?</h1>
-    <p class="text-gray-600 mt-4">Jawab beberapa pertanyaan tentang keluarga kamu. Kamu akan lihat apa yang terjadi di rumah, bulan demi bulan, setelah gaji kamu berhenti masuk.</p>
+    <h1 class="text-3xl md:text-4xl font-black mt-2 leading-tight">Kalau penghasilan utama keluarga terhenti besok karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan?</h1>
+    <p class="text-gray-600 mt-4">Jawab beberapa pertanyaan tentang keluarga kamu. Kamu akan lihat apa yang terjadi di rumah, bulan demi bulan, setelah penghasilan itu berhenti masuk.</p>
     <button id="btn-start" class="mt-8 w-full md:w-auto bg-black text-white font-semibold rounded-full px-8 py-4 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Mulai simulasi</button>
     <ul class="mt-8 space-y-2 text-sm text-gray-500">
       <li>Cukup pilih jawaban yang paling dekat. Tidak perlu angka persis.</li>
@@ -103,8 +103,8 @@
 </div>
 
 <script type="module">
-import { BANDS, DEPENDENT_OPTIONS, COVER_OPTIONS, calculateSurvival } from "/js/survival-engine.js?v=1";
-import { resultCopy, rupiah, duration } from "/js/survival-copy.js?v=1";
+import { BANDS, calculateSurvival } from "/js/survival-engine.js?v=3";
+import { resultCopy, rupiah, duration } from "/js/survival-copy.js?v=3";
 
 // ---- Settings to fill in before launch (PRD v1.2 §15) ----
 const CONFIG = {
@@ -152,28 +152,30 @@ async function saveAssessment() {
 track("view");
 
 // ---- Questions ----
-const opts = obj => Object.entries(obj).map(([key, b]) => [key, typeof b === "string" ? b : b.label]);
-const has = (field, v) => (answers[field] || []).includes(v);
+const opts = obj => Object.entries(obj).map(([key, b]) => [key, b.label]);
 const isKpr = () => (answers.housing || "").startsWith("kpr_");
+const hasPartner = () => answers.earner && answers.earner !== "single";
+const earnerIsPartner = () => answers.earner === "partner";
+// Whose cover: the earner's. Spoken from the respondent's side, never husband or wife.
+const earnerName = () => (earnerIsPartner() ? "pasangan kamu" : "kamu");
 const QUESTIONS = [
-  { id: "dependents", multi: true, exclusive: ["none"], q: "Siapa saja yang hidupnya bergantung ke penghasilan kamu?", hint: "Boleh pilih lebih dari satu.", options: opts(DEPENDENT_OPTIONS) },
-  { id: "youngest_child", q: "Berapa usia anak bungsu kamu?", hint: "Dipakai untuk menghitung berapa lama keluarga perlu dibiayai.", options: opts(BANDS.youngest_child), when: () => has("dependents", "children") },
-  { id: "university", q: "Kamu ingin anak kuliah di mana?", hint: "Pilih yang paling mendekati rencana kalian.", options: opts(BANDS.university), when: () => has("dependents", "children") },
-  { id: "spouse_income", q: "Pasangan kamu bekerja? Kalau ya, kira-kira berapa per bulan?", hint: "Penghasilan yang tetap masuk kalau penghasilan kamu berhenti.", options: opts(BANDS.spouse_income) },
-  { id: "housing", q: "Rumah yang kalian tinggali sekarang?", hint: "", options: opts(BANDS.housing) },
-  { id: "mortgage_payment", q: "Berapa cicilan rumahnya per bulan?", hint: "", options: opts(BANDS.mortgage_payment), when: isKpr },
-  { id: "credit_life", q: "Cicilan rumah kamu ikut ditanggung asuransi jiwa kredit dari bank?", hint: "Biasanya disebut di perjanjian KPR. Kalau ragu, pilih Tidak tahu.", options: opts(BANDS.credit_life), when: isKpr },
-  { id: "living_cost", q: "Berapa biaya hidup keluarga per bulan?", hint: "Semuanya: makan, sekolah, listrik, transport, termasuk cicilan.", options: opts(BANDS.living_cost) },
-  { id: "savings", q: "Berapa dana yang bisa langsung dipakai keluarga kalau terjadi sesuatu?", hint: "Tabungan, deposito, reksa dana pasar uang. Bukan rumah atau mobil.", options: opts(BANDS.savings) },
-  { id: "cover", multi: true, exclusive: ["none", "unknown"], q: "Perlindungan apa yang sudah kamu punya?", hint: "Boleh pilih lebih dari satu. Asuransi kesehatan tidak dihitung di sini.", options: opts(COVER_OPTIONS) },
-  { id: "life_personal_amount", q: "Berapa uang pertanggungan asuransi jiwa pribadi kamu?", hint: "Total dari semua polis pribadi.", options: opts(BANDS.cover_amount), when: () => has("cover", "life_personal") },
-  { id: "life_group_amount", q: "Berapa uang pertanggungan asuransi jiwa dari kantor?", hint: "Biasanya beberapa kali gaji. Cek di benefit karyawan.", options: opts(BANDS.cover_amount), when: () => has("cover", "life_group") },
-  { id: "ci_amount", q: "Berapa uang pertanggungan asuransi sakit kritis kamu?", hint: "", options: opts(BANDS.cover_amount), when: () => has("cover", "ci") },
+  { id: "earner", q: () => "Siapa pencari nafkah utama di keluarga kamu?", hint: () => "Orang yang penghasilannya paling banyak menopang biaya rumah tangga.", options: opts(BANDS.earner) },
+  { id: "children", q: () => "Ada anak yang masih dibiayai?", hint: () => "Kalau lebih dari satu, pilih usia anak yang paling kecil.", options: opts(BANDS.children) },
+  { id: "university", q: () => "Kalian ingin anak kuliah di mana?", hint: () => "Pilih yang paling mendekati rencana kalian.", options: opts(BANDS.university), when: () => answers.children && !["none", "18plus"].includes(answers.children) },
+  { id: "other_dependents", q: () => "Ada orang tua atau saudara yang ikut dibiayai?", hint: () => "", options: opts(BANDS.other_dependents) },
+  { id: "other_income", q: () => (earnerIsPartner() ? "Kamu punya penghasilan sendiri? Kalau ya, kira-kira berapa per bulan?" : "Pasangan kamu punya penghasilan? Kalau ya, kira-kira berapa per bulan?"), hint: () => "Pemasukan yang tetap ada kalau penghasilan utama berhenti.", options: opts(BANDS.other_income), when: hasPartner },
+  { id: "housing", q: () => "Rumah yang kalian tinggali sekarang?", hint: () => "", options: opts(BANDS.housing) },
+  { id: "mortgage_payment", q: () => "Berapa cicilan rumahnya per bulan?", hint: () => "", options: opts(BANDS.mortgage_payment), when: isKpr },
+  { id: "credit_life", q: () => "Cicilan rumahnya ikut ditanggung asuransi jiwa kredit dari bank?", hint: () => "Biasanya disebut di perjanjian KPR. Kalau ragu, pilih Tidak tahu.", options: opts(BANDS.credit_life), when: isKpr },
+  { id: "living_cost", q: () => "Berapa biaya hidup keluarga per bulan?", hint: () => "Semuanya: makan, sekolah, listrik, transport, termasuk cicilan.", options: opts(BANDS.living_cost) },
+  { id: "savings", q: () => "Berapa dana yang bisa langsung dipakai keluarga kalau terjadi sesuatu?", hint: () => "Tabungan, deposito, reksa dana pasar uang. Bukan rumah atau mobil.", options: opts(BANDS.savings) },
+  { id: "life_cover", q: () => `Berapa uang pertanggungan asuransi jiwa atas nama ${earnerName()}?`, hint: () => "Total dari semua polis pribadi. Asuransi kesehatan tidak dihitung.", options: opts(BANDS.cover_amount) },
+  { id: "ci_cover", q: () => `Berapa uang pertanggungan asuransi sakit kritis atas nama ${earnerName()}?`, hint: () => "Asuransi yang membayar uang tunai kalau didiagnosis penyakit kritis. Kalau ragu, pilih Tidak tahu.", options: opts(BANDS.cover_amount) },
 ];
 
 let answers = {};
-try { answers = JSON.parse(localStorage.getItem("sv-answers") || "{}") || {}; } catch (e) {}
-const save = () => { try { localStorage.setItem("sv-answers", JSON.stringify(answers)); } catch (e) {} };
+try { answers = JSON.parse(localStorage.getItem("sv-answers-v3") || "{}") || {}; } catch (e) {}
+const save = () => { try { localStorage.setItem("sv-answers-v3", JSON.stringify(answers)); } catch (e) {} };
 const visibleQs = () => QUESTIONS.filter(q => !q.when || q.when());
 let step = 0, busy = false, current = "intro";
 
@@ -195,28 +197,16 @@ function renderQuestion() {
   const box = $("question");
   box.className = "bg-gray-50 rounded-3xl p-5 md:p-8 mt-5 step-in";
   box.innerHTML = "";
-  const h = el("h2", "text-xl md:text-2xl font-black leading-snug", q.q); h.id = "q-title";
+  const h = el("h2", "text-xl md:text-2xl font-black leading-snug", q.q()); h.id = "q-title";
   box.append(h);
-  if (q.hint) box.append(el("p", "text-sm text-gray-500 mt-2", q.hint));
+  if (q.hint()) box.append(el("p", "text-sm text-gray-500 mt-2", q.hint()));
   const list = el("div", "mt-5 grid gap-2.5"); list.setAttribute("role", "group"); list.setAttribute("aria-labelledby", "q-title");
-  const selected = new Set(q.multi ? (answers[q.id] || []) : []);
   for (const [key, label] of q.options) {
     const b = el("button", "opt w-full text-left rounded-2xl border border-gray-300 bg-white px-4 py-3 font-medium hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600", label);
     b.type = "button";
     b.dataset.key = key;
-    b.setAttribute("aria-pressed", String(q.multi ? selected.has(key) : answers[q.id] === key));
+    b.setAttribute("aria-pressed", String(answers[q.id] === key));
     b.addEventListener("click", () => {
-      if (q.multi) {
-        if (selected.has(key)) selected.delete(key);
-        else {
-          if (q.exclusive.includes(key)) selected.clear();
-          else q.exclusive.forEach(x => selected.delete(x));
-          selected.add(key);
-        }
-        list.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(selected.has(x.dataset.key))));
-        next.disabled = selected.size === 0;
-        return;
-      }
       if (busy) return;
       busy = true;
       list.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
@@ -225,14 +215,6 @@ function renderQuestion() {
     list.append(b);
   }
   box.append(list);
-  let next;
-  if (q.multi) {
-    next = el("button", "mt-5 w-full bg-black text-white font-semibold rounded-full px-6 py-4 disabled:opacity-40", "Lanjut");
-    next.type = "button";
-    next.disabled = selected.size === 0;
-    next.addEventListener("click", () => choose(q.id, [...selected]));
-    box.append(next);
-  }
 }
 
 function choose(id, value) {
@@ -292,7 +274,7 @@ function renderResult() {
   how.append(el("summary", "cursor-pointer font-semibold py-1", "Cara hitungnya"));
   const dl = el("dl", "mt-3 divide-y divide-gray-100");
   const rows = tab === "death"
-    ? [["Kebutuhan keluarga per bulan", rupiah(data.monthly_need)], ["Kekurangan per bulan setelah pemasukan pasangan", rupiah(data.monthly_gap)], ["Dana tersedia (tabungan + asuransi jiwa)", rupiah(data.resources)], ["Dana bertahan", data.runway_months === null ? "tidak habis" : duration(data.runway_months)]]
+    ? [["Kebutuhan keluarga per bulan", rupiah(data.monthly_need)], ["Kekurangan per bulan setelah pemasukan lain di rumah", rupiah(data.monthly_gap)], ["Dana tersedia (tabungan + asuransi jiwa)", rupiah(data.resources)], ["Dana bertahan", data.runway_months === null ? "tidak habis" : duration(data.runway_months)]]
     : [["Kekurangan per bulan", rupiah(data.monthly_gap)], ["Dana tersedia (tabungan + asuransi sakit kritis)", rupiah(data.resources)], ["Masa pemulihan yang dipakai", duration(data.recovery_months)], ["Dana bertahan", data.runway_months === null ? "tidak habis" : duration(data.runway_months)]];
   for (const [k, v] of rows) { const row = el("div", "py-2.5 flex justify-between gap-4"); row.append(el("dt", "text-gray-600", k), el("dd", "font-semibold num whitespace-nowrap", v)); dl.append(row); }
   how.append(dl);
