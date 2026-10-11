@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Survival Test: Keluarga Bisa Bertahan Berapa Lama? - Philip Mulyana</title>
+<meta name="description" content="Kalau penghasilan kamu terhenti karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan? Simulasi gratis 2 menit, hasil langsung keluar.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/js/pixel.js"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } }
+</script>
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  button, a, summary, select, input, label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  h1, h2, h3 { text-wrap: balance; }
+  .opt { min-height: 48px; }
+  .opt:active { transform: scale(.98); }
+  .opt[aria-pressed="true"] { border-color: #000; background: #000; color: #fff; }
+  .num { font-variant-numeric: tabular-nums; }
+  [role="tab"][aria-selected="true"] { background: #000; color: #fff; border-color: #000; }
+  #cta-bar { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); transition: transform .2s ease-out; }
+  #cta-bar[data-off="true"] { transform: translateY(110%); }
+  @media (prefers-reduced-motion: no-preference) {
+    .step-in { animation: stepIn .25s ease-out; }
+    @keyframes stepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .bar-fill { transition: width .4s ease-out; }
+  }
+</style>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+
+<div id="navbar-placeholder"></div>
+
+<section id="screen-intro" class="px-5 pt-28 pb-16">
+  <div class="max-w-xl mx-auto">
+    <span class="text-xs text-blue-600 font-medium uppercase tracking-wider block">Simulasi gratis · 2 menit</span>
+    <h1 class="text-3xl md:text-4xl font-black mt-2 leading-tight">Kalau penghasilan kamu terhenti besok karena meninggal atau sakit kritis, keluarga kamu bisa bertahan sampai kapan?</h1>
+    <p class="text-gray-600 mt-4">Jawab beberapa pertanyaan tentang keluarga kamu. Kamu akan lihat apa yang terjadi di rumah, bulan demi bulan, setelah gaji kamu berhenti masuk.</p>
+    <button id="btn-start" class="mt-8 w-full md:w-auto bg-black text-white font-semibold rounded-full px-8 py-4 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Mulai simulasi</button>
+    <ul class="mt-8 space-y-2 text-sm text-gray-500">
+      <li>Cukup pilih jawaban yang paling dekat. Tidak perlu angka persis.</li>
+      <li>Tidak ada pertanyaan soal kesehatan, dan tidak perlu isi nama atau nomor HP.</li>
+      <li>Dibuat oleh Philip Mulyana, CFP®, agen asuransi jiwa berlisensi Prudential.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="screen-quiz" class="px-5 pt-24 pb-12" hidden>
+  <div class="max-w-xl mx-auto">
+    <div class="flex items-center justify-between text-sm text-gray-500 num">
+      <button id="btn-back" class="inline-flex items-center gap-1 hover:text-black min-h-[44px] pr-4 -ml-1 pl-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Kembali
+      </button>
+      <span id="progress-text"></span>
+    </div>
+    <div class="h-1.5 bg-gray-100 rounded-full mt-2 overflow-hidden" aria-hidden="true"><div id="progress-bar" class="h-full bg-black bar-fill" style="width:0"></div></div>
+    <div id="question" class="bg-gray-50 rounded-3xl p-5 md:p-8 mt-5"></div>
+  </div>
+</section>
+
+<section id="screen-result" class="px-5 pt-24 pb-28" hidden>
+  <div class="max-w-xl mx-auto space-y-6">
+    <div role="tablist" aria-label="Penyebab penghasilan terhenti" class="grid grid-cols-2 gap-2">
+      <button role="tab" id="tab-death" aria-controls="panel" aria-selected="true" class="rounded-2xl border border-gray-300 px-3 py-3 text-sm font-semibold leading-tight">Karena meninggal</button>
+      <button role="tab" id="tab-ci" aria-controls="panel" aria-selected="false" class="rounded-2xl border border-gray-300 px-3 py-3 text-sm font-semibold leading-tight">Karena sakit kritis</button>
+    </div>
+    <div id="panel" role="tabpanel" aria-live="polite" class="space-y-6"></div>
+
+    <p id="bridge" class="text-lg font-semibold"></p>
+
+    <div id="book-card" class="bg-black text-white rounded-3xl p-6 md:p-8">
+      <h2 class="text-xl font-black">Telepon 10 menit soal hasil ini</h2>
+      <p class="text-sm text-gray-300 mt-2">Lewat WhatsApp dengan Philip Mulyana, CFP®, agen asuransi jiwa berlisensi Prudential. Kamu cerita kondisi keluarga dan hasil simulasi ini, lalu Philip melihat apa yang bisa dibantu.</p>
+      <p class="text-sm text-gray-300 mt-2">Gratis dan singkat. Kalau ternyata perlu dibahas lebih jauh, jadwalnya diatur terpisah, dan kamu tidak wajib membeli apa pun.</p>
+      <a id="btn-book" href="#" class="mt-5 inline-block w-full md:w-auto text-center bg-white text-black font-semibold rounded-full px-6 py-4 hover:bg-gray-200">Pilih jadwal</a>
+    </div>
+
+    <div id="report-card" class="bg-gray-50 rounded-3xl p-6 md:p-8">
+      <h2 class="text-xl font-black">Minta laporan lengkap</h2>
+      <p class="text-sm text-gray-600 mt-2">Isinya dua garis waktu ini dengan angka kamu, supaya bisa dibuka lagi atau dibahas dengan pasangan. Philip mengirimnya lewat WhatsApp paling lambat 1×24 jam.</p>
+      <a id="btn-report" href="#" class="mt-5 flex items-center justify-center gap-2 w-full bg-[#1f8f4e] text-white font-semibold rounded-full px-6 py-4 hover:bg-[#187a42]">Minta lewat WhatsApp</a>
+      <p class="text-xs text-gray-500 mt-3">WhatsApp terbuka dengan pesan yang sudah terisi, termasuk kode <span id="report-code" class="font-mono" translate="no"></span>. Kamu tinggal menekan Kirim. Kode itu hanya menyambungkan pesanmu ke hasil simulasi ini. Lihat <a href="/privacy-policy/" class="underline">kebijakan privasi</a>.</p>
+    </div>
+
+    <div class="flex flex-wrap gap-3 text-sm">
+      <a id="btn-share" href="#" class="rounded-full border border-gray-300 px-5 py-3 hover:border-black">Ajak pasangan coba juga</a>
+      <button id="btn-restart" class="rounded-full border border-gray-300 px-5 py-3 hover:border-black">Ulang dari awal</button>
+    </div>
+  </div>
+</section>
+
+<div id="cta-bar" data-off="true" class="fixed inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur border-t border-gray-200 px-5 pt-3" hidden>
+  <div class="max-w-xl mx-auto flex items-center gap-3">
+    <p class="text-sm leading-tight flex-1 min-w-0"><span class="font-semibold block">Telepon 10 menit soal hasil ini</span><span class="text-gray-500">Gratis, lewat WhatsApp</span></p>
+    <a id="bar-book" href="#" class="shrink-0 bg-black text-white font-semibold rounded-full px-5 py-3 hover:bg-gray-800">Pilih jadwal</a>
+  </div>
+</div>
+
+<script type="module">
+import { BANDS, DEPENDENT_OPTIONS, COVER_OPTIONS, calculateSurvival } from "/js/survival-engine.js?v=1";
+import { resultCopy, rupiah, duration } from "/js/survival-copy.js?v=1";
+
+// ---- Settings to fill in before launch (PRD v1.2 §15) ----
+const CONFIG = {
+  klienkuApi: "https://klienku.vercel.app/api/acq",
+  handle: "philip",                 // Klienku booking handle
+  philipWa: "6281932350001",        // Philip's WhatsApp number
+  bookingPath: "first-call",        // Klienku booking type slug
+};
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const YEAR = new Date().getFullYear();
+
+// ---- Session, report code, funnel tracking ----
+const ss = { get: k => { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} } };
+let sessionId = ss.get("sv-session");
+if (!sessionId) { sessionId = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now(); ss.set("sv-session", sessionId); }
+let reportCode = ss.get("sv-code");
+if (!reportCode) {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  reportCode = "SV-" + [...crypto.getRandomValues(new Uint8Array(4))].map(b => alphabet[b % alphabet.length]).join("");
+  ss.set("sv-code", reportCode);
+}
+const utm = Object.fromEntries([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith("utm_")));
+window.__funnel = [];
+const PIXEL = { complete: "ViewContent", report_request: "Lead", booking_click: "Schedule" };
+function track(event, props = {}) {
+  window.__funnel.push({ event, props });
+  if (PIXEL[event] && typeof window.fbq === "function") window.fbq("track", PIXEL[event]);
+  if (!CONFIG.klienkuApi) { console.info("[funnel]", event, props); return; }
+  const body = JSON.stringify({ handle: CONFIG.handle, session_id: sessionId, utm, events: [{ event, props }] });
+  if (!navigator.sendBeacon?.(CONFIG.klienkuApi + "/events", new Blob([body], { type: "text/plain" }))) {
+    fetch(CONFIG.klienkuApi + "/events", { method: "POST", body, keepalive: true, headers: { "Content-Type": "text/plain" } }).catch(() => {});
+  }
+}
+async function saveAssessment() {
+  if (!CONFIG.klienkuApi) return;
+  try {
+    await fetch(CONFIG.klienkuApi + "/assessment", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ handle: CONFIG.handle, session_id: sessionId, report_code: reportCode, answers, utm }),
+    });
+  } catch (e) { /* the result still shows; the code just will not match until a retry */ }
+}
+track("view");
+
+// ---- Questions ----
+const opts = obj => Object.entries(obj).map(([key, b]) => [key, typeof b === "string" ? b : b.label]);
+const has = (field, v) => (answers[field] || []).includes(v);
+const isKpr = () => (answers.housing || "").startsWith("kpr_");
+const QUESTIONS = [
+  { id: "dependents", multi: true, exclusive: ["none"], q: "Siapa saja yang hidupnya bergantung ke penghasilan kamu?", hint: "Boleh pilih lebih dari satu.", options: opts(DEPENDENT_OPTIONS) },
+  { id: "youngest_child", q: "Berapa usia anak bungsu kamu?", hint: "Dipakai untuk menghitung berapa lama keluarga perlu dibiayai.", options: opts(BANDS.youngest_child), when: () => has("dependents", "children") },
+  { id: "university", q: "Kamu ingin anak kuliah di mana?", hint: "Pilih yang paling mendekati rencana kalian.", options: opts(BANDS.university), when: () => has("dependents", "children") },
+  { id: "spouse_income", q: "Pasangan kamu bekerja? Kalau ya, kira-kira berapa per bulan?", hint: "Penghasilan yang tetap masuk kalau penghasilan kamu berhenti.", options: opts(BANDS.spouse_income) },
+  { id: "housing", q: "Rumah yang kalian tinggali sekarang?", hint: "", options: opts(BANDS.housing) },
+  { id: "mortgage_payment", q: "Berapa cicilan rumahnya per bulan?", hint: "", options: opts(BANDS.mortgage_payment), when: isKpr },
+  { id: "credit_life", q: "Cicilan rumah kamu ikut ditanggung asuransi jiwa kredit dari bank?", hint: "Biasanya disebut di perjanjian KPR. Kalau ragu, pilih Tidak tahu.", options: opts(BANDS.credit_life), when: isKpr },
+  { id: "living_cost", q: "Berapa biaya hidup keluarga per bulan?", hint: "Semuanya: makan, sekolah, listrik, transport, termasuk cicilan.", options: opts(BANDS.living_cost) },
+  { id: "savings", q: "Berapa dana yang bisa langsung dipakai keluarga kalau terjadi sesuatu?", hint: "Tabungan, deposito, reksa dana pasar uang. Bukan rumah atau mobil.", options: opts(BANDS.savings) },
+  { id: "cover", multi: true, exclusive: ["none", "unknown"], q: "Perlindungan apa yang sudah kamu punya?", hint: "Boleh pilih lebih dari satu. Asuransi kesehatan tidak dihitung di sini.", options: opts(COVER_OPTIONS) },
+  { id: "life_personal_amount", q: "Berapa uang pertanggungan asuransi jiwa pribadi kamu?", hint: "Total dari semua polis pribadi.", options: opts(BANDS.cover_amount), when: () => has("cover", "life_personal") },
+  { id: "life_group_amount", q: "Berapa uang pertanggungan asuransi jiwa dari kantor?", hint: "Biasanya beberapa kali gaji. Cek di benefit karyawan.", options: opts(BANDS.cover_amount), when: () => has("cover", "life_group") },
+  { id: "ci_amount", q: "Berapa uang pertanggungan asuransi sakit kritis kamu?", hint: "", options: opts(BANDS.cover_amount), when: () => has("cover", "ci") },
+];
+
+let answers = {};
+try { answers = JSON.parse(localStorage.getItem("sv-answers") || "{}") || {}; } catch (e) {}
+const save = () => { try { localStorage.setItem("sv-answers", JSON.stringify(answers)); } catch (e) {} };
+const visibleQs = () => QUESTIONS.filter(q => !q.when || q.when());
+let step = 0, busy = false, current = "intro";
+
+const screens = { intro: $("screen-intro"), quiz: $("screen-quiz"), result: $("screen-result") };
+function show(name) {
+  for (const [k, n] of Object.entries(screens)) n.hidden = k !== name;
+  $("cta-bar").hidden = name !== "result";
+  if (name !== current) window.scrollTo(0, 0);
+  current = name;
+}
+
+function renderQuestion() {
+  window.scrollTo(0, 0);
+  busy = false;
+  const qs = visibleQs(), q = qs[step];
+  $("progress-text").textContent = (step + 1) + " dari " + qs.length;
+  $("progress-bar").style.width = (step / qs.length * 100) + "%";
+  track("step", { step: step + 1, field: q.id });
+  const box = $("question");
+  box.className = "bg-gray-50 rounded-3xl p-5 md:p-8 mt-5 step-in";
+  box.innerHTML = "";
+  const h = el("h2", "text-xl md:text-2xl font-black leading-snug", q.q); h.id = "q-title";
+  box.append(h);
+  if (q.hint) box.append(el("p", "text-sm text-gray-500 mt-2", q.hint));
+  const list = el("div", "mt-5 grid gap-2.5"); list.setAttribute("role", "group"); list.setAttribute("aria-labelledby", "q-title");
+  const selected = new Set(q.multi ? (answers[q.id] || []) : []);
+  for (const [key, label] of q.options) {
+    const b = el("button", "opt w-full text-left rounded-2xl border border-gray-300 bg-white px-4 py-3 font-medium hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600", label);
+    b.type = "button";
+    b.dataset.key = key;
+    b.setAttribute("aria-pressed", String(q.multi ? selected.has(key) : answers[q.id] === key));
+    b.addEventListener("click", () => {
+      if (q.multi) {
+        if (selected.has(key)) selected.delete(key);
+        else {
+          if (q.exclusive.includes(key)) selected.clear();
+          else q.exclusive.forEach(x => selected.delete(x));
+          selected.add(key);
+        }
+        list.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(selected.has(x.dataset.key))));
+        next.disabled = selected.size === 0;
+        return;
+      }
+      if (busy) return;
+      busy = true;
+      list.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      setTimeout(() => choose(q.id, key), 160);
+    });
+    list.append(b);
+  }
+  box.append(list);
+  let next;
+  if (q.multi) {
+    next = el("button", "mt-5 w-full bg-black text-white font-semibold rounded-full px-6 py-4 disabled:opacity-40", "Lanjut");
+    next.type = "button";
+    next.disabled = selected.size === 0;
+    next.addEventListener("click", () => choose(q.id, [...selected]));
+    box.append(next);
+  }
+}
+
+function choose(id, value) {
+  answers[id] = value;
+  save();
+  const qs = visibleQs();
+  const idx = qs.findIndex(q => q.id === id);
+  if (idx < qs.length - 1) { step = idx + 1; history.pushState({ step }, ""); renderQuestion(); }
+  else finish();
+}
+
+function finish() {
+  history.pushState({ result: true }, "");
+  const r = renderResult();
+  track("complete", { death_runway: r.death.runway_months ?? -1, ci_runway: r.critical_illness.runway_months ?? -1 });
+  saveAssessment();
+}
+
+$("btn-back").addEventListener("click", () => history.back());
+window.addEventListener("popstate", e => {
+  const st = e.state || {};
+  if (st.result) { renderResult(); return; }
+  if (typeof st.step === "number") { step = Math.min(st.step, visibleQs().length - 1); show("quiz"); renderQuestion(); return; }
+  show("intro");
+});
+$("btn-start").addEventListener("click", () => { track("start"); step = 0; history.pushState({ step: 0 }, ""); show("quiz"); renderQuestion(); });
+
+// ---- Result ----
+let tab = "death";
+function renderResult() {
+  const r = calculateSurvival(answers, YEAR);
+  const copy = resultCopy(r);
+  show("result");
+  $("tab-death").setAttribute("aria-selected", String(tab === "death"));
+  $("tab-ci").setAttribute("aria-selected", String(tab === "ci"));
+  const s = tab === "death" ? copy.death : copy.critical_illness;
+  const data = tab === "death" ? r.death : r.critical_illness;
+  const panel = $("panel");
+  panel.innerHTML = "";
+
+  const hero = el("div", "rounded-3xl p-6 md:p-8 " + (data.covered ? "bg-emerald-50" : "bg-gray-50"));
+  hero.append(el("h2", "text-2xl md:text-3xl font-black leading-tight", s.headline));
+  panel.append(hero);
+
+  const tl = el("ol", "relative space-y-5 border-l-2 border-gray-200 pl-5 ml-2");
+  for (const item of s.items) {
+    const li = el("li", "relative");
+    li.append(el("span", "absolute -left-[27px] top-1.5 h-3 w-3 rounded-full bg-black", null));
+    li.append(el("p", "text-xs font-semibold uppercase tracking-wider text-gray-500 num", item.when));
+    li.append(el("p", "mt-1 text-[17px] leading-relaxed", item.text));
+    tl.append(li);
+  }
+  panel.append(tl);
+  if (s.closing) panel.append(el("p", "text-lg font-semibold leading-snug", s.closing));
+
+  const how = el("details", "rounded-2xl border border-gray-200 p-5 text-sm");
+  how.append(el("summary", "cursor-pointer font-semibold py-1", "Cara hitungnya"));
+  const dl = el("dl", "mt-3 divide-y divide-gray-100");
+  const rows = tab === "death"
+    ? [["Kebutuhan keluarga per bulan", rupiah(data.monthly_need)], ["Kekurangan per bulan setelah pemasukan pasangan", rupiah(data.monthly_gap)], ["Dana tersedia (tabungan + asuransi jiwa)", rupiah(data.resources)], ["Dana bertahan", data.runway_months === null ? "tidak habis" : duration(data.runway_months)]]
+    : [["Kekurangan per bulan", rupiah(data.monthly_gap)], ["Dana tersedia (tabungan + asuransi sakit kritis)", rupiah(data.resources)], ["Masa pemulihan yang dipakai", duration(data.recovery_months)], ["Dana bertahan", data.runway_months === null ? "tidak habis" : duration(data.runway_months)]];
+  for (const [k, v] of rows) { const row = el("div", "py-2.5 flex justify-between gap-4"); row.append(el("dt", "text-gray-600", k), el("dd", "font-semibold num whitespace-nowrap", v)); dl.append(row); }
+  how.append(dl);
+  const ul = el("ul", "mt-3 space-y-1.5 list-disc pl-5 text-gray-600");
+  ["Angka dihitung dari titik tengah jawaban yang kamu pilih, jadi ini perkiraan kasar.",
+   "Inflasi dan hasil investasi belum dihitung. Biaya kuliah memakai nilai hari ini.",
+   "Anak dianggap mandiri di usia 22. Masa pemulihan sakit kritis dianggap " + duration(r.assumptions.ciRecoveryMonths) + ".",
+   "Biaya rumah sakit tidak dihitung. Ini simulasi edukasi, bukan saran keuangan atau rekomendasi produk."].forEach(t => ul.append(el("li", null, t)));
+  how.append(ul);
+  panel.append(how);
+
+  $("bridge").textContent = copy.bridge;
+  const bookHref = "https://klienku.vercel.app/b/" + CONFIG.handle + "/" + CONFIG.bookingPath + "?ref=survival&code=" + reportCode;
+  $("btn-book").href = bookHref; $("bar-book").href = bookHref;
+  return r;
+}
+for (const [id, key] of [["tab-death", "death"], ["tab-ci", "ci"]]) {
+  $(id).addEventListener("click", () => { tab = key; renderResult(); $(id).focus(); });
+}
+
+// ---- Actions ----
+$("report-code").textContent = reportCode;
+$("btn-report").href = "https://wa.me/" + CONFIG.philipWa + "?text=" + encodeURIComponent("Halo Philip, saya mau laporan lengkap Survival Test. Kode: " + reportCode);
+$("btn-report").addEventListener("click", () => track("report_request", { channel: "whatsapp", code: reportCode }));
+$("btn-book").addEventListener("click", () => track("booking_click", { placement: "card" }));
+$("bar-book").addEventListener("click", () => track("booking_click", { placement: "sticky_bar" }));
+$("btn-share").href = "https://wa.me/?text=" + encodeURIComponent("Coba simulasi ini: kalau penghasilan terhenti, keluarga kita bisa bertahan sampai kapan? " + location.origin + location.pathname);
+$("btn-share").addEventListener("click", () => track("share_click"));
+$("btn-restart").addEventListener("click", () => { answers = {}; save(); tab = "death"; step = 0; history.pushState({ step: 0 }, ""); show("quiz"); renderQuestion(); });
+
+const bar = $("cta-bar"), onScreen = new Set();
+const io = new IntersectionObserver(entries => {
+  for (const en of entries) en.isIntersecting ? onScreen.add(en.target.id) : onScreen.delete(en.target.id);
+  bar.dataset.off = String(onScreen.size > 0);
+});
+io.observe($("book-card")); io.observe($("report-card"));
+</script>
+<div id="footer-placeholder"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>
