@@ -78,7 +78,7 @@ class FirstPartyLinksPageContract(unittest.TestCase):
         actual = re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>.*?<strong\b[^>]*>(.*?)</strong>', stack.group(0), re.S)
         actual = [(href, re.sub(r'<[^>]+>', '', label).strip()) for href, label in actual]
         expected = [
-            ("https://klienku.vercel.app/jadwal/first-call", "Jadwalkan First Call"),
+            ("https://jadwal.philipmulyana.com/jadwal/first-call", "Jadwalkan First Call"),
             ("/blog.html", "Artikel Terbaru"),
             ("https://wa.me/6281226604199", "FOR COLLAB"),
             ("https://www.youtube.com/c/philipmulyana?sub_confirmation=1", "Subscribe to My YouTube"),
