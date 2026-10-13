@@ -225,7 +225,7 @@ class HomepageContract(unittest.TestCase):
     def test_first_call_is_only_consultation_entry_and_legacy_labels_are_removed(self):
         self.assertIn('id="first-call"', self.html)
         self.assertIn('Jadwalkan First Call', self.html)
-        self.assertIn('https://calendly.com/philipmulyana/first-call', self.html)
+        self.assertIn('https://klienku.vercel.app/jadwal/first-call', self.html)
         self.assertIn('Policy Review', self.html)
         for rejected in ('Discovery Meeting', 'Protection Review', 'Pilih Titik Mulai'):
             self.assertNotIn(rejected, self.html)
