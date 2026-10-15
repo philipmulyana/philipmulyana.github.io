@@ -1,93 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Kebutuhan Proteksi — Philip Mulyana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="/js/pixel.js"></script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
-        }
-    </script>
-    <style>
-        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .fade-up.animate-in { opacity: 1; transform: translateY(0); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://philipmulyana.com/tools/proteksi/">
+<title>Cek Kebutuhan Asuransi: Mana yang Perlu Duluan? - Philip Mulyana</title>
+<meta name="description" content="Asuransi jiwa atau sakit kritis, mana yang perlu kamu siapkan duluan? Jawab paling banyak 5 pertanyaan, hasilnya satu prioritas lengkap dengan alasannya.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/js/pixel.js"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } }
+</script>
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  h1, h2, h3 { text-wrap: balance; }
+  .opt { min-height: 48px; }
+  .opt:active { transform: scale(.98); }
+  .opt[aria-pressed="true"] { border-color: #000; background: #000; color: #fff; }
+  @media (prefers-reduced-motion: no-preference) {
+    .step-in { animation: stepIn .25s ease-out; }
+    @keyframes stepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .bar-fill { transition: width .4s ease-out; }
+  }
+</style>
 </head>
 <body class="bg-white text-black font-sans antialiased">
 
-    <div id="navbar-placeholder"></div>
+<div id="navbar-placeholder"></div>
 
-    <!-- Breadcrumb + Header -->
-    <section class="pt-28 pb-8 px-6">
-        <div class="max-w-2xl mx-auto">
-            <a href="/tools/" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                All Tools
-            </a>
-            <span class="text-xs text-emerald-600 font-medium uppercase tracking-wider block">Calculator</span>
-            <h1 class="text-3xl md:text-4xl font-black mt-1">Kalkulator Kebutuhan Proteksi</h1>
-            <p class="text-gray-500 text-sm mt-3">Isi dua pertanyaan singkat, dan kamu akan langsung dapat gambaran berapa nilai proteksi (uang pertanggungan) yang sepadan dengan peran ekonomi kamu buat keluarga.</p>
-        </div>
-    </section>
+<!-- Site header pattern (same as /tools/proteksi/): breadcrumb, eyebrow, title, one line -->
+<section id="screen-intro" class="pt-28 pb-16 px-6">
+  <div class="max-w-2xl mx-auto">
+    <a href="/tools/" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
+      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      All Tools
+    </a>
+    <span class="text-xs text-emerald-600 font-medium uppercase tracking-wider block">Cek gratis</span>
+    <h1 class="text-3xl md:text-4xl font-black mt-1">Asuransi apa yang paling perlu kamu siapkan duluan?</h1>
+    <p class="text-gray-500 text-sm mt-3">Jawab paling banyak 5 pertanyaan singkat tentang keluarga kamu. Hasilnya satu prioritas, lengkap dengan alasannya.</p>
+    <div class="bg-gray-50 rounded-3xl p-8 md:p-10 mt-8">
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li>Tidak perlu angka persis, nama, atau nomor HP.</li>
+        <li>Dibuat oleh Philip Mulyana, CFP®, agen asuransi jiwa berlisensi Prudential.</li>
+      </ul>
+      <button id="btn-start" class="mt-6 w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">Mulai cek</button>
+    </div>
+  </div>
+</section>
 
-    <!-- Calculator -->
-    <section class="px-6 pb-16 fade-up">
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-gray-50 rounded-3xl p-8 md:p-10">
-                <div class="space-y-5">
-                    <!-- Agent filter (first question) -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Apakah kamu agen asuransi? *</label>
-                        <div class="flex gap-3">
-                            <label class="flex-1 cursor-pointer">
-                                <input type="radio" name="prot-is-agent" value="no" class="peer hidden" checked>
-                                <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 active:bg-gray-100 hover:border-gray-400 select-none">
-                                    Bukan
-                                </div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input type="radio" name="prot-is-agent" value="yes" class="peer hidden">
-                                <div class="peer-checked:border-black peer-checked:bg-black peer-checked:text-white text-center py-3 rounded-xl border-2 border-gray-200 text-sm font-medium transition-all active:scale-95 active:bg-gray-100 hover:border-gray-400 select-none">
-                                    Ya, saya agen
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+<section id="screen-quiz" class="px-6 pt-24 pb-16" hidden>
+  <div class="max-w-2xl mx-auto">
+    <div class="flex items-center justify-between text-sm text-gray-500">
+      <button id="btn-back" class="inline-flex items-center gap-1 hover:text-black min-h-[44px] pr-4 -ml-1 pl-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Kembali
+      </button>
+      <span id="progress-text"></span>
+    </div>
+    <div class="h-1.5 bg-gray-100 rounded-full mt-2 overflow-hidden" aria-hidden="true"><div id="progress-bar" class="h-full bg-black bar-fill" style="width:0"></div></div>
+    <div id="question" class="bg-gray-50 rounded-3xl p-6 md:p-10 mt-5"></div>
+  </div>
+</section>
 
-                    <div>
-                        <label for="prot-monthly-income" class="block text-sm font-medium text-gray-700 mb-1">Penghasilan Bulanan Kamu Sekarang *</label>
-                        <p class="text-xs text-gray-400 mb-2">Penghasilan rutin yang keluarga andalkan tiap bulan. Kalau berdua kerja, isi bagian kamu saja.</p>
-                        <input type="text" id="prot-monthly-income" inputmode="numeric" placeholder="e.g. 15,000,000"
-                            class="formatted-number w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
-                    </div>
-                    <div>
-                        <label for="prot-age" class="block text-sm font-medium text-gray-700 mb-1">Usia Sekarang *</label>
-                        <p class="text-xs text-gray-400 mb-2">Dihitung sampai usia produktif 55. Sisa tahun keluarga bergantung pada penghasilan kamu = 55 - usia sekarang.</p>
-                        <input type="number" id="prot-age" min="18" max="54" placeholder="e.g. 35"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 focus:outline-none transition-colors text-sm">
-                    </div>
-                    <button onclick="calculateProteksi()"
-                        class="w-full bg-black text-white py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors mt-2">
-                        Hitung Kebutuhan Proteksi
-                    </button>
-                </div>
-            </div>
+<section id="screen-result" class="px-6 pt-24 pb-16" hidden>
+  <div class="max-w-2xl mx-auto space-y-6">
+    <div id="result-hero" class="rounded-3xl bg-gray-50 p-8 md:p-10">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Prioritas pertama</p>
+      <h2 id="result-title" class="text-3xl md:text-4xl font-black mt-1 leading-tight"></h2>
+      <p id="result-lead" class="mt-3 text-[17px] leading-relaxed text-gray-700"></p>
+    </div>
 
-            <!-- Results -->
-            <div id="prot-results" class="hidden mt-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-10"></div>
-        </div>
-    </section>
+    <div>
+      <h3 class="font-black text-lg">Kenapa ini duluan</h3>
+      <ul id="result-reasons" class="mt-3 space-y-3"></ul>
+    </div>
 
-    <div id="footer-placeholder"></div>
+    <div id="result-status" class="rounded-2xl border border-gray-200 p-5"></div>
 
-    <script src="/js/main.js"></script>
-    <script src="/js/proteksi.js?v=1"></script>
+    <!-- Above 20 juta: the two ways to reach Philip -->
+    <div id="cta-qualified" class="space-y-6" hidden>
+      <div class="bg-black text-white rounded-3xl p-6 md:p-8">
+        <h2 class="text-xl font-black">Berapa yang pas untuk keluarga kamu?</h2>
+        <p class="text-sm text-gray-300 mt-2">Philip menghitungnya dari kondisi keluarga kamu dan mengirimnya lewat WhatsApp, paling lambat 1×24 jam.</p>
+        <a id="btn-report" href="#" class="mt-5 flex items-center justify-center w-full bg-[#1f8f4e] text-white font-semibold rounded-full px-6 py-4 hover:bg-[#187a42]">Minta hitungannya lewat WhatsApp</a>
+        <p class="text-xs text-gray-400 mt-3">WhatsApp terbuka dengan pesan yang sudah terisi, termasuk kode <span id="report-code" class="font-mono" translate="no"></span>. Kamu tinggal menekan Kirim.</p>
+      </div>
+      <div class="bg-gray-50 rounded-3xl p-6 md:p-8">
+        <h2 class="text-xl font-black">Atau telepon 10 menit</h2>
+        <p class="text-sm text-gray-600 mt-2">Lewat WhatsApp dengan Philip. Gratis, dan kamu tidak wajib membeli apa pun.</p>
+        <a id="btn-book" href="#" class="mt-5 inline-block w-full md:w-auto text-center bg-black text-white font-semibold rounded-full px-6 py-4 hover:bg-gray-800">Pilih jadwal</a>
+      </div>
+    </div>
+
+    <!-- 20 juta or less: no WhatsApp, no booking, nothing that carries Philip's number -->
+    <div id="cta-basic" class="bg-gray-50 rounded-3xl p-6 md:p-8" hidden>
+      <h2 class="text-xl font-black">Simpan hasil ini</h2>
+      <p class="text-sm text-gray-600 mt-2">Kirim ke diri sendiri atau ke pasangan, supaya bisa dibuka lagi saat kalian membahasnya.</p>
+      <a id="btn-save" href="#" class="mt-5 inline-block w-full md:w-auto text-center bg-black text-white font-semibold rounded-full px-6 py-4 hover:bg-gray-800">Kirim lewat WhatsApp</a>
+      <a id="btn-ig" href="#" class="mt-3 block text-sm font-semibold underline" hidden>Belajar menyiapkan keuangan keluarga di Instagram Philip</a>
+    </div>
+
+    <button id="btn-restart" class="rounded-full border border-gray-300 px-5 py-3 text-sm hover:border-black">Ulang dari awal</button>
+  </div>
+</section>
+
+<script type="module">
+import { BANDS, calculateNeeds } from "/js/needs-engine.js?v=1";
+
+const CONFIG = {
+  klienkuApi: "https://klienku.vercel.app/api/acq",
+  handle: "philip",
+  philipWa: "6281932350001",
+  bookingPath: "first-call",
+  instagram: null,             // e.g. "https://instagram.com/<handle>"; the link stays hidden while null
+};
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const opts = obj => Object.entries(obj).map(([key, b]) => [key, b.label]);
+
+// ---- Session, funnel tracking, saved result (same Klienku routes as the Survival Test) ----
+const ss = { get: k => { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} } };
+let sessionId = ss.get("ka-session");
+if (!sessionId) { sessionId = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now(); ss.set("ka-session", sessionId); }
+const utm = Object.fromEntries([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith("utm_")));
+window.__funnel = [];
+const PIXEL = { complete: "ViewContent", report_request: "Lead", booking_click: "Schedule" };
+const track = (event, props = {}) => {
+  window.__funnel.push({ event, props });
+  if (PIXEL[event] && typeof window.fbq === "function") window.fbq("track", PIXEL[event]);
+  send(event, props);
+};
+function send(event, props) {
+  if (!CONFIG.klienkuApi) { console.info("[funnel]", event, props); return; }
+  const body = JSON.stringify({ handle: CONFIG.handle, session_id: sessionId, utm, events: [{ event, props }] });
+  if (!navigator.sendBeacon?.(CONFIG.klienkuApi + "/events", new Blob([body], { type: "text/plain" }))) {
+    fetch(CONFIG.klienkuApi + "/events", { method: "POST", body, keepalive: true, headers: { "Content-Type": "text/plain" } }).catch(() => {});
+  }
+}
+async function saveAssessment() {
+  if (!CONFIG.klienkuApi) return;
+  try {
+    await fetch(CONFIG.klienkuApi + "/assessment", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ handle: CONFIG.handle, session_id: sessionId, report_code: code, answers, utm }),
+    });
+  } catch (e) { /* the result still shows; the code just will not match until a retry */ }
+}
+track("view");
+
+const newCode = () => {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return "KA-" + [...crypto.getRandomValues(new Uint8Array(4))].map(b => alphabet[b % alphabet.length]).join("");
+};
+
+// ---- Questions ----
+let answers = {};
+const married = () => answers.married === "yes";
+const QUESTIONS = [
+  { id: "married", q: () => "Kamu sudah menikah?", hint: "", options: opts(BANDS.married) },
+  { id: "youngest_child", q: () => "Usia anak paling kecil yang masih kamu biayai?", hint: "", options: opts(BANDS.youngest_child) },
+  { id: "other_dependents", q: () => "Ada orang tua atau saudara yang bergantung pada penghasilan kamu?", hint: "", options: opts(BANDS.other_dependents),
+    when: () => !married() && answers.youngest_child === "none" },
+  { id: "income", q: () => married() ? "Total penghasilan kamu dan pasangan per bulan?" : "Penghasilan kamu per bulan?",
+    hint: "Gaji dan pemasukan rutin lain, kira-kira saja.", options: opts(BANDS.income) },
+  { id: "owned", q: () => "Asuransi apa saja yang sudah kamu punya?", hint: "Boleh pilih lebih dari satu.", options: opts(BANDS.owned), multi: true },
+];
+const visibleQs = () => QUESTIONS.filter(q => !q.when || q.when());
+let step = 0, busy = false;
+
+const screens = { intro: $("screen-intro"), quiz: $("screen-quiz"), result: $("screen-result") };
+function show(name) { for (const [k, n] of Object.entries(screens)) n.hidden = k !== name; window.scrollTo(0, 0); }
+
+function renderQuestion() {
+  busy = false;
+  const qs = visibleQs(), q = qs[step];
+  $("progress-text").textContent = (step + 1) + " dari " + qs.length;
+  $("progress-bar").style.width = (step / qs.length * 100) + "%";
+  const box = $("question");
+  box.className = "bg-gray-50 rounded-3xl p-6 md:p-10 mt-5 step-in";
+  box.innerHTML = "";
+  const h = el("h2", "text-xl md:text-2xl font-black leading-snug", q.q()); h.id = "q-title";
+  box.append(h);
+  if (q.hint) box.append(el("p", "text-sm text-gray-500 mt-2", q.hint));
+  const list = el("div", "mt-5 grid gap-2.5"); list.setAttribute("role", "group"); list.setAttribute("aria-labelledby", "q-title");
+  const picked = new Set(q.multi ? (answers[q.id] || []) : []);
+  const next = q.multi ? el("button", "mt-5 w-full bg-black text-white font-semibold rounded-full px-6 py-4 disabled:opacity-30", "Lanjut") : null;
+  const sync = () => {
+    list.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(q.multi ? picked.has(x.dataset.key) : answers[q.id] === x.dataset.key)));
+    if (next) next.disabled = picked.size === 0;
+  };
+  for (const [key, label] of q.options) {
+    const b = el("button", "opt w-full text-left rounded-2xl border border-gray-300 bg-white px-4 py-3 font-medium hover:border-black", label);
+    b.type = "button"; b.dataset.key = key;
+    b.addEventListener("click", () => {
+      if (q.multi) {
+        // "Belum punya" and "Tidak tahu" stand alone; picking a real type clears them.
+        const solo = key === "none" || key === "unknown";
+        if (picked.has(key)) picked.delete(key);
+        else { if (solo) picked.clear(); else { picked.delete("none"); picked.delete("unknown"); } picked.add(key); }
+        sync(); return;
+      }
+      if (busy) return;
+      busy = true; answers[q.id] = key; sync();
+      setTimeout(advance, 160);
+    });
+    list.append(b);
+  }
+  box.append(list);
+  if (next) { next.type = "button"; next.addEventListener("click", () => { answers[q.id] = [...picked]; advance(); }); box.append(next); }
+  sync();
+}
+
+function advance() {
+  const qs = visibleQs();
+  if (step < qs.length - 1) { step++; history.pushState({ step }, ""); renderQuestion(); }
+  else finish();
+}
+
+$("btn-back").addEventListener("click", () => history.back());
+window.addEventListener("popstate", e => {
+  const st = e.state || {};
+  if (st.result) { renderResult(); return; }
+  if (typeof st.step === "number") { step = Math.min(st.step, visibleQs().length - 1); show("quiz"); renderQuestion(); return; }
+  show("intro");
+});
+$("btn-start").addEventListener("click", () => { track("start"); step = 0; answers = {}; history.pushState({ step: 0 }, ""); show("quiz"); renderQuestion(); });
+$("btn-restart").addEventListener("click", () => { answers = {}; step = 0; history.pushState({ step: 0 }, ""); show("quiz"); renderQuestion(); });
+
+// ---- Result copy ----
+const CHILD = { "0_5": "masih balita", "6_12": "masih usia SD", "13_17": "masih SMP atau SMA" };
+const REASON = {
+  partner: () => "Kalian menjalankan rumah tangga bersama. Kalau satu penghasilan berhenti untuk selamanya, pasangan menanggung semuanya sendiri.",
+  children: r => r.band === "18plus"
+    ? "Anak kamu masih kamu biayai, termasuk kuliahnya."
+    : `Anak paling kecil kamu ${CHILD[r.band]} dan masih kamu biayai sampai mandiri.`,
+  other_dependents: () => "Ada orang tua atau saudara yang hidup dari penghasilan kamu.",
+  nobody_relies: () => "Asuransi sakit kritis membayar uang tunai saat didiagnosis. Uangnya bisa dipakai untuk biaya hidup selama kamu pulih.",
+};
+const NOTE = {
+  employer_stops: "Asuransi dari kantor biasanya berhenti saat kamu resign, kena PHK, atau pensiun.",
+  health_only: "BPJS dan asuransi kesehatan membayar biaya rumah sakit. Penghasilan yang berhenti tidak ikut ditanggung.",
+  life_does_not_pay_ci: "Asuransi jiwa kamu hanya cair kalau meninggal. Saat sakit kritis, uang itu belum bisa dipakai.",
+};
+
+let result = null, code = null;
+function finish() {
+  code = newCode();
+  history.pushState({ result: true }, "");
+  renderResult();
+  track("complete", { priority: result.priority, status: result.status, qualified: result.qualified });
+  saveAssessment();
+}
+
+function renderResult() {
+  result = calculateNeeds(answers);
+  const life = result.priority === "life";
+  const name = life ? "asuransi jiwa" : "asuransi sakit kritis";
+  show("result");
+  $("result-title").textContent = life ? "Asuransi jiwa" : "Asuransi sakit kritis";
+  $("result-lead").textContent = life
+    ? "Ada orang yang hidupnya bergantung pada penghasilan di rumah ini. Asuransi jiwa menjaga biaya rumah dan rencana mereka tetap jalan kalau pencari nafkah meninggal."
+    : "Belum ada orang lain yang bergantung pada penghasilan kamu, jadi asuransi jiwa belum mendesak. Yang paling berat untuk kamu sekarang adalah sakit kritis: kamu masih ada, tapi tidak bisa bekerja selama berbulan-bulan.";
+
+  const ul = $("result-reasons"); ul.innerHTML = "";
+  for (const r of result.reasons) {
+    const li = el("li", "flex gap-3");
+    li.append(el("span", "mt-2 h-2 w-2 shrink-0 rounded-full bg-black", null), el("p", "text-[17px] leading-relaxed", REASON[r.kind](r)));
+    ul.append(li);
+  }
+
+  const st = $("result-status"); st.innerHTML = "";
+  st.append(el("p", "font-semibold",
+    result.status === "check" ? `Kamu sudah punya ${name}. Langkah berikutnya mengecek apakah jumlahnya cukup.`
+    : result.status === "unknown" ? "Kamu belum yakin asuransi apa yang sudah ada. Cek polisnya dulu, atau tanyakan saat telepon."
+    : `Kamu belum punya ${name} pribadi.`));
+  for (const n of result.notes) st.append(el("p", "text-sm text-gray-600 mt-2", NOTE[n.kind]));
+
+  $("cta-qualified").hidden = !result.qualified;
+  $("cta-basic").hidden = result.qualified;
+  if (result.qualified) {
+    // Only here does the page carry Philip's number or the booking link.
+    $("report-code").textContent = code;
+    $("btn-report").href = "https://wa.me/" + CONFIG.philipWa + "?text=" + encodeURIComponent(`Halo Philip, saya mau hitungan ${name}. Kode: ${code}`);
+    $("btn-book").href = "https://klienku.vercel.app/b/" + CONFIG.handle + "/" + CONFIG.bookingPath + "?ref=needs&code=" + code;
+  } else {
+    const text = `Hasil cek kebutuhan asuransi: prioritas pertama ${name}. ${location.origin + location.pathname}`;
+    $("btn-save").href = "https://wa.me/?text=" + encodeURIComponent(text);
+    if (CONFIG.instagram) { $("btn-ig").href = CONFIG.instagram; $("btn-ig").hidden = false; }
+  }
+}
+$("btn-report").addEventListener("click", () => track("report_request", { code }));  // Pixel "Lead" fires only from here
+$("btn-book").addEventListener("click", () => track("booking_click", { code }));
+$("btn-save").addEventListener("click", () => track("save_click"));
+</script>
+<div id="footer-placeholder"></div>
+<script src="/js/main.js"></script>
 </body>
 </html>
