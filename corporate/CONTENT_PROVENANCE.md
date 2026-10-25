@@ -1,6 +1,20 @@
-# Corporate Speaker content provenance
+# Corporate Financial Wellbeing content provenance
 
-Last confirmed: 2026-09-19
+Last confirmed: 2026-09-28
+
+## 2026-09-28 approved revision
+
+Philip approved implementation of the exact reviewed Corporate Financial Wellbeing mockup on a feature branch and draft PR only. The approved main-section order is `hero → organizational audience → collaboration proof`, followed by approach, format, modules, boundaries, process, speaker, FAQ, inquiry form, and footer.
+
+LandingPage Builder's canonical source is the approved `COPY-AND-BLOCKS.md` handoff for Corporate Financial Wellbeing. The complete WebDeveloper mockup and UI/UX Pro re-review passed before Philip's implementation approval.
+
+The implementation preserves the approved exact public copy, including the neutral success line `Terima kasih. Tim kami akan menghubungi Anda.`, the three approved module names, the 60-minute education + 30-minute Q&A format, one module per event, and optional continuation only when organizational need supports it.
+
+The structured form has no configured endpoint in this branch. It cannot display success unless a same-origin mocked or later approved endpoint returns an accepted response with a server-generated submission ID. Production destination, credentials, storage, retention, spam controls, monitoring, and human routing remain blocked.
+
+Bank Indonesia is the 31st neutral collaboration record. Philip approved its inclusion. Asset provenance and derivative details are recorded in `assets/partners/corporate/PROVENANCE.md`; its presence does not imply endorsement or use of this exact offer.
+
+This 2026-09-28 revision supersedes the earlier page-content contract below where the two conflict. The earlier record remains for history.
 
 ## Owner approval
 

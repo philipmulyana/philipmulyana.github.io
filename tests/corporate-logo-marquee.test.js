@@ -4,8 +4,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const scriptPath = path.join(__dirname, '..', 'js', 'corporate.js');
+const root = path.join(__dirname, '..');
+const scriptPath = path.join(root, 'js', 'corporate.js');
 const source = fs.readFileSync(scriptPath, 'utf8');
+const html = fs.readFileSync(path.join(root, 'corporate', 'index.html'), 'utf8');
+const css = fs.readFileSync(path.join(root, 'assets', 'site', 'corporate.css'), 'utf8');
 
 function createHarness({ reducedMotion = false } = {}) {
   const duplicateItems = [{ removed: false }, { removed: false }];
@@ -56,6 +59,10 @@ function createHarness({ reducedMotion = false } = {}) {
     disconnect() { disconnected = true; }
   }
   const document = {
+    querySelector(selector) {
+      if (selector === '#inquiry-form') return null;
+      return null;
+    },
     querySelectorAll(selector) {
       assert.equal(selector, '[data-logo-marquee]');
       return [carousel];
@@ -65,9 +72,11 @@ function createHarness({ reducedMotion = false } = {}) {
     matchMedia() { return { matches: reducedMotion }; },
     IntersectionObserver,
     requestAnimationFrame(callback) { callback(); },
+    location: { origin: 'https://philipmulyana.com' },
+    crypto: { randomUUID: () => 'test-id' },
   };
   return {
-    context: { window, document, IntersectionObserver, Promise },
+    context: { window, document, IntersectionObserver, Promise, module: { exports: {} }, fetch: async () => {} },
     sourceImages,
     duplicateImages,
     duplicateItems,
@@ -79,6 +88,18 @@ function createHarness({ reducedMotion = false } = {}) {
     wasDisconnected: () => disconnected,
   };
 }
+
+test('keeps the production three-row auto-carousel contract', () => {
+  const group = html.match(/<ul class="corporate-partner-grid"[\s\S]*?<\/ul>/);
+  assert.ok(group, 'semantic partner group must exist');
+  assert.equal((group[0].match(/<li(?:\s|>)/g) || []).length, 31);
+  assert.equal((html.match(/data-logo-marquee/g) || []).length, 1);
+  assert.match(html, /corporate-logo-carousel[^>]+tabindex="0"/);
+  assert.match(css, /\.corporate-partner-grid\{[^}]*grid-template-rows:repeat\(3,132px\)/);
+  assert.match(css, /\.corporate-partner-track\.is-ready\{[^}]*animation:corporate-logo-marquee/);
+  assert.match(css, /corporate-logo-carousel:hover \.corporate-partner-track/);
+  assert.match(css, /@media \(prefers-reduced-motion:reduce\)[\s\S]*animation:none!important/);
+});
 
 test('starts the corporate logo loop near the viewport after logos load', async () => {
   const harness = createHarness();
