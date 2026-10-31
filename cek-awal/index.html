@@ -594,7 +594,7 @@
         open_route: {
             heading: "Oke, kita atur waktunya",
             body: "Obrolannya santai: kita bahas apa yang tadi kamu jawab, dari sisi kamu dulu. Gratis, tanpa presentasi produk.",
-            calendly_privacy_line: "Nama, email, dan nomor WhatsApp kamu diisi di kalender Calendly saat konfirmasi jadwal, bukan di form lima pertanyaan tadi. Data itu dipakai untuk mengatur dan mengingatkan jadwal serta menindaklanjuti konsultasi yang kamu setujui, sesuai Kebijakan Privasi dan ketentuan Calendly sebagai penyedia layanan. Memesan jadwal bukan berarti kamu berkewajiban membeli apa pun.",
+            calendly_privacy_line: "Nama, email, dan nomor WhatsApp kamu diisi di halaman jadwal saat konfirmasi, bukan di form lima pertanyaan tadi. Data itu dipakai untuk mengatur dan mengingatkan jadwal serta menindaklanjuti konsultasi yang kamu setujui, sesuai Kebijakan Privasi dan ketentuan Calendly sebagai penyedia layanan. Memesan jadwal bukan berarti kamu berkewajiban membeli apa pun.",
             cta_label: "Pilih jadwal 10 menit"
         },
         closed_route: {
@@ -615,12 +615,12 @@
     var DWELL_MS = 180;
     var FADE_OUT_MS = 120;
 
-    // Approved dedicated Calendly event URL for /cek-awal/. Used as the base
+    // Booking page URL for /cek-awal/. Used as the base
     // of the CTA href on the open route only. The only thing ever appended is
     // the allowlisted, already-sanitized attribution below — never the parent
     // raw query, a click id, a referrer, an answer, an identity, or a session
     // value. See buildCalendlyHref().
-    var CAL_URL = 'https://calendly.com/philipmulyana/first-call-cek-awal';
+    var CAL_URL = 'https://leaf.id/jadwal/first-call';
 
     var OPEN_LABEL = COPY.form.questions[4].options[0];   // "Ya, saya open"
 
@@ -1104,11 +1104,11 @@
     // memory. Each present, non-empty value is appended exactly once, in
     // ATTR_KEYS order, percent-encoded by URLSearchParams. With no approved
     // values the result is CAL_URL verbatim, with no "?". Nothing else from
-    // this page travels to Calendly: not the raw query, fbclid or gclid, the
+    // this page travels to the booking page: not the raw query, fbclid or gclid, the
     // referrer, question or answer text, lead_id, or any identity value.
     //
     // Scope note: this only controls what is safely attached to the outbound
-    // URL. Whether Calendly retains these four custom IDs against a booking
+    // URL. Whether the booking page retains these four custom IDs against a booking
     // is not established by the approved research and is not claimed here.
     function buildCalendlyHref() {
         try {

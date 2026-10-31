@@ -60,7 +60,7 @@
   function classify(href) {
     if (!href) return null;
     var h = href.toLowerCase();
-    if (h.indexOf('calendly') > -1) return 'calendly';
+    if (h.indexOf('calendly') > -1 || h.indexOf('leaf.id/jadwal') > -1) return 'calendly';
     if (h.indexOf('financial-checkup') > -1) return 'checkup';
     if (h.indexOf('/tools/') > -1 || /(^|\/)tool-[a-z]/.test(h)) return 'tool';
     if (h.indexOf('/consultation') > -1 || h.indexOf('consultation.html') > -1) return 'consultation';

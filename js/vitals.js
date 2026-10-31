@@ -526,7 +526,7 @@ function buildFullBreakdownHTML(v) {
                 <p class="text-sm text-gray-700 leading-relaxed mb-4">
                     Vitals Check ini diagnosa, bukan resep. Untuk dapat <strong>resep konkret</strong> yang link balik ke visi hidup yang kamu tulis di atas — action mingguan, prioritas, sequencing — Philip ada layanan <strong>Master Plan Klinik</strong>: sesi diagnosa 1.5 jam yang menghasilkan dokumen action plan personal.
                 </p>
-                <a href="https://calendly.com/philipmulyana/first-call" target="_blank"
+                <a href="https://leaf.id/jadwal/first-call" target="_blank"
                     class="inline-flex items-center bg-black text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
                     Diskusi hasil dengan Philip
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>

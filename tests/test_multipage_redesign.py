@@ -225,7 +225,7 @@ class HomepageContract(unittest.TestCase):
     def test_first_call_is_only_consultation_entry_and_legacy_labels_are_removed(self):
         self.assertIn('id="first-call"', self.html)
         self.assertIn('Jadwalkan First Call', self.html)
-        self.assertIn('https://calendly.com/philipmulyana/first-call', self.html)
+        self.assertIn('https://leaf.id/jadwal/first-call', self.html)
         self.assertIn('Policy Review', self.html)
         for rejected in ('Discovery Meeting', 'Protection Review', 'Pilih Titik Mulai'):
             self.assertNotIn(rejected, self.html)
@@ -289,7 +289,7 @@ class ConsultationContract(unittest.TestCase):
         self.assertIn('Gratis 10 menit lewat telepon.', self.html)
         self.assertIn('Tidak ada pre-form dan tidak ada WhatsApp gate.', self.html)
         ctas = re.findall(
-            r'<a[^>]+href="https://calendly\.com/philipmulyana/first-call"[^>]*>'
+            r'<a[^>]+href="https://leaf\.id/jadwal/first-call"[^>]*>'
             r'Jadwalkan First Call</a>',
             self.html,
         )
