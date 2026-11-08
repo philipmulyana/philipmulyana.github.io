@@ -220,6 +220,44 @@ footer img { height: 40px; }
   .nav .logo { height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+
+/* Checkout native (Mayar) */
+.co { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; background: rgba(11,11,11,.62); padding: 0; }
+.co[hidden] { display: none; }
+.co-box { background: #fff; width: 100%; max-width: 480px; max-height: 94vh; overflow-y: auto; border-radius: 18px 18px 0 0; padding: 22px 20px 26px; box-shadow: 0 -10px 40px rgba(0,0,0,.25); }
+@media (min-width: 640px) { .co { align-items: center; padding: 20px; } .co-box { border-radius: 18px; padding: 28px; } }
+.co-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.co-top h3 { font-size: 22px; line-height: 1.2; margin: 0; }
+.co-top p { margin: 4px 0 0; color: var(--grey); font-size: 15px; }
+.co-x { border: 0; background: var(--panel); width: 36px; height: 36px; border-radius: 50%; font-size: 22px; line-height: 1; cursor: pointer; flex: none; color: var(--ink); }
+.co label { display: block; font-weight: 600; font-size: 15px; margin: 12px 0 6px; }
+.co input { width: 100%; font: inherit; font-size: 17px; padding: 12px 14px; border: 1px solid #cfcfcd; border-radius: 10px; box-sizing: border-box; }
+.co input:focus { outline: 2px solid var(--red); border-color: transparent; }
+.co-h { font-weight: 600; font-size: 15px; margin: 18px 0 8px; }
+.co-ch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.co-ch button { font: inherit; font-size: 15px; font-weight: 600; padding: 11px 6px; border-radius: 10px; border: 1px solid #d4d4d2; background: linear-gradient(180deg,#fff,#f1f1ef); box-shadow: 0 2px 0 #d0d0ce; cursor: pointer; color: var(--ink); }
+.co-ch button[aria-pressed="true"] { border-color: var(--red); background: var(--red-soft); box-shadow: 0 2px 0 var(--red); color: var(--red-dark); }
+.co-ch .wide { grid-column: 1 / -1; }
+.co-sum { display: flex; justify-content: space-between; align-items: center; background: var(--panel); border-radius: 10px; padding: 12px 14px; margin: 18px 0 14px; font-size: 15px; }
+.co-sum b { font-size: 20px; }
+.co .btn { width: 100%; justify-content: center; box-sizing: border-box; }
+.co .btn[disabled] { opacity: .6; pointer-events: none; }
+.co-err { color: var(--red-dark); font-size: 14px; margin: 10px 0 0; min-height: 1em; }
+.co-qr { display: flex; justify-content: center; padding: 14px; border: 1px solid var(--line); border-radius: 14px; margin: 6px 0 12px; }
+.co-qr img, .co-qr svg { width: 240px; height: 240px; image-rendering: pixelated; }
+.co-va { background: var(--panel); border-radius: 12px; padding: 16px; text-align: center; margin: 6px 0 12px; }
+.co-va small { color: var(--grey); font-size: 14px; display: block; }
+.co-va .num { font-size: 26px; font-weight: 700; letter-spacing: 1px; margin: 6px 0 10px; word-break: break-all; }
+.co-copy { font: inherit; font-size: 14px; font-weight: 600; border: 1px solid #cfcfcd; background: #fff; border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+.co-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--grey); margin: 4px 0 14px; }
+.co-wait { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--grey); margin: 14px 0 6px; }
+.co-dot { width: 10px; height: 10px; border-radius: 50%; background: #e0a100; animation: copulse 1.2s infinite; flex: none; }
+@keyframes copulse { 50% { opacity: .3; } }
+.co-alt { display: block; text-align: center; font-size: 14px; color: var(--grey); margin-top: 12px; }
+.co-ok { text-align: center; padding: 10px 0; }
+.co-ok .tick { width: 64px; height: 64px; border-radius: 50%; background: var(--green); color: #fff; font-size: 34px; display: flex; align-items: center; justify-content: center; margin: 4px auto 14px; }
+.co-ok h3 { font-size: 24px; margin: 0 0 8px; }
+.co-ok p { color: var(--grey); margin: 0 0 8px; }
 </style>
 </head>
 <body>
@@ -428,15 +466,196 @@ footer img { height: 40px; }
   <div class="wrap"><img src="assets/logo-white.png" alt="Philip Mulyana"><span>philipmulyana.com</span></div>
 </footer>
 
+<div class="co" id="co" hidden role="dialog" aria-modal="true" aria-labelledby="co-title">
+  <div class="co-box">
+    <div class="co-top">
+      <div><h3 id="co-title">Review Polis Keluarga</h3><p id="co-sub">Bayar langsung di sini.</p></div>
+      <button type="button" class="co-x" data-co-close aria-label="Tutup">&times;</button>
+    </div>
+
+    <form id="co-form" novalidate>
+      <label for="co-name">Nama lengkap</label>
+      <input id="co-name" name="name" autocomplete="name" required>
+      <label for="co-email">Email</label>
+      <input id="co-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+      <label for="co-wa">Nomor WhatsApp</label>
+      <input id="co-wa" name="mobile" type="tel" autocomplete="tel" inputmode="tel" placeholder="08xxxxxxxxxx" required>
+
+      <div class="co-h">Bayar pakai</div>
+      <div class="co-ch" id="co-ch">
+        <button type="button" class="wide" data-m="qris" aria-pressed="true">QRIS (semua e-wallet &amp; m-banking)</button>
+        <button type="button" data-m="va/bni" aria-pressed="false">VA BNI</button>
+        <button type="button" data-m="va/bri" aria-pressed="false">VA BRI</button>
+        <button type="button" data-m="va/mandiri" aria-pressed="false">VA Mandiri</button>
+        <button type="button" data-m="va/bsi" aria-pressed="false">VA BSI</button>
+        <button type="button" data-m="va/permata" aria-pressed="false">VA Permata</button>
+        <button type="button" data-m="va/cimb" aria-pressed="false">VA CIMB</button>
+        <button type="button" data-m="ewallet/dana" aria-pressed="false">DANA</button>
+        <button type="button" data-m="ewallet/gopay" aria-pressed="false">GoPay</button>
+        <button type="button" data-m="ewallet/shopeepay" aria-pressed="false">ShopeePay</button>
+      </div>
+
+      <div class="co-sum"><span>Total, satu keluarga</span><b>Rp1.000.000</b></div>
+      <button class="btn" type="submit" id="co-go">Lanjut bayar</button>
+      <p class="co-err" id="co-err" role="alert"></p>
+    </form>
+
+    <div id="co-pay" hidden></div>
+  </div>
+</div>
+
+<script src="assets/qrcode.js"></script>
 <script>
 (function () {
-  // Isi CHECKOUT_URL dengan link checkout publik dari leaf.id begitu sudah live.
-  var CHECKOUT_URL = 'https://philip-mulyana-84218.myr.id/pl/Review-Polis-Keluarga/';
+  var PRODUCT_LINK = 'https://philip-mulyana-84218.myr.id/pl/Review-Polis-Keluarga/';
+  var API = 'https://ziueouzldkidytoqmlpz.supabase.co/functions/v1/review-polis-checkout';
+  var native = false, method = 'qris', pollT = null, tickT = null;
+  var $ = function (id) { return document.getElementById(id); };
+  var co = $('co'), form = $('co-form'), pay = $('co-pay'), err = $('co-err'), go = $('co-go');
+
+  function track(ev, extra) { try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
+  function store(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function load(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function call(body) {
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { j._status = r.status; return j; }); });
+  }
+
+  // Tombol: default ke halaman produk Mayar. Kalau checkout native siap, buka popup.
   document.querySelectorAll('[data-checkout]').forEach(function (a) {
-    if (CHECKOUT_URL) { a.href = CHECKOUT_URL; }
-    a.addEventListener('click', function () { if (window.fbq) fbq('track', 'InitiateCheckout', { value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }); });
+    a.href = PRODUCT_LINK;
+    a.addEventListener('click', function (e) {
+      track('InitiateCheckout');
+      if (!native) return;
+      e.preventDefault();
+      open();
+    });
   });
-  if (!CHECKOUT_URL) document.querySelectorAll('.soon').forEach(function (e) { e.hidden = false; });
+  call({ action: 'ping' }).then(function (j) { native = !!j.ok; if (native) resume(); }).catch(function () {});
+
+  function open() {
+    co.hidden = false; document.body.style.overflow = 'hidden';
+    var p = load('rp_pending');
+    if (p && p.expiresAt && Date.parse(p.expiresAt) > Date.now()) showPay(p); else showForm();
+    setTimeout(function () { var f = form.hidden ? null : $('co-name'); if (f && !f.value) f.focus(); }, 50);
+  }
+  function close() { co.hidden = true; document.body.style.overflow = ''; }
+  co.addEventListener('click', function (e) { if (e.target === co || e.target.closest('[data-co-close]')) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !co.hidden) close(); });
+
+  $('co-ch').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-m]'); if (!b) return;
+    method = b.getAttribute('data-m');
+    this.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+  });
+
+  function showForm() { stop(); form.hidden = false; pay.hidden = true; $('co-sub').textContent = 'Bayar langsung di sini.'; err.textContent = ''; }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); err.textContent = '';
+    var name = $('co-name').value.trim(), email = $('co-email').value.trim(), wa = $('co-wa').value.replace(/[^0-9+]/g, '');
+    if (name.length < 2) { err.textContent = 'Isi nama lengkap dulu.'; $('co-name').focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = 'Email belum benar.'; $('co-email').focus(); return; }
+    if (wa.replace(/^\+?62/, '0').length < 10) { err.textContent = 'Nomor WhatsApp belum benar.'; $('co-wa').focus(); return; }
+    var q = new URLSearchParams(location.search), attr = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'fbclid'].forEach(function (k) { if (q.get(k)) attr[k] = q.get(k); });
+    go.disabled = true; go.textContent = 'Menyiapkan pembayaran…';
+    call({ action: 'create', name: name, email: email, mobile: wa, method: method, attr: attr }).then(function (j) {
+      go.disabled = false; go.textContent = 'Lanjut bayar';
+      if (j.fallback) { location.href = j.fallback; return; }
+      if (j._status === 429) { err.textContent = 'Tunggu 1 menit, lalu coba lagi.'; return; }
+      if (!j.tx) { err.textContent = 'Pembayaran belum bisa dibuat. Coba metode lain atau ulangi sebentar lagi.'; return; }
+      track('AddPaymentInfo', { payment_type: method });
+      store('rp_pending', j); showPay(j);
+    }).catch(function () {
+      go.disabled = false; go.textContent = 'Lanjut bayar';
+      err.textContent = 'Koneksi terputus. Coba lagi.';
+    });
+  });
+
+  function label(m) { var b = document.querySelector('#co-ch [data-m="' + m + '"]'); return b ? b.textContent : m; }
+
+  function showPay(j) {
+    form.hidden = true; pay.hidden = false;
+    var d = j.detail, exp = (d && d.expiresAt) || j.expiresAt, h = '';
+    if (d && d.kind === 'qris') {
+      $('co-sub').textContent = 'Scan pakai aplikasi e-wallet atau m-banking apa saja.';
+      h += '<div class="co-qr" id="co-qr"></div>';
+    } else if (d && d.kind === 'va') {
+      $('co-sub').textContent = 'Transfer ke Virtual Account ' + d.bank + ' lewat m-banking atau ATM.';
+      h += '<div class="co-va"><small>Nomor Virtual Account ' + esc(d.bank) + '</small><div class="num" id="co-num">' + esc(d.accountNumber) + '</div>' +
+           '<button type="button" class="co-copy" data-copy="' + esc(d.accountNumber) + '">Salin nomor</button>' +
+           (d.accountName ? '<small style="margin-top:10px">Atas nama: ' + esc(d.accountName) + '</small>' : '') + '</div>';
+    } else if (d && d.kind === 'ewallet') {
+      $('co-sub').textContent = 'Selesaikan pembayaran di aplikasi ' + d.channel + '.';
+      var link = (d.links.filter(function (l) { return l.kind === 'deeplink'; })[0] || d.links.filter(function (l) { return l.kind === 'mobile'; })[0] || d.links[0]);
+      if (d.qrString) h += '<div class="co-qr" id="co-qr"></div>';
+      if (link) h += '<a class="btn" href="' + esc(link.url) + '" target="_blank" rel="noopener">Buka ' + esc(d.channel) + '</a>';
+    } else {
+      $('co-sub').textContent = 'Lanjutkan pembayaran di halaman Mayar.';
+      h += '<a class="btn" href="' + esc(j.link) + '">Buka halaman pembayaran</a>';
+    }
+    h += '<div class="co-meta"><span>Total <b style="color:var(--ink)">Rp1.000.000</b></span><span id="co-left"></span></div>';
+    h += '<div class="co-wait"><span class="co-dot"></span><span>Menunggu pembayaran. Halaman ini otomatis berubah setelah kamu bayar.</span></div>';
+    h += '<a class="co-alt" href="' + esc(j.link) + '" target="_blank" rel="noopener">Ada kendala? Bayar lewat halaman Mayar</a>';
+    h += '<a class="co-alt" href="#" data-co-reset>Ganti metode pembayaran</a>';
+    pay.innerHTML = h;
+
+    var qs = d && d.qrString;
+    if (qs && window.qrcode) {
+      var qr = qrcode(0, 'M'); qr.addData(qs); qr.make();
+      $('co-qr').innerHTML = qr.createSvgTag({ cellSize: 6, margin: 2, scalable: true });
+    }
+    pay.querySelectorAll('[data-copy]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-copy');
+        (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(function () { b.textContent = 'Tersalin'; }, function () { b.textContent = v; });
+      });
+    });
+    pay.querySelector('[data-co-reset]').addEventListener('click', function (e) { e.preventDefault(); store('rp_pending', null); showForm(); });
+
+    stop();
+    var end = Date.parse(exp) || (Date.now() + 3600e3);
+    var tick = function () {
+      var s = Math.max(0, Math.round((end - Date.now()) / 1000));
+      var el = $('co-left'); if (el) el.textContent = 'Berlaku ' + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
+      if (!s) { stop(); store('rp_pending', null); pay.querySelector('.co-wait').innerHTML = '<span>Waktu pembayaran habis. Klik "Ganti metode pembayaran" untuk buat yang baru.</span>'; }
+    };
+    tick(); tickT = setInterval(tick, 1000);
+    var started = Date.now();
+    var poll = function () {
+      call({ action: 'status', tx: j.tx }).then(function (r) {
+        if (r.paid) return done();
+        pollT = setTimeout(poll, Date.now() - started < 120e3 ? 5000 : 15000);
+      }).catch(function () { pollT = setTimeout(poll, 15000); });
+    };
+    pollT = setTimeout(poll, 5000);
+  }
+
+  function stop() { clearTimeout(pollT); clearInterval(tickT); }
+
+  function done(silent) {
+    stop(); store('rp_pending', null); if (!silent) track('Purchase');
+    co.hidden = false; document.body.style.overflow = 'hidden';
+    form.hidden = true; pay.hidden = false; $('co-sub').textContent = '';
+    pay.innerHTML = '<div class="co-ok"><div class="tick">&#10003;</div><h3>Pembayaran diterima</h3>' +
+      '<p>Terima kasih. Link portal untuk isi data keluarga dan upload polis dikirim ke email dan WhatsApp kamu.</p>' +
+      '<p>Laporan selesai maksimal 72 jam setelah data lengkap.</p>' +
+      '<button type="button" class="btn" data-co-close style="margin-top:12px">Tutup</button></div>';
+  }
+
+  function resume() {
+    var p = load('rp_pending');
+    if (/[?&]bayar=berhasil/.test(location.search)) {
+      if (!p || !p.tx) { done(true); return; }
+      call({ action: 'status', tx: p.tx }).then(function (r) { done(!r.paid); }).catch(function () { done(true); });
+      return;
+    }
+    if (p && p.tx && p.expiresAt && Date.parse(p.expiresAt) > Date.now()) {
+      call({ action: 'status', tx: p.tx }).then(function (r) { if (r.paid) done(); }).catch(function () {});
+    }
+  }
 })();
 </script>
 </body>
