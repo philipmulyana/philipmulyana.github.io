@@ -513,7 +513,7 @@ footer img { height: 40px; }
   var $ = function (id) { return document.getElementById(id); };
   var co = $('co'), form = $('co-form'), pay = $('co-pay'), err = $('co-err'), go = $('co-go');
 
-  function track(ev, extra) { try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
+  function track(ev, extra) { if (/[?&]tes=/.test(location.search)) return; try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
   function store(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function load(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -550,6 +550,7 @@ footer img { height: 40px; }
     this.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
   });
 
+  if (/[?&]tes=/.test(location.search)) { var sb = document.querySelector('.co-sum'); if (sb) sb.innerHTML = '<span>Mode tes</span><b>Rp10.000</b>'; }
   function showForm() { stop(); form.hidden = false; pay.hidden = true; $('co-sub').textContent = 'Bayar langsung di sini.'; err.textContent = ''; }
 
   form.addEventListener('submit', function (e) {
@@ -561,7 +562,7 @@ footer img { height: 40px; }
     var q = new URLSearchParams(location.search), attr = {};
     ['utm_source', 'utm_medium', 'utm_campaign', 'fbclid'].forEach(function (k) { if (q.get(k)) attr[k] = q.get(k); });
     go.disabled = true; go.textContent = 'Menyiapkan pembayaran…';
-    call({ action: 'create', name: name, email: email, mobile: wa, method: method, attr: attr }).then(function (j) {
+    call({ action: 'create', name: name, email: email, mobile: wa, method: method, attr: attr, test: q.get('tes') || undefined }).then(function (j) {
       go.disabled = false; go.textContent = 'Lanjut bayar';
       if (j.fallback) { location.href = j.fallback; return; }
       if (j._status === 429) { err.textContent = 'Tunggu 1 menit, lalu coba lagi.'; return; }
@@ -596,7 +597,7 @@ footer img { height: 40px; }
       $('co-sub').textContent = 'Lanjutkan pembayaran di halaman Mayar.';
       h += '<a class="btn" href="' + esc(j.link) + '">Buka halaman pembayaran</a>';
     }
-    h += '<div class="co-meta"><span>Total <b style="color:var(--ink)">Rp1.000.000</b></span><span id="co-left"></span></div>';
+    h += '<div class="co-meta"><span>Total <b style="color:var(--ink)">Rp' + Number(j.amount || 1000000).toLocaleString('id-ID') + '</b></span><span id="co-left"></span></div>';
     h += '<div class="co-wait"><span class="co-dot"></span><span>Menunggu pembayaran. Halaman ini otomatis berubah setelah kamu bayar.</span></div>';
     h += '<a class="co-alt" href="' + esc(j.link) + '" target="_blank" rel="noopener">Ada kendala? Bayar lewat halaman Mayar</a>';
     h += '<a class="co-alt" href="#" data-co-reset>Ganti metode pembayaran</a>';
