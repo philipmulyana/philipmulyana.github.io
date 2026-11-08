@@ -15,6 +15,7 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+<script>window.RP_Q = (function () { var q = new URLSearchParams(location.search); return { tes: q.get('tes'), bayar: q.get('bayar') }; })();</script>
 <script src="/js/sanitize-attribution.js"></script>
 <script src="/js/pixel.js"></script>
 <style>
@@ -511,10 +512,10 @@ footer img { height: 40px; }
   var API = 'https://ziueouzldkidytoqmlpz.supabase.co/functions/v1/review-polis-checkout';
   var native = false, method = 'qris', pollT = null, tickT = null;
   var $ = function (id) { return document.getElementById(id); };
-  var PKEY = /[?&]tes=/.test(location.search) ? 'rp_pending_tes' : 'rp_pending';
+  var PKEY = !!(window.RP_Q && RP_Q.tes) ? 'rp_pending_tes' : 'rp_pending';
   var co = $('co'), form = $('co-form'), pay = $('co-pay'), err = $('co-err'), go = $('co-go');
 
-  function track(ev, extra) { if (/[?&]tes=/.test(location.search)) return; try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
+  function track(ev, extra) { if (!!(window.RP_Q && RP_Q.tes)) return; try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
   function store(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function load(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -551,7 +552,7 @@ footer img { height: 40px; }
     this.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
   });
 
-  if (/[?&]tes=/.test(location.search)) { var sb = document.querySelector('.co-sum'); if (sb) sb.innerHTML = '<span>Mode tes</span><b>Rp10.000</b>'; }
+  if (!!(window.RP_Q && RP_Q.tes)) { var sb = document.querySelector('.co-sum'); if (sb) sb.innerHTML = '<span>Mode tes</span><b>Rp10.000</b>'; }
   function showForm() { stop(); form.hidden = false; pay.hidden = true; $('co-sub').textContent = 'Bayar langsung di sini.'; err.textContent = ''; }
 
   form.addEventListener('submit', function (e) {
@@ -563,7 +564,7 @@ footer img { height: 40px; }
     var q = new URLSearchParams(location.search), attr = {};
     ['utm_source', 'utm_medium', 'utm_campaign', 'fbclid'].forEach(function (k) { if (q.get(k)) attr[k] = q.get(k); });
     go.disabled = true; go.textContent = 'Menyiapkan pembayaran…';
-    call({ action: 'create', name: name, email: email, mobile: wa, method: method, attr: attr, test: q.get('tes') || undefined }).then(function (j) {
+    call({ action: 'create', name: name, email: email, mobile: wa, method: method, attr: attr, test: (window.RP_Q && RP_Q.tes) || undefined }).then(function (j) {
       go.disabled = false; go.textContent = 'Lanjut bayar';
       if (j.fallback) { location.href = j.fallback; return; }
       if (j._status === 429) { err.textContent = 'Tunggu 1 menit, lalu coba lagi.'; return; }
@@ -649,7 +650,7 @@ footer img { height: 40px; }
 
   function resume() {
     var p = load(PKEY);
-    if (/[?&]bayar=berhasil/.test(location.search)) {
+    if ((window.RP_Q && RP_Q.bayar === 'berhasil')) {
       if (!p || !p.tx) { done(true); return; }
       call({ action: 'status', tx: p.tx }).then(function (r) { done(!r.paid); }).catch(function () { done(true); });
       return;
