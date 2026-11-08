@@ -1,0 +1,54 @@
+/* Tools on the current site standard (8 Nov 2026): loads after site.css. Black/white/red, Barlow, round buttons. */
+.tool-hero{padding:72px 0 64px;background:var(--black);color:var(--white)}
+.tool-hero .tool-back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:18px;color:#bdbdbd;font-size:15px;font-weight:600;text-decoration:none}
+.tool-hero .tool-back:hover{color:var(--white);text-decoration:underline;text-underline-offset:4px}
+.tool-hero .eyebrow{color:#a8a8a8}
+.tool-hero h1{max-width:760px;margin:0 0 18px;font-size:clamp(38px,5.4vw,64px);font-weight:700;letter-spacing:-.04em;line-height:1.02}
+.tool-hero p{max-width:620px;margin:0;color:#d6d6d6;font-size:20px}
+.tool-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;color:#a8a8a8;font-size:15px;font-weight:600}
+.tool-main{padding:56px 0 88px;background:var(--soft)}
+.tool-wrap{width:min(720px,calc(100% - 32px));margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+.tool-card{padding:34px;border-radius:22px;background:var(--white);border:1px solid var(--line)}
+.tool-card h2{margin:0 0 6px;font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.tool-card>p.tool-sub{margin:0 0 24px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.field>label,.field>legend{font-size:17px;font-weight:700}
+.field .hint{margin:0;color:var(--muted);font-size:15px;line-height:1.45}
+.field input[type=text],.field input[type=number],.field input[type=tel],.field input[type=email]{width:100%;min-height:54px;padding:0 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--white);font-size:18px}
+.field input:focus{outline:2px solid var(--black);outline-offset:1px;border-color:var(--black)}
+fieldset.field{border:0;padding:0;margin:0 0 24px}
+.choice-row{display:flex;flex-wrap:wrap;gap:10px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice span{display:inline-flex;align-items:center;min-height:46px;padding:0 18px;border:1.5px solid var(--line);border-radius:999px;font-size:16px;font-weight:600;cursor:pointer}
+.choice input:checked+span{border-color:var(--black);background:var(--black);color:var(--white)}
+.choice input:focus-visible+span{outline:2px solid var(--red);outline-offset:2px}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--soft);font-size:14px;font-weight:600;cursor:pointer}
+.chip:hover{border-color:var(--black)}
+.tool-error{margin:0 0 16px;color:var(--red);font-weight:600}
+.tool-card .button{width:100%}
+.button[disabled]{opacity:.6;cursor:wait}
+.result-hero{padding:34px;border-radius:22px;background:var(--black);color:var(--white)}
+.result-hero .eyebrow{color:#a8a8a8}
+.result-big{margin:4px 0 8px;font-size:clamp(40px,7vw,62px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.result-hero p{margin:0;color:#d6d6d6}
+.result-rows{margin:0;padding:0;list-style:none}
+.result-rows li{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.result-rows li:last-child{border-bottom:0}
+.result-rows span{color:var(--muted)}
+.result-rows b{text-align:right}
+.result-rows b.red{color:var(--red)}
+.tool-copy p{margin:0 0 14px}.tool-copy p:last-child{margin:0}
+.tool-note{color:var(--muted);font-size:14px}
+.cta-card{padding:34px;border-radius:22px;background:var(--red);color:var(--white)}
+.cta-card h2{margin:0 0 10px;font-size:28px;line-height:1.15}
+.cta-card p{margin:0 0 20px;color:#ffe3e3}
+.cta-card .button{background:var(--white);color:var(--black);width:100%}
+.upsell-card{padding:34px;border-radius:22px;background:var(--white);border:2px solid var(--black)}
+.upsell-card .price{font-size:30px;font-weight:800;margin:4px 0 14px}
+.upsell-card .button{width:100%}
+.consent{display:flex;gap:12px;align-items:flex-start;margin:4px 0 18px;font-size:15px;color:var(--muted);cursor:pointer}
+.consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--black);flex:none}
+.done-box{padding:18px;border-radius:14px;background:var(--soft);font-weight:600}
+@media (max-width:640px){.tool-hero{padding:48px 0 44px}.tool-hero p{font-size:18px}.tool-card,.result-hero,.cta-card,.upsell-card{padding:24px}.tool-main{padding:28px 0 64px}}

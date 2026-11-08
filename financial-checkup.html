@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Check-up Dasar — Philip Mulyana</title>
+    <title>Financial Check-up Dasar | Philip Mulyana</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="js/pixel.js"></script>
+    <link rel="preload" href="/assets/homepage/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/homepage/fonts/barlow-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/site/site.css?v=20260919-consultation-approved">
+    <link rel="stylesheet" href="/assets/site/tool.css?v=20261108">
+    <script src="/js/sanitize-attribution.js"></script>
+    <script src="/js/pixel.js"></script>
     <script>
         tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+            theme: { extend: { fontFamily: { sans: ['Barlow', 'Arial', 'sans-serif'] } } }
         }
     </script>
     <style>
@@ -184,10 +186,10 @@
             font-size: 0.75rem; color: #6b7280; margin-bottom: 0.625rem;
         }
         .progress-header .label { color: #111827; font-weight: 600; font-size: 0.875rem; }
-        .progress-header .pct { color: #059669; font-weight: 700; }
+        .progress-header .pct { color: #000000; font-weight: 700; }
         .progress-bar-track { height: 4px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
         .progress-bar-fill {
-            height: 100%; background: linear-gradient(to right, #059669, #10b981);
+            height: 100%; background: linear-gradient(to right, #000000, #cc0100);
             transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px;
         }
         .step-dots { display: flex; justify-content: space-between; margin-top: 0.875rem; gap: 0.25rem; }
@@ -206,7 +208,7 @@
             font-size: 0.75rem; font-weight: 700; transition: all 0.2s;
         }
         .step-dot.active .step-dot-circle { background: black; color: white; box-shadow: 0 0 0 4px rgba(0,0,0,0.06); }
-        .step-dot.visited .step-dot-circle { background: #059669; color: white; }
+        .step-dot.visited .step-dot-circle { background: #000000; color: white; }
         .step-dot-label { font-size: 0.625rem; color: #9ca3af; text-align: center; line-height: 1.2; }
         .step-dot.active .step-dot-label { color: #111827; font-weight: 600; }
         .step-dot.visited .step-dot-label { color: #6b7280; }
@@ -226,8 +228,8 @@
         .wizard-back:disabled { opacity: 0.35; cursor: not-allowed; }
         .wizard-next, .wizard-submit { background: black; color: white; border: 1.5px solid black; flex: 2; }
         .wizard-next:hover, .wizard-submit:hover { background: #1f2937; }
-        .wizard-submit { background: linear-gradient(to right, #059669, #10b981); border-color: transparent; }
-        .wizard-submit:hover { background: linear-gradient(to right, #047857, #059669); }
+        .wizard-submit { background: linear-gradient(to right, #000000, #cc0100); border-color: transparent; }
+        .wizard-submit:hover { background: linear-gradient(to right, #000000, #000000); }
         .step-error {
             background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;
             padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.8125rem;
@@ -243,11 +245,11 @@
             margin-bottom: 0.625rem;
         }
         .review-edit {
-            font-size: 0.6875rem; color: #059669; font-weight: 700;
+            font-size: 0.6875rem; color: #000000; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.05em;
             cursor: pointer; background: none; border: 0; padding: 0;
         }
-        .review-edit:hover { color: #047857; text-decoration: underline; }
+        .review-edit:hover { color: #000000; text-decoration: underline; }
         .nw-hero {
             background: black; color: white; border-radius: 1.5rem;
             padding: 1.5rem 1.75rem; margin: 1rem 0;
@@ -272,7 +274,7 @@
             border-radius: 0.875rem; padding: 0.875rem 1rem;
         }
         .ratio-mini .r-label {
-            font-size: 0.625rem; font-weight: 700; color: #059669;
+            font-size: 0.625rem; font-weight: 700; color: #000000;
             text-transform: uppercase; letter-spacing: 0.08em;
             margin-bottom: 0.125rem;
         }
@@ -289,7 +291,7 @@
             font-weight: 700; padding: 0.125rem 0.5rem;
             border-radius: 999px; margin-top: 0.25rem;
         }
-        .ratio-mini .r-status.good { background: #d1fae5; color: #065f46; }
+        .ratio-mini .r-status.good { background: #f2f2f2; color: #000000; }
         .ratio-mini .r-status.bad { background: #fee2e2; color: #991b1b; }
 
         /* === Risk Profile (Step 4) === */
@@ -339,7 +341,7 @@
         }
         .rp-slider-val {
             display: inline-block; font-size: 0.875rem; font-weight: 700;
-            color: #059669; text-align: right;
+            color: #000000; text-align: right;
         }
 
         /* === Reframe intro card (emotional safety) === */
@@ -349,11 +351,11 @@
             margin-bottom: 1.25rem;
         }
         .reframe-card .reframe-title {
-            font-size: 0.8125rem; font-weight: 700; color: #065f46;
+            font-size: 0.8125rem; font-weight: 700; color: #000000;
             margin-bottom: 0.25rem;
         }
         .reframe-card .reframe-body {
-            font-size: 0.75rem; color: #047857; line-height: 1.55;
+            font-size: 0.75rem; color: #000000; line-height: 1.55;
         }
 
         /* === Save & resume banner (sticky top, dismissable) === */
@@ -402,10 +404,10 @@
         }
         .prequal-options label:hover { border-color: #6b7280; }
         .prequal-options label:has(input:checked) {
-            background: #ecfdf5; border-color: #059669; color: #064e3b; font-weight: 600;
+            background: #f2f2f2; border-color: #000000; color: #064e3b; font-weight: 600;
         }
         .prequal-options input {
-            width: auto; margin: 0; accent-color: #059669; flex-shrink: 0;
+            width: auto; margin: 0; accent-color: #000000; flex-shrink: 0;
         }
 
         /* Step / item hide when pre-qualifier excludes */
@@ -447,7 +449,7 @@
             font-size: 0.6875rem; color: #6b7280; line-height: 1.45;
         }
 
-        /* === Single Mode — hide Pasangan + Bersama columns === */
+        /* === Single Mode, hide Pasangan + Bersama columns === */
         body.form-mode-single .three-col-input {
             grid-template-columns: 1fr;
         }
@@ -512,34 +514,48 @@
         .success-state.show { display: block; }
         .success-state .check-icon {
             width: 4rem; height: 4rem; margin: 0 auto 1.25rem;
-            background: #d1fae5; border-radius: 50%;
+            background: #f2f2f2; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 2rem;
         }
         .success-state h2 { font-size: 1.5rem; font-weight: 900; color: #111827; margin-bottom: 0.5rem; }
         .success-state p { color: #6b7280; font-size: 0.9375rem; }
+    
+        body{font-family:'Barlow',Arial,sans-serif}
+        .wizard-submit,.wizard-next{background:#cc0100!important;border-radius:999px!important}
+        .wizard-back{border-radius:999px!important}
+        .fc-hero{padding:72px 0 56px;background:#000;color:#fff}
+        #cf-turnstile-placeholder{display:none}
+        .site-header .container,.tool-hero .container,.footer .container{width:min(1120px,calc(100% - 48px))!important;max-width:none!important;margin-inline:auto!important;padding:0!important}
+        .footer h2{font-size:15px!important;margin:0 0 18px!important;font-weight:400!important}
+        .tool-hero h1{font-weight:700!important}
+        .fade-up{opacity:1!important;transform:none!important}
+        .reframe-card{background:#f2f2f2!important;border-color:#d7d7d7!important}
     </style>
 </head>
 <body class="bg-white text-black font-sans antialiased form-mode-single">
 
-    <div id="navbar-placeholder"></div>
+    <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+    <header class="site-header">
+      <div class="container navigation">
+        <a class="brand" href="/" aria-label="Philip Mulyana, Homepage"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181"></a>
+        <nav aria-label="Navigasi utama"><a href="/consultation.html">Konsultasi Asuransi</a></nav>
+      </div>
+    </header>
 
-    <!-- Breadcrumb + Header -->
-    <section class="pt-28 pb-8 px-6">
-        <div class="max-w-2xl mx-auto">
-            <a href="/tools/" class="inline-flex items-center text-sm text-gray-400 hover:text-black transition-colors mb-4">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                All Tools
-            </a>
-            <span class="text-xs text-emerald-600 font-medium uppercase tracking-wider block">Financial Check-up</span>
-            <h1 class="text-3xl md:text-4xl font-black mt-1">Financial Check-up Dasar</h1>
-            <p class="text-gray-500 text-sm mt-3">Isi 17 angka. Tahu Net Worth + 4 rasio kesehatan keuangan kamu dalam 10 menit. Hasil PDF lengkap dikirim ke email kamu, gratis.</p>
-            <p class="text-xs text-gray-400 mt-3">⏱ 5–10 menit · 🔒 Data hanya untuk perhitungan kamu · ✉️ PDF dikirim ke email</p>
-        </div>
+    <main id="main-content">
+    <section class="tool-hero">
+      <div class="container">
+        <a class="tool-back" href="/tools/">← Semua tools</a>
+        <span class="eyebrow">Financial Check-up</span>
+        <h1>Financial Check-up Dasar</h1>
+        <p>Isi 17 angka, lalu kamu tahu net worth dan 4 rasio kesehatan keuangan kamu. Laporan PDF lengkap dikirim ke email kamu, gratis.</p>
+        <div class="tool-meta"><span>Sekitar 10 menit</span><span>Data hanya dipakai untuk perhitungan kamu</span><span>PDF dikirim ke email</span></div>
+      </div>
     </section>
 
     <!-- Form -->
-    <section class="px-6 pb-16 fade-up">
+    <section class="px-6 pb-16 pt-10">
         <div class="max-w-2xl mx-auto">
 
             <form id="checkup-form" onsubmit="event.preventDefault(); submitCheckup();">
@@ -547,7 +563,7 @@
                 <!-- Sticky progress -->
                 <div class="progress-wrap">
                     <div class="progress-header">
-                        <span class="label" id="step-label">Step 1 of 6</span>
+                        <span class="label" id="step-label">Langkah 1 dari 6</span>
                         <span class="pct" id="step-pct">17%</span>
                     </div>
                     <div class="progress-bar-track">
@@ -588,20 +604,17 @@
                         <p class="text-sm text-gray-500 mb-4">Berapa uang masuk, keluar, dan berhasil kamu konversi jadi modal masa depan tiap bulan.</p>
 
                         <div class="reframe-card">
-                            <div class="reframe-title">🌱 Sebelum mulai — penting buat kamu tau</div>
-                            <div class="reframe-body">
-                                Form ini <strong>bukan tes</strong>. Tujuannya tau <strong>posisi awal</strong> kamu — bukan dapet nilai sempurna. Tidak ada angka "salah" atau "kurang". Yang penting kamu mulai. Banyak orang choose to ignore kondisi keuangan justru karena udah tau ga sebagus itu — kamu beda, kamu mau lihat. Itu langkah pertama yang penting.
-                            </div>
+                            <div class="reframe-title">Sebelum mulai</div>
+                            <div class="reframe-body">Tujuannya tahu <strong>posisi awal</strong> kamu sekarang. Ga ada angka yang salah. Banyak orang menunda lihat kondisi keuangannya justru karena sudah curiga hasilnya kurang bagus, dan kamu memilih untuk melihat.</div>
                         </div>
 
                         <div class="save-banner">
-                            <span>💾</span>
-                            <span>Setiap angka yang kamu isi langsung tersimpan di browser ini. Tutup tab kapan aja — buka lagi nanti, data masih lengkap di titik yang sama.</span>
+                            <span>Setiap angka yang kamu isi langsung tersimpan di browser ini. Tutup tab kapan aja, buka lagi nanti, data masih lengkap di titik yang sama.</span>
                         </div>
 
                         <div class="prequal-card">
-                            <div class="prequal-title">🎯 Personalisasi form (30 detik)</div>
-                            <div class="prequal-intro">Centang yang kamu punya — form bakal cuma nampilin section yang relevan untuk kamu. Yang tidak dicentang akan disembunyikan.</div>
+                            <div class="prequal-title">Personalisasi form (30 detik)</div>
+                            <div class="prequal-intro">Centang yang kamu punya, form bakal cuma nampilin section yang relevan untuk kamu. Yang tidak dicentang akan disembunyikan.</div>
 
                             <div class="prequal-group">
                                 <div class="prequal-label">Cicilan bulanan</div>
@@ -652,7 +665,7 @@
                             <h3>A · Pemasukan Bulanan</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">1.</span> Penghasilan tetap (gaji + tunjangan rutin)</div>
-                                <div class="item-hint">💡 Gaji bulanan + tunjangan tetap. Pakai <strong>THP</strong> (take-home pay, setelah potong pajak & BPJS).</div>
+                                <div class="item-hint">Gaji bulanan + tunjangan tetap. Pakai <strong>THP</strong> (take-home pay, setelah potong pajak & BPJS).</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i1_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i1_pasangan" placeholder="0"></div>
@@ -661,7 +674,7 @@
                             </div>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">2.</span> Penghasilan tambahan (bonus rata-rata + bisnis + sewa + passive)</div>
-                                <div class="item-hint">💡 <strong>Bonus tahunan ÷ 12</strong> + omzet bisnis sampingan + sewa properti + dividen rutin. Rata-rata bulanan.</div>
+                                <div class="item-hint"><strong>Bonus tahunan ÷ 12</strong> + omzet bisnis sampingan + sewa properti + dividen rutin. Rata-rata bulanan.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i2_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i2_pasangan" placeholder="0"></div>
@@ -680,7 +693,7 @@
                             <h3>B · Cicilan Bulanan</h3>
                             <div class="item-row" data-item-row="i3">
                                 <div class="item-label"><span class="item-idx">3.</span> Cicilan KPR</div>
-                                <div class="item-hint">💡 Angsuran KPR yang ditarik bank tiap bulan.</div>
+                                <div class="item-hint">Angsuran KPR yang ditarik bank tiap bulan.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i3_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i3_pasangan" placeholder="0"></div>
@@ -689,7 +702,7 @@
                             </div>
                             <div class="item-row" data-item-row="i4">
                                 <div class="item-label"><span class="item-idx">4.</span> Cicilan kendaraan (KKB)</div>
-                                <div class="item-hint">💡 Angsuran kredit kendaraan bermotor (mobil/motor) tiap bulan.</div>
+                                <div class="item-hint">Angsuran kredit kendaraan bermotor (mobil/motor) tiap bulan.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i4_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i4_pasangan" placeholder="0"></div>
@@ -698,7 +711,7 @@
                             </div>
                             <div class="item-row" data-item-row="i5">
                                 <div class="item-label"><span class="item-idx">5.</span> Kartu kredit + KTA + lain</div>
-                                <div class="item-hint">💡 Pembayaran minimum kartu kredit + cicilan KTA + cicilan pinjaman online / teman. Tiap bulan.</div>
+                                <div class="item-hint">Pembayaran minimum kartu kredit + cicilan KTA + cicilan pinjaman online / teman. Tiap bulan.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i5_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i5_pasangan" placeholder="0"></div>
@@ -717,7 +730,7 @@
                             <h3>C · Pengeluaran Hidup Bulanan</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">6.</span> Belanja rutin (makan, listrik, transport, internet, pendidikan anak)</div>
-                                <div class="item-hint">💡 Semua pengeluaran rutin <strong>selain cicilan & tabungan</strong>: makanan, listrik, air, internet, transport, SPP anak, gaji ART, asuransi (kalau bukan dari Item 7). Habis tiap bulan.</div>
+                                <div class="item-hint">Semua pengeluaran rutin <strong>selain cicilan & tabungan</strong>: makanan, listrik, air, internet, transport, SPP anak, gaji ART, asuransi (kalau bukan dari Item 7). Habis tiap bulan.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i6_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i6_pasangan" placeholder="0"></div>
@@ -726,7 +739,7 @@
                             </div>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">7.</span> Premi asuransi yang sudah berjalan</div>
-                                <div class="item-hint">💡 Premi bulanan semua polis aktif (jiwa, kesehatan, kendaraan, properti). Premi tahunan? Bagi 12.</div>
+                                <div class="item-hint">Premi bulanan semua polis aktif (jiwa, kesehatan, kendaraan, properti). Premi tahunan? Bagi 12.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i7_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i7_pasangan" placeholder="0"></div>
@@ -745,7 +758,7 @@
                             <h3>D · Tabungan / Investasi Bulanan</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">8.</span> Total disetor ke tabungan + reksa dana + saham + emas + lainnya</div>
-                                <div class="item-hint">💡 Rata-rata berapa yang berhasil kamu sisihkan tiap bulan ke tabungan / RD / saham / emas. <span class="warn">Yang beneran masuk</span> — bukan target atau rencana. Belum konsisten nabung? Isi angka kecil aja atau 0 — ga apa-apa, kita bahas saat konsultasi.</div>
+                                <div class="item-hint">Rata-rata berapa yang berhasil kamu sisihkan tiap bulan ke tabungan / RD / saham / emas. <span class="warn">Yang beneran masuk</span>, bukan target atau rencana. Belum konsisten nabung? Isi angka kecil aja atau 0, ga apa-apa, kita bahas saat konsultasi.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i8_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i8_pasangan" placeholder="0"></div>
@@ -771,7 +784,7 @@
                         <div class="valuation-card">
                             <div class="v-label">Penting</div>
                             <h4>Catatan Penilaian Aset</h4>
-                            <p class="v-intro">Untuk angka yang akurat, pakai <strong>nilai pasar saat ini (current market value)</strong> — bukan harga beli (acquisition cost). Klik untuk panduan lengkap per kategori.</p>
+                            <p class="v-intro">Untuk angka yang akurat, pakai <strong>nilai pasar saat ini (current market value)</strong>, bukan harga beli (acquisition cost). Klik untuk panduan lengkap per kategori.</p>
                             <details>
                                 <summary>📋 Panduan penilaian per kategori aset</summary>
                                 <table>
@@ -783,9 +796,9 @@
                                     <tr><td>Obligasi (ORI/SBN/Sukuk)</td><td>Harga pasar atau face value (hold-to-maturity)</td></tr>
                                     <tr><td>Kripto</td><td>Market price × holdings</td></tr>
                                     <tr><td>Properti Investasi</td><td>Harga transaksi terakhir di tetangga / properti sejenis area sekitar</td></tr>
-                                    <tr><td>Properti Utama (rumah tinggal)</td><td><strong>Harga acquisition</strong> (yang kamu bayar saat beli) — tetap masuk net worth</td></tr>
+                                    <tr><td>Properti Utama (rumah tinggal)</td><td><strong>Harga acquisition</strong> (yang kamu bayar saat beli), tetap masuk net worth</td></tr>
                                     <tr><td>Kendaraan</td><td>Market value (OLX/Mobil123), hanya kalau ≥ Rp 50jt</td></tr>
-                                    <tr><td>Bisnis Pribadi</td><td>Book value atau 3–5× EBITDA</td></tr>
+                                    <tr><td>Bisnis Pribadi</td><td>Book value atau 3 sampai 5× EBITDA</td></tr>
                                 </table>
                             </details>
                         </div>
@@ -794,7 +807,7 @@
                             <h3>E · Aset Likuid</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">9.</span> Kas + tabungan bank + reksa dana pasar uang</div>
-                                <div class="item-hint">💡 Saldo current di semua rekening tabungan/giro + uang kas + saldo reksa dana pasar uang. Yang bisa dicairkan dalam &lt; 1 minggu tanpa diskon.</div>
+                                <div class="item-hint">Saldo current di semua rekening tabungan/giro + uang kas + saldo reksa dana pasar uang. Yang bisa dicairkan dalam &lt; 1 minggu tanpa diskon.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i9_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i9_pasangan" placeholder="0"></div>
@@ -803,7 +816,7 @@
                             </div>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">10.</span> Deposito (&lt; 1 tahun)</div>
-                                <div class="item-hint">💡 Saldo deposito + bunga berjalan, tenor di bawah 1 tahun.</div>
+                                <div class="item-hint">Saldo deposito + bunga berjalan, tenor di bawah 1 tahun.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i10_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i10_pasangan" placeholder="0"></div>
@@ -822,7 +835,7 @@
                             <h3>F · Aset Investasi</h3>
                             <div class="item-row" data-item-row="i11">
                                 <div class="item-label"><span class="item-idx">11.</span> Saham</div>
-                                <div class="item-hint">💡 Total nilai saham yang kamu pegang. Lihat di app Stockbit / Ajaib / Mirae / sekuritas lainnya — pakai angka "nilai portofolio saat ini" atau "current value".</div>
+                                <div class="item-hint">Total nilai saham yang kamu pegang. Lihat di app Stockbit / Ajaib / Mirae / sekuritas lainnya, pakai angka "nilai portofolio saat ini" atau "current value".</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i11_pasangan" placeholder="0"></div>
@@ -831,7 +844,7 @@
                             </div>
                             <div class="item-row" data-item-row="i11b">
                                 <div class="item-label"><span class="item-idx">12.</span> Reksa Dana</div>
-                                <div class="item-hint">💡 Reksa dana saham + campuran + pendapatan tetap. Lihat "nilai investasi saat ini" di Bibit / Bareksa / app sekuritas lain.</div>
+                                <div class="item-hint">Reksa dana saham + campuran + pendapatan tetap. Lihat "nilai investasi saat ini" di Bibit / Bareksa / app sekuritas lain.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11b_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i11b_pasangan" placeholder="0"></div>
@@ -840,7 +853,7 @@
                             </div>
                             <div class="item-row" data-item-row="i11c">
                                 <div class="item-label"><span class="item-idx">13.</span> Kripto / Aset Digital</div>
-                                <div class="item-hint">💡 Total nilai kripto yang kamu pegang. Cek di Pintu / Indodax / Tokocrypto / wallet lain — pakai "total portfolio value" hari ini.</div>
+                                <div class="item-hint">Total nilai kripto yang kamu pegang. Cek di Pintu / Indodax / Tokocrypto / wallet lain, pakai "total portfolio value" hari ini.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i11c_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i11c_pasangan" placeholder="0"></div>
@@ -849,7 +862,7 @@
                             </div>
                             <div class="item-row" data-item-row="i12">
                                 <div class="item-label"><span class="item-idx">14.</span> Obligasi (ORI / SBN / Sukuk)</div>
-                                <div class="item-hint">💡 Nilai ORI / SBN / Sukuk / obligasi korporasi yang kamu pegang. Kalau berencana hold sampai jatuh tempo, pakai nilai nominal.</div>
+                                <div class="item-hint">Nilai ORI / SBN / Sukuk / obligasi korporasi yang kamu pegang. Kalau berencana hold sampai jatuh tempo, pakai nilai nominal.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i12_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i12_pasangan" placeholder="0"></div>
@@ -858,7 +871,7 @@
                             </div>
                             <div class="item-row" data-item-row="i13">
                                 <div class="item-label"><span class="item-idx">15.</span> Emas / logam mulia (investasi)</div>
-                                <div class="item-hint">💡 Emas batangan: berat (gram) × harga buyback Antam / UBS hari ini (<span class="warn">bukan harga beli, bukan harga toko</span>). Cek di app Pegadaian atau website Antam.</div>
+                                <div class="item-hint">Emas batangan: berat (gram) × harga buyback Antam / UBS hari ini (<span class="warn">bukan harga beli, bukan harga toko</span>). Cek di app Pegadaian atau website Antam.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i13_pasangan" placeholder="0"></div>
@@ -867,7 +880,7 @@
                             </div>
                             <div class="item-row" data-item-row="i13b">
                                 <div class="item-label"><span class="item-idx">16.</span> Properti investasi</div>
-                                <div class="item-hint">💡 Rumah / tanah / ruko yang disewakan atau yang sedang dijual (<span class="warn">bukan rumah utama yang kamu tinggali</span>). Pakai harga transaksi terakhir di tetangga atau properti sejenis di area sekitar.</div>
+                                <div class="item-hint">Rumah / tanah / ruko yang disewakan atau yang sedang dijual (<span class="warn">bukan rumah utama yang kamu tinggali</span>). Pakai harga transaksi terakhir di tetangga atau properti sejenis di area sekitar.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i13b_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i13b_pasangan" placeholder="0"></div>
@@ -886,7 +899,7 @@
                             <h3>G · Aset Pribadi</h3>
                             <div class="item-row" data-item-row="i15">
                                 <div class="item-label"><span class="item-idx">17.</span> Rumah utama (yang ditinggali) + kendaraan (&gt; Rp 50 jt)</div>
-                                <div class="item-hint">💡 <strong>Rumah utama</strong> (yang kamu tinggali sekarang): pakai <strong>harga acquisition</strong> — harga yang kamu bayar saat beli. <strong>Kendaraan</strong>: cek market value di OLX / Mobil123, hanya hitung kalau ≥ Rp 50 jt.</div>
+                                <div class="item-hint"><strong>Rumah utama</strong> (yang kamu tinggali sekarang): pakai <strong>harga acquisition</strong>, harga yang kamu bayar saat beli. <strong>Kendaraan</strong>: cek market value di OLX / Mobil123, hanya hitung kalau ≥ Rp 50 jt.</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i15_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i15_pasangan" placeholder="0"></div>
@@ -907,13 +920,13 @@
                 <div class="wizard-step" id="step-3">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Utang</h2>
-                        <p class="text-sm text-gray-500 mb-4">Sisa pinjaman yang belum dibayar — bukan total cicilan yang sudah lewat.</p>
+                        <p class="text-sm text-gray-500 mb-4">Sisa pinjaman yang belum dibayar, bukan total cicilan yang sudah lewat.</p>
 
                         <div class="subsection">
                             <h3>H · Total Utang</h3>
                             <div class="item-row">
                                 <div class="item-label"><span class="item-idx">18.</span> Sisa pinjaman semua (KPR + kendaraan + KK + KTA + lain)</div>
-                                <div class="item-hint">💡 <strong>Sisa pinjaman yang belum dibayar</strong> dari semua pinjaman aktif — KPR + cicilan kendaraan + sisa tagihan kartu kredit + KTA + pinjaman online/teman. <span class="warn">BUKAN total yang sudah dibayar selama ini.</span> Cek di mobile banking — biasanya ada angka "outstanding" atau "sisa pokok".</div>
+                                <div class="item-hint"><strong>Sisa pinjaman yang belum dibayar</strong> dari semua pinjaman aktif, KPR + cicilan kendaraan + sisa tagihan kartu kredit + KTA + pinjaman online/teman. <span class="warn">BUKAN total yang sudah dibayar selama ini.</span> Cek di mobile banking, biasanya ada angka "outstanding" atau "sisa pokok".</div>
                                 <div class="three-col-input">
                                     <div class="col-input-wrap"><label>Saya</label><input class="formatted-number" inputmode="numeric" id="i17_saya" placeholder="0"></div>
                                     <div class="col-input-wrap"><label>Pasangan</label><input class="formatted-number" inputmode="numeric" id="i17_pasangan" placeholder="0"></div>
@@ -934,19 +947,19 @@
                 <div class="wizard-step" id="step-4">
                     <div class="section-card">
                         <h2 class="text-xl font-black mb-1">Profil Risiko</h2>
-                        <p class="text-sm text-gray-500 mb-4">Hampir selesai! 6 pertanyaan terakhir untuk profiling — supaya saya bisa kasih insight lebih spesifik saat kita konsultasi.</p>
+                        <p class="text-sm text-gray-500 mb-4">Hampir selesai! 6 pertanyaan terakhir untuk profiling, supaya saya bisa kasih insight lebih spesifik saat kita konsultasi.</p>
 
                         <!-- Q1: Usia -->
                         <div class="subsection">
                             <h3>1. Berapa usia kamu sekarang?</h3>
                             <input type="number" id="rp_usia" min="17" max="80" placeholder="contoh: 42" class="rp-input-num">
-                            <div class="item-hint">💡 Untuk konteks horizon planning.</div>
+                            <div class="item-hint">Untuk konteks horizon planning.</div>
                         </div>
 
                         <!-- Q2: Investment instruments experience -->
                         <div class="subsection">
                             <h3>2. Instrumen investasi apa saja yang pernah kamu pakai?</h3>
-                            <div class="item-hint">💡 Pilih semua yang kamu pernah miliki atau pernah pakai.</div>
+                            <div class="item-hint">Pilih semua yang kamu pernah miliki atau pernah pakai.</div>
                             <div class="rp-checkbox-grid">
                                 <label><input type="checkbox" id="rp_exp_deposito" data-rp-exp> Deposito / Tabungan Berjangka</label>
                                 <label><input type="checkbox" id="rp_exp_rd" data-rp-exp> Reksa Dana</label>
@@ -963,7 +976,7 @@
                         <!-- Q3: Drawdown reaction -->
                         <div class="subsection">
                             <h3>3. Bayangkan portfolio investasi kamu turun -25% dalam 1 bulan. Apa reaksi paling jujur kamu?</h3>
-                            <div class="item-hint">💡 Jawab yang paling jujur, bukan yang "seharusnya". Belum pernah punya portfolio? Pilih opsi terakhir — itu wajar.</div>
+                            <div class="item-hint">Jawab yang paling jujur, bukan yang "seharusnya". Belum pernah punya portfolio? Pilih opsi terakhir, itu wajar.</div>
                             <div class="rp-radio-list">
                                 <label><input type="radio" name="rp_drawdown" value="jual"> Langsung jual semua untuk cut loss</label>
                                 <label><input type="radio" name="rp_drawdown" value="hold"> Hold posisi, tunggu market recover</label>
@@ -976,7 +989,7 @@
                         <!-- Q4: Time monitoring -->
                         <div class="subsection">
                             <h3>4. Berapa jam per minggu kamu realistis bisa alokasi untuk monitor & review investasi?</h3>
-                            <div class="item-hint">💡 Berdasarkan jadwal kerja & komitmen pribadi kamu yang sebenarnya — bukan aspirasi.</div>
+                            <div class="item-hint">Berdasarkan jadwal kerja & komitmen pribadi kamu yang sebenarnya, bukan aspirasi.</div>
                             <div class="rp-radio-list">
                                 <label><input type="radio" name="rp_time" value="<1"> Kurang dari 1 jam</label>
                                 <label><input type="radio" name="rp_time" value="1-3"> 1-3 jam</label>
@@ -988,7 +1001,7 @@
                         <!-- Q5: Self-rated skill (3 sliders) -->
                         <div class="subsection">
                             <h3>5. Rate confidence kamu 1-5 di 3 hal berikut:</h3>
-                            <div class="item-hint">💡 Self-rating jujur — tidak ada jawaban benar atau salah. 1 = Tidak yakin sama sekali · 5 = Sangat yakin. <strong>Kalau belum pernah investasi, jawab 1 itu wajar</strong> — bukan kekurangan, bukan beban malu.</div>
+                            <div class="item-hint">Self-rating jujur, tidak ada jawaban benar atau salah. 1 = Tidak yakin sama sekali · 5 = Sangat yakin. <strong>Kalau belum pernah investasi, jawab 1 itu wajar</strong>, bukan kekurangan, bukan beban malu.</div>
 
                             <div class="rp-slider-row">
                                 <label>Memilih Reksa Dana yang sesuai goal saya <span class="rp-slider-val" id="rp_skill_rd_val">1</span></label>
@@ -1007,12 +1020,12 @@
                         <!-- Q6: Loss tolerance -->
                         <div class="subsection">
                             <h3>6. Maksimum % kerugian portfolio yang masih bisa kamu hold tanpa panik atau jual?</h3>
-                            <div class="item-hint">💡 Jawab realistic — bukan aspirational. Ini bukan ujian.</div>
+                            <div class="item-hint">Jawab realistic, bukan aspirational. Ini bukan ujian.</div>
                             <div class="rp-radio-list">
-                                <label><input type="radio" name="rp_loss" value="5"> 5% — saya sangat sensitif terhadap kerugian</label>
-                                <label><input type="radio" name="rp_loss" value="15"> 15% — saya bisa toleran rugi moderate</label>
-                                <label><input type="radio" name="rp_loss" value="30"> 30% — saya bisa hold turun banyak</label>
-                                <label><input type="radio" name="rp_loss" value="50"> 50%+ — saya nyaman dengan volatilitas tinggi</label>
+                                <label><input type="radio" name="rp_loss" value="5"> 5%, saya sangat sensitif terhadap kerugian</label>
+                                <label><input type="radio" name="rp_loss" value="15"> 15%, saya bisa toleran rugi moderate</label>
+                                <label><input type="radio" name="rp_loss" value="30"> 30%, saya bisa hold turun banyak</label>
+                                <label><input type="radio" name="rp_loss" value="50"> 50%+, saya nyaman dengan volatilitas tinggi</label>
                             </div>
                         </div>
 
@@ -1069,7 +1082,7 @@
                             </div>
                         </div>
 
-                        <p class="text-xs text-gray-400 mt-4">💡 Step berikutnya: kirim nama + email kamu, kami kirim PDF lengkap (semua angka + penjelasan setiap rasio dalam bahasa awam + rekomendasi action).</p>
+                        <p class="text-xs text-gray-400 mt-4">Step berikutnya: kirim nama + email kamu, kami kirim PDF lengkap (semua angka + penjelasan setiap rasio dalam bahasa awam + rekomendasi action).</p>
                     </div>
                 </div>
 
@@ -1095,7 +1108,7 @@
                                 <div class="lead-hint">PDF akan dikirim ke email ini dalam beberapa menit.</div>
                             </div>
 
-                            <!-- Financial Goal — qualifying lead intent -->
+                            <!-- Financial Goal, qualifying lead intent -->
                             <div class="lead-field">
                                 <label>Goal finansial kamu selanjutnya apa?</label>
                                 <div class="rp-radio-list" style="margin-top: 0.375rem;">
@@ -1104,15 +1117,15 @@
                                     <label><input type="radio" name="financial_goal" id="fg_lainnya" value="lainnya" onchange="document.getElementById('fg_lainnya_text_wrap').style.display='block'; document.getElementById('fg_lainnya_text').focus();"> Lainnya</label>
                                 </div>
                                 <div id="fg_lainnya_text_wrap" style="display:none; margin-top: 0.5rem;">
-                                    <input type="text" id="fg_lainnya_text" placeholder="Sebutkan goal kamu — contoh: beli rumah, dana liburan, modal usaha" style="width:100%; padding:0.625rem 0.875rem; border:1px solid #e5e7eb; border-radius:0.625rem; font-size:0.875rem;">
+                                    <input type="text" id="fg_lainnya_text" placeholder="Sebutkan goal kamu, contoh: beli rumah, dana liburan, modal usaha" style="width:100%; padding:0.625rem 0.875rem; border:1px solid #e5e7eb; border-radius:0.625rem; font-size:0.875rem;">
                                 </div>
                                 <div class="lead-hint" style="margin-top: 0.375rem;">Pilih yang paling utama saat ini. Bisa diubah kapan saja saat konsultasi.</div>
                             </div>
 
-                            <!-- Cloudflare Turnstile placeholder — actual widget added saat backend ready -->
+                            <!-- Cloudflare Turnstile placeholder, actual widget added saat backend ready -->
                             <div class="lead-field">
                                 <div id="cf-turnstile-placeholder" style="background: #f3f4f6; border: 1.5px dashed #d1d5db; border-radius: 0.625rem; padding: 1rem; text-align: center; color: #6b7280; font-size: 0.75rem;">
-                                    🔒 CAPTCHA verification (akan aktif begitu backend ready)
+                                    CAPTCHA verification (akan aktif begitu backend ready)
                                 </div>
                             </div>
                         </div>
@@ -1123,9 +1136,9 @@
 
                 <!-- =================== NAV =================== -->
                 <div class="wizard-nav">
-                    <button type="button" class="wizard-back" id="btn-back" onclick="prevStep()" disabled>← Back</button>
-                    <button type="button" class="wizard-next" id="btn-next" onclick="nextStep()">Next →</button>
-                    <button type="submit" class="wizard-submit" id="btn-submit" style="display:none;">✉️ Kirim PDF ke Email Saya</button>
+                    <button type="button" class="wizard-back" id="btn-back" onclick="prevStep()" disabled>Kembali</button>
+                    <button type="button" class="wizard-next" id="btn-next" onclick="nextStep()">Lanjut</button>
+                    <button type="submit" class="wizard-submit" id="btn-submit" style="display:none;">Kirim PDF ke email saya</button>
                 </div>
 
                 <div class="step-error" id="step-error"></div>
@@ -1135,18 +1148,30 @@
             <!-- Success state -->
             <div class="success-state" id="success-state">
                 <div class="check-icon">✓</div>
-                <h2>PDF Sedang Dikirim</h2>
-                <p>Cek email kamu dalam 2–5 menit. Kalau tidak masuk, cek folder Spam atau Promotions.</p>
-                <p class="mt-4 text-sm">Saya akan kontak kamu dalam 24 jam.</p>
-                <a href="index.html" class="inline-block mt-6 text-sm text-emerald-600 font-semibold hover:underline">← Kembali ke halaman utama</a>
+                <h2>PDF sedang dikirim</h2>
+                <p>Cek email kamu dalam 2 sampai 5 menit. Kalau belum masuk, cek folder Spam atau Promotions.</p>
+                <div class="cta-card" style="margin-top:28px;text-align:left">
+                  <h2>Mau dibahas langsung?</h2>
+                  <p>Telepon 10 menit lewat WhatsApp dengan Philip Mulyana, CFP®. Kamu cerita kondisi keuangan dan hasil check-up ini, lalu Philip melihat apa yang bisa dibantu. Gratis, dan kamu tidak wajib membeli apa pun.</p>
+                  <a class="button" id="fc-first-call" href="https://leaf.id/jadwal/first-call" target="_blank" rel="noopener" data-forward-attribution>Pilih jadwal ngobrol 10 menit</a>
+                </div>
+                <a href="/tools/" class="inline-block mt-6 text-sm font-semibold hover:underline">Lihat tools lain</a>
             </div>
 
         </div>
     </section>
 
-    <div id="footer-placeholder"></div>
+    </main>
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand"><img src="/assets/homepage/logo-white.png" alt="Philip Mulyana" width="1443" height="1181" loading="lazy"><p>Mulai dengan percakapan singkat untuk melihat apakah layanan ini relevan.</p></div>
+        <div><h2>Belajar</h2><a href="/blog.html">Artikel</a><a href="/tools/">Tools</a><a href="/product/dana-kuliah/">Online Course</a></div>
+        <div><h2>Konsultasi</h2><a href="/consultation.html">Konsultasi Asuransi</a><a href="https://leaf.id/jadwal/first-call" data-forward-attribution>First Call</a></div>
+        <div><h2>Tentang</h2><a href="/about.html">Tentang Philip</a><a href="https://instagram.com/philipmulyana" target="_blank" rel="noopener noreferrer">Instagram</a><a href="/privacy-policy/">Kebijakan Privasi</a></div>
+      </div>
+    </footer>
 
-    <script src="js/main.js"></script>
-    <script src="js/checkup.js?v=12"></script>
+    <script src="/js/site.js" defer></script>
+    <script src="/js/checkup.js?v=13"></script>
 </body>
 </html>

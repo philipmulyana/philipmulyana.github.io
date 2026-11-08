@@ -622,7 +622,7 @@ function showStep(n, opts) {
     const label = document.getElementById('step-label');
     const pctEl = document.getElementById('step-pct');
     if (fill) fill.style.width = pct + '%';
-    if (label) label.textContent = `Step ${visiblePosition} of ${totalVisible}`;
+    if (label) label.textContent = `Langkah ${visiblePosition} dari ${totalVisible}`;
     if (pctEl) pctEl.textContent = pct + '%';
 
     // Update step dots
@@ -656,7 +656,7 @@ function showStep(n, opts) {
     }
 
     // If step 5 (Review — moved from old step 4), re-render results
-    if (n === 5) renderAll();
+    if (n === 5) { renderAll(); try { if (window.fbq && !window.__fcViewed) { window.__fcViewed = true; fbq('track', 'ViewContent', { content_name: 'financial-checkup', content_category: 'tool' }); } } catch (e) {} }
 
     // Scroll to top of form (only when explicitly navigating — not on prequal updates)
     if (scroll) {
@@ -821,7 +821,7 @@ async function submitCheckup() {
     const submitBtn = document.getElementById('btn-submit');
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = '⏳ Sedang mengirim...';
+        submitBtn.textContent = 'Sedang mengirim...';
     }
 
     try {
@@ -841,6 +841,9 @@ async function submitCheckup() {
         document.querySelector('.progress-wrap').style.display = 'none';
         const successEl = document.getElementById('success-state');
         if (successEl) successEl.classList.add('show');
+        try { if (window.fbq) fbq('track', 'Lead', { content_name: 'financial-checkup' }); } catch (e) {}
+        const fc = document.getElementById('fc-first-call');
+        if (fc) fc.addEventListener('click', () => { try { if (window.fbq) fbq('track', 'Schedule', { content_name: 'financial-checkup' }); } catch (e) {} });
 
         // Clear stored state after successful submit (so klien yang isi ulang ga keep old data)
         try { localStorage.removeItem(STORAGE_KEY_CHK); } catch (e) {}
@@ -850,7 +853,7 @@ async function submitCheckup() {
         showError('Maaf, sistem sedang ada gangguan. Coba lagi dalam beberapa menit, atau hubungi philip.mulyana@gmail.com langsung.');
         if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = '✉️ Kirim PDF ke Email Saya';
+            submitBtn.textContent = 'Kirim PDF ke email saya';
         }
     }
 }

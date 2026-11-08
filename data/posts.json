@@ -1,6 +1,46 @@
 {
   "posts": [
     {
+      "slug": "bunga-deposito-tinggi-dijamin-lps-3-75-persen",
+      "title": "Bunga Deposito Sampai 7,5%: Di Atas 3,75%, Simpanan Kamu Ga Dijamin LPS",
+      "category": "personal_finance",
+      "categoryLabel": "News Insight",
+      "date": "2026-11-08",
+      "excerpt": "Bank lagi rebutan dana dan pasang bunga deposito tinggi. LPS menjamin simpanan cuma kalau bunganya maksimal 3,75%. Ini cara nyusun dana darurat dan tabungan kamu.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "paylater-bank-rp31-triliun-cek-cicilan-kamu",
+      "title": "Paylater Bank Tembus Rp31,5 Triliun: Cicilan Kamu Udah Berapa Persen dari Gaji?",
+      "category": "personal_finance",
+      "categoryLabel": "News Insight",
+      "date": "2026-11-08",
+      "excerpt": "Data OJK September 2026: 34,5 juta rekening paylater bank, Rp31,5 triliun. Regulator sendiri membatasi cicilan paylater 40% dari penghasilan. Ini cara ngecek punya kamu.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "ojk-blokir-dana-scam-967-miliar-baru-seperlima-balik",
+      "title": "OJK Blokir Dana Scam Rp967,5 Miliar, Baru Seperlima yang Balik ke Korban",
+      "category": "personal_finance",
+      "categoryLabel": "News Insight",
+      "date": "2026-11-08",
+      "excerpt": "Data IASC sampai Oktober 2026: dana korban penipuan yang diblokir hampir Rp1 triliun, yang balik baru Rp208,9 miliar. Ini kenapa kecepatan lapor paling menentukan.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "iuran-bpjs-desil-1-8-ditanggung-pemerintah-masih-simulasi",
+      "title": "Iuran BPJS Desil 1 sampai 8 Mau Ditanggung Pemerintah: Masih Simulasi, Tetap Bayar Dulu",
+      "category": "insurance",
+      "categoryLabel": "News Insight",
+      "date": "2026-11-08",
+      "excerpt": "Mensos bilang iuran BPJS Kesehatan 188 juta warga desil 1 sampai 8 mau ditanggung pemerintah. Ini skemanya, siapa yang ga ikut, dan kenapa kamu tetap harus bayar sekarang.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "pajak-digital-9-november-transfer-ga-kena-ppn",
       "title": "Pajak Digital 9 November: Transfer Bank dan E-Wallet Kamu Ga Kena PPN Baru",
       "category": "economy",
