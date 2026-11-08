@@ -530,12 +530,13 @@ footer img { height: 40px; }
     a.href = PRODUCT_LINK;
     a.addEventListener('click', function (e) {
       track('InitiateCheckout');
-      if (!native) return;
+      if (pingDone && !native) return;
       e.preventDefault();
-      open();
+      ready.then(function () { if (native) open(); else location.href = PRODUCT_LINK; });
     });
   });
-  call({ action: 'ping' }).then(function (j) { native = !!j.ok; if (native) resume(); }).catch(function () {});
+  var pingDone = false;
+  var ready = Promise.race([call({ action: 'ping' }), new Promise(function (r) { setTimeout(function () { r({}); }, 5000); })]).then(function (j) { native = !!j.ok; }).catch(function () {}).then(function () { pingDone = true; if (native) resume(); });
 
   function open() {
     co.hidden = false; document.body.style.overflow = 'hidden';
