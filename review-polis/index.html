@@ -431,7 +431,7 @@ footer img { height: 40px; }
 <script>
 (function () {
   // Isi CHECKOUT_URL dengan link checkout publik dari leaf.id begitu sudah live.
-  var CHECKOUT_URL = '';
+  var CHECKOUT_URL = 'https://philip-mulyana-84218.myr.id/pl/Review-Polis-Keluarga/';
   document.querySelectorAll('[data-checkout]').forEach(function (a) {
     if (CHECKOUT_URL) { a.href = CHECKOUT_URL; }
     a.addEventListener('click', function () { if (window.fbq) fbq('track', 'InitiateCheckout', { value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }); });
