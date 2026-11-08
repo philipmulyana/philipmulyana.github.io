@@ -511,6 +511,7 @@ footer img { height: 40px; }
   var API = 'https://ziueouzldkidytoqmlpz.supabase.co/functions/v1/review-polis-checkout';
   var native = false, method = 'qris', pollT = null, tickT = null;
   var $ = function (id) { return document.getElementById(id); };
+  var PKEY = /[?&]tes=/.test(location.search) ? 'rp_pending_tes' : 'rp_pending';
   var co = $('co'), form = $('co-form'), pay = $('co-pay'), err = $('co-err'), go = $('co-go');
 
   function track(ev, extra) { if (/[?&]tes=/.test(location.search)) return; try { if (window.fbq) fbq('track', ev, Object.assign({ value: 1000000, currency: 'IDR', content_name: 'Review Polis Keluarga' }, extra || {})); } catch (e) {} }
@@ -536,7 +537,7 @@ footer img { height: 40px; }
 
   function open() {
     co.hidden = false; document.body.style.overflow = 'hidden';
-    var p = load('rp_pending');
+    var p = load(PKEY);
     if (p && p.expiresAt && Date.parse(p.expiresAt) > Date.now()) showPay(p); else showForm();
     setTimeout(function () { var f = form.hidden ? null : $('co-name'); if (f && !f.value) f.focus(); }, 50);
   }
@@ -568,7 +569,7 @@ footer img { height: 40px; }
       if (j._status === 429) { err.textContent = 'Tunggu 1 menit, lalu coba lagi.'; return; }
       if (!j.tx) { err.textContent = 'Pembayaran belum bisa dibuat. Coba metode lain atau ulangi sebentar lagi.'; return; }
       track('AddPaymentInfo', { payment_type: method });
-      store('rp_pending', j); showPay(j);
+      store(PKEY, j); showPay(j);
     }).catch(function () {
       go.disabled = false; go.textContent = 'Lanjut bayar';
       err.textContent = 'Koneksi terputus. Coba lagi.';
@@ -614,14 +615,14 @@ footer img { height: 40px; }
         (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(function () { b.textContent = 'Tersalin'; }, function () { b.textContent = v; });
       });
     });
-    pay.querySelector('[data-co-reset]').addEventListener('click', function (e) { e.preventDefault(); store('rp_pending', null); showForm(); });
+    pay.querySelector('[data-co-reset]').addEventListener('click', function (e) { e.preventDefault(); store(PKEY, null); showForm(); });
 
     stop();
     var end = Date.parse(exp) || (Date.now() + 3600e3);
     var tick = function () {
       var s = Math.max(0, Math.round((end - Date.now()) / 1000));
       var el = $('co-left'); if (el) el.textContent = 'Berlaku ' + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
-      if (!s) { stop(); store('rp_pending', null); pay.querySelector('.co-wait').innerHTML = '<span>Waktu pembayaran habis. Klik "Ganti metode pembayaran" untuk buat yang baru.</span>'; }
+      if (!s) { stop(); store(PKEY, null); pay.querySelector('.co-wait').innerHTML = '<span>Waktu pembayaran habis. Klik "Ganti metode pembayaran" untuk buat yang baru.</span>'; }
     };
     tick(); tickT = setInterval(tick, 1000);
     var started = Date.now();
@@ -637,7 +638,7 @@ footer img { height: 40px; }
   function stop() { clearTimeout(pollT); clearInterval(tickT); }
 
   function done(silent) {
-    stop(); store('rp_pending', null); if (!silent) track('Purchase');
+    stop(); store(PKEY, null); if (!silent) track('Purchase');
     co.hidden = false; document.body.style.overflow = 'hidden';
     form.hidden = true; pay.hidden = false; $('co-sub').textContent = '';
     pay.innerHTML = '<div class="co-ok"><div class="tick">&#10003;</div><h3>Pembayaran diterima</h3>' +
@@ -647,7 +648,7 @@ footer img { height: 40px; }
   }
 
   function resume() {
-    var p = load('rp_pending');
+    var p = load(PKEY);
     if (/[?&]bayar=berhasil/.test(location.search)) {
       if (!p || !p.tx) { done(true); return; }
       call({ action: 'status', tx: p.tx }).then(function (r) { done(!r.paid); }).catch(function () { done(true); });
