@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://philipmulyana.com/review-polis/">
-<meta name="description" content="Semua polis keluarga kamu, dari perusahaan mana pun, dicatat dan dipetakan dalam satu laporan. Laporan dalam 72 jam plus sesi 60 menit. Rp1 juta per keluarga.">
+<meta name="description" content="Semua polis keluarga kamu, dari perusahaan mana pun, dicatat dan dipetakan dalam satu laporan. Laporan dalam 72 jam plus sesi 60 menit.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="id_ID">
 <meta property="og:title" content="Review Polis Keluarga, Philip Mulyana">
@@ -93,6 +93,8 @@ section { padding: 96px 0; }
 .stat { background: var(--panel); border-radius: 18px; padding: 30px; display: grid; gap: 10px; align-content: start; }
 .stat .n { font-size: 54px; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
 .stat .n small { font-size: 22px; font-weight: 600; }
+.now-lead { font-size: 20px; color: #333; max-width: 62ch; margin-top: 18px; }
+.now .src { font-size: 14px; color: var(--grey); margin-top: 18px; }
 .stat h3 { font-size: 20px; }
 .stat p { font-size: 16px; color: var(--grey); }
 
@@ -156,11 +158,13 @@ details p { margin-top: 10px; color: #3a3a3a; font-size: 17px; }
 .price ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .price li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; font-size: 17px; }
 .price li svg { width: 22px; height: 22px; color: var(--green); margin-top: 2px; }
-.price .r { background: var(--ink); color: #fff; padding: 48px; display: grid; gap: 16px; align-content: center; }
+.price .r { background: var(--ink); color: #fff; padding: 48px; display: grid; gap: 16px; align-content: center; min-width: 0; }
+.price .r .muted { color: #d4d4d4; }
+.price .l { min-width: 0; }
 .price .amount { white-space: nowrap; font-size: clamp(44px, 4.6vw, 60px); font-weight: 700; line-height: 1; letter-spacing: -.02em; }
 .price .amount small { display: block; margin-top: 8px; font-size: 18px; font-weight: 500; color: #bdbdbd; }
-.slots { display: flex; gap: 6px; }
-.slots i { width: 34px; height: 10px; border-radius: 3px; background: #3a3a3a; }
+.slots { display: flex; gap: 6px; max-width: 340px; }
+.slots i { flex: 1 1 0; min-width: 0; height: 10px; border-radius: 3px; background: #3a3a3a; }
 .slots i.taken { background: var(--red); }
 
 /* lead */
@@ -216,7 +220,7 @@ footer img { height: 40px; }
 <header class="nav">
   <div class="wrap">
     <img class="logo" src="assets/logo-white.png" alt="Philip Mulyana">
-    <a class="btn" href="#harga" data-checkout>Pesan Review, Rp1 juta</a>
+    <a class="btn" href="#harga" data-checkout>Pesan Review Polis</a>
   </div>
 </header>
 
@@ -227,7 +231,7 @@ footer img { height: 40px; }
       <span class="kicker">Review Polis Keluarga</span>
       <h1>Jangan baru tahu isi polis kamu saat di rumah sakit.</h1>
       <p class="lead">Semua polis keluarga kamu, dari perusahaan mana pun, dicatat dan dipetakan dalam satu laporan. Kamu tahu apa yang ditanggung, apa yang tidak, dan apa yang masih bolong.</p>
-      <div><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga, Rp1 juta <svg><use href="#arr"/></svg></a></div>
+      <div><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga <svg><use href="#arr"/></svg></a></div>
       <div class="meta"><span><i></i>Laporan dalam 72 jam</span><span><i></i>Sesi 60 menit</span><span><i></i>Polis dari perusahaan mana pun</span></div>
     </div>
     <div class="visual">
@@ -259,16 +263,18 @@ footer img { height: 40px; }
   </div>
 </section>
 
-<!-- WHY NOW -->
+<!-- WHY IT MATTERS -->
 <section class="now">
   <div class="wrap">
-    <span class="kicker">Kenapa sekarang</span>
-    <h2>Biaya terus berubah. Polis kamu ikut berubah.</h2>
+    <span class="kicker">Kenapa ini penting</span>
+    <h2>Rp77 triliun polis diputus di tengah jalan dalam setahun.</h2>
+    <p class="now-lead">Banyak polis ditutup karena pemiliknya baru sadar isinya tidak sesuai kebutuhan. Saat polis ditutup, perlindungannya hilang dan manfaatnya tidak pernah terpakai. Premi yang sudah terpotong biaya bertahun-tahun tidak kembali utuh.</p>
     <div class="grid">
-      <div class="stat"><div class="n">±18<small>%</small></div><h3>Inflasi medis 2026</h3><p>Perkiraan kenaikan biaya kesehatan di Indonesia, jauh di atas inflasi umum. Premi kesehatan disesuaikan hampir tiap tahun.</p></div>
-      <div class="stat"><div class="n">5<small>%</small></div><h3>Aturan baru asuransi kesehatan</h3><p>Ada porsi biaya klaim yang ditanggung nasabah. Banyak produk sedang disesuaikan dan surat perubahan polis berdatangan.</p></div>
-      <div class="stat"><div class="n">1<small> aplikasi = 1 perusahaan</small></div><h3>Polis tersebar</h3><p>Polis pribadi, asuransi kantor, BPJS. Tidak ada satu tempat yang menunjukkan semuanya sekaligus.</p></div>
+      <div class="stat"><div class="n">Rp77,4<small> T</small></div><h3>Polis asuransi jiwa ditebus</h3><p>Nilai klaim tebus polis (surrender) sepanjang 2024. Uangnya keluar, perlindungannya berhenti.</p></div>
+      <div class="stat"><div class="n">74,5<small>%</small></div><h3>Berasal dari unit link</h3><p>Sebagian besar polis yang ditutup adalah unit link, produk yang paling sering dibeli tanpa benar-benar dipahami.</p></div>
+      <div class="stat"><div class="n">Tahun 1–5</div><h3>Premi awal terpakai biaya</h3><p>Di unit link, biaya akuisisi dipotong di tahun-tahun awal. Kalau polis ditutup cepat, yang kembali jauh lebih kecil dari yang disetor.</p></div>
     </div>
+    <p class="src">Sumber: data industri asuransi jiwa (AAJI), dikutip Bisnis.com, Maret 2025.</p>
   </div>
 </section>
 
@@ -308,7 +314,7 @@ footer img { height: 40px; }
       <div class="step"><div class="num">2</div><h3>Terima peta perlindungan</h3><p>Laporan PDF dalam 72 jam setelah data lengkap.</p></div>
       <div class="step"><div class="num">3</div><h3>Sesi 60 menit</h3><p>Kita bahas isi laporan lewat Google Meet. Kamu yang memutuskan: pertahankan, sesuaikan, atau tinjau ulang. Plus 1 kali tanya jawab tertulis.</p></div>
     </div>
-    <div class="center"><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga, Rp1 juta <svg><use href="#arr"/></svg></a></div>
+    <div class="center"><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga <svg><use href="#arr"/></svg></a></div>
   </div>
 </section>
 
@@ -374,7 +380,7 @@ footer img { height: 40px; }
         <p class="muted">Slot terbatas, 3 keluarga per minggu.</p>
         <div class="slots" aria-label="7 dari 10 slot terisi"><i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i></i><i></i><i></i></div>
         <p style="font-size:15px">Sisa <b>3 slot</b> batch ini</p>
-        <p class="soon" hidden style="font-size:14px;color:#bdbdbd">Pemesanan dibuka segera.</p>
+        <p class="soon" hidden style="font-size:14px;color:#d4d4d4">Pemesanan dibuka segera.</p>
         <div><a class="btn light" href="#harga" data-checkout>Pesan sekarang <svg><use href="#arr"/></svg></a></div>
       </div>
     </div>
@@ -398,7 +404,7 @@ footer img { height: 40px; }
   <div class="wrap">
     <h2>Kalau hari buruk datang, keluarga kamu tahu harus berbuat apa.</h2>
     <p>Bukan bingung cari buku polis. Bukan baru tahu ada pengecualian.</p>
-    <div><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga, Rp1 juta <svg><use href="#arr"/></svg></a></div>
+    <div><a class="btn" href="#harga" data-checkout>Pesan Review Polis Keluarga <svg><use href="#arr"/></svg></a></div>
   </div>
 </section>
 
