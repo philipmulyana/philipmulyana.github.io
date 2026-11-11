@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Internal linking pass. Run AFTER any blog generator (idempotent).
 
-1. Each /blog/{slug}.html: "Baca Juga" shows the 3 most related articles (by topic
+1. Each /blog/{slug}.html: "Baca Juga" shows the 4 most related articles (by topic
    words in title + excerpt) instead of the same 2 newest posts, plus a box linking
    the matching free tool.
 2. /blog.html: a static, crawlable list of every article (the JS list stays for
@@ -41,7 +41,7 @@ def tool_for(p):
     return best if re.search(best[3], t) else None
 
 
-def related(p, n=3):
+def related(p, n=4):
     w = words(p)
     tl = tool_for(p)
     scored = []
