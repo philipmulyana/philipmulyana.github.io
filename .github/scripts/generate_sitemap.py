@@ -17,6 +17,8 @@ PUBLISHED_PATTERNS = (
     "links/**/*.html",
     "corporate/**/*.html",
     "privacy-policy/**/*.html",
+    "review-polis/**/*.html",
+    "testimonials/**/*.html",
 )
 SCRIPT_REDIRECT_MARKERS = ("location.replace",)
 

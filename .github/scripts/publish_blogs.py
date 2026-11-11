@@ -71,7 +71,9 @@ def seo_head(post):
         f'    <meta property="og:title" content="{_html.escape(title, quote=True)}">',
         f'    <meta property="og:description" content="{_html.escape(description, quote=True)}">',
         f'    <meta property="og:url" content="{_html.escape(canonical, quote=True)}">',
-        '    <meta name="twitter:card" content="summary">',
+        '    <meta property="og:image" content="https://philipmulyana.com/assets/homepage/profile-photo.webp">',
+        '    <meta name="twitter:card" content="summary_large_image">',
+        '    <meta name="twitter:image" content="https://philipmulyana.com/assets/homepage/profile-photo.webp">',
         f'    <meta name="twitter:title" content="{_html.escape(title, quote=True)}">',
         f'    <meta name="twitter:description" content="{_html.escape(description, quote=True)}">',
     ]
