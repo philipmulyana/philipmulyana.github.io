@@ -24,5 +24,3 @@ fbq('track', 'PageView');
 // image fallback is added here: a <noscript> beacon builds its own URL
 // outside the page's scrub step and could carry an unscrubbed address.
 
-// First-party traffic beacon (cookieless) -> /stats dashboard
-(function(){try{var s=document.createElement('script');s.src='/js/track.js';s.defer=true;document.head.appendChild(s);}catch(e){}})();
