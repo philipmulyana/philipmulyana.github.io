@@ -1,6 +1,56 @@
 {
   "posts": [
     {
+      "slug": "laps-sjk-adalah",
+      "title": "LAPS SJK Adalah? Jalur Sengketa Asuransi Tanpa ke Pengadilan",
+      "category": "insurance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-11-12",
+      "excerpt": "LAPS SJK adalah lembaga penyelesaian sengketa jasa keuangan di luar pengadilan. Gratis untuk sengketa asuransi jiwa sampai Rp500 juta. Ini syarat dan alurnya.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "pengaduan-ojk-asuransi",
+      "title": "Cara Pengaduan OJK Asuransi Kalau Klaim Ditolak",
+      "category": "insurance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-11-12",
+      "excerpt": "Pengaduan OJK asuransi langkah demi langkah: adukan dulu ke perusahaan, siapkan dokumen, lalu ajukan lewat Kontak 157 atau portal APPK. Ini batas waktunya.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "klaim-asuransi-jiwa-ditolak",
+      "title": "Klaim Asuransi Jiwa Ditolak: Yang Bisa Dilakukan Ahli Waris",
+      "category": "insurance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-11-12",
+      "excerpt": "Klaim asuransi jiwa ditolak setelah orang tua atau pasangan meninggal? Ini langkah ahli waris: minta alasan tertulis, banding, lapor OJK, sampai LAPS SJK.",
+      "readingTime": "5 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "masa-tunggu-asuransi-kesehatan",
+      "title": "Masa Tunggu Asuransi Kesehatan: Berapa Lama dan Penyakit Apa Saja yang Kena",
+      "category": "insurance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-11-12",
+      "excerpt": "Masa tunggu asuransi kesehatan individu kini maksimal 30 hari, dan 6 bulan untuk penyakit kritis atau kronis (POJK 36/2025). Ini rincian dan jebakannya.",
+      "readingTime": "6 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
+      "slug": "pre-existing-condition-asuransi",
+      "title": "Pre-Existing Condition di Asuransi: Artinya, Contohnya, dan Kenapa Jujur Pun Bisa Bermasalah",
+      "category": "insurance",
+      "categoryLabel": "Artikel Kami",
+      "date": "2026-11-12",
+      "excerpt": "Pre existing condition asuransi adalah kondisi kesehatan yang sudah ada sebelum polis aktif. Ini contohnya, aturannya, dan cara mengisi SPAJ dengan aman.",
+      "readingTime": "4 menit baca",
+      "author": "Philip Mulyana"
+    },
+    {
       "slug": "repricing-asuransi-kesehatan-premi-naik",
       "title": "Premi Asuransi Kesehatanmu Naik? Ini Alasannya, dan 4 Pilihan yang Kamu Punya",
       "category": "insurance",
