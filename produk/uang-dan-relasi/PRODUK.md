@@ -1,7 +1,7 @@
 # Cinta Boleh Buta, Rekening Jangan
 ### Kelas Uang & Relasi untuk Pasangan — by Philip Mulyana
 
-> **Janji produk:** Dalam 2 jam, lu dan pasangan pulang dengan **kesepakatan uang tertulis**, sebelum duit jadi alasan ribut.
+> **Janji produk:** Dalam 2 jam, lu dan pasangan pulang dengan **kesepakatan uang tertulis**, supaya duit berhenti jadi alasan ribut yang sama berulang-ulang.
 
 ---
 
@@ -10,7 +10,7 @@
 | Item | Detail |
 |---|---|
 | Format | Kelas live via Zoom, 2 jam. Rekaman dikasih ke peserta (nanti bisa dijual lagi sebagai produk rekaman) |
-| Target | Pasangan yang mau nikah / baru nikah 0–3 tahun |
+| Target | Pasangan yang **sudah menikah**, umur 30+ (mayoritas nikah 3–10+ tahun), yang masih ribut, diam-diam, atau belum pernah sepakat soal uang |
 | Tiket | **1 tiket = 1 pasangan** |
 | Harga | Early bird **Rp249rb** · Normal **Rp399rb** |
 | Isi paket | Kelas 2 jam + rekaman + Workbook "Money Date" + Template Budget Pasangan + Draft Kesepakatan Uang |
@@ -40,7 +40,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 
 ### Pembuka (0–10 menit)
 **Poin bicara:**
-- "Kelas ini bukan buat nyari siapa yang salah. Ini buat bikin aturan main sebelum ada yang ngerasa dirugikan."
+- "Kelas ini bukan buat nyari siapa yang salah. Ini buat bikin aturan main, supaya nggak ada lagi yang ngerasa dirugikan."
 - "Gue bukan psikolog. Kalau ada KDRT, kecanduan judi/pinjol, atau trauma berat, itu ranahnya profesional. Gue kasih rujukan di akhir."
 - Minta peserta duduk berdua & buka Workbook halaman 1.
 
@@ -79,7 +79,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 6. **"Nanti aja dibahas"** — topik uang selalu dihindari.
 7. **Satu orang menanggung semua keputusan** — termasuk investasi besar tanpa diskusi.
 
-**Pesan kunci:** Red flag bukan vonis cerai. Red flag = tanda harus bikin aturan, *sekarang*.
+**Pesan kunci:** Red flag bukan vonis cerai. Red flag = tanda aturan mainnya harus dibenerin, *sekarang*. Telat bertahun-tahun bukan alasan buat nggak mulai.
 
 **Latihan:** centang red flag yang ada di relasi kalian (Workbook hlm. 3). Pilih **satu** yang mau dibereskan bulan ini.
 
@@ -114,7 +114,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 - [ ] Asuransi jiwa untuk pencari nafkah — uang pertanggungan ± 10x penghasilan tahunan (rule of thumb, hitung detail di konsultasi)
 - [ ] Penerima manfaat di polis & rekening sudah diperbarui
 - [ ] Pasangan tahu daftar aset, utang, akun & polis (Workbook hlm. 6 — "Daftar Kalau Gue Nggak Ada")
-- [ ] Bahas perjanjian kawin (pra/pasca nikah) — bukan karena nggak percaya, tapi karena **jelas lebih murah daripada ribut**
+- [ ] Bahas perjanjian kawin (umumnya bisa juga dibuat setelah menikah, tapi syarat & prosedurnya wajib dikonfirmasi ke notaris) — bukan karena nggak percaya, tapi karena **jelas lebih murah daripada ribut**
 
 **Kalimat kunci:** "Perjanjian kawin itu bukan rencana cerai. Itu sabuk pengaman. Lu pakai sabuk bukan karena mau tabrakan."
 
@@ -159,8 +159,8 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 5. Siapa yang selama ini bayar apa — dan apakah itu adil menurut kita berdua?
 6. Berapa yang kita kirim ke keluarga masing-masing? Mau dibatasi berapa?
 7. Apa 3 tujuan uang kita dalam 5 tahun ke depan?
-8. Kita mau punya anak? Kapan? Sudah hitung biayanya?
-9. Mau beli rumah kapan, di mana, cicilan maksimal berapa?
+8. Biaya anak ke depan (sekolah, kuliah) sudah kita hitung? Kalau belum punya anak, rencananya apa?
+9. Soal rumah: sudah punya (sisa KPR berapa?), mau pindah/upgrade, atau belum punya — cicilan maksimal yang aman berapa?
 10. Berapa dana darurat kita sekarang?
 11. Apa saja asuransi yang kita punya, dan siapa penerima manfaatnya?
 12. Kalau salah satu kena PHK, rencana kita apa?
@@ -227,9 +227,9 @@ Isi = Modul 3 versi ringkas + 1 pertanyaan refleksi per red flag + CTA di bawah:
 
 **Judul:** Cinta Boleh Buta. Rekening Jangan.
 
-**Sub:** Kelas 2 jam buat pasangan yang mau ngomongin uang *sebelum* uang yang ngomongin kalian.
+**Sub:** Kelas 2 jam buat pasangan yang udah bertahun-tahun nikah, tapi masih ribut soal uang yang itu-itu aja.
 
-**Masalah:** Kebanyakan pasangan bukan ribut karena kurang uang. Mereka ribut karena nggak pernah sepakat soal uang. Siapa bayar apa. Berapa buat keluarga. Utang yang "nanti juga lunas". Dan begitu meledak, telat.
+**Masalah:** Udah 5, 8, 10 tahun nikah. Penghasilan naik, tanggungan nambah, cicilan nambah. Tapi soal uang? Masih ribut hal yang sama. Siapa bayar apa. Berapa buat keluarga. Utang yang "nanti juga lunas". Bukan karena kurang uang, tapi karena dari awal nggak pernah ada kesepakatan. Dan makin lama dibiarin, makin mahal ongkosnya.
 
 **Kenapa gue:** 16 tahun ngurus uang nasabah — dari investor saham sampai keluarga pengusaha. Dan gue pernah gagal di rumah tangga gue sendiri. Kelas ini gabungan dua-duanya: ilmunya, dan lukanya.
 

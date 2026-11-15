@@ -1,6 +1,6 @@
 # Kerangka Segmen — 100 Persona Simulasi
 Produk: Kelas "Cinta Boleh Buta, Rekening Jangan" (input: `PRODUK.md`)
-Status: **DRAFT, menunggu persetujuan Philip.** Revisi: fokus ke yang **sudah menikah, umur 30+** (arahan Philip). ⚠️ Ini berbeda dari target di PRODUK.md ("mau nikah / baru nikah 0–3 tahun"), jadi isi & copy produk perlu disesuaikan nanti. Semua kuota, sebaran, dan alasan di bawah adalah **asumsi/hipotesis desain**, bukan data follower.
+Status: **DRAFT, menunggu persetujuan Philip.** Revisi: fokus ke yang **sudah menikah, umur 30+** (arahan Philip). PRODUK.md sudah disesuaikan ke target ini. Semua kuota, sebaran, dan alasan di bawah adalah **asumsi/hipotesis desain**, bukan data follower.
 
 ## A. Unit persona
 - 1 persona = **1 orang** yang melihat offer dan memutuskan beli/tidak. Karena tiket berlaku per pasangan, tiap persona punya kolom **"pasangan ikut setuju?"**.
@@ -12,12 +12,12 @@ Status: **DRAFT, menunggu persetujuan Philip.** Revisi: fokus ke yang **sudah me
 
 | # | Tahap | Kuota | Hipotesis kenapa dimasukkan |
 |---|---|---|---|
-| T1 | Pacaran serius, rencana nikah ≥ 12 bulan lagi atau belum pasti | 3 | Di tepi target ("mau nikah"). Tes apakah mau bayar untuk pencegahan |
-| T2 | Persiapan nikah (< 12 bulan) | 5 | Target PRODUK.md ("mau nikah"); uang tersedot biaya nikah |
-| T3 | Nikah 0–11 bulan | 10 | Target PRODUK.md ("baru nikah 0–3 tahun") |
-| T4 | Nikah 12–35 bulan (dengan atau tanpa anak) | 22 | Target PRODUK.md |
-| T5 | Nikah 36–119 bulan | 30 | Target utama menurut Philip (sudah nikah, umur 30+). Di luar target versi PRODUK.md |
-| T6 | Nikah ≥ 120 bulan | 18 | Target utama menurut Philip. Di luar target versi PRODUK.md |
+| T1 | Pacaran serius, rencana nikah ≥ 12 bulan lagi atau belum pasti | 3 | Di luar target utama. Tes apakah mau bayar untuk pencegahan |
+| T2 | Persiapan nikah (< 12 bulan) | 5 | Di luar target utama; uang tersedot biaya nikah |
+| T3 | Nikah 0–11 bulan | 10 | Sudah menikah, baru mulai (kemungkinan sebagian di bawah 30) |
+| T4 | Nikah 12–35 bulan (dengan atau tanpa anak) | 22 | Termasuk target (sudah menikah) |
+| T5 | Nikah 36–119 bulan | 30 | Target utama (sudah nikah, umur 30+) |
+| T6 | Nikah ≥ 120 bulan | 18 | Target utama |
 | T7 | Pernah bercerai atau ditinggal wafat, dan kini punya pasangan (pacaran atau sudah menikah lagi) | 7 | Segmen sensitif (lihat aturan 6). Status target: sebagian (yang mau/baru nikah lagi) |
 | T8 | Kontrol: tidak punya pasangan (termasuk yang pernah bercerai) | 5 | Tiket per pasangan → diharapkan mayoritas menolak; dipakai sebagai cek realisme |
 | | **Total** | **100** | |
