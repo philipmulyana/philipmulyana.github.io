@@ -9,24 +9,25 @@
 
 **Keputusan Philip (15 Nov 2026):**
 - Level produk: **DIY** (do it yourself). Tidak ada follow-up personal dari Philip.
-- Format: **live grup** (bukan 1-on-1).
+- Format: **live webinar grup** (bukan 1-on-1). Peserta dapat rekaman. Rekaman juga boleh dijual terpisah atau dipotong jadi konten.
 - Paling maksimal diikuti berdua, tapi boleh dibeli/diikuti satu orang.
 - Batas: ini **sistem keuangan, bukan terapi hubungan**. Cara penyampaian meminjam pendekatan komunikasi ala konselor pernikahan; kasus berat (KDRT, kecanduan, rencana cerai) dirujuk ke profesional.
 - Peran: sumber income sendiri **dan** pintu ke produk DWY baru "Financial Planning Keluarga" (±Rp5jt) lalu polis.
-- Urutan kerja: fokus produk ±Rp299rb dulu; produk Rp5jt dikerjakan setelah ini selesai.
+- Harga: **Rp199rb** (diputuskan setelah simulasi 100 persona, lihat `persona-ringkasan.md`).
+- Urutan kerja: fokus produk Rp199rb dulu; produk Rp5jt dikerjakan setelah ini selesai.
 
 | Item | Detail |
 |---|---|
-| Format | Kelas live grup via Zoom, 2 jam. Rekaman dikasih ke peserta (nanti bisa dijual lagi sebagai produk rekaman) |
+| Format | Live webinar grup via Zoom, 2 jam. Rekaman dikasih ke peserta; juga bisa dijual terpisah atau dipotong jadi konten |
 | Target | Pasangan yang **sudah menikah**, umur 30+ (mayoritas nikah 3–10+ tahun), yang masih ribut, diam-diam, atau belum pernah sepakat soal uang |
 | Tiket | **1 tiket = 1 pasangan** (boleh diikuti satu orang) |
-| Harga | **±Rp299rb** (angka kerja; final setelah simulasi persona & tes harga) |
+| Harga | **Rp199rb** per pasangan |
 | Isi paket | Kelas 2 jam + rekaman + Workbook "Money Date" (termasuk **kesepakatan uang yang ditandatangani**, harus bisa diselesaikan tanpa bantuan Philip) + Template Budget Pasangan + follow-up 30 hari **otomatis** (broadcast WA/email terjadwal) |
 | Upsell | Financial Planning Keluarga (DWY, produk baru, ±Rp5jt) — dirancang setelah produk ini selesai |
 | Platform jual | Mayar / Lynk.id |
 
 **Funnel (tanpa webinar gratis):**
-Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam Relasi"** (tukar nomor WA) → **Kelas berbayar ±Rp299rb** → Financial Planning Keluarga ±Rp5jt → Polis.
+Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam Relasi"** (tukar nomor WA) → **Kelas berbayar Rp199rb** → Financial Planning Keluarga ±Rp5jt → Polis.
 
 ---
 
@@ -250,7 +251,7 @@ Isi = Modul 3 versi ringkas + 1 pertanyaan refleksi per red flag + CTA di bawah:
 
 **Isi paket:** Kelas live 2 jam + rekaman · Workbook Money Date (20 pertanyaan) · Kesepakatan Uang yang kalian tanda tangani · Template Budget Pasangan · Follow-up otomatis 30 hari
 
-**Harga:** [menyusul — angka kerja ±Rp299.000 per pasangan]
+**Harga:** Rp199.000 per pasangan
 
 **Bukan untuk:** yang cari pembenaran buat nyalahin pasangan. Ini kelas buat dua orang yang mau tanggung jawab.
 
