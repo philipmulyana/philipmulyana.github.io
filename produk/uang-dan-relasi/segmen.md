@@ -56,7 +56,7 @@ Atribut dinilai di tingkat **pasangan/rumah tangga**, bukan hanya persona.
 
 ## E. Aturan untuk generator
 1. Penghasilan, cicilan, dan sisa uang bebas harus konsisten dengan SES, kota, dan pekerjaan. Kombinasi ekstrem (mis. SES C2 di Metro) boleh, tapi harus masuk akal.
-2. **Parameter desain (bukan data):** minimal 30% persona menolak di harga Rp399rb, supaya hasil tidak terlalu positif.
+2. **Parameter desain (bukan data):** minimal 30% persona menolak di harga tertinggi yang dites, supaya hasil tidak terlalu positif.
 3. Tiap persona wajib punya alternatif gratis yang realistis (YouTube, TikTok, konseling rumah ibadah, curhat teman).
 4. Agama/budaya hanya dimasukkan bila relevan dengan masalah uang (mis. keluarga besar, mahar/seserahan), tanpa stereotip.
 5. Pakai nama samaran umum, bukan nama orang asli. Bahasa netral gender untuk peran pencari nafkah.

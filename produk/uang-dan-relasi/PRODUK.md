@@ -7,18 +7,26 @@
 
 ## 0. Ringkasan Produk
 
+**Keputusan Philip (15 Nov 2026):**
+- Level produk: **DIY** (do it yourself). Tidak ada follow-up personal dari Philip.
+- Format: **live grup** (bukan 1-on-1).
+- Paling maksimal diikuti berdua, tapi boleh dibeli/diikuti satu orang.
+- Batas: ini **sistem keuangan, bukan terapi hubungan**. Cara penyampaian meminjam pendekatan komunikasi ala konselor pernikahan; kasus berat (KDRT, kecanduan, rencana cerai) dirujuk ke profesional.
+- Peran: sumber income sendiri **dan** pintu ke produk DWY baru "Financial Planning Keluarga" (±Rp5jt) lalu polis.
+- Urutan kerja: fokus produk ±Rp299rb dulu; produk Rp5jt dikerjakan setelah ini selesai.
+
 | Item | Detail |
 |---|---|
-| Format | Kelas live via Zoom, 2 jam. Rekaman dikasih ke peserta (nanti bisa dijual lagi sebagai produk rekaman) |
+| Format | Kelas live grup via Zoom, 2 jam. Rekaman dikasih ke peserta (nanti bisa dijual lagi sebagai produk rekaman) |
 | Target | Pasangan yang **sudah menikah**, umur 30+ (mayoritas nikah 3–10+ tahun), yang masih ribut, diam-diam, atau belum pernah sepakat soal uang |
-| Tiket | **1 tiket = 1 pasangan** |
-| Harga | Early bird **Rp249rb** · Normal **Rp399rb** |
-| Isi paket | Kelas 2 jam + rekaman + Workbook "Money Date" + Template Budget Pasangan + Draft Kesepakatan Uang |
-| Upsell | Sesi konsultasi berdua (60 menit) Rp1,5jt |
+| Tiket | **1 tiket = 1 pasangan** (boleh diikuti satu orang) |
+| Harga | **±Rp299rb** (angka kerja; final setelah simulasi persona & tes harga) |
+| Isi paket | Kelas 2 jam + rekaman + Workbook "Money Date" (termasuk **kesepakatan uang yang ditandatangani**, harus bisa diselesaikan tanpa bantuan Philip) + Template Budget Pasangan + follow-up 30 hari **otomatis** (broadcast WA/email terjadwal) |
+| Upsell | Financial Planning Keluarga (DWY, produk baru, ±Rp5jt) — dirancang setelah produk ini selesai |
 | Platform jual | Mayar / Lynk.id |
 
 **Funnel (tanpa webinar gratis):**
-Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam Relasi"** (tukar nomor WA) → **Kelas berbayar** → Konsultasi berdua → Review proteksi keluarga.
+Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam Relasi"** (tukar nomor WA) → **Kelas berbayar ±Rp299rb** → Financial Planning Keluarga ±Rp5jt → Polis.
 
 ---
 
@@ -32,7 +40,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 | 45–65 | **Modul 3 — 7 Red Flag** | Bisa ngenalin pola yang bahaya |
 | 65–90 | **Modul 4 — Sistem Uang Berdua** | Milih sistem: gabung / pisah / hybrid |
 | 90–110 | **Modul 5 — Proteksi & Skenario Terburuk** | Daftar perlindungan yang harus dibereskan |
-| 110–120 | Q&A + penutup + tawaran konsultasi | Jadwal "Money Date" pertama |
+| 110–120 | Q&A + penutup + tawaran Financial Planning Keluarga | Jadwal "Money Date" pertama |
 
 ---
 
@@ -111,7 +119,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 **Checklist proteksi:**
 - [ ] Dana darurat 6–12x pengeluaran bulanan bersama
 - [ ] Asuransi kesehatan masing-masing (bukan cuma dari kantor)
-- [ ] Asuransi jiwa untuk pencari nafkah — uang pertanggungan ± 10x penghasilan tahunan (rule of thumb, hitung detail di konsultasi)
+- [ ] Asuransi jiwa untuk pencari nafkah — uang pertanggungan ± 10x penghasilan tahunan (rule of thumb, hitung detail di Financial Planning Keluarga)
 - [ ] Penerima manfaat di polis & rekening sudah diperbarui
 - [ ] Pasangan tahu daftar aset, utang, akun & polis (Workbook hlm. 6 — "Daftar Kalau Gue Nggak Ada")
 - [ ] Bahas perjanjian kawin (umumnya bisa juga dibuat setelah menikah, tapi syarat & prosedurnya wajib dikonfirmasi ke notaris) — bukan karena nggak percaya, tapi karena **jelas lebih murah daripada ribut**
@@ -122,7 +130,7 @@ Konten (reels/carousel/story) → **Mini-checklist gratis "7 Red Flag Uang dalam
 
 ### Penutup + Tawaran (110–120 menit)
 - Tugas: jadwalin Money Date pertama **dalam 7 hari**, tulis tanggalnya sekarang di chat.
-- **Tawaran (soft, opsional):** "Kalau kalian mau gue duduk bareng bedah angka kalian, hitung proteksi yang pas, dan finalisasi kesepakatan — ada sesi konsultasi berdua 60 menit. Slot terbatas, khusus peserta kelas."
+- **Tawaran (soft, opsional):** "Kalau kalian mau gue duduk bareng bedah angka kalian, dan susun rencana keuangan keluarga lengkap termasuk proteksi — ada program Financial Planning Keluarga. Slot terbatas." [detail program menyusul]
 - Rujukan profesional: psikolog/konselor pernikahan, notaris, LBH (jika ada indikasi KDRT).
 
 ---
@@ -240,13 +248,13 @@ Isi = Modul 3 versi ringkas + 1 pertanyaan refleksi per red flag + CTA di bawah:
 - Checklist proteksi kalau skenario terburuk terjadi
 - **Kesepakatan Uang tertulis** yang kalian isi berdua di kelas
 
-**Isi paket:** Kelas live 2 jam + rekaman · Workbook Money Date (20 pertanyaan) · Template Budget Pasangan · Draft Kesepakatan Uang
+**Isi paket:** Kelas live 2 jam + rekaman · Workbook Money Date (20 pertanyaan) · Kesepakatan Uang yang kalian tanda tangani · Template Budget Pasangan · Follow-up otomatis 30 hari
 
-**Harga:** ~~Rp399.000~~ **Rp249.000 per pasangan** (early bird)
+**Harga:** [menyusul — angka kerja ±Rp299.000 per pasangan]
 
 **Bukan untuk:** yang cari pembenaran buat nyalahin pasangan. Ini kelas buat dua orang yang mau tanggung jawab.
 
-**CTA:** Ajak pasangan lu. Daftar berdua.
+**CTA:** Ajak pasangan lu. Daftar berdua. (Belum bisa ngajak pasangan? Ikut sendiri dulu juga boleh.)
 
 ---
 
