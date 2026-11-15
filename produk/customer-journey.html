@@ -2,143 +2,153 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
-/* Layout: two vertical ladders side by side (stack on phone); each rung = one stage, price grows down the ladder */
+/* Layout: one vertical ladder; each rung shows stage + mindset on the left, existing assets vs gaps on the right */
 :root{
   --bg:#f5f6f3; --surface:#ffffff; --fg:#1b2420; --muted:#5d6a63; --line:#d9dfdb;
-  --a:#0f6b55; --a-soft:#e1f0ea; --b:#b5541c; --b-soft:#f8e7dc; --gold:#8a6d12; --gold-soft:#f4ecd2;
+  --a:#0f6b55; --a-soft:#e1f0ea; --gap:#b5541c; --gap-soft:#f8e7dc; --warn:#8a6d12; --warn-soft:#f4ecd2;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#121715; --surface:#1a211e; --fg:#e8ede9; --muted:#9aa8a1; --line:#2c3632;
-  --a:#5cc7a4; --a-soft:#173329; --b:#f0965e; --b-soft:#3a2416; --gold:#e3c467; --gold-soft:#332b12; color-scheme:dark}}
+  --a:#5cc7a4; --a-soft:#173329; --gap:#f0965e; --gap-soft:#3a2416; --warn:#e3c467; --warn-soft:#332b12; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121715; --surface:#1a211e; --fg:#e8ede9; --muted:#9aa8a1; --line:#2c3632;
-  --a:#5cc7a4; --a-soft:#173329; --b:#f0965e; --b-soft:#3a2416; --gold:#e3c467; --gold-soft:#332b12; color-scheme:dark}
+  --a:#5cc7a4; --a-soft:#173329; --gap:#f0965e; --gap-soft:#3a2416; --warn:#e3c467; --warn-soft:#332b12; color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.5}
-.wrap{max-width:1100px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0 0 8px;text-wrap:balance}
-.lede{color:var(--muted);max-width:62ch;margin:0 0 28px}
-.lanes{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media (max-width:760px){.lanes{grid-template-columns:1fr}}
-.lane{min-width:0;display:flex;flex-direction:column;gap:0}
-.lane-head{padding:16px 18px;border-radius:14px 14px 0 0;background:var(--c-soft);border:1px solid var(--line);border-bottom:none}
-.lane-head .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--c)}
-.lane-head h2{font-family:var(--display);font-weight:800;font-size:22px;margin:2px 0 4px}
-.lane-head p{margin:0;color:var(--muted);font-size:13.5px}
-.lane.a{--c:var(--a);--c-soft:var(--a-soft)}
-.lane.b{--c:var(--b);--c-soft:var(--b-soft)}
-ol{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-top:none;border-radius:0 0 14px 14px;background:var(--surface);overflow:hidden}
-li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 16px;border-top:1px solid var(--line);position:relative}
-li .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;color:var(--c);border:2px solid var(--c);background:var(--surface);position:relative;z-index:1}
-li:not(:last-child)::after{content:"";position:absolute;left:31px;top:46px;bottom:-14px;width:2px;background:var(--c);opacity:.35}
-li.money .n{background:var(--c);color:var(--surface)}
-.stage{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
-.stage b{font-family:var(--display);font-size:17px}
-.price{font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--c-soft);color:var(--c);font-variant-numeric:tabular-nums}
-.price.free{background:transparent;border:1px solid var(--line);color:var(--muted)}
-.think{font-style:italic;color:var(--muted);font-size:13.5px;margin:2px 0}
-.give{font-size:14px;margin:0}
-.next{font-size:12.5px;color:var(--muted);margin-top:4px}
-.next::before{content:"→ ";color:var(--c);font-weight:600}
-.premium{margin-top:24px;padding:16px 18px;border-radius:14px;background:var(--gold-soft);border:1px dashed var(--gold);display:grid;gap:4px}
-.premium b{font-family:var(--display);font-size:18px;color:var(--gold)}
-.premium p{margin:0;font-size:14px}
-.rules{margin-top:28px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media (max-width:760px){.rules{grid-template-columns:1fr}}
-.rule{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px}
-.rule strong{display:block;font-family:var(--display);font-size:16px;margin-bottom:2px}
-.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--muted);margin:-12px 0 20px}
-.dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:6px;border:2px solid var(--fg)}
-.dot.f{background:var(--fg)}
+.lede{color:var(--muted);max-width:64ch;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);margin:0 0 20px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.chip.ok{background:var(--a-soft);color:var(--a)}
+.chip.half{background:var(--warn-soft);color:var(--warn)}
+.chip.no{background:var(--gap-soft);color:var(--gap)}
+.ladder{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.rung{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px 24px;padding:18px 20px;border-top:1px solid var(--line);position:relative}
+.rung:first-child{border-top:none}
+.rung.hole{background:var(--gap-soft)}
+@media (max-width:720px){.rung{grid-template-columns:1fr}}
+.head{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+.n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;border:2px solid var(--a);color:var(--a);background:var(--surface)}
+.money .n{background:var(--a);color:var(--surface)}
+.hole .n{border-color:var(--gap);color:var(--gap)}
+.stage{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.stage b{font-family:var(--display);font-size:19px}
+.price{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.think{font-style:italic;color:var(--muted);font-size:13.5px;margin:4px 0 0}
+.assets{display:grid;gap:8px;min-width:0}
+.asset{display:flex;gap:8px;align-items:baseline;font-size:14px;flex-wrap:wrap}
+.asset code{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.todo{font-size:13.5px;border-left:3px solid var(--gap);padding:4px 10px;color:var(--fg)}
+.todo b{color:var(--gap)}
+.diag{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.diag{grid-template-columns:1fr}}
+.card{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.card strong{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+h2{font-family:var(--display);font-size:22px;margin:32px 0 10px}
+.prio{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
 </style>
 
 <div class="wrap">
   <h1>Tangga Produk Philip</h1>
-  <p class="lede">Dua jalur, dua motif. Orang umum beli <b>rasa aman</b>, agen asuransi beli <b>income</b>. Tiap anak tangga cuma punya satu tugas: bikin orang mau naik satu langkah lagi.</p>
-  <div class="legend"><span><span class="dot"></span>Tahap gratis / murah</span><span><span class="dot f"></span>Tahap yang menghasilkan uang besar</span></div>
+  <p class="lede">Jalur klien, dipetakan ke aset yang sudah ada di philipmulyana.com. Hijau berarti sudah jalan. Oranye berarti bolong dan harus dibikin.</p>
+  <div class="legend">
+    <span class="chip ok">✓ Sudah ada</span>
+    <span class="chip half">◐ Ada, belum optimal</span>
+    <span class="chip no">✕ Belum ada</span>
+  </div>
 
-  <div class="lanes">
-    <section class="lane a">
-      <div class="lane-head">
-        <div class="tag">Jalur A · Klien</div>
-        <h2>Dari "duit kok habis" ke polis</h2>
-        <p>Umum, pasangan, keluarga muda</p>
+  <ol class="ladder">
+    <li class="rung">
+      <div class="head"><span class="n">1</span><div>
+        <div class="stage"><b>Kenal</b><span class="price">Gratis</span></div>
+        <p class="think">"Duit gue kok habis terus?"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Konten IG: reels, carousel, story</div>
+        <div class="asset"><span class="chip ok">✓</span>Blog dan artikel berita <code>blog.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Artikel Putusan MK soal polis <code>mk251.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Link-in-bio dan About <code>links/ · about.html</code></div>
       </div>
-      <ol>
-        <li><span class="n">1</span><div><div class="stage"><b>Kenal</b><span class="price free">Gratis</span></div>
-          <p class="think">"Duit gue kok habis terus?"</p>
-          <p class="give">Reels, carousel, story: red flag, behavioral finance, berita versi awam</p>
-          <div class="next">Follow, save, DM keyword</div></div></li>
-        <li><span class="n">2</span><div><div class="stage"><b>Ngaca</b><span class="price free">Gratis · tukar WA</span></div>
-          <p class="think">"Kayaknya gue juga gitu deh"</p>
-          <p class="give">Tools di website (check-up, cek awal, vitals) + checklist 7 Red Flag Uang</p>
-          <div class="next">Hasil tes nunjukin ada masalah</div></div></li>
-        <li><span class="n">3</span><div><div class="stage"><b>Coba</b><span class="price">Rp49–99rb</span></div>
-          <p class="think">"Mau beresin, mulai dari mana?"</p>
-          <p class="give">Template Budget + Workbook Money Date</p>
-          <div class="next">Sudah bayar sekali, gampang bayar lagi</div></div></li>
-        <li><span class="n">4</span><div><div class="stage"><b>Belajar</b><span class="price">Rp249–399rb</span></div>
-          <p class="think">"Gue butuh dibimbing"</p>
-          <p class="give">Kelas 2 jam: Uang &amp; Relasi · Budgeting &amp; THR · Investasi Pemula</p>
-          <div class="next">"Angka tiap orang beda, perlu dihitung personal"</div></div></li>
-        <li class="money"><span class="n">5</span><div><div class="stage"><b>Personal</b><span class="price">Rp750rb–1,5jt</span></div>
-          <p class="think">"Tolong lihatin punya gue"</p>
-          <p class="give">Konsultasi / Review Polis Keluarga 60 menit</p>
-          <div class="next">Ketemu gap proteksi</div></div></li>
-        <li class="money"><span class="n">6</span><div><div class="stage"><b>Eksekusi</b><span class="price">Komisi</span></div>
-          <p class="think">"Oke, gue butuh proteksinya"</p>
-          <p class="give">Polis jiwa / penyakit kritis</p></div></li>
-        <li><span class="n">7</span><div><div class="stage"><b>Loyal</b><span class="price free">Gratis</span></div>
-          <p class="think">"Gue percaya orang ini"</p>
-          <p class="give">Review tahunan, grup klien</p>
-          <div class="next">Referral ke keluarga dan teman</div></div></li>
-      </ol>
-    </section>
+    </li>
 
-    <section class="lane b">
-      <div class="lane-head">
-        <div class="tag">Jalur B · Agen asuransi</div>
-        <h2>Dari "susah closing" ke advisor</h2>
-        <p>Agen yang mau naik kelas dan beda dari oknum</p>
+    <li class="rung">
+      <div class="head"><span class="n">2</span><div>
+        <div class="stage"><b>Ngaca</b><span class="price">Gratis · tukar WA</span></div>
+        <p class="think">"Kayaknya gue juga gitu deh"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Cek Awal Asuransi Jiwa, 5 pertanyaan <code>cek-awal/</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Financial Check-up Dasar <code>financial-checkup.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Survival Test, Kalkulator Proteksi, Pensiun, Dana Kuliah, Rencana Pendidikan, Risk Profile, Master Plan <code>tools/</code></div>
+        <div class="asset"><span class="chip half">◐</span>Tombol WA baru ada di sebagian tools, belum ada hasil tes yang dikirim ke WA</div>
+        <div class="todo"><b>Benerin:</b> jadikan Cek Awal pintu utama. Tiap tool ditutup dengan CTA yang sesuai hasilnya.</div>
       </div>
-      <ol>
-        <li><span class="n">1</span><div><div class="stage"><b>Kenal</b><span class="price free">Gratis</span></div>
-          <p class="think">"Kok susah closing? Malu disangka oknum"</p>
-          <p class="give">Konten anti-oknum, tips closing yang etis</p>
-          <div class="next">Follow, DM keyword</div></div></li>
-        <li><span class="n">2</span><div><div class="stage"><b>Ngaca</b><span class="price free">Gratis · tukar WA</span></div>
-          <p class="think">"Skill gue kurang di mana?"</p>
-          <p class="give">Checklist "Agen vs Oknum" / self-assessment skill</p>
-          <div class="next">Sadar gap skill</div></div></li>
-        <li><span class="n">3</span><div><div class="stage"><b>Coba</b><span class="price">Rp99–199rb</span></div>
-          <p class="think">"Butuh bahan jualan yang bener"</p>
-          <p class="give">Toolkit: script edukasi, template needs analysis, kalkulator UP</p>
-          <div class="next">Toolkit kepake, mau tahu cara mainnya</div></div></li>
-        <li class="money"><span class="n">4</span><div><div class="stage"><b>Belajar</b><span class="price">Rp750rb–1,5jt</span></div>
-          <p class="think">"Gue mau jadi advisor"</p>
-          <p class="give">Kelas multi-sesi Agen → Financial Advisor</p>
-          <div class="next">Mau dibimbing langsung</div></div></li>
-        <li class="money"><span class="n">5</span><div><div class="stage"><b>Intensif</b><span class="price">Rp3–7,5jt</span></div>
-          <p class="think">"Bimbing gue"</p>
-          <p class="give">Mentoring grup kecil / workshop offline</p>
-          <div class="next">Mau satu tim sama yang bener</div></div></li>
-        <li class="money"><span class="n">6</span><div><div class="stage"><b>Komunitas</b><span class="price">Bulanan / rekrut</span></div>
-          <p class="think">"Gue mau di ekosistem ini"</p>
-          <p class="give">Membership bulanan atau masuk tim</p></div></li>
-      </ol>
-    </section>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">3</span><div>
+        <div class="stage"><b>Coba</b><span class="price">Rp49–149rb</span></div>
+        <p class="think">"Mau beresin, mulai dari mana?"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Produk Dana Kuliah Rp149rb <code>product/dana-kuliah/</code></div>
+        <div class="asset"><span class="chip no">✕</span>Produk kecil untuk yang belum punya anak</div>
+        <div class="todo"><b>Bikin:</b> Template Budget Pasangan + Workbook Money Date (Rp49–99rb)</div>
+      </div>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">4</span><div>
+        <div class="stage"><b>Belajar</b><span class="price">Rp249–399rb</span></div>
+        <p class="think">"Gue butuh dibimbing"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip half">◐</span>Halaman webinar + testimonial, tapi pendaftarannya gratis <code>webinar.html · testimonial.html</code></div>
+        <div class="asset"><span class="chip no">✕</span>Kelas berbayar</div>
+        <div class="todo"><b>Bikin:</b> kelas Uang &amp; Relasi (draft sudah ada). Pakai halaman webinar sebagai halaman jualan.</div>
+      </div>
+    </li>
+
+    <li class="rung money">
+      <div class="head"><span class="n">5</span><div>
+        <div class="stage"><b>Personal</b><span class="price">Gratis → ±Rp1jt</span></div>
+        <p class="think">"Tolong lihatin punya gue"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>First Call gratis 10 menit <code>consultation.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Review Polis Keluarga: laporan 72 jam + sesi 60 menit <code>review-polis/</code></div>
+      </div>
+    </li>
+
+    <li class="rung money">
+      <div class="head"><span class="n">6</span><div>
+        <div class="stage"><b>Eksekusi</b><span class="price">Komisi</span></div>
+        <p class="think">"Oke, gue butuh proteksinya"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Polis jiwa / penyakit kritis, lewat konsultasi</div>
+      </div>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">7</span><div>
+        <div class="stage"><b>Loyal</b><span class="price">Gratis</span></div>
+        <p class="think">"Gue percaya orang ini"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip no">✕</span>Belum ada program setelah polis aktif</div>
+        <div class="todo"><b>Bikin:</b> review tahunan untuk klien polis + insentif referral sederhana</div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="diag">
+    <div class="card"><strong>Atas kuat</strong>Konten, artikel, dan 9+ tools gratis. Malah kebanyakan pintu.</div>
+    <div class="card"><strong>Tengah bolong</strong>Orang loncat dari kalkulator gratis langsung ke ngobrol sama agen. Itu kerasa kayak mau dijualin.</div>
+    <div class="card"><strong>Bawah kuat</strong>First Call dan Review Polis sudah jadi. Tinggal dikasih jembatan trust di tahap 3–4.</div>
   </div>
 
-  <div class="premium">
-    <b>Jalur pintas premium</b>
-    <p>Pemilik bisnis, family business, gaji 50jt+: dari tahap 1 langsung loncat ke tahap 5. Mereka nggak beli PDF 49rb. Tawarkan workshop privat atau family financial review, Rp5–15jt.</p>
-  </div>
-
-  <div class="rules">
-    <div class="rule"><strong>Satu tugas per tahap</strong>Jangan jualan polis di tahap 1. Itu kelakuan oknum.</div>
-    <div class="rule"><strong>Uang besar ada di bawah</strong>Tahap 3–4 itu penyaring. Yang udah bayar Rp99rb adalah lead paling hangat.</div>
-    <div class="rule"><strong>Pakai yang sudah ada</strong>Tools di website lu tinggal dipasangin form WA jadi pintu tahap 2.</div>
-    <div class="rule"><strong>Mulai dari satu produk per jalur</strong>Jalur A: kelas Uang &amp; Relasi. Jalur B: Toolkit Agen.</div>
-  </div>
+  <h2>Urutan kerja</h2>
+  <ol class="prio">
+    <li>Tahap 4: kelas Uang &amp; Relasi, halaman jualannya pakai dasar <code>webinar.html</code></li>
+    <li>Tahap 3: Template Budget + Workbook Money Date</li>
+    <li>Tahap 2 → 3: CTA berdasarkan hasil di akhir tiap tool</li>
+    <li>Tahap 7: review tahunan + referral</li>
+  </ol>
 </div>
