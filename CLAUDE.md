@@ -23,7 +23,7 @@ Give it the output files and the checks, not your conclusion. Report its PASS/FA
 
 When Philip asks for something that should hold for every future piece ("setiap", "kedepannya", "selalu", a rule
 for a content format), don't only fix the piece in front of you: write the rule where the work actually runs (the
-renderer, its validator, the job prompt) and into the project's rules file below, the same turn. Before you build or
+renderer, its validator, the job prompt) and into this file, the same turn. Before you build or
 change any content format, read those rules first. He must never have to repeat himself.
 
 Why: on 15 Nov 2026 Philip had to ask again for host credit (asked 6 Nov) and for the subagent check (asked every
