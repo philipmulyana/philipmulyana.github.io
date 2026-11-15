@@ -13,6 +13,8 @@
 - Paling maksimal diikuti berdua, tapi boleh dibeli/diikuti satu orang.
 - Batas: ini **sistem keuangan, bukan terapi hubungan**. Cara penyampaian meminjam pendekatan komunikasi ala konselor pernikahan; kasus berat (KDRT, kecanduan, rencana cerai) dirujuk ke profesional.
 - Peran: sumber income sendiri **dan** pintu ke produk DWY baru "Financial Planning Keluarga" (±Rp5jt) lalu polis.
+- Financial Planning Keluarga ±Rp5jt **sudah termasuk Review Polis** (Review Polis masuk paket, bukan anak tangga terpisah).
+- Pintu masuk: yang mengisi tool dana kuliah ditawari produk Dana Kuliah (Rp149rb) dulu, baru kelas ini.
 - Harga: **Rp199rb** (diputuskan setelah simulasi 100 persona, lihat `persona-ringkasan.md`).
 - Urutan kerja: fokus produk Rp199rb dulu; produk Rp5jt dikerjakan setelah ini selesai.
 
