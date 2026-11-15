@@ -137,5 +137,67 @@ def do_tools():
     return n
 
 
+# In-text links: first match of each phrase in the article body, max 3 per post, never self.
+# Specific phrases first so generic ones don't eat the slots.
+INLINE = [
+    (r"pre-existing|penyakit bawaan", "pre-existing-condition-asuransi"),
+    (r"masa tunggu", "masa-tunggu-asuransi-kesehatan"),
+    (r"nilai tunai", "nilai-tunai-asuransi"),
+    (r"polis lapse|lapse", "polis-lapse"),
+    (r"cuti premi", "cuti-premi-adalah"),
+    (r"free look", "free-look-period-adalah"),
+    (r"co-payment", "katanya-co-payment-itu-wajib"),
+    (r"repricing|premi naik", "repricing-asuransi-kesehatan-premi-naik"),
+    (r"klaim ditolak", "klaim-asuransi-jiwa-ditolak"),
+    (r"\bJHT\b", "jht-kapan-bisa-dicairkan"),
+    (r"jaminan pensiun", "jaminan-pensiun-bpjs-dapat-berapa"),
+    (r"dana darurat", "kenapa-butuh-dana-darurat"),
+    (r"dana pensiun|pensiun nyaman", "cara-hitung-dana-pensiun-yang-cukup"),
+    (r"asuransi jiwa", "asuransi-jiwa-101"),
+]
+IL_A = re.compile(r'<a class="il-inline" href="[^"]*">(.*?)</a>', re.S)
+
+
+def inline_links(body, slug, cap=3):
+    body = IL_A.sub(r"\1", body)  # re-runs start clean
+    parts = re.split(r"(<[^>]+>)", body)
+    skip, used, n = 0, set(), 0
+    for i, part in enumerate(parts):
+        if part.startswith("<"):
+            m = re.match(r"<(/?)(a|h[1-6])\b", part, re.I)
+            if m:
+                skip += -1 if m.group(1) else 1
+            continue
+        if skip or n >= cap or not part.strip():
+            continue
+        for rx, target in INLINE:
+            if n >= cap or target == slug or target in used:
+                continue
+            m = re.search(rx, part, re.I)
+            if m:
+                a = f'<a class="il-inline" href="/blog/{target}.html">{m.group(0)}</a>'
+                part = part[:m.start()] + a + part[m.end():]
+                used.add(target); n += 1
+                break  # one link per text node keeps offsets simple
+        parts[i] = part
+    return "".join(parts)
+
+
+def do_inline():
+    n = 0
+    for p in POSTS:
+        f = SITE / "blog" / f"{p['slug']}.html"
+        if not f.exists():
+            continue
+        s = f.read_text(encoding="utf-8")
+        m = re.search(r"(<article\b[^>]*>)(.*?)(</article>)", s, re.S)
+        if not m:
+            continue
+        new = s[:m.start(2)] + inline_links(m.group(2), p["slug"]) + s[m.end(2):]
+        if new != s:
+            f.write_text(new, encoding="utf-8"); n += 1
+    return n
+
+
 if __name__ == "__main__":
-    print(f"articles updated: {do_articles()}, blog index: {do_blog_index()}, tools: {do_tools()}")
+    print(f"articles updated: {do_articles()}, blog index: {do_blog_index()}, tools: {do_tools()}, inline: {do_inline()}")
