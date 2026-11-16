@@ -4,7 +4,7 @@ Tujuan: ringkasan dan detail tiap produk M1 (Gratis & DIY yang masih aktif) supa
 
 - Produk berstatus **Live** memakai detail yang ada di website.
 - Produk berstatus **Ide** adalah **usulan konsep** dari Claude (16 Nov 2026), berdasarkan keinginan di `m1-ringkasan-ortu.md`. Isi, bentuk, dan harga belum disetujui Philip.
-- **Harga uji** untuk produk Ide adalah usulan untuk keperluan tes. Bukan harga final.
+- **Harga uji** untuk produk Ide: usulan Claude, disetujui Philip (16 Nov) khusus untuk tes. Bukan harga final.
 - Asumsi inflasi pendidikan: 8% per tahun.
 
 Format tiap kartu: **Ringkasan** (satu kalimat yang ditunjukkan ke persona), lalu detail yang relevan: Untuk siapa · Masalah · Hasil yang dibawa pulang · Bentuk & isi · Waktu pakai · Harga · Yang bukan.
