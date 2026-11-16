@@ -45,3 +45,10 @@ and its place in the value ladder. Record decisions there (with date) as they ar
 Principle: many free and DIY products, few DWY/DFY (umbrella products).
 
 Why: Philip set this on 16 Nov 2026.
+
+## Education inflation assumption is 8%
+
+All content, calculators and products about education costs use 8% per year education inflation
+(`js/education.js` and `js/eduplan.js` both use 0.08). Don't use another number unless Philip changes it.
+
+Why: Philip decided this on 16 Nov 2026; the two tools had 8% and 10%.

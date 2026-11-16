@@ -70,14 +70,13 @@ Jalur yang sudah disepakati:
 
 Aturan dari `CLAUDE.md` ditandai (CLAUDE.md). Sisanya aturan khusus brief ini.
 - **Jangan menebak angka** (CLAUDE.md: never assume). Biaya kampus atau sekolah harus punya sumber yang bisa dicek. Kalau tidak ada, tulis "belum dicek".
-- **Asumsi inflasi pendidikan belum diputuskan.** Tool yang ada memakai 8% (`js/education.js`) dan 10% (`js/eduplan.js`). Jangan pakai angka ketiga. Tanyakan Philip dulu.
+- **Asumsi inflasi pendidikan: 8% per tahun** (keputusan Philip, 16 Nov 2026). Dipakai di semua konten dan tool M1 (`js/education.js` dan `js/eduplan.js`).
 - **Gaya bahasa Philip:** pakai skill `philip-voice` untuk semua copy Bahasa Indonesia. Untuk artikel blog SEO ada skill `seo-blog-writer`. Kalau salah satu skill tidak ada di session, bilang ke Philip. Jangan diganti dengan cara lain tanpa izin.
 - **Tidak boleh merekomendasikan produk investasi tertentu.** Philip agen asuransi; perbandingan instrumen hanya edukasi, dengan pengungkapan dan disclaimer.
 - **Setiap hasil dicek sub-agent** (general-purpose, model sonnet) sebelum dilaporkan (CLAUDE.md).
 - **Desain visual** (carousel, halaman, gambar) memakai skill `ui-ux-pro-max` dan leaf.id sebagai acuan (CLAUDE.md). Skill ini belum tentu terpasang. Kalau tidak ada, tanya Philip sebelum memasang.
 
 ## 6. Yang masih menunggu keputusan Philip
-1. Angka asumsi inflasi pendidikan (8%, 10%, atau lain).
-2. Kelas "tabungan vs reksa dana vs asuransi": lanjut setelah cek ke agensi, atau dicoret.
-3. Template 3 anak atau lebih: produk sendiri atau add-on Dana Kuliah.
-4. Format konten dan jumlahnya.
+1. Kelas "tabungan vs reksa dana vs asuransi": lanjut setelah cek ke agensi, atau dicoret.
+2. Template 3 anak atau lebih: produk sendiri atau add-on Dana Kuliah.
+3. Format konten dan jumlahnya.

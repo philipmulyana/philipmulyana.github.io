@@ -1,11 +1,11 @@
 // ============================================================================
 // Education Plan Tool — Frontend
-// Single-pathway calc: target FV (10% inflation pendidikan), 3-scenario PMT
+// Single-pathway calc: target FV (8% inflation pendidikan), 3-scenario PMT
 // ============================================================================
 
 const STORAGE_KEY_EDU = 'eduplan_state_v1';
 const TOTAL_STEPS = 5;
-const INFLASI_PENDIDIKAN = 0.10; // 10% p.a.
+const INFLASI_PENDIDIKAN = 0.08; // 8% p.a. (keputusan Philip 16 Nov 2026, sama dengan js/education.js)
 
 // Pathway preset costs (today's value in IDR) — research-based, sourced from
 // vault [[(C) Data - Biaya Kuliah Indonesia]] (Philip's 2026-05-22 research with
