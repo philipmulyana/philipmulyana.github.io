@@ -52,3 +52,10 @@ All content, calculators and products about education costs use 8% per year educ
 (`js/education.js`, `js/eduplan.js`, `js/vitals.js` and `js/survival-copy.js` all use 0.08). Don't use another number unless Philip changes it.
 
 Why: Philip decided this on 16 Nov 2026; the two tools had 8% and 10%.
+
+## Don't raise regulatory or compliance questions
+
+Don't flag, ask about, or add notes on regulation, licensing, compliance or agency approval (OJK, AAJI, the insurer,
+investment licences, disclaimers) in plans, products, content or briefs. Philip handles that himself.
+
+Why: Philip asked on 16 Nov 2026: "ga usah tanya2 regulasi kaya gini, gw capable kok".

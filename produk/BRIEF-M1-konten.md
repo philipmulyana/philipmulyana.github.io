@@ -35,7 +35,7 @@ Untuk session Claude mana pun (cloud atau lokal) yang mengerjakan konten Philip.
 | Gratis | Checklist biaya masuk sekolah (uang pangkal, seragam, buku, dll.) | Ide |
 | DIY | Dana Kuliah Rp149rb (`product/dana-kuliah/`, mendukung maks. 2 anak) | Live |
 | DIY | Add-on Dana Kuliah: template 3 anak atau lebih | Ide (keputusan 16 Nov: jadi add-on Dana Kuliah, bukan produk sendiri) |
-| DIY | Kelas "tabungan vs reksa dana vs asuransi" | Ide, **perlu cek kepatuhan** |
+| DIY | Kelas "tabungan vs reksa dana vs asuransi" | Ide |
 | DIY | Panduan biaya kuliah luar negeri | Ide |
 | DIY | Workbook "sekolah negeri atau swasta" | Ide |
 | Gratis | Panduan dapat bantuan & beasiswa sekolah (KIP, PIP, keringanan UKT) | Ide (dari simulasi) |
@@ -72,10 +72,8 @@ Aturan dari `CLAUDE.md` ditandai (CLAUDE.md). Sisanya aturan khusus brief ini.
 - **Jangan menebak angka** (CLAUDE.md: never assume). Biaya kampus atau sekolah harus punya sumber yang bisa dicek. Kalau tidak ada, tulis "belum dicek".
 - **Asumsi inflasi pendidikan: 8% per tahun** (keputusan Philip, 16 Nov 2026). Dipakai di semua konten dan tool M1 (`js/education.js` dan `js/eduplan.js`).
 - **Gaya bahasa Philip:** pakai skill `philip-voice` untuk semua copy Bahasa Indonesia. Untuk artikel blog SEO ada skill `seo-blog-writer`. Kalau salah satu skill tidak ada di session, bilang ke Philip. Jangan diganti dengan cara lain tanpa izin.
-- **Tidak boleh merekomendasikan produk investasi tertentu.** Philip agen asuransi; perbandingan instrumen hanya edukasi, dengan pengungkapan dan disclaimer.
 - **Setiap hasil dicek sub-agent** (general-purpose, model sonnet) sebelum dilaporkan (CLAUDE.md).
 - **Desain visual** (carousel, halaman, gambar) memakai skill `ui-ux-pro-max` dan leaf.id sebagai acuan (CLAUDE.md). Skill ini belum tentu terpasang. Kalau tidak ada, tanya Philip sebelum memasang.
 
 ## 6. Yang masih menunggu keputusan Philip
-1. Kelas "tabungan vs reksa dana vs asuransi": lanjut setelah cek ke agensi, atau dicoret.
-2. Format konten dan jumlahnya.
+1. Format konten dan jumlahnya.
