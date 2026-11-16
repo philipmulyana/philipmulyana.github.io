@@ -1,0 +1,1560 @@
+{
+  "artikel-biaya-kuliah": {
+    "bentuk": [
+      "Artikel"
+    ],
+    "decisions": [],
+    "deliverables": "Artikel biaya kuliah swasta non-kedokteran + studi kasus menunda menabung\nArtikel biaya all-in 5 universitas top Malaysia 2026\nTautan ke kalkulator dana kuliah",
+    "docs": "blog/biaya-kuliah-swasta-non-kedokteran.html · blog/biaya-kuliah-5-universitas-top-malaysia-2026.html",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Konten awareness; mengarah ke kalkulator dana kuliah",
+    "goalPembeli": "Memperkirakan biaya kuliah dalam rupiah\nMenghitung kerugian kalau menunda mulai menabung",
+    "level": "Gratis",
+    "masalah": "Belum punya gambaran biaya kuliah yang realistis.",
+    "name": "Artikel biaya kuliah (swasta + cost of delay, Malaysia)",
+    "next": [
+      {
+        "reason": "",
+        "to": "kalk-dana-kuliah",
+        "type": "linear"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dua artikel di blog. Artikel 'non-kedokteran' sekaligus membahas cost of delay (file cost-of-delay hanya redirect ke sana). Data pembaca belum dicek.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Rincian biaya kuliah swasta dan 5 kampus top Malaysia, plus berapa yang hilang kalau menunda menabung.",
+    "simNote": "Uji konsep: 31 pakai, 47 ragu.",
+    "status": "Live",
+    "untukSiapa": "Orang tua yang mencari gambaran biaya kuliah.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "artikel-mk": {
+    "decisions": [],
+    "docs": "mk251.html",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "Jembatan pemegang polis ke Review Polis",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Artikel Putusan MK soal polis",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Gratis",
+    "problems": [
+      "M11"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "biaya-tersembunyi-kuliah": {
+    "bentuk": [
+      "Artikel",
+      "Checklist"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari celah simulasi."
+      }
+    ],
+    "deliverables": "Daftar biaya hidup & biaya tambahan kuliah per tahun (dalam & luar negeri)\nChecklist yang bisa diisi angka",
+    "docs": "produk/m1-ortu/m1-ringkasan-ortu.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Menghitung total biaya kuliah lengkap, termasuk biaya hidup dan biaya tersembunyi",
+    "level": "Gratis",
+    "masalah": "Biaya hidup dan biaya tambahan tidak masuk hitungan.",
+    "name": "Daftar biaya hidup & biaya tersembunyi kuliah",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari celah simulasi persona orang tua, 16 Nov. Level bisa diubah.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Daftar biaya di luar uang kuliah — kos, transport, laptop, kegiatan, wisuda — untuk dalam dan luar negeri.",
+    "simNote": "Uji konsep: 54 pakai, 34 ragu. Urutan #2 Gratis.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang menyiapkan biaya kuliah.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "cadangan-gagal-ptn": {
+    "bentuk": [
+      "Artikel",
+      "Kalkulator online"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari celah simulasi."
+      }
+    ],
+    "deliverables": "Kisaran biaya kampus swasta dan FK swasta\nMini kalkulator selisih dari target PTN",
+    "docs": "produk/m1-ortu/m1-ringkasan-ortu.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Tahu berapa dana cadangan kalau anak tidak lolos PTN",
+    "level": "Gratis",
+    "masalah": "Rencana dana hanya untuk PTN; tidak siap kalau anak gagal.",
+    "name": "Biaya cadangan kalau anak gagal PTN (kampus swasta / FK swasta)",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari celah simulasi persona orang tua, 16 Nov. Level bisa diubah.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Berapa biaya kampus swasta dan FK swasta kalau anak tidak lolos PTN, dan berapa selisihnya dari rencana awal.",
+    "simNote": "Uji konsep: 25 pakai, 36 ragu.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang menargetkan PTN.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "5 menit"
+  },
+  "catatan-cashflow": {
+    "decisions": [],
+    "docs": "cashflow-log.html",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Catatan Cashflow",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Halaman cashflow-log.html ada, tapi noindex dan tidak ditautkan dari halaman lain. Perlu konfirmasi apakah dipakai publik.",
+    "price": "Gratis",
+    "problems": [
+      "M7"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "cek-awal": {
+    "decisions": [],
+    "docs": "cek-awal/",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Cek Awal Asuransi Jiwa",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Belum menangkap WA.",
+    "price": "Gratis",
+    "problems": [
+      "M3"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "cek-rs": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Cek 'kalau masuk RS, tabungan kuat berapa lama'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M5"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "checklist-polis": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Checklist 'polis kamu sehat?'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M11"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "checklist-red-flag": {
+    "decisions": [],
+    "docs": "produk/uang-dan-relasi/PRODUK.md",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "Lead magnet ke kelas Uang & Relasi",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Checklist 7 Red Flag Uang dalam Relasi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Gratis (tukar WA)",
+    "problems": [
+      "M2"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "checklist-sandwich": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Konten / checklist batas generasi sandwich",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M9"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "checklist-uang-pangkal": {
+    "bentuk": [
+      "Checklist",
+      "Spreadsheet / template"
+    ],
+    "decisions": [],
+    "deliverables": "Checklist biaya masuk sekolah (uang pangkal, SPP, seragam, buku, kegiatan, dll.)\nKolom isian angka per sekolah incaran",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Tidak kaget dengan biaya di luar SPP\nPunya total biaya masuk per sekolah incaran",
+    "level": "Gratis",
+    "masalah": "Biaya di luar SPP sering terlewat.",
+    "name": "Checklist biaya masuk sekolah (uang pangkal, seragam, buku, dll.)",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Daftar semua biaya saat anak masuk jenjang baru, dari uang pangkal sampai seragam dan kegiatan.",
+    "simNote": "Uji konsep: 39 pakai, 50 ragu.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang anaknya akan masuk jenjang baru.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "10 menit"
+  },
+  "checklist-usaha": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Checklist pisah uang usaha & rumah tangga",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M12"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "coaching-budget": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Coaching budget",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M7"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "dana-cadangan-sekolah": {
+    "bentuk": [
+      "Spreadsheet / template",
+      "PDF / e-book"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari celah simulasi."
+      }
+    ],
+    "deliverables": "Template target dana cadangan pendidikan\nPanduan cara mengisinya",
+    "docs": "produk/m1-ortu/m1-ringkasan-ortu.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Menetapkan target dana cadangan pendidikan dan mulai mengisinya",
+    "level": "DIY",
+    "masalah": "Biaya mendadak (pindah sekolah, les, kegiatan) mengganggu tabungan utama.",
+    "name": "Rencana dana cadangan sekolah",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari celah simulasi persona orang tua, 16 Nov.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1",
+      "M8"
+    ],
+    "ringkasan": "Template dana cadangan khusus pendidikan, supaya biaya mendadak tidak mengganggu tabungan utama.",
+    "simNote": "Uji konsep: 3 beli, 65 ragu di Rp99rb.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang sering kena biaya sekolah mendadak.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "dana-kuliah": {
+    "bentuk": [
+      "Course online",
+      "Spreadsheet / template"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-15",
+        "text": "Yang mengisi tool dana kuliah ditawari Dana Kuliah dulu, baru kelas Uang & Relasi."
+      }
+    ],
+    "deliverables": "6 modul course online mandiri\nWorkbook Rencana Pendidikan Keluarga (maks. 2 anak)\nSesi pertama ±30 menit, lalu bertahap\nGaransi uang kembali 7 hari",
+    "docs": "product/dana-kuliah/",
+    "evidence": "Data asli",
+    "goalBisnis": "",
+    "goalLadder": "Pintu masuk dari tool dana kuliah, lalu ke kelas Uang & Relasi",
+    "goalPembeli": "Tahu target biaya kuliah dan tahun pembayarannya\nTahu apakah dana dan setoran sekarang cukup, dan berapa kekurangannya\nPunya satu langkah pertama yang realistis",
+    "level": "DIY",
+    "masalah": "Sudah menabung tapi tidak tahu cukup atau tidak, dan kapan biaya harus dibayar.",
+    "name": "Dana Kuliah",
+    "next": [
+      {
+        "reason": "Kalau orang tua meninggal, siapa yang lanjut bayar kuliah anak?",
+        "to": "kalk-proteksi",
+        "type": "cross"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Data asli masih tipis: Mayar mencatat 1 penjualan Rp149rb + 5 transaksi Rp0 (16 Sep 2026, kemungkinan tes).",
+    "price": "Rp149rb",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Course mandiri 6 modul + workbook untuk menyusun Rencana Pendidikan Keluarga.",
+    "simNote": "Uji konsep: 7 beli, 59 ragu di Rp149rb. Alasan: target PAUD–SD & maks 2 anak; diminta cakupan sampai SMP/SMA/kuliah dan preview isi.",
+    "status": "Live",
+    "untukSiapa": "Orang tua dengan anak PAUD–SD yang mau bersiap dari sekarang (maks. 2 anak).",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "Sesi pertama ±30 menit"
+  },
+  "financial-checkup": {
+    "decisions": [],
+    "docs": "financial-checkup.html",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Financial Check-up Dasar",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Kirim ke modal.run.",
+    "price": "Gratis",
+    "problems": [
+      "M7"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "first-call": {
+    "decisions": [],
+    "docs": "consultation.html",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "First Call 10 menit",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Gratis",
+    "problems": [
+      "M3",
+      "M5",
+      "M11"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "fp-keluarga": {
+    "decisions": [
+      {
+        "date": "2026-11-15",
+        "text": "Review Polis masuk paket ini, bukan anak tangga terpisah."
+      },
+      {
+        "date": "2026-11-15",
+        "text": "Dikerjakan setelah kelas Rp199rb selesai."
+      }
+    ],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "Ujung DWY sebelum polis",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Financial Planning Keluarga",
+    "nextOwner": "Bersama",
+    "nextStep": "Desain konsep setelah kelas Rp199rb",
+    "notes": "Produk payung DWY. Konsep isi belum ada. Penautan ke M9, M10, M12 masih usulan.",
+    "price": "±Rp5jt",
+    "problems": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M9",
+      "M10",
+      "M12"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kalender-pencairan": {
+    "bentuk": [
+      "Spreadsheet / template",
+      "Kalkulator online"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari celah simulasi."
+      }
+    ],
+    "deliverables": "Kalender biaya pendidikan 10–20 tahun untuk semua anak\nPenanda tahun yang biayanya menumpuk",
+    "docs": "produk/m1-ortu/m1-ringkasan-ortu.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Tahu tahun-tahun rawan saat biaya beberapa anak menumpuk\nBisa mulai menyiapkan dana untuk tahun-tahun itu",
+    "level": "Gratis",
+    "masalah": "Biaya besar beberapa anak bisa jatuh di tahun yang sama.",
+    "name": "Kalender pencairan biaya pendidikan multi-anak",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari celah simulasi persona orang tua, 16 Nov. Level bisa diubah.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Satu kalender yang menunjukkan kapan biaya besar tiap anak jatuh tempo, supaya tidak menumpuk di tahun yang sama.",
+    "simNote": "Uji konsep: 46 pakai, 18 ragu; 19 dari 20 keluarga 3+ anak mau pakai.",
+    "status": "Ide",
+    "untukSiapa": "Keluarga dengan 2 anak atau lebih.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "10 menit"
+  },
+  "kalk-cost-of-delay": {
+    "bentuk": [
+      "Kalkulator online"
+    ],
+    "decisions": [],
+    "deliverables": "Fitur tambahan di kalkulator dana kuliah / rencana pendidikan\nSelisih setoran bulanan: mulai sekarang vs nunda 1–3 tahun",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Memicu urgensi ke Dana Kuliah",
+    "goalPembeli": "Tahu berapa tambahan setoran per bulan kalau menunda",
+    "level": "Gratis",
+    "masalah": "Menunda tanpa sadar ongkosnya.",
+    "name": "Fitur 'mulai sekarang vs nunda N tahun' di kalkulator dana kuliah",
+    "next": [
+      {
+        "reason": "",
+        "to": "dana-kuliah",
+        "type": "linear"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov. Hasil cek: lebih baik jadi fitur di tools/education atau tools/eduplan, bukan produk/halaman terpisah. Artikel cost of delay sudah ada tapi tanpa kalkulator.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Bandingkan setoran bulanan kalau mulai bulan ini vs menunda 1, 2, atau 3 tahun.",
+    "simNote": "Uji konsep: 38 pakai, 20 ragu.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang belum mulai menabung untuk pendidikan anak.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "1 menit"
+  },
+  "kalk-dana-kuliah": {
+    "bentuk": [
+      "Kalkulator online"
+    ],
+    "decisions": [],
+    "deliverables": "Perkiraan biaya kuliah saat anak umur 18 (inflasi 8%)\nKenaikan biaya: berapa kali lipat dari hari ini\nSisa tahun sampai masuk kuliah\nOpsional: rincian dikirim ke WhatsApp",
+    "docs": "tools/education/",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Pintu masuk gratis; berikutnya ditawari Dana Kuliah Rp149rb",
+    "goalPembeli": "Tahu angka target biaya kuliah anak di tahun masuk\nSadar seberapa besar kenaikannya dibanding hari ini",
+    "level": "Gratis",
+    "masalah": "Tidak tahu berapa biaya kuliah saat anak masuk nanti.",
+    "name": "Kalkulator dana kuliah",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "tools/education. Data dikirim ke modal.run (belum terbaca dari dashboard).",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Masukkan umur anak dan biaya kuliah hari ini (total 4 tahun), langsung lihat perkiraan biaya saat anak masuk kuliah.",
+    "simNote": "Uji konsep 100 persona orang tua (16 Nov): 66 pakai, 23 ragu. Urutan #1 Gratis.",
+    "status": "Live",
+    "untukSiapa": "Orang tua yang belum tahu angka target biaya kuliah anak.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "1 menit"
+  },
+  "kalk-darurat": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Kalkulator dana darurat",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M8"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kalk-inflasi-pendidikan": {
+    "bentuk": [
+      "Kalkulator online"
+    ],
+    "decisions": [],
+    "deliverables": "Input: kota, jenis sekolah (negeri/swasta nasional/nasional plus/internasional), umur anak\nTabel biaya per jenjang dan per tahun sampai kuliah (inflasi 8%)\nHasil dikirim ke WhatsApp",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Pintu ke Dana Kuliah dan template rencana multi-anak",
+    "goalPembeli": "Tahu perkiraan biaya setiap jenjang anak dan tahun jatuh temponya\nBisa membandingkan pilihan jenis sekolah",
+    "level": "Gratis",
+    "masalah": "Biaya per jenjang dan per jenis sekolah tidak jelas.",
+    "name": "Kalkulator inflasi biaya sekolah per jenjang (TK sampai kuliah)",
+    "next": [
+      {
+        "reason": "",
+        "to": "dana-kuliah",
+        "type": "linear"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov. Belum ada tool untuk TK–SMA (cek: tools/education & eduplan hanya kuliah). Pakai asumsi inflasi pendidikan 8% (keputusan Philip 16 Nov).",
+    "price": "Gratis (tukar WA)",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Pilih kota, jenis sekolah, dan umur anak — lihat perkiraan biaya TK sampai kuliah per tahun.",
+    "simNote": "Uji konsep: 40 pakai, 33 ragu.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang mau tahu total biaya sekolah, bukan cuma kuliah.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "3–5 menit"
+  },
+  "kalk-pensiun": {
+    "decisions": [],
+    "docs": "tools/retirement/",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Kalkulator dana pensiun",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Kirim ke modal.run.",
+    "price": "Gratis",
+    "problems": [
+      "M4"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kalk-proteksi": {
+    "decisions": [],
+    "docs": "tools/proteksi/",
+    "evidence": "Data asli",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Kalkulator kebutuhan proteksi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Data asli masih tipis: funnel gabungan proteksi+survival 11 Okt–13 Nov (22 buka, 9 mulai, 6 selesai, 3 minta laporan, 4 booking), sebagian kemungkinan uji coba internal, tidak bisa dipisah per tool.",
+    "price": "Gratis",
+    "problems": [
+      "M3"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kalk-utang": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Kalkulator lunasin utang",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M6"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-budgeting": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Template budget / kelas budgeting",
+    "next": [
+      {
+        "reason": "Setelah uang tidak bocor, sisanya dialokasikan ke dana darurat.",
+        "to": "tantangan-30",
+        "type": "cross"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M7"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-instrumen-pendidikan": {
+    "bentuk": [
+      "Rekaman kelas",
+      "PDF / e-book"
+    ],
+    "decisions": [],
+    "deliverables": "Rekaman kelas 60–90 menit\nLembar ringkasan perbandingan instrumen\nContoh hitungan per jangka waktu",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Menuju Financial Planning Keluarga",
+    "goalPembeli": "Tahu instrumen yang cocok untuk tiap jangka waktu anak",
+    "level": "DIY",
+    "masalah": "Tidak tahu instrumen mana yang cocok untuk tiap jangka waktu.",
+    "name": "Kelas 'tabungan vs reksa dana vs asuransi untuk dana pendidikan'",
+    "next": [
+      {
+        "reason": "",
+        "to": "fp-keluarga",
+        "type": "linear"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov. Live webinar / rekaman.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Rekaman kelas 60–90 menit yang membandingkan cara menyiapkan dana pendidikan per jangka waktu.",
+    "simNote": "Uji konsep: 2 beli, 46 ragu di Rp199rb.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang bingung memilih tempat menyimpan dana pendidikan.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "60–90 menit"
+  },
+  "kelas-investasi": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Kelas investasi pemula / analisis teknikal",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M10"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-pensiun": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Kelas/template rencana pensiun",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M4"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-sandwich": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Kelas 'bantu keluarga tanpa bangkrut'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M9"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-uang-relasi": {
+    "decisions": [
+      {
+        "date": "2026-11-15",
+        "text": "Target: pasangan sudah menikah, umur 30+."
+      },
+      {
+        "date": "2026-11-15",
+        "text": "Produk DIY, live grup, tanpa follow-up personal; follow-up 30 hari otomatis."
+      },
+      {
+        "date": "2026-11-15",
+        "text": "Sistem keuangan, bukan terapi hubungan."
+      },
+      {
+        "date": "2026-11-15",
+        "text": "Harga Rp199rb; rekaman bisa dijual terpisah atau jadi konten."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Validasi demand dulu sebelum produksi."
+      }
+    ],
+    "docs": "produk/uang-dan-relasi/PRODUK.md · ROADMAP.md · persona-ringkasan.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "Gerbang usulan: ≥20 pre-order atau ≥50 waitlist dalam 2 minggu (belum disetujui)",
+    "goalLadder": "Mengarahkan ke Financial Planning Keluarga ±Rp5jt, lalu polis",
+    "goalPembeli": "Pasangan pulang membawa kesepakatan uang tertulis yang ditandatangani",
+    "level": "DIY",
+    "name": "Kelas Uang & Relasi",
+    "next": [
+      {
+        "reason": "Kelas menyentuh aturan kiriman uang ke keluarga besar.",
+        "to": "kelas-sandwich",
+        "type": "cross"
+      },
+      {
+        "reason": "Kelas membuka utang dan paylater yang selama ini disembunyikan.",
+        "to": "kelas-utang",
+        "type": "cross"
+      }
+    ],
+    "nextOwner": "Philip",
+    "nextStep": "Validasi demand ke follower asli (metode & angka gerbang belum diputuskan)",
+    "notes": "Live webinar grup 2 jam, DIY, target pasangan nikah 30+. Simulasi 100 persona: Rp199rb 52 beli / 35 ragu / 13 tolak. Bukan terapi.",
+    "price": "Rp199rb per pasangan",
+    "problems": [
+      "M2",
+      "M9"
+    ],
+    "status": "Validasi",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kelas-utang": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Workbook/kelas keluar dari utang",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M6"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kesiapan-pensiun": {
+    "decisions": [],
+    "docs": "tools/assessment/",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Assessment kesiapan pensiun",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Kirim ke modal.run.",
+    "price": "Gratis",
+    "problems": [
+      "M4"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "kuis-rencana-pendidikan": {
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Dicoret: simulasi keinginan M1 menunjukkan 0 persona meminta kuis."
+      }
+    ],
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Penangkap lead untuk M1",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Kuis 'rencana pendidikan anak lu sehat?'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov. 5–7 pertanyaan, hasil dikirim ke WA.",
+    "price": "Gratis (tukar WA)",
+    "problems": [
+      "M1"
+    ],
+    "simNote": "Simulasi keinginan M1: tidak terlihat (0 yang meminta).",
+    "status": "Stop",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "nyicil-uang-pangkal": {
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari gap simulasi."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Dicoret: tidak cocok dengan target orang tua mampu."
+      }
+    ],
+    "docs": "produk/m1-ringkasan.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Pintu ke rencana setoran per jenjang / Dana Kuliah",
+    "goalPembeli": "Tahu berapa harus disisihkan per bulan sampai biaya masuk jatuh tempo",
+    "level": "Gratis",
+    "name": "Panduan/kalkulator nyicil uang pangkal jenjang berikutnya",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari gap simulasi, 16 Nov.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "simNote": "Simulasi orang tua mampu: tidak terlihat (±2).",
+    "status": "Stop",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "panduan-bantuan-beasiswa": {
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari gap simulasi."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Dicoret: tidak cocok dengan target orang tua mampu."
+      }
+    ],
+    "docs": "produk/m1-ringkasan.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Pintu M1 untuk segmen berpenghasilan rendah",
+    "goalPembeli": "Tahu bantuan apa yang bisa didapat dan cara mengajukannya",
+    "level": "Gratis",
+    "name": "Panduan dapat bantuan & beasiswa sekolah (KIP, PIP, keringanan UKT)",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari gap simulasi, 16 Nov. Syarat dan nama program harus dicek ke sumber resmi sebelum dibuat.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "simNote": "Simulasi orang tua mampu: tidak terlihat (±3).",
+    "status": "Stop",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "panduan-kesehatan": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Panduan memilih asuransi kesehatan",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M5"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "panduan-kuliah-ln": {
+    "bentuk": [
+      "PDF / e-book",
+      "Spreadsheet / template"
+    ],
+    "decisions": [],
+    "deliverables": "E-book biaya kuliah & hidup per negara tujuan\nSpreadsheet kalkulator: target dalam rupiah, 3 skenario kurs\nSetoran bulanan yang dibutuhkan",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Punya target dana dalam rupiah per negara, dengan 3 skenario kurs\nTahu setoran bulanan untuk mencapainya",
+    "level": "DIY",
+    "masalah": "Biaya luar negeri dalam mata uang asing; kurs bikin target tidak pasti.",
+    "name": "Panduan biaya kuliah luar negeri (biaya, kurs, beasiswa)",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov. Bisa memakai artikel biaya kuliah Malaysia sebagai bahan.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Biaya kuliah + biaya hidup di negara tujuan populer, dalam rupiah dengan skenario kurs, plus setoran bulanan yang dibutuhkan.",
+    "simNote": "Uji konsep: 26 beli di Rp249rb (#1 DIY); 24 dari 30 persona rencana kuliah luar negeri.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang menargetkan kuliah luar negeri.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "panduan-up": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Panduan 'berapa uang pertanggungan yang pas'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M3"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "pendidikan-vs-pensiun": {
+    "bentuk": [
+      "Spreadsheet / template",
+      "PDF / e-book"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari celah simulasi."
+      }
+    ],
+    "deliverables": "Workbook pembagian setoran ke 3 tujuan\nUrutan prioritas yang jelas",
+    "docs": "produk/m1-ortu/m1-ringkasan-ortu.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Kandidat jembatan ke Financial Planning Keluarga",
+    "goalPembeli": "Tahu pembagian setoran bulanan ke pendidikan, pensiun, dan orang tua\nPunya urutan prioritas",
+    "level": "DIY",
+    "masalah": "Dana pendidikan, pensiun, dan tanggungan orang tua saling berebut.",
+    "name": "Rencana pendidikan anak yang seimbang dengan pensiun dan tanggungan orang tua",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari celah simulasi persona orang tua, 16 Nov.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1",
+      "M4",
+      "M9"
+    ],
+    "ringkasan": "Workbook untuk membagi uang antara dana pendidikan anak, dana pensiun sendiri, dan tanggungan orang tua.",
+    "simNote": "Uji konsep: 10 beli, 38 ragu di Rp199rb; 6 dari 20 generasi sandwich.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang juga menanggung orang tua atau mendekati pensiun.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "polis-ci": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Polis penyakit kritis",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Komisi",
+    "problems": [
+      "M5"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "polis-jiwa": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Polis jiwa",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Komisi",
+    "problems": [
+      "M3"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "polis-ortu": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Polis proteksi orang tua",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Belum dicek apakah Philip menjual produk ini.",
+    "price": "",
+    "problems": [
+      "M9"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "polis-pendidikan": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Produk/polis pendidikan",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Belum dicek apakah Philip menjual produk ini.",
+    "price": "",
+    "problems": [
+      "M1"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "premium-bisnis": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Paket premium keluarga pemilik bisnis",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M12"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "produk-pensiun": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Produk pensiun / investasi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Belum dicek produk apa yang bisa dijual.",
+    "price": "",
+    "problems": [
+      "M4"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "rapikan-polis": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DFY",
+    "name": "Ganti / rapikan polis",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Belum dicek apakah ini layanan yang Philip jalankan.",
+    "price": "Komisi",
+    "problems": [
+      "M11"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "rekaman-kelas": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "Dari rekaman kelas live pertama",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Rekaman kelas Uang & Relasi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M2"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "rencana-pendidikan": {
+    "bentuk": [
+      "Kalkulator online",
+      "PDF / e-book"
+    ],
+    "decisions": [],
+    "deliverables": "Formulir 5 langkah: profil, anak, pilihan kampus lokal/internasional, biaya & modal & surplus bulanan, kirim\nPDF ke email: target dana kuliah satu anak\nSetoran bulanan dalam 3 skenario (optimis/base/pesimis)\nDihubungi via WhatsApp dalam 24 jam (email & WA wajib)",
+    "docs": "tools/eduplan/",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Pintu masuk gratis ke konsultasi",
+    "goalPembeli": "Tahu target dana kuliah untuk kampus pilihan\nTahu harus menyetor berapa per bulan, dalam tiga skenario",
+    "level": "Gratis",
+    "masalah": "Tahu harus menabung, tapi tidak tahu angka setoran bulanannya.",
+    "name": "Rencana pendidikan anak",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "tools/eduplan, kirim ke modal.run. Inflasi pendidikan diubah dari 10% ke 8% (16 Nov) agar sama dengan kalkulator dana kuliah.",
+    "price": "Gratis",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Isi profil, anak, pilihan kampus, dan kondisi keuangan — dapat target dana kuliah dan setoran per bulan dalam tiga skenario, dikirim sebagai PDF ke email.",
+    "simNote": "Uji konsep: 4 pakai, 79 ragu. Terhambat email+WA wajib & dihubungi 24 jam, dan satu anak per isian.",
+    "status": "Live",
+    "untukSiapa": "Orang tua yang mau tahu harus menabung berapa untuk kuliah anak.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": "5–10 menit"
+  },
+  "rencana-penghasilan-tidak-tetap": {
+    "bentuk": [
+      "Spreadsheet / template",
+      "PDF / e-book"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari gap simulasi."
+      }
+    ],
+    "deliverables": "Template setoran minimum + setoran bonus di bulan ramai\nPanduan memisahkan rekening/pos dana anak dari uang usaha",
+    "docs": "produk/m1-ringkasan.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Menjalankan aturan setoran yang tetap jalan di bulan sepi\nMemisahkan dana pendidikan anak dari uang usaha",
+    "level": "DIY",
+    "masalah": "Penghasilan naik-turun dan dana anak tercampur uang usaha.",
+    "name": "Rencana dana pendidikan untuk penghasilan tidak tetap",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari gap simulasi, 16 Nov. Bisa jadi template/versi khusus Dana Kuliah.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1",
+      "M12"
+    ],
+    "ringkasan": "Template rencana dana pendidikan untuk pemilik usaha: setoran fleksibel di bulan ramai/sepi dan memisahkan dana anak dari uang usaha.",
+    "simNote": "Uji konsep: 22 beli di Rp149rb (#2 DIY); 20 dari 30 persona berpenghasilan tidak tetap.",
+    "status": "Ide",
+    "untukSiapa": "Pengusaha dan pemilik bisnis keluarga.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "rencana-sambil-nyicil": {
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Masuk dashboard sebagai ide dari gap simulasi."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Dicoret: tidak cocok dengan target orang tua mampu."
+      }
+    ],
+    "docs": "produk/m1-ringkasan.md",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Tetap menabung untuk sekolah anak tanpa telat bayar cicilan",
+    "level": "DIY",
+    "name": "Rencana dana pendidikan sambil bayar utang/cicilan",
+    "next": [],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Dari gap simulasi, 16 Nov.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1",
+      "M6"
+    ],
+    "simNote": "Simulasi orang tua mampu: tidak terlihat (±2).",
+    "status": "Stop",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "review-polis": {
+    "decisions": [
+      {
+        "date": "2026-11-15",
+        "text": "Masuk paket Financial Planning Keluarga ±Rp5jt."
+      }
+    ],
+    "docs": "review-polis/",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Review Polis Keluarga",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Laporan PDF 72 jam setelah data lengkap + sesi 60 menit + 1× tanya jawab tertulis. Masuk paket Financial Planning Keluarga.",
+    "price": "Rp1.000.000",
+    "problems": [
+      "M3",
+      "M11"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "review-proteksi": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Review proteksi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Kemungkinan bagian dari Financial Planning Keluarga.",
+    "price": "",
+    "problems": [
+      "M5"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "risk-profile": {
+    "decisions": [],
+    "docs": "tools/risk-profile/",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Risk Profile",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "Gratis",
+    "problems": [
+      "M10"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "sesi-berdua": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Sesi berdua (pasangan)",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Kemungkinan cukup lewat Financial Planning Keluarga.",
+    "price": "",
+    "problems": [
+      "M2"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "sesi-utang": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Sesi strategi pelunasan utang",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M6"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "survival-test": {
+    "decisions": [],
+    "docs": "tools/survival/",
+    "evidence": "Data asli",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "Gratis",
+    "name": "Survival Test Keluarga",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "klienku.vercel.app → kemungkinan Supabase. Data asli tipis dan tergabung dengan kalkulator proteksi.",
+    "price": "Gratis",
+    "problems": [
+      "M3"
+    ],
+    "status": "Live",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "tantangan-30": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Tantangan dana darurat 30 hari",
+    "next": [
+      {
+        "reason": "Setelah dana darurat aman, baru mulai investasi.",
+        "to": "kelas-investasi",
+        "type": "cross"
+      }
+    ],
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M8"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "template-multi-anak": {
+    "bentuk": [
+      "Spreadsheet / template"
+    ],
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Jadi add-on Dana Kuliah, bukan produk sendiri."
+      }
+    ],
+    "deliverables": "Workbook tambahan untuk anak ke-3 dan seterusnya\nPembagian dana antar anak",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "Add-on untuk pembeli Dana Kuliah Rp149rb yang punya 3 anak atau lebih",
+    "goalPembeli": "Menyusun satu rencana pendidikan untuk semua anak tanpa hitung dobel",
+    "level": "DIY",
+    "masalah": "Workbook Dana Kuliah hanya mendukung 2 anak.",
+    "name": "Add-on Dana Kuliah: template 3 anak atau lebih",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Workbook Dana Kuliah Rp149rb mendukung maks. 2 anak; add-on ini menutup 3 anak atau lebih. Harga add-on belum ditentukan.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Tambahan workbook Dana Kuliah untuk keluarga dengan 3 anak atau lebih.",
+    "simNote": "Uji konsep: 3 beli, 10 ragu (+Rp49rb). Hambatan: harus beli Dana Kuliah dulu.",
+    "status": "Ide",
+    "untukSiapa": "Pembeli Dana Kuliah dengan 3 anak atau lebih.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "template-usaha": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DIY",
+    "name": "Template 3 kantong untuk pemilik usaha",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M12"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  },
+  "workbook-negeri-swasta": {
+    "bentuk": [
+      "Spreadsheet / template",
+      "PDF / e-book"
+    ],
+    "decisions": [],
+    "deliverables": "Spreadsheet perbandingan total biaya per pilihan sekolah sampai SMA\nPanduan singkat cara mengisi",
+    "docs": "",
+    "evidence": "Simulasi",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "Tahu total biaya tiap pilihan sekolah sampai SMA\nTahu dampaknya ke dana kuliah",
+    "level": "DIY",
+    "masalah": "Sulit membandingkan total biaya antar pilihan sekolah.",
+    "name": "Workbook 'sekolah negeri atau swasta: hitung biaya sebenarnya'",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "Usulan Claude, 16 Nov.",
+    "price": "Belum ditentukan",
+    "problems": [
+      "M1"
+    ],
+    "ringkasan": "Workbook untuk membandingkan total biaya negeri, swasta nasional, nasional plus, dan internasional untuk anak sendiri sampai lulus SMA.",
+    "simNote": "Uji konsep: 12 beli, 39 ragu di Rp99rb.",
+    "status": "Ide",
+    "untukSiapa": "Orang tua yang sedang memilih jenis sekolah.",
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "waktuPakai": ""
+  },
+  "workshop-investasi": {
+    "decisions": [],
+    "docs": "",
+    "evidence": "Belum",
+    "goalBisnis": "",
+    "goalLadder": "",
+    "goalPembeli": "",
+    "level": "DWY",
+    "name": "Workshop investasi multi-sesi",
+    "nextOwner": "",
+    "nextStep": "",
+    "notes": "",
+    "price": "",
+    "problems": [
+      "M10"
+    ],
+    "status": "Ide",
+    "updatedAt": "2026-11-16T00:00:00Z"
+  }
+}

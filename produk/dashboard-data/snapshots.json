@@ -1,0 +1,60 @@
+{
+  "data-asli": {
+    "funnel": [
+      {
+        "n": 22,
+        "step": "Membuka tool"
+      },
+      {
+        "n": 9,
+        "step": "Mulai mengisi"
+      },
+      {
+        "n": 6,
+        "step": "Selesai"
+      },
+      {
+        "n": 3,
+        "step": "Minta laporan"
+      },
+      {
+        "n": 4,
+        "step": "Booking dibuat"
+      }
+    ],
+    "funnelNotes": [
+      "UTM kosong, sumber trafik belum terlihat.",
+      "Sebagian sesi 11–14 Okt kemungkinan uji coba internal; belum bisa dibedakan.",
+      "Booking (4) > minta laporan (3); belum dicek."
+    ],
+    "funnelPeriod": "11 Okt – 13 Nov 2026",
+    "mayar": [
+      {
+        "amount": "5× Rp0, 1× Rp149.000",
+        "date": "16 Sep 2026",
+        "link": "Dana Kuliah"
+      },
+      {
+        "amount": "Rp99.000",
+        "date": "26 Okt 2026",
+        "link": "Pro Plan"
+      },
+      {
+        "amount": "Rp10.000",
+        "date": "8 Nov 2026",
+        "link": "Invoice"
+      },
+      {
+        "amount": "3× Rp499.000",
+        "date": "10 Nov 2026",
+        "link": "Invoice"
+      }
+    ],
+    "mayarNotes": [
+      "Transaksi Rp0 kemungkinan tes atau kupon; belum dicek.",
+      "Isi Invoice (3× Rp499rb dan Rp10rb) dan Pro Plan belum diketahui; perlu konfirmasi Philip. Workspace /projects menyebut Leaf dijual Rp499rb per 3 bulan, tapi belum dipastikan ini transaksinya."
+    ],
+    "notReadable": "Tool dana kuliah, pensiun, kesiapan pensiun, rencana pendidikan, financial check-up, dan Master Plan mengirim data ke modal.run, belum terbaca.",
+    "takenAt": "2026-11-16"
+  }
+}

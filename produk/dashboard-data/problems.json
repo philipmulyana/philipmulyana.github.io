@@ -1,0 +1,130 @@
+{
+  "M1": {
+    "code": "M1",
+    "decisions": [
+      {
+        "date": "2026-11-16",
+        "text": "Fokus ke satu masalah dulu: biaya pendidikan anak. Produknya diperbanyak."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Asumsi inflasi pendidikan 8% per tahun untuk semua konten dan tool M1."
+      },
+      {
+        "date": "2026-11-16",
+        "text": "Data tools (Modal) dan Clarity ditunda. Validasi demand M1 nanti lewat follower."
+      }
+    ],
+    "demandNote": "",
+    "demandSim": {
+      "bayarRagu": 29,
+      "bayarTidak": 62,
+      "bayarYa": 9,
+      "sadar": 64,
+      "urgensiTinggi": 11
+    },
+    "demandSource": "sim",
+    "focus": true,
+    "name": "Biaya pendidikan anak",
+    "order": 1
+  },
+  "M10": {
+    "code": "M10",
+    "demandNote": "",
+    "name": "Mulai investasi, takut salah atau ketipu",
+    "order": 10,
+    "proposed": true
+  },
+  "M11": {
+    "code": "M11",
+    "demandNote": "",
+    "name": "Polis lama tidak jelas, takut kena oknum",
+    "order": 11,
+    "proposed": true
+  },
+  "M12": {
+    "code": "M12",
+    "demandNote": "",
+    "name": "Uang usaha campur rumah tangga, penghasilan tidak tetap",
+    "order": 12,
+    "proposed": true
+  },
+  "M2": {
+    "biased": true,
+    "code": "M2",
+    "demandNote": "Bias: 29 dari 35 urgensi tinggi berasal dari 30 persona yang sengaja diberi atribut 'sering ribut'.",
+    "demandSim": {
+      "bayarRagu": 46,
+      "bayarTidak": 47,
+      "bayarYa": 7,
+      "sadar": 80,
+      "urgensiTinggi": 35
+    },
+    "demandSource": "sim",
+    "name": "Ribut / tidak sepakat soal uang dengan pasangan",
+    "order": 2
+  },
+  "M3": {
+    "code": "M3",
+    "demandNote": "Disadari banyak orang tapi hampir tidak mendesak (hipotesis: terus ditunda).",
+    "demandSim": {
+      "bayarRagu": 33,
+      "bayarTidak": 62,
+      "bayarYa": 5,
+      "sadar": 70,
+      "urgensiTinggi": 3
+    },
+    "demandSource": "sim",
+    "name": "Keluarga kacau kalau pencari nafkah meninggal/sakit",
+    "order": 3
+  },
+  "M4": {
+    "code": "M4",
+    "demandNote": "Kuat di umur 41+ (19/20 sadar), lemah di bawahnya (21/80).",
+    "demandSim": {
+      "bayarRagu": 13,
+      "bayarTidak": 83,
+      "bayarYa": 4,
+      "sadar": 40,
+      "urgensiTinggi": 2
+    },
+    "demandSource": "sim",
+    "name": "Pensiun",
+    "order": 4
+  },
+  "M5": {
+    "code": "M5",
+    "demandNote": "",
+    "name": "Biaya sakit berat / rumah sakit",
+    "order": 5,
+    "proposed": true
+  },
+  "M6": {
+    "code": "M6",
+    "demandNote": "",
+    "name": "Utang, cicilan, paylater, pinjol",
+    "order": 6,
+    "proposed": true
+  },
+  "M7": {
+    "code": "M7",
+    "demandNote": "",
+    "name": "Uang bocor, gaji habis tidak jelas",
+    "order": 7,
+    "proposed": true
+  },
+  "M8": {
+    "code": "M8",
+    "demandNote": "",
+    "name": "Tidak punya dana darurat",
+    "order": 8,
+    "proposed": true
+  },
+  "M9": {
+    "code": "M9",
+    "demandNote": "",
+    "name": "Generasi sandwich",
+    "order": 9,
+    "proposed": true
+  }
+}

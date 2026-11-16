@@ -1,0 +1,12 @@
+{
+  "scoring": {
+    "updatedAt": "2026-11-16T00:00:00Z",
+    "weights": {
+      "bayar": 35,
+      "ladder": 20,
+      "modal": 10,
+      "sadar": 10,
+      "urgensi": 25
+    }
+  }
+}
