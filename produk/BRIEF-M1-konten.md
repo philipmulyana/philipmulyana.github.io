@@ -31,13 +31,17 @@ Untuk session Claude mana pun (cloud atau lokal) yang mengerjakan konten Philip.
 | Gratis | Artikel biaya kuliah: `blog/biaya-kuliah-swasta-non-kedokteran.html` (termasuk cost of delay), `blog/biaya-kuliah-5-universitas-top-malaysia-2026.html` | Live |
 | Gratis | Kalkulator biaya sekolah per jenjang (TK–kuliah) | Ide |
 | Gratis | Fitur "mulai sekarang vs nunda N tahun" di kalkulator dana kuliah | Ide |
-| Gratis | Kuis "rencana pendidikan anak lu sehat?" | Ide |
+| Gratis | ~~Kuis "rencana pendidikan anak lu sehat?"~~ | Stop (dicoret 16 Nov: tidak dicari di simulasi) |
 | Gratis | Checklist biaya masuk sekolah (uang pangkal, seragam, buku, dll.) | Ide |
 | DIY | Dana Kuliah Rp149rb (`product/dana-kuliah/`, mendukung maks. 2 anak) | Live |
 | DIY | Template rencana dana pendidikan 3 anak atau lebih / add-on Dana Kuliah | Ide |
 | DIY | Kelas "tabungan vs reksa dana vs asuransi" | Ide, **perlu cek kepatuhan** |
 | DIY | Panduan biaya kuliah luar negeri | Ide |
 | DIY | Workbook "sekolah negeri atau swasta" | Ide |
+| Gratis | Panduan dapat bantuan & beasiswa sekolah (KIP, PIP, keringanan UKT) | Ide (dari simulasi) |
+| Gratis | Panduan/kalkulator nyicil uang pangkal jenjang berikutnya | Ide (dari simulasi; di simulasi muncul sebagai keinginan DIY, 7 persona — levelnya bisa diubah) |
+| DIY | Rencana dana pendidikan untuk penghasilan tidak tetap | Ide (dari simulasi) |
+| DIY | Rencana dana pendidikan sambil bayar utang/cicilan | Ide (dari simulasi) |
 | DWY | Financial Planning Keluarga ±Rp5jt (produk payung, termasuk Review Polis) | Ide |
 | DFY | Polis pendidikan | Ide, belum dicek apakah Philip menjualnya |
 
@@ -46,13 +50,21 @@ Jalur yang sudah disepakati:
 - Cross-sell: Dana Kuliah → kalkulator proteksi ("kalau orang tua meninggal, siapa yang lanjut bayar kuliah anak?").
 
 ## 4. Arah konten (artikel biaya kuliah & keperluan sekolah)
-- Tujuan konten: **mengarahkan pembaca ke produk M1 gratis** (kalkulator, kuis, checklist), lalu ke **Dana Kuliah Rp149rb**.
-- Contoh topik yang cocok dengan produk di atas. Ini **usulan**, bukan daftar yang sudah disetujui Philip:
-  - Biaya kuliah per jurusan / per kampus (melanjutkan dua artikel yang sudah ada).
-  - Biaya masuk sekolah selain SPP (uang pangkal, seragam, buku, kegiatan).
-  - Sekolah negeri vs swasta: biaya sebenarnya.
-  - Biaya kuliah luar negeri.
-  - Berapa yang hilang kalau menunda menabung.
+- Tujuan konten: **mengarahkan pembaca ke produk M1 gratis** (daftar biaya sekolah, kalkulator, checklist, panduan bantuan/beasiswa), lalu ke **Dana Kuliah Rp149rb**.
+- **Dasar arah topik:** simulasi keinginan 63 persona (`produk/m1-ringkasan.md`). Ini hipotesis yang dibuat AI, bukan data pembaca.
+- Temuan simulasi yang dipakai:
+  - Yang paling dikhawatirkan **bukan kuliah, tapi biaya masuk sekolah yang sudah dekat** (uang pangkal TK/SD/SMP/SMA, ±30 persona).
+  - Yang paling diinginkan gratis: **daftar biaya sekolah per kota dan jenjang** (28), angka setoran bulanan (15), kalender biaya untuk beberapa anak (11), info bantuan/beasiswa (11).
+  - Bentuk yang disukai: **video singkat (30) dan template (25)**. Kelas live hanya dipilih 3.
+- Contoh topik, diurutkan sesuai temuan di atas. Ini **usulan**, bukan daftar yang sudah disetujui Philip:
+  1. Biaya masuk sekolah per jenjang dan per kota (uang pangkal, SPP, seragam, buku, kegiatan).
+  2. Berapa yang harus disisihkan per bulan sampai biaya masuk jenjang berikutnya.
+  3. Bantuan dan beasiswa sekolah: siapa yang berhak dan cara mengajukannya (wajib dicek ke sumber resmi).
+  4. Biaya untuk dua anak atau lebih: kalender biaya keluarga.
+  5. Sekolah negeri vs swasta: biaya sebenarnya (muncul di beberapa jawaban, tanpa angka pasti).
+  6. Biaya kuliah per jurusan / per kampus (melanjutkan dua artikel yang sudah ada).
+  7. Menabung untuk sekolah anak saat penghasilan tidak tetap atau sedang ada cicilan.
+  8. Biaya kuliah luar negeri.
 
 ## 5. Aturan wajib
 
