@@ -34,7 +34,7 @@ Untuk session Claude mana pun (cloud atau lokal) yang mengerjakan konten Philip.
 | Gratis | ~~Kuis "rencana pendidikan anak lu sehat?"~~ | Stop (dicoret 16 Nov: tidak dicari di simulasi) |
 | Gratis | Checklist biaya masuk sekolah (uang pangkal, seragam, buku, dll.) | Ide |
 | DIY | Dana Kuliah Rp149rb (`product/dana-kuliah/`, mendukung maks. 2 anak) | Live |
-| DIY | Template rencana dana pendidikan 3 anak atau lebih / add-on Dana Kuliah | Ide |
+| DIY | Add-on Dana Kuliah: template 3 anak atau lebih | Ide (keputusan 16 Nov: jadi add-on Dana Kuliah, bukan produk sendiri) |
 | DIY | Kelas "tabungan vs reksa dana vs asuransi" | Ide, **perlu cek kepatuhan** |
 | DIY | Panduan biaya kuliah luar negeri | Ide |
 | DIY | Workbook "sekolah negeri atau swasta" | Ide |
@@ -78,5 +78,4 @@ Aturan dari `CLAUDE.md` ditandai (CLAUDE.md). Sisanya aturan khusus brief ini.
 
 ## 6. Yang masih menunggu keputusan Philip
 1. Kelas "tabungan vs reksa dana vs asuransi": lanjut setelah cek ke agensi, atau dicoret.
-2. Template 3 anak atau lebih: produk sendiri atau add-on Dana Kuliah.
-3. Format konten dan jumlahnya.
+2. Format konten dan jumlahnya.
