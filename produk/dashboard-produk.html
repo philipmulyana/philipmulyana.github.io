@@ -103,6 +103,8 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
 .chain .arr { text-align: center; color: var(--muted); padding-top: 26px; }
 @media (max-width: 760px) { .chain { grid-template-columns: 1fr; } .chain .arr { transform: rotate(90deg); padding: 0; } }
 .list select { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-height: 44px; background: var(--panel); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+ul.dl { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
 .empty { border: 1px dashed var(--line); border-radius: 8px; padding: 22px; text-align: center; color: var(--muted); }
 .note { font-size: 14px; color: var(--muted); margin: 0; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
@@ -137,6 +139,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     <a href="#produk" data-v="produk">Produk</a>
     <a href="#jalur" data-v="jalur">Jalur</a>
     <a href="#demand" data-v="demand">Demand</a>
+    <a href="#arsip" data-v="arsip">Arsip</a>
   </nav>
   <span class="sp"></span>
   <button class="btn pri" id="btn-add" type="button" hidden>Tambah produk</button>
@@ -170,7 +173,9 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
   const N = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
   const pill = (s) => `<span class="pill s-${esc(s)}">${esc(s)}</span>`;
 
-  function view() { const h = location.hash.slice(1); return ['peta', 'produk', 'jalur', 'demand'].includes(h) ? h : 'peta'; }
+  function view() { const h = location.hash.slice(1); if (h.startsWith('p-')) return 'detail'; return ['peta', 'produk', 'jalur', 'demand', 'arsip'].includes(h) ? h : 'peta'; }
+  const ACTIVE = (x) => x.status !== 'Stop';
+  const BENTUK = ['Kalkulator online', 'Artikel', 'PDF / e-book', 'Spreadsheet / template', 'Checklist', 'Video singkat', 'Rekaman kelas', 'Kelas live / webinar', 'Course online', 'Konsultasi / sesi', 'Polis / layanan'];
   window.addEventListener('hashchange', render);
 
   function render() {
@@ -183,7 +188,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     if (S.err) h += `<div class="banner">${esc(S.err)}</div>`;
     else if (S.ready && !canWrite) h += `<div class="banner">Mode baca saja: akun ini tidak bisa mengubah data.</div>`;
     if (!S.ready && !S.err) { m.innerHTML = '<div class="card"><p class="note">Memuat peta produk…</p></div>'; return; }
-    h += v === 'peta' ? viewPeta() : v === 'produk' ? viewProduk() : v === 'jalur' ? viewJalur() : viewDemand();
+    h += v === 'peta' ? viewPeta() : v === 'produk' ? viewProduk() : v === 'jalur' ? viewJalur() : v === 'arsip' ? viewArsip() : v === 'detail' ? viewDetail(location.hash.slice(3)) : viewDemand();
     m.innerHTML = h;
   }
 
@@ -230,7 +235,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     for (const p of P) {
       h += `<tr><td class="prob"><span class="code">${esc(p.code)}</span> ${p.proposed ? '<span class="pill tag-usulan">Usulan</span>' : ''}<b>${esc(p.name)}</b>${scoreBadge(p)}${demandMini(p)}${p.demandNote ? `<div class="pn">${esc(p.demandNote)}</div>` : ''}</td>`;
       for (const [l] of LEVELS) {
-        const items = S.products.filter((x) => x.level === l && (x.problems || []).includes(p.code)).sort((a, b) => STATUSES.indexOf(b.status) - STATUSES.indexOf(a.status));
+        const items = S.products.filter((x) => ACTIVE(x) && x.level === l && (x.problems || []).includes(p.code)).sort((a, b) => STATUSES.indexOf(b.status) - STATUSES.indexOf(a.status));
         h += `<td class="lvl">${items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}${x.price ? `<span>${esc(x.price)}</span>` : ''}</span></button>`).join('')}${canWrite ? `<button class="addc" data-new="${esc(p.code)}|${l}">+ produk</button>` : ''}</td>`;
       }
       h += `</tr>`;
@@ -241,20 +246,20 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
   // ---------- PRODUK ----------
   function viewProduk() {
     const f = ui.f;
-    let list = S.products.filter((x) => (!f.problem || (x.problems || []).includes(f.problem)) && (!f.level || x.level === f.level) && (!f.status || x.status === f.status) && (!f.q || (x.name || '').toLowerCase().includes(f.q.toLowerCase())));
+    let list = S.products.filter((x) => ACTIVE(x) && (!f.problem || (x.problems || []).includes(f.problem)) && (!f.level || x.level === f.level) && (!f.status || x.status === f.status) && (!f.q || (x.name || '').toLowerCase().includes(f.q.toLowerCase())));
     list.sort((a, b) => LEVELS.findIndex((l) => l[0] === a.level) - LEVELS.findIndex((l) => l[0] === b.level) || String(a.name).localeCompare(String(b.name)));
-    const counts = Object.fromEntries(STATUSES.map((s) => [s, S.products.filter((x) => x.status === s).length]));
+    const counts = Object.fromEntries(STATUSES.filter((s) => s !== 'Stop').map((s) => [s, S.products.filter((x) => x.status === s).length]));
     let h = `<div><h1>Semua produk</h1><p class="lead">Tiap produk punya tiga end goal: target bisnis, hasil untuk pembeli, dan tujuannya di value ladder.</p></div>`;
-    h += `<div class="tiles">${STATUSES.map((s) => `<div class="tile"><div class="v">${counts[s]}</div><div class="k">${s}</div></div>`).join('')}</div>`;
+    h += `<div class="tiles">${STATUSES.filter((s) => s !== 'Stop').map((s) => `<div class="tile"><div class="v">${counts[s]}</div><div class="k">${s}</div></div>`).join('')}</div>`;
     h += `<div class="filters"><select id="f-problem" aria-label="Filter masalah"><option value="">Semua masalah</option>${probs().map((p) => `<option value="${esc(p.code)}" ${f.problem === p.code ? 'selected' : ''}>${esc(p.code)} ${esc(p.name)}</option>`).join('')}</select>
       <select id="f-level" aria-label="Filter level"><option value="">Semua level</option>${LEVELS.map(([l]) => `<option ${f.level === l ? 'selected' : ''}>${l}</option>`).join('')}</select>
-      <select id="f-status" aria-label="Filter status"><option value="">Semua status</option>${STATUSES.map((s) => `<option ${f.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      <select id="f-status" aria-label="Filter status"><option value="">Semua status</option>${STATUSES.filter((s) => s !== 'Stop').map((s) => `<option ${f.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <input id="f-q" type="search" placeholder="Cari nama produk" value="${esc(f.q)}" aria-label="Cari"></div>`;
     if (!list.length) return h + `<div class="empty">Tidak ada produk yang cocok.</div>`;
-    h += `<div class="card tbl"><table class="list"><thead><tr><th>Produk</th><th>Level</th><th>Masalah</th><th>Status</th><th>End goal</th><th>Bukti demand</th><th>Langkah berikutnya</th></tr></thead><tbody>`;
+    h += `<div class="card tbl"><table class="list"><thead><tr><th>Produk</th><th>Level</th><th>Masalah</th><th>Status</th><th>Hasil untuk pembeli</th><th>Bukti demand</th><th>Langkah berikutnya</th></tr></thead><tbody>`;
     for (const x of list) {
       h += `<tr class="click" data-open="${esc(x.id)}" tabindex="0" role="button" aria-label="Buka ${esc(x.name)}"><td><b>${esc(x.name)}</b>${x.price ? `<div class="note">${esc(x.price)}</div>` : ''}</td><td>${esc(x.level)}</td><td>${(x.problems || []).map(esc).join(', ')}</td><td>${pill(x.status)}</td>
-        <td class="goal">${x.goalBisnis ? `<div><b>Bisnis:</b> ${esc(x.goalBisnis)}</div>` : ''}${x.goalPembeli ? `<div><b>Pembeli:</b> ${esc(x.goalPembeli)}</div>` : ''}${x.goalLadder ? `<div><b>Ladder:</b> ${esc(x.goalLadder)}</div>` : ''}${!x.goalBisnis && !x.goalPembeli && !x.goalLadder ? '<span class="note">Belum diisi</span>' : ''}</td>
+        <td class="goal">${lines(x.goalPembeli).length ? lines(x.goalPembeli).map((d) => `<div>• ${esc(d)}</div>`).join('') : '<span class="note">Belum diisi</span>'}${(x.bentuk || []).length ? `<div class="note">${x.bentuk.map(esc).join(' · ')}</div>` : ''}</td>
         <td>${esc(x.evidence || 'Belum')}${x.simNote ? `<div class="note">${esc(x.simNote)}</div>` : ''}</td><td>${esc(x.nextStep || '')}${x.nextOwner ? `<div class="note">${esc(x.nextOwner)}</div>` : ''}</td></tr>`;
     }
     return h + `</tbody></table></div>`;
@@ -264,15 +269,48 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
   function viewJalur() {
     const P = probs().slice().sort((a, b) => (score(b).score ?? -1) - (score(a).score ?? -1));
     let h = `<div><h1>Jalur produk</h1><p class="lead">Jalur utama linear di dalam satu masalah: Gratis → DIY → DWY → DFY. Cross-sell antar masalah hanya dipasang kalau ada alasan pemicu yang jelas. Masalah diurutkan dari skor prioritas tertinggi.</p></div>`;
-    const cross = S.products.flatMap((x) => (x.next || []).filter((n) => n.type === 'cross').map((n) => ({ from: x, ...n })));
+    const cross = S.products.filter(ACTIVE).flatMap((x) => (x.next || []).filter((n) => n.type === 'cross').map((n) => ({ from: x, ...n }))).filter((c) => { const t = S.products.find((p) => p.id === c.to); return !t || ACTIVE(t); });
     h += `<section class="card"><div class="row"><h2>Cross-sell</h2><span class="note">${cross.length} jalur</span></div>${cross.length ? `<div class="tbl"><table class="list" style="min-width:560px"><thead><tr><th>Dari</th><th>Ke</th><th>Alasan pemicu</th></tr></thead><tbody>${cross.map((c) => { const to = S.products.find((x) => x.id === c.to); return `<tr class="click" data-open="${esc(c.from.id)}" tabindex="0" role="button"><td><b>${esc(c.from.name)}</b><div class="note">${(c.from.problems || []).map(esc).join(', ')}</div></td><td><b>${esc(pname(c.to))}</b><div class="note">${to ? (to.problems || []).map(esc).join(', ') : 'Produk tidak ditemukan'}</div></td><td>${esc(c.reason || '')}</td></tr>`; }).join('')}</tbody></table></div>` : '<p class="note">Belum ada cross-sell. Tambahkan dari form produk, bagian "Berikutnya".</p>'}</section>`;
     for (const p of P) {
       const sc = score(p);
       h += `<section class="card"><div class="row" style="justify-content:space-between"><div><span class="code-t">${esc(p.code)}</span> <b>${esc(p.name)}</b> ${p.proposed ? '<span class="pill tag-usulan">Usulan</span>' : ''}</div><span class="note">Skor ${sc.score ?? '–'} · Keyakinan ${esc(sc.conf)}</span></div><div class="chain">`;
-      h += LEVELS.map(([l]) => { const items = S.products.filter((x) => x.level === l && (x.problems || []).includes(p.code)); return `<div class="step"><div class="lv">${l}</div>${items.length ? items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}</span></button>`).join('') : '<span class="note">Belum ada</span>'}</div>`; }).join('<div class="arr" aria-hidden="true">→</div>');
+      h += LEVELS.map(([l]) => { const items = S.products.filter((x) => ACTIVE(x) && x.level === l && (x.problems || []).includes(p.code)); return `<div class="step"><div class="lv">${l}</div>${items.length ? items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}</span></button>`).join('') : '<span class="note">Belum ada</span>'}</div>`; }).join('<div class="arr" aria-hidden="true">→</div>');
       h += `</div></section>`;
     }
     return h;
+  }
+
+  // ---------- DETAIL ----------
+  const lines = (t) => String(t || '').split('\n').map((l) => l.trim()).filter(Boolean);
+  function viewDetail(id) {
+    const x = S.products.find((p) => p.id === id);
+    if (!x) return `<div class="empty">Produk tidak ditemukan. <a href="#produk">Kembali ke daftar produk</a></div>`;
+    const sec = (title, body, empty) => `<section class="card"><h2>${title}</h2>${body || `<p class="note">${empty || 'Belum diisi.'}</p>`}</section>`;
+    const probNames = (x.problems || []).map((c) => { const pr = S.problems.find((p) => p.code === c); return `<span class="pill s-Ide">${esc(c)}${pr ? ' · ' + esc(pr.name) : ''}</span>`; }).join(' ');
+    const deliv = lines(x.deliverables);
+    const hasil = lines(x.goalPembeli);
+    let h = `<div class="row" style="justify-content:space-between"><a href="#produk" class="note">← Semua produk</a>${canWrite ? `<button class="btn pri" data-edit="${esc(x.id)}">Ubah produk</button>` : ''}</div>`;
+    h += `<div><div class="row">${pill(x.status)}<span class="pill s-Produksi">${esc(x.level)}</span>${x.price ? `<span class="pill s-Ide">${esc(x.price)}</span>` : ''}</div><h1 style="margin-top:8px">${esc(x.name)}</h1>${x.ringkasan ? `<p class="lead">${esc(x.ringkasan)}</p>` : ''}<div class="row" style="margin-top:8px">${probNames}</div></div>`;
+    h += `<div class="detail-grid">`;
+    h += sec('Untuk siapa', x.untukSiapa ? `<p>${esc(x.untukSiapa)}</p>` : '');
+    h += sec('Masalah yang diselesaikan', x.masalah ? `<p>${esc(x.masalah)}</p>` : '');
+    h += sec('Deliverables', `${(x.bentuk || []).length ? `<div class="row">${x.bentuk.map((b) => `<span class="pill s-Live">${esc(b)}</span>`).join('')}</div>` : ''}${deliv.length ? `<ul class="dl">${deliv.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}${x.waktuPakai ? `<p class="note">Waktu pakai: ${esc(x.waktuPakai)}</p>` : ''}`.trim(), 'Bentuk dan isi produk belum diisi.');
+    h += sec('End goal: setelah pakai, pembeli bisa…', hasil.length ? `<ul class="dl">${hasil.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '');
+    h += sec('Target bisnis', x.goalBisnis ? `<p>${esc(x.goalBisnis)}</p>` : '');
+    const nx = (x.next || []).map((n) => `<li><a href="#p-${esc(n.to)}">${esc(pname(n.to))}</a>${S.products.find((p) => p.id === n.to && !ACTIVE(p)) ? ' <span class="note">(arsip)</span>' : ''} <span class="note">(${n.type === 'cross' ? 'cross-sell' : 'linear'}${n.reason ? ' · ' + esc(n.reason) : ''})</span></li>`).join('');
+    h += sec('Posisi di tangga produk', `${x.goalLadder ? `<p>${esc(x.goalLadder)}</p>` : ''}${nx ? `<p class="note">Berikutnya:</p><ul class="dl">${nx}</ul>` : ''}`.trim());
+    h += sec('Bukti demand', `<p><b>${esc(x.evidence || 'Belum')}</b></p>${x.simNote ? `<p class="note">${esc(x.simNote)}</p>` : ''}`);
+    h += sec('Langkah berikutnya', x.nextStep ? `<p>${esc(x.nextStep)}${x.nextOwner ? ` <span class="note">· ${esc(x.nextOwner)}</span>` : ''}</p>` : '');
+    h += `</div>`;
+    h += sec('Keputusan', (x.decisions || []).length ? x.decisions.map((d) => `<div class="dec"><time>${esc(d.date)}</time>${esc(d.text)}</div>`).join('') : '', 'Belum ada keputusan.');
+    if (x.notes || x.docs) h += sec('Catatan & dokumen', `${x.notes ? `<p>${esc(x.notes)}</p>` : ''}${x.docs ? `<p class="note">${esc(x.docs)}</p>` : ''}`);
+    return h;
+  }
+  function viewArsip() {
+    const list = S.products.filter((x) => !ACTIVE(x)).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    let h = `<div><h1>Arsip</h1><p class="lead">Produk berstatus Stop. Tidak tampil di Peta, Produk, dan Jalur. Untuk mengaktifkan lagi, buka produknya lalu ubah statusnya.</p></div>`;
+    if (!list.length) return h + `<div class="empty">Arsip kosong.</div>`;
+    return h + `<div class="card tbl"><table class="list" style="min-width:560px"><thead><tr><th>Produk</th><th>Level</th><th>Masalah</th><th>Alasan dicoret</th></tr></thead><tbody>${list.map((x) => { const last = (x.decisions || []).slice(-1)[0]; return `<tr class="click" data-open="${esc(x.id)}" tabindex="0" role="button"><td><b>${esc(x.name)}</b></td><td>${esc(x.level)}</td><td>${(x.problems || []).map(esc).join(', ')}</td><td class="note">${last ? esc(last.date + ' · ' + last.text) : ''}</td></tr>`; }).join('')}</tbody></table></div>`;
   }
 
   // ---------- DEMAND ----------
@@ -309,9 +347,15 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
         <div class="fld"><label for="e-status">Status</label><select id="e-status" ${dis}>${STATUSES.map((s) => `<option ${x.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
         <div class="fld"><label for="e-price">Harga</label><input id="e-price" value="${esc(x.price || '')}" placeholder="mis. Rp199rb" ${dis}></div></div>
       <div class="fld"><label>Masalah</label><div class="checks">${probs().map((p) => `<label><input type="checkbox" name="e-prob" value="${esc(p.code)}" ${(x.problems || []).includes(p.code) ? 'checked' : ''} ${dis}> ${esc(p.code)} ${esc(p.name)}</label>`).join('')}</div></div>
-      <div class="fld"><label for="e-gb">End goal: target bisnis</label><input id="e-gb" value="${esc(x.goalBisnis || '')}" placeholder="mis. 50 pembeli / Rp10jt per bulan" ${dis}></div>
-      <div class="fld"><label for="e-gp">End goal: hasil untuk pembeli</label><input id="e-gp" value="${esc(x.goalPembeli || '')}" ${dis}></div>
-      <div class="fld"><label for="e-gl">End goal: tujuan di value ladder</label><input id="e-gl" value="${esc(x.goalLadder || '')}" placeholder="mis. mengarahkan ke Financial Planning Keluarga" ${dis}></div>
+      <div class="fld"><label for="e-ring">Ringkasan (satu kalimat)</label><input id="e-ring" value="${esc(x.ringkasan || '')}" ${dis}></div>
+      <div class="fld"><label for="e-us">Untuk siapa</label><input id="e-us" value="${esc(x.untukSiapa || '')}" ${dis}></div>
+      <div class="fld"><label for="e-mas">Masalah yang diselesaikan</label><input id="e-mas" value="${esc(x.masalah || '')}" ${dis}></div>
+      <div class="fld"><label>Bentuk deliverables</label><div class="checks">${BENTUK.map((b) => `<label><input type="checkbox" name="e-bentuk" value="${esc(b)}" ${(x.bentuk || []).includes(b) ? 'checked' : ''} ${dis}> ${esc(b)}</label>`).join('')}</div></div>
+      <div class="fld"><label for="e-del2x">Isi deliverables (satu per baris)</label><textarea id="e-del2x" ${dis}>${esc(x.deliverables || '')}</textarea></div>
+      <div class="fld"><label for="e-wp">Waktu pakai</label><input id="e-wp" value="${esc(x.waktuPakai || '')}" placeholder="mis. 30 menit" ${dis}></div>
+      <div class="fld"><label for="e-gp">End goal: setelah pakai, pembeli bisa… (satu per baris)</label><textarea id="e-gp" ${dis}>${esc(x.goalPembeli || '')}</textarea></div>
+      <div class="fld"><label for="e-gb">Target bisnis</label><input id="e-gb" value="${esc(x.goalBisnis || '')}" placeholder="mis. 50 pembeli / Rp10jt per bulan" ${dis}></div>
+      <div class="fld"><label for="e-gl">Posisi di tangga produk</label><input id="e-gl" value="${esc(x.goalLadder || '')}" placeholder="mis. pintu masuk ke Dana Kuliah" ${dis}></div>
       <div class="f2"><div class="fld"><label for="e-ev">Bukti demand</label><select id="e-ev" ${dis}>${EVID.map((s) => `<option ${(x.evidence || 'Belum') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
         <div class="fld"><label for="e-owner">Langkah berikutnya: siapa</label><select id="e-owner" ${dis}>${['', 'Philip', 'Claude', 'Bersama'].map((s) => `<option ${(x.nextOwner || '') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div></div>
       <div class="fld"><label for="e-next">Langkah berikutnya</label><input id="e-next" value="${esc(x.nextStep || '')}" ${dis}></div>
@@ -342,14 +386,15 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       if (nto) { if (ntype === 'cross' && !nreason) { toast('Isi alasan pemicu untuk cross-sell'); return; } nextLinks.push({ to: nto, type: ntype, reason: nreason }); }
       nextLinks = nextLinks.filter(Boolean);
       const data = { next: nextLinks, name: g('#e-name'), level: g('#e-level'), status: g('#e-status'), price: g('#e-price'), problems: [...root.querySelectorAll('input[name=e-prob]:checked')].map((i) => i.value),
-        goalBisnis: g('#e-gb'), goalPembeli: g('#e-gp'), goalLadder: g('#e-gl'), evidence: g('#e-ev'), nextOwner: g('#e-owner'), nextStep: g('#e-next'), docs: g('#e-docs'), notes: g('#e-notes'), decisions, updatedAt: new Date().toISOString() };
+        goalBisnis: g('#e-gb'), goalPembeli: g('#e-gp'), goalLadder: g('#e-gl'), ringkasan: g('#e-ring'), untukSiapa: g('#e-us'), masalah: g('#e-mas'), deliverables: g('#e-del2x'), waktuPakai: g('#e-wp'), bentuk: [...root.querySelectorAll('input[name=e-bentuk]:checked')].map((i) => i.value).concat((x.bentuk || []).filter((b) => !BENTUK.includes(b))), evidence: g('#e-ev'), nextOwner: g('#e-owner'), nextStep: g('#e-next'), docs: g('#e-docs'), notes: g('#e-notes'), decisions, updatedAt: new Date().toISOString() };
       if (!data.name) { toast('Nama produk wajib diisi'); return; }
-      try { await db.collection('products').doc(x.id).set(data); toast('Tersimpan'); close(); } catch (err) { toast(err?.code === 'not_granted' || err?.code === 'permission_denied' ? 'Akun ini tidak bisa menyimpan' : 'Gagal menyimpan, coba lagi'); }
+      try { const { id: _omit, ...prev } = x; await db.collection('products').doc(x.id).set({ ...prev, ...data }); toast('Tersimpan'); close(); } catch (err) { toast(err?.code === 'not_granted' || err?.code === 'permission_denied' ? 'Akun ini tidak bisa menyimpan' : 'Gagal menyimpan, coba lagi'); }
     };
   }
 
   document.addEventListener('click', (e) => {
-    const o = e.target.closest('[data-open]'); if (o) { openEditor(o.dataset.open); return; }
+    const ed = e.target.closest('[data-edit]'); if (ed) { openEditor(ed.dataset.edit); return; }
+    const o = e.target.closest('[data-open]'); if (o) { location.hash = 'p-' + o.dataset.open; return; }
     const n = e.target.closest('[data-new]'); if (n) { const [problem, level] = n.dataset.new.split('|'); openEditor(null, { problem, level }); return; }
     if (e.target.id === 'btn-add') openEditor(null);
     const so = e.target.closest('[data-sort]'); if (so) { ui.sort = so.dataset.sort; render(); return; }
@@ -365,7 +410,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     const map = { 'f-problem': 'problem', 'f-level': 'level', 'f-status': 'status', 'f-q': 'q' };
     if (map[e.target.id]) { ui.f[map[e.target.id]] = e.target.value; const pos = e.target.selectionStart; render(); const el = document.getElementById(e.target.id); if (el) { el.focus(); if (e.target.id === 'f-q' && pos != null) el.setSelectionRange(pos, pos); } }
   });
-  document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-open]')) { e.preventDefault(); openEditor(e.target.dataset.open); return; } if (e.key === 'Escape' && document.getElementById('modal-root').childElementCount) { document.getElementById('modal-root').innerHTML = ''; render(); } });
+  document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-open]')) { e.preventDefault(); location.hash = 'p-' + e.target.dataset.open; return; } if (e.key === 'Escape' && document.getElementById('modal-root').childElementCount) { document.getElementById('modal-root').innerHTML = ''; render(); } });
 
   // ---------- boot ----------
   render();
