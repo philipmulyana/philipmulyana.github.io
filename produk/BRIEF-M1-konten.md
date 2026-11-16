@@ -15,6 +15,7 @@ Untuk session Claude mana pun (cloud atau lokal) yang mengerjakan konten Philip.
 
 ## 1. Fokus
 - Keputusan Philip (16 Nov 2026): **fokus ke satu masalah dulu, M1 Biaya pendidikan anak**, dan produknya diperbanyak.
+- **Target: orang tua mampu di kota besar** (pengeluaran rumah tangga ±Rp30jt/bulan untuk 1 anak, ±Rp50jt untuk 2 anak), bukan SES menengah ke bawah. Keputusan Philip 16 Nov 2026.
 - Konten yang akan dibuat **sebagian besar artikel tentang biaya kuliah dan keperluan sekolah**.
 - Format persis (blog, carousel, Reels, dll.) belum ditentukan. Tanyakan ke Philip sebelum mulai.
 
@@ -38,10 +39,13 @@ Untuk session Claude mana pun (cloud atau lokal) yang mengerjakan konten Philip.
 | DIY | Kelas "tabungan vs reksa dana vs asuransi" | Ide |
 | DIY | Panduan biaya kuliah luar negeri | Ide |
 | DIY | Workbook "sekolah negeri atau swasta" | Ide |
-| Gratis | Panduan dapat bantuan & beasiswa sekolah (KIP, PIP, keringanan UKT) | Ide (dari simulasi) |
-| Gratis | Panduan/kalkulator nyicil uang pangkal jenjang berikutnya | Ide (dari simulasi; di simulasi muncul sebagai keinginan DIY, 7 persona — levelnya bisa diubah) |
-| DIY | Rencana dana pendidikan untuk penghasilan tidak tetap | Ide (dari simulasi) |
-| DIY | Rencana dana pendidikan sambil bayar utang/cicilan | Ide (dari simulasi) |
+| DIY | Rencana dana pendidikan untuk penghasilan tidak tetap | Ide (simulasi orang tua: didukung, ±38) |
+| DIY | Rencana dana cadangan sekolah | Ide (celah simulasi orang tua, ±16) |
+| DIY | Rencana pendidikan yang seimbang dengan pensiun & tanggungan orang tua | Ide (celah simulasi orang tua, ±16) |
+| Gratis | Kalender pencairan biaya pendidikan multi-anak | Ide (celah simulasi orang tua, ±15) |
+| Gratis | Biaya cadangan kalau anak gagal PTN (kampus swasta / FK swasta) | Ide (celah simulasi orang tua, ±15) |
+| Gratis | Daftar biaya hidup & biaya tersembunyi kuliah | Ide (celah simulasi orang tua, ±14) |
+| ~~Gratis/DIY~~ | ~~Panduan beasiswa · Nyicil uang pangkal · Rencana sambil bayar cicilan~~ | Stop (dicoret 16 Nov: tidak cocok dengan target orang tua mampu) |
 | DWY | Financial Planning Keluarga ±Rp5jt (produk payung, termasuk Review Polis) | Ide |
 | DFY | Polis pendidikan | Ide, belum dicek apakah Philip menjualnya |
 
@@ -50,21 +54,22 @@ Jalur yang sudah disepakati:
 - Cross-sell: Dana Kuliah → kalkulator proteksi ("kalau orang tua meninggal, siapa yang lanjut bayar kuliah anak?").
 
 ## 4. Arah konten (artikel biaya kuliah & keperluan sekolah)
-- Tujuan konten: **mengarahkan pembaca ke produk M1 gratis** (daftar biaya sekolah, kalkulator, checklist, panduan bantuan/beasiswa), lalu ke **Dana Kuliah Rp149rb**.
-- **Dasar arah topik:** simulasi keinginan 63 persona (`produk/m1-ringkasan.md`). Ini hipotesis yang dibuat AI, bukan data pembaca.
+- Tujuan konten: **mengarahkan pembaca ke produk M1 gratis** (kalkulator, daftar biaya, panduan kuliah luar negeri), lalu ke **Dana Kuliah Rp149rb**.
+- **Dasar arah topik:** simulasi 100 persona orang tua mampu di kota besar (`produk/m1-ortu/m1-ringkasan-ortu.md`, kerangka di `produk/m1-ortu/segmen.md`). Ini hipotesis yang dibuat AI, bukan data pembaca. Simulasi lama (`produk/m1-ringkasan.md`, SES campur) tidak lagi dipakai untuk arah konten.
 - Temuan simulasi yang dipakai:
-  - Yang paling dikhawatirkan **bukan kuliah, tapi biaya masuk sekolah yang sudah dekat** (uang pangkal TK/SD/SMP/SMA, ±30 persona).
-  - Yang paling diinginkan gratis: **daftar biaya sekolah per kota dan jenjang** (28), angka setoran bulanan (15), kalender biaya untuk beberapa anak (11), info bantuan/beasiswa (11).
-  - Bentuk yang disukai: **video singkat (30) dan template (25)**. Kelas live hanya dipilih 3.
+  - Kekhawatiran teratas: **kuliah luar negeri dan kurs (±29)**, penghasilan tidak tetap/uang anak tercampur uang usaha (±16), uang pangkal/SPP (±13), gagal PTN atau FK swasta mahal (±12).
+  - Yang paling diinginkan gratis: **biaya kuliah luar negeri dalam rupiah, termasuk skenario kurs (±32)**, daftar biaya sekolah per jenjang/kota (±20), biaya kampus swasta/FK sebagai cadangan (±19).
+  - Yang diinginkan dari DIY murah: **rencana tertulis per anak dengan setoran bulanan (±37)**, setoran fleksibel terpisah dari uang usaha (±20).
+  - Bentuk yang disukai: **template/spreadsheet (42), chat/konsultasi (38), kalkulator online (35)**. Video singkat 21; kelas live hanya 2.
 - Contoh topik, diurutkan sesuai temuan di atas. Ini **usulan**, bukan daftar yang sudah disetujui Philip:
-  1. Biaya masuk sekolah per jenjang dan per kota (uang pangkal, SPP, seragam, buku, kegiatan).
-  2. Berapa yang harus disisihkan per bulan sampai biaya masuk jenjang berikutnya.
-  3. Bantuan dan beasiswa sekolah: siapa yang berhak dan cara mengajukannya (wajib dicek ke sumber resmi).
-  4. Biaya untuk dua anak atau lebih: kalender biaya keluarga.
-  5. Sekolah negeri vs swasta: biaya sebenarnya (muncul di beberapa jawaban, tanpa angka pasti).
-  6. Biaya kuliah per jurusan / per kampus (melanjutkan dua artikel yang sudah ada).
-  7. Menabung untuk sekolah anak saat penghasilan tidak tetap atau sedang ada cicilan.
-  8. Biaya kuliah luar negeri.
+  1. Biaya kuliah luar negeri dalam rupiah per negara (biaya kuliah + hidup), termasuk dampak kurs.
+  2. Biaya cadangan kalau anak tidak lolos PTN: kampus swasta dan FK swasta.
+  3. Menyiapkan dana pendidikan saat penghasilan tidak tetap / pemilik usaha.
+  4. Biaya sekolah per jenjang dan per kota (nasional plus, internasional, swasta nasional, negeri).
+  5. Biaya hidup dan biaya tersembunyi saat kuliah.
+  6. Kalender biaya pendidikan untuk dua anak atau lebih.
+  7. Dana pendidikan anak vs pensiun dan tanggungan orang tua.
+- Format yang diutamakan: konten yang mengarah ke **kalkulator atau template**, bukan video panjang atau kelas live.
 
 ## 5. Aturan wajib
 
