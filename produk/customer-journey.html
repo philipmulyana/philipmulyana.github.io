@@ -1,0 +1,162 @@
+<title>Tangga Produk Philip</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one vertical ladder; each rung shows stage + mindset on the left, existing assets vs gaps on the right */
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --fg:#1b2420; --muted:#5d6a63; --line:#d9dfdb;
+  --a:#0f6b55; --a-soft:#e1f0ea; --gap:#b5541c; --gap-soft:#f8e7dc; --warn:#8a6d12; --warn-soft:#f4ecd2;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a211e; --fg:#e8ede9; --muted:#9aa8a1; --line:#2c3632;
+  --a:#5cc7a4; --a-soft:#173329; --gap:#f0965e; --gap-soft:#3a2416; --warn:#e3c467; --warn-soft:#332b12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a211e; --fg:#e8ede9; --muted:#9aa8a1; --line:#2c3632;
+  --a:#5cc7a4; --a-soft:#173329; --gap:#f0965e; --gap-soft:#3a2416; --warn:#e3c467; --warn-soft:#332b12; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0 0 8px;text-wrap:balance}
+.lede{color:var(--muted);max-width:64ch;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);margin:0 0 20px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.chip.ok{background:var(--a-soft);color:var(--a)}
+.chip.half{background:var(--warn-soft);color:var(--warn)}
+.chip.no{background:var(--gap-soft);color:var(--gap)}
+.ladder{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.rung{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px 24px;padding:18px 20px;border-top:1px solid var(--line);position:relative}
+.rung:first-child{border-top:none}
+.rung.hole{background:var(--gap-soft)}
+@media (max-width:720px){.rung{grid-template-columns:1fr}}
+.head{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+.n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;border:2px solid var(--a);color:var(--a);background:var(--surface)}
+.money .n{background:var(--a);color:var(--surface)}
+.hole .n{border-color:var(--gap);color:var(--gap)}
+.stage{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.stage b{font-family:var(--display);font-size:19px}
+.price{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.think{font-style:italic;color:var(--muted);font-size:13.5px;margin:4px 0 0}
+.assets{display:grid;gap:8px;min-width:0}
+.asset{display:flex;gap:8px;align-items:baseline;font-size:14px;flex-wrap:wrap}
+.asset code{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.todo{font-size:13.5px;border-left:3px solid var(--gap);padding:4px 10px;color:var(--fg)}
+.todo b{color:var(--gap)}
+.diag{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.diag{grid-template-columns:1fr}}
+.card{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.card strong{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+h2{font-family:var(--display);font-size:22px;margin:32px 0 10px}
+.prio{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
+</style>
+
+<div class="wrap">
+  <h1>Tangga Produk Philip</h1>
+  <p class="lede">Jalur klien, dipetakan ke aset yang sudah ada di philipmulyana.com. Hijau berarti sudah jalan. Oranye berarti bolong dan harus dibikin.</p>
+  <div class="legend">
+    <span class="chip ok">✓ Sudah ada</span>
+    <span class="chip half">◐ Ada, belum optimal</span>
+    <span class="chip no">✕ Belum ada</span>
+  </div>
+
+  <ol class="ladder">
+    <li class="rung">
+      <div class="head"><span class="n">1</span><div>
+        <div class="stage"><b>Kenal</b><span class="price">Gratis</span></div>
+        <p class="think">"Duit gue kok habis terus?"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Konten IG: reels, carousel, story</div>
+        <div class="asset"><span class="chip no">✕</span>Potongan rekaman kelas Uang &amp; Relasi jadi konten (setelah kelas pertama jalan)</div>
+        <div class="asset"><span class="chip ok">✓</span>Blog dan artikel berita <code>blog.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Corporate speaker (awareness lewat kantor) <code>corporate/ · speaking.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Link-in-bio dan About <code>links/ · about.html</code></div>
+      </div>
+    </li>
+
+    <li class="rung">
+      <div class="head"><span class="n">2</span><div>
+        <div class="stage"><b>Ngaca</b><span class="price">Gratis · tukar WA</span></div>
+        <p class="think">"Kayaknya gue juga gitu deh"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Cek Awal Asuransi Jiwa, 5 pertanyaan <code>cek-awal/</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Financial Check-up Dasar <code>financial-checkup.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Survival Test, Kalkulator Proteksi, Kalkulator Pensiun, Kesiapan Pensiun, Dana Kuliah, Rencana Pendidikan, Risk Profile <code>tools/</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Hampir semua tool sudah menangkap nomor WA dan mengirim data ke backend</div>
+        <div class="asset"><span class="chip half">◐</span>Cek Awal belum menangkap WA. Hasil tes masih dikirim manual oleh Philip (maks. 1×24 jam)</div>
+        <div class="asset"><span class="chip no">✕</span>Checklist gratis "7 Red Flag Uang dalam Relasi" (tukar WA), pintu ke kelas Uang &amp; Relasi</div>
+        <div class="todo"><b>Benerin:</b> jadikan Cek Awal pintu utama dan tambahkan penangkap WA di sana. Tiap tool ditutup dengan CTA yang sesuai hasilnya.</div>
+        <div class="asset"><span class="chip ok">✓</span>Keputusan: yang isi tool dana kuliah ditawari produk Dana Kuliah dulu, baru kelas Uang &amp; Relasi</div>
+      </div>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">3</span><div>
+        <div class="stage"><b>Coba</b><span class="price">≤ Rp149rb</span></div>
+        <p class="think">"Mau beresin, mulai dari mana?"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Produk Dana Kuliah Rp149rb <code>product/dana-kuliah/</code></div>
+        <div class="asset"><span class="chip no">✕</span>Rekaman kelas Uang &amp; Relasi dijual terpisah (harga belum ditentukan)</div>
+      </div>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">4</span><div>
+        <div class="stage"><b>Belajar</b><span class="price">Rp199rb</span></div>
+        <p class="think">"Gue butuh dibimbing"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip half">◐</span>Halaman webinar + testimonial, tapi pendaftarannya gratis <code>webinar.html · testimonial.html</code></div>
+        <div class="asset"><span class="chip no">✕</span>Kelas Uang &amp; Relasi Rp199rb: live webinar grup 2 jam, pasangan nikah 30+, DIY. Konsep di <code>produk/uang-dan-relasi/PRODUK.md</code>, belum ada halaman</div>
+        <div class="todo"><b>Bikin:</b> isi kelas, workbook, dan halaman jualan (dasar: <code>webinar.html</code>).</div>
+      </div>
+    </li>
+
+    <li class="rung money">
+      <div class="head"><span class="n">5</span><div>
+        <div class="stage"><b>Personal</b><span class="price">Gratis → ±Rp5jt</span></div>
+        <p class="think">"Tolong lihatin punya gue"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>First Call gratis 10 menit <code>consultation.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Review Polis Keluarga Rp1.000.000: laporan PDF 72 jam + sesi 60 menit + 1× tanya jawab tertulis <code>review-polis/</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Artikel Putusan MK, untuk pemegang polis, jembatan ke Review Polis <code>mk251.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Testimonial konsultasi dan halaman kontak <code>testimonials/insurance/ · contact.html</code></div>
+        <div class="asset"><span class="chip ok">✓</span>Master Plan Builder, alat kerja internal saat konsultasi <code>tool-vitals.html</code></div>
+        <div class="asset"><span class="chip no">✕</span>Financial Planning Keluarga ±Rp5jt (DWY, produk baru), <b>sudah termasuk Review Polis</b>. Dikerjakan setelah kelas Rp199rb</div>
+      </div>
+    </li>
+
+    <li class="rung money">
+      <div class="head"><span class="n">6</span><div>
+        <div class="stage"><b>Eksekusi</b><span class="price">Komisi</span></div>
+        <p class="think">"Oke, gue butuh proteksinya"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip ok">✓</span>Polis jiwa / penyakit kritis, lewat konsultasi</div>
+      </div>
+    </li>
+
+    <li class="rung hole">
+      <div class="head"><span class="n">7</span><div>
+        <div class="stage"><b>Loyal</b><span class="price">Gratis</span></div>
+        <p class="think">"Gue percaya orang ini"</p></div></div>
+      <div class="assets">
+        <div class="asset"><span class="chip no">✕</span>Belum ada program setelah polis aktif</div>
+        <div class="todo"><b>Bikin:</b> review tahunan untuk klien polis + insentif referral sederhana</div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="diag">
+    <div class="card"><strong>Atas kuat</strong>Konten, artikel, Cek Awal, dan 8 tools gratis yang sudah menangkap WA. Malah kebanyakan pintu.</div>
+    <div class="card"><strong>Tengah mulai terisi</strong>Kelas Uang &amp; Relasi Rp199rb jadi jembatan trust di tahap 4. Masih konsep.</div>
+    <div class="card"><strong>Kemungkinan satu jalur</strong>Target kelas (nikah 30+) kemungkinan beririsan dengan pembeli Dana Kuliah dan klien polis keluarga. Belum dicek dengan data pembeli.</div>
+  </div>
+
+  <h2>Urutan kerja</h2>
+  <ol class="prio">
+    <li>Tahap 4: kelas Uang &amp; Relasi Rp199rb (isi, workbook, halaman jualan)</li>
+    <li>Tahap 2: checklist 7 Red Flag + CTA sesuai hasil di akhir tiap tool</li>
+    <li>Tahap 5: desain Financial Planning Keluarga ±Rp5jt</li>
+    <li>Tahap 1 &amp; 3: rekaman kelas jadi konten dan produk terpisah</li>
+    <li>Tahap 7: review tahunan + referral</li>
+  </ol>
+</div>
