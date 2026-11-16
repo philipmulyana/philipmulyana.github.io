@@ -40,8 +40,10 @@ Why: Philip asked for this on 16 Nov 2026 for every design.
 ## Product management goes through the product dashboard first
 
 Every product Philip discusses goes into the product dashboard first (https://claude.ai/artifact/Fb6ot1RTq8AHfBoPXW8ieV),
-before any detail, sales page or content is made. Each product has three end goals: business target, buyer outcome,
-and its place in the value ladder. Record decisions there (with date) as they are made, using the ArtifactData tool.
+before any detail, sales page or content is made. Every product must state: deliverables (the form, e.g. PDF,
+spreadsheet, calculator, webinar, course, and what is inside), the end goal as the BUYER outcome ("after using it the
+buyer can…" — not where it routes them), the business target, and its place in the value ladder (kept separate).
+Products with status Stop are archived, not shown in the main views. Record decisions there (with date) as they are made, using the ArtifactData tool.
 Principle: many free and DIY products, few DWY/DFY (umbrella products).
 
 Why: Philip set this on 16 Nov 2026.
