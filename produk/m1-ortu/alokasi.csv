@@ -1,0 +1,101 @@
+id,kota,jumlah_anak,jenjang_anak_tertua,pekerjaan,jenis_sekolah,rentang_umur,rentang_pengeluaran_jt,atribut
+O001,Jabodetabek,1,SMA,Karyawan level atas / manajer,Swasta internasional / nasional plus,41-49,25-40,Rencana kuliah luar negeri
+O002,Jabodetabek,1,Kuliah,Pengusaha / pemilik bisnis,Negeri,44-52,25-40,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O003,Jabodetabek,3+,SD,Pengusaha / pemilik bisnis,Negeri,32-42,60-120,Rencana kuliah luar negeri; Generasi sandwich; Penghasilan tidak tetap
+O004,Jabodetabek,3+,SMA,Karyawan level atas / manajer,Swasta internasional / nasional plus,41-49,60-120,
+O005,Kota besar lain,2,Kuliah,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,44-52,40-60,Penghasilan tidak tetap
+O006,Kota besar lain,3+,SD,Pengusaha / pemilik bisnis,Negeri,32-42,60-120,Rencana kuliah luar negeri; Generasi sandwich; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O007,Bandung,1,Kuliah,Karyawan level atas / manajer,Swasta internasional / nasional plus,44-52,25-40,
+O008,Jabodetabek,3+,SD,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,32-42,60-120,Sudah punya asuransi/investasi
+O009,Jabodetabek,3+,Kuliah,Karyawan level atas / manajer,Swasta internasional / nasional plus,44-52,60-120,Sudah punya asuransi/investasi
+O010,Surabaya,1,SD,Profesional (dokter/lawyer/konsultan),Swasta nasional,32-42,25-40,Sudah punya asuransi/investasi
+O011,Jabodetabek,1,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,25-40,Rencana kuliah luar negeri; Penghasilan tidak tetap
+O012,Kota besar lain,1,Balita/TK,Profesional (dokter/lawyer/konsultan),Swasta internasional / nasional plus,30-38,25-40,Rencana kuliah luar negeri
+O013,Jabodetabek,2,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O014,Bandung,2,SMP,Pengusaha / pemilik bisnis,Swasta nasional,38-46,40-60,
+O015,Medan,1,SMP,Karyawan level atas / manajer,Swasta internasional / nasional plus,38-46,25-40,
+O016,Jabodetabek,2,Balita/TK,Karyawan level atas / manajer,Negeri,30-38,40-60,
+O017,Kota besar lain,1,Balita/TK,Profesional (dokter/lawyer/konsultan),Swasta nasional,30-38,25-40,
+O018,Jabodetabek,2,SD,Karyawan level atas / manajer,Swasta nasional,32-42,40-60,Generasi sandwich; Sudah punya asuransi/investasi
+O019,Jabodetabek,2,SMA,Pengusaha / pemilik bisnis,Negeri,41-49,40-60,Rencana kuliah luar negeri; Generasi sandwich; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O020,Jabodetabek,2,SMA,Profesional (dokter/lawyer/konsultan),Swasta internasional / nasional plus,41-49,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O021,Surabaya,2,SD,Karyawan level atas / manajer,Swasta internasional / nasional plus,32-42,40-60,
+O022,Jabodetabek,1,Kuliah,Karyawan level atas / manajer,Swasta internasional / nasional plus,44-52,25-40,
+O023,Kota besar lain,2,SD,Karyawan level atas / manajer,Swasta nasional,32-42,40-60,
+O024,Jabodetabek,2,SMA,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,41-49,40-60,
+O025,Jabodetabek,1,Balita/TK,Pengusaha / pemilik bisnis,Swasta nasional,30-38,25-40,
+O026,Bandung,2,Balita/TK,Karyawan level atas / manajer,Negeri,30-38,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O027,Jabodetabek,1,Balita/TK,Karyawan level atas / manajer,Swasta nasional,30-38,25-40,Sudah punya asuransi/investasi
+O028,Jabodetabek,1,SD,Karyawan level atas / manajer,Swasta internasional / nasional plus,32-42,25-40,Sudah punya asuransi/investasi
+O029,Jabodetabek,1,SMP,Karyawan level atas / manajer,Swasta internasional / nasional plus,38-46,25-40,
+O030,Kota besar lain,3+,SD,Karyawan level atas / manajer,Swasta internasional / nasional plus,32-42,60-120,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O031,Surabaya,2,SD,Karyawan level atas / manajer,Swasta internasional / nasional plus,32-42,40-60,Sudah punya asuransi/investasi
+O032,Surabaya,2,Kuliah,Profesional (dokter/lawyer/konsultan),Negeri,44-52,40-60,Rencana kuliah luar negeri
+O033,Jabodetabek,2,Balita/TK,Bisnis keluarga,Negeri,30-38,40-60,Sudah punya asuransi/investasi
+O034,Jabodetabek,2,SD,Karyawan level atas / manajer,Swasta nasional,32-42,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O035,Surabaya,3+,SMP,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,38-46,60-120,Sudah punya asuransi/investasi
+O036,Jabodetabek,3+,SMP,Pengusaha / pemilik bisnis,Negeri,38-46,60-120,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O037,Kota besar lain,2,Balita/TK,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,30-38,40-60,Generasi sandwich; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O038,Jabodetabek,3+,SD,Karyawan level atas / manajer,Swasta nasional,32-42,60-120,
+O039,Bandung,2,Balita/TK,Bisnis keluarga,Swasta internasional / nasional plus,30-38,40-60,Rencana kuliah luar negeri; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O040,Jabodetabek,1,SMP,Profesional (dokter/lawyer/konsultan),Swasta nasional,38-46,25-40,
+O041,Jabodetabek,1,Balita/TK,Bisnis keluarga,Swasta internasional / nasional plus,30-38,25-40,Penghasilan tidak tetap
+O042,Bandung,3+,SMA,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,41-49,60-120,Rencana kuliah luar negeri; Penghasilan tidak tetap
+O043,Jabodetabek,1,Balita/TK,Pengusaha / pemilik bisnis,Swasta nasional,30-38,25-40,Sudah punya asuransi/investasi
+O044,Surabaya,2,Kuliah,Karyawan level atas / manajer,Swasta nasional,44-52,40-60,
+O045,Jabodetabek,1,Kuliah,Bisnis keluarga,Swasta nasional,44-52,25-40,
+O046,Bandung,1,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,25-40,Sudah punya asuransi/investasi
+O047,Kota besar lain,2,SMA,Pengusaha / pemilik bisnis,Negeri,41-49,40-60,Penghasilan tidak tetap
+O048,Kota besar lain,1,SMP,Bisnis keluarga,Swasta nasional,38-46,25-40,
+O049,Jabodetabek,2,SMP,Karyawan level atas / manajer,Swasta internasional / nasional plus,38-46,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O050,Jabodetabek,3+,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,60-120,Rencana kuliah luar negeri; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O051,Medan,2,Balita/TK,Karyawan level atas / manajer,Swasta internasional / nasional plus,30-38,40-60,Rencana kuliah luar negeri
+O052,Jabodetabek,2,SMP,Pengusaha / pemilik bisnis,Negeri,38-46,40-60,Rencana kuliah luar negeri; Penghasilan tidak tetap
+O053,Jabodetabek,2,Kuliah,Karyawan level atas / manajer,Swasta internasional / nasional plus,44-52,40-60,
+O054,Jabodetabek,1,SD,Bisnis keluarga,Swasta nasional,32-42,25-40,Penghasilan tidak tetap
+O055,Jabodetabek,3+,SD,Karyawan level atas / manajer,Negeri,32-42,60-120,Generasi sandwich
+O056,Kota besar lain,2,SMP,Pengusaha / pemilik bisnis,Swasta nasional,38-46,40-60,Penghasilan tidak tetap
+O057,Jabodetabek,2,SMP,Bisnis keluarga,Swasta nasional,38-46,40-60,
+O058,Bandung,2,Balita/TK,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,30-38,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O059,Surabaya,2,Kuliah,Bisnis keluarga,Swasta nasional,44-52,40-60,Sudah punya asuransi/investasi
+O060,Bandung,3+,Kuliah,Karyawan level atas / manajer,Negeri,44-52,60-120,
+O061,Surabaya,2,SMA,Pengusaha / pemilik bisnis,Swasta nasional,41-49,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O062,Kota besar lain,2,Balita/TK,Karyawan level atas / manajer,Swasta internasional / nasional plus,30-38,40-60,Sudah punya asuransi/investasi
+O063,Surabaya,2,SD,Bisnis keluarga,Negeri,32-42,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O064,Jabodetabek,2,Balita/TK,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,30-38,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O065,Surabaya,2,SD,Bisnis keluarga,Swasta nasional,32-42,40-60,Rencana kuliah luar negeri; Generasi sandwich
+O066,Kota besar lain,1,SMA,Profesional (dokter/lawyer/konsultan),Swasta internasional / nasional plus,41-49,25-40,Generasi sandwich; Sudah punya asuransi/investasi
+O067,Medan,3+,SMP,Karyawan level atas / manajer,Negeri,38-46,60-120,
+O068,Jabodetabek,2,Balita/TK,Pengusaha / pemilik bisnis,Negeri,30-38,40-60,Rencana kuliah luar negeri; Generasi sandwich; Sudah punya asuransi/investasi
+O069,Medan,1,Balita/TK,Karyawan level atas / manajer,Swasta nasional,30-38,25-40,Sudah punya asuransi/investasi
+O070,Bandung,1,SD,Bisnis keluarga,Swasta nasional,32-42,25-40,Penghasilan tidak tetap
+O071,Surabaya,3+,SD,Karyawan level atas / manajer,Swasta nasional,32-42,60-120,
+O072,Jabodetabek,3+,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,60-120,
+O073,Jabodetabek,3+,SD,Karyawan level atas / manajer,Negeri,32-42,60-120,Generasi sandwich; Sudah punya asuransi/investasi
+O074,Kota besar lain,2,Balita/TK,Karyawan level atas / manajer,Swasta nasional,30-38,40-60,
+O075,Jabodetabek,1,Balita/TK,Karyawan level atas / manajer,Swasta internasional / nasional plus,30-38,25-40,Rencana kuliah luar negeri; Generasi sandwich
+O076,Kota besar lain,1,Balita/TK,Karyawan level atas / manajer,Swasta internasional / nasional plus,30-38,25-40,Rencana kuliah luar negeri
+O077,Surabaya,2,SMP,Bisnis keluarga,Swasta nasional,38-46,40-60,Rencana kuliah luar negeri; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O078,Jabodetabek,3+,Kuliah,Pengusaha / pemilik bisnis,Swasta nasional,44-52,60-120,Sudah punya asuransi/investasi
+O079,Medan,2,SMA,Pengusaha / pemilik bisnis,Negeri,41-49,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O080,Jabodetabek,2,Balita/TK,Pengusaha / pemilik bisnis,Negeri,30-38,40-60,Generasi sandwich; Penghasilan tidak tetap
+O081,Jabodetabek,3+,SMA,Karyawan level atas / manajer,Swasta nasional,41-49,60-120,Rencana kuliah luar negeri; Generasi sandwich; Sudah punya asuransi/investasi
+O082,Surabaya,1,Balita/TK,Karyawan level atas / manajer,Swasta nasional,30-38,25-40,
+O083,Jabodetabek,1,Balita/TK,Pengusaha / pemilik bisnis,Swasta nasional,30-38,25-40,Generasi sandwich; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O084,Jabodetabek,2,Balita/TK,Profesional (dokter/lawyer/konsultan),Swasta nasional,30-38,40-60,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O085,Jabodetabek,2,SD,Bisnis keluarga,Negeri,32-42,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O086,Jabodetabek,1,Kuliah,Pengusaha / pemilik bisnis,Swasta nasional,44-52,25-40,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O087,Surabaya,1,SD,Karyawan level atas / manajer,Swasta nasional,32-42,25-40,
+O088,Kota besar lain,1,SMP,Bisnis keluarga,Swasta nasional,38-46,25-40,Generasi sandwich; Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O089,Bandung,2,Kuliah,Profesional (dokter/lawyer/konsultan),Swasta internasional / nasional plus,44-52,40-60,Sudah punya asuransi/investasi
+O090,Kota besar lain,1,SD,Pengusaha / pemilik bisnis,Swasta nasional,32-42,25-40,Rencana kuliah luar negeri; Generasi sandwich; Penghasilan tidak tetap
+O091,Jabodetabek,2,SMA,Profesional (dokter/lawyer/konsultan),Swasta nasional,41-49,40-60,Sudah punya asuransi/investasi
+O092,Kota besar lain,2,SD,Karyawan level atas / manajer,Swasta internasional / nasional plus,32-42,40-60,Generasi sandwich
+O093,Jabodetabek,1,SMA,Karyawan level atas / manajer,Swasta nasional,41-49,25-40,Generasi sandwich
+O094,Kota besar lain,2,SMP,Karyawan level atas / manajer,Swasta internasional / nasional plus,38-46,40-60,Generasi sandwich; Sudah punya asuransi/investasi
+O095,Kota besar lain,1,SD,Bisnis keluarga,Swasta internasional / nasional plus,32-42,25-40,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O096,Kota besar lain,1,SMA,Pengusaha / pemilik bisnis,Swasta nasional,41-49,25-40,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O097,Surabaya,3+,SMA,Karyawan level atas / manajer,Swasta nasional,41-49,60-120,Generasi sandwich
+O098,Jabodetabek,2,Kuliah,Pengusaha / pemilik bisnis,Swasta internasional / nasional plus,44-52,40-60,Penghasilan tidak tetap; Sudah punya asuransi/investasi
+O099,Jabodetabek,1,SD,Karyawan level atas / manajer,Swasta nasional,32-42,25-40,Rencana kuliah luar negeri; Sudah punya asuransi/investasi
+O100,Jabodetabek,2,Balita/TK,Pengusaha / pemilik bisnis,Swasta nasional,30-38,40-60,Penghasilan tidak tetap
