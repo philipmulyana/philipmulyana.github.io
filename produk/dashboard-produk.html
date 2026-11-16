@@ -255,7 +255,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     for (const x of list) {
       h += `<tr class="click" data-open="${esc(x.id)}" tabindex="0" role="button" aria-label="Buka ${esc(x.name)}"><td><b>${esc(x.name)}</b>${x.price ? `<div class="note">${esc(x.price)}</div>` : ''}</td><td>${esc(x.level)}</td><td>${(x.problems || []).map(esc).join(', ')}</td><td>${pill(x.status)}</td>
         <td class="goal">${x.goalBisnis ? `<div><b>Bisnis:</b> ${esc(x.goalBisnis)}</div>` : ''}${x.goalPembeli ? `<div><b>Pembeli:</b> ${esc(x.goalPembeli)}</div>` : ''}${x.goalLadder ? `<div><b>Ladder:</b> ${esc(x.goalLadder)}</div>` : ''}${!x.goalBisnis && !x.goalPembeli && !x.goalLadder ? '<span class="note">Belum diisi</span>' : ''}</td>
-        <td>${esc(x.evidence || 'Belum')}</td><td>${esc(x.nextStep || '')}${x.nextOwner ? `<div class="note">${esc(x.nextOwner)}</div>` : ''}</td></tr>`;
+        <td>${esc(x.evidence || 'Belum')}${x.simNote ? `<div class="note">${esc(x.simNote)}</div>` : ''}</td><td>${esc(x.nextStep || '')}${x.nextOwner ? `<div class="note">${esc(x.nextOwner)}</div>` : ''}</td></tr>`;
     }
     return h + `</tbody></table></div>`;
   }
@@ -318,6 +318,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       <div class="fld"><label>Berikutnya (jalur ke produk lain)</label><div id="e-next-list">${(x.next || []).map((n, i) => `<div class="dec" data-i="${i}"><b>${n.type === 'cross' ? 'Cross-sell' : 'Linear'}</b> → ${esc(pname(n.to))}${n.reason ? ` · ${esc(n.reason)}` : ''} ${ro ? '' : `<button type="button" class="btn sm" data-rmnext="${i}">Hapus</button>`}</div>`).join('') || '<p class="note">Belum ada.</p>'}</div>
         ${ro ? '' : `<div class="f2"><select id="e-nto" aria-label="Produk tujuan"><option value="">Pilih produk tujuan</option>${S.products.filter((o) => o.id !== x.id).sort((a, b) => String(a.name).localeCompare(String(b.name))).map((o) => `<option value="${esc(o.id)}">${esc(o.name)}</option>`).join('')}</select><select id="e-ntype" aria-label="Jenis"><option value="linear">Linear (masalah sama)</option><option value="cross">Cross-sell (masalah lain)</option></select></div><input id="e-nreason" placeholder="Alasan pemicu (wajib untuk cross-sell)" aria-label="Alasan pemicu">`}</div>
       <div class="fld"><label for="e-docs">Dokumen</label><input id="e-docs" value="${esc(x.docs || '')}" placeholder="mis. produk/uang-dan-relasi/PRODUK.md" ${dis}></div>
+      ${x.simNote ? `<div class="fld"><label>Catatan simulasi</label><p class="note">${esc(x.simNote)}</p></div>` : ''}
       <div class="fld"><label for="e-notes">Catatan</label><textarea id="e-notes" ${dis}>${esc(x.notes || '')}</textarea></div>
       <div class="fld"><label>Keputusan</label>${(x.decisions || []).length ? (x.decisions || []).map((d) => `<div class="dec"><time>${esc(d.date)}</time>${esc(d.text)}</div>`).join('') : '<p class="note">Belum ada keputusan.</p>'}${ro ? '' : `<input id="e-dec" placeholder="Tambah keputusan baru (tanggal otomatis hari ini)">`}</div>
       <div class="row" style="justify-content:space-between"><span>${id && !ro ? '<button type="button" class="btn danger" id="e-del">Hapus produk</button>' : ''}</span>
