@@ -94,6 +94,15 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
 .list tr.click { cursor: pointer; } .list tr.click:hover td { background: var(--soft); }
 .goal { font-size: 13.5px; color: var(--muted); }
 .goal b { color: var(--fg); font-weight: 600; }
+.score { display: flex; align-items: baseline; gap: 6px; margin: 6px 0 4px; }
+.score .sv { font-family: var(--display); font-weight: 700; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; }
+.score .sl { font-size: 12px; color: var(--muted); }
+.code-t { font-family: var(--display); font-weight: 700; color: var(--accent); }
+.chain { display: grid; gap: 0; align-items: start; grid-template-columns: minmax(0,1fr) 24px minmax(0,1fr) 24px minmax(0,1fr) 24px minmax(0,1fr); }
+.chain .lv { font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+.chain .arr { text-align: center; color: var(--muted); padding-top: 26px; }
+@media (max-width: 760px) { .chain { grid-template-columns: 1fr; } .chain .arr { transform: rotate(90deg); padding: 0; } }
+.list select { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-height: 44px; background: var(--panel); }
 .empty { border: 1px dashed var(--line); border-radius: 8px; padding: 22px; text-align: center; color: var(--muted); }
 .note { font-size: 14px; color: var(--muted); margin: 0; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
@@ -126,6 +135,7 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
   <nav aria-label="Tampilan">
     <a href="#peta" data-v="peta">Peta</a>
     <a href="#produk" data-v="produk">Produk</a>
+    <a href="#jalur" data-v="jalur">Jalur</a>
     <a href="#demand" data-v="demand">Demand</a>
   </nav>
   <span class="sp"></span>
@@ -146,19 +156,21 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
   ];
   const STATUSES = ['Ide', 'Validasi', 'Produksi', 'Live', 'Stop'];
   const EVID = ['Belum', 'Simulasi', 'Data asli'];
-  const S = { problems: [], products: [], snapshot: null, ready: false, err: '' };
+  const S = { problems: [], products: [], snapshot: null, weights: null, ready: false, err: '' };
+  const DEFAULT_W = { bayar: 35, urgensi: 25, sadar: 10, ladder: 20, modal: 10 };
+  const W_LABEL = { bayar: 'Mau bayar (Ya + ½ Ragu)', urgensi: 'Mendesak (urgensi 4–5)', sadar: 'Sadar', ladder: 'Nyambung ke ujung tangga', modal: 'Modal yang sudah ada' };
   let db = null, canWrite = false;
-  const ui = { f: { problem: '', level: '', status: '', q: '' } };
+  const ui = { f: { problem: '', level: '', status: '', q: '' }, sort: 'urutan' };
 
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const toast = (m) => { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.append(t); setTimeout(() => t.remove(), 2200); };
+  const toast = (m) => { const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.append(t); setTimeout(() => t.remove(), 2200); };
   const today = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
   const uid = () => 'p-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const probs = () => S.problems.slice().sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   const N = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
   const pill = (s) => `<span class="pill s-${esc(s)}">${esc(s)}</span>`;
 
-  function view() { const h = location.hash.slice(1); return ['peta', 'produk', 'demand'].includes(h) ? h : 'peta'; }
+  function view() { const h = location.hash.slice(1); return ['peta', 'produk', 'jalur', 'demand'].includes(h) ? h : 'peta'; }
   window.addEventListener('hashchange', render);
 
   function render() {
@@ -171,8 +183,30 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     if (S.err) h += `<div class="banner">${esc(S.err)}</div>`;
     else if (S.ready && !canWrite) h += `<div class="banner">Mode baca saja: akun ini tidak bisa mengubah data.</div>`;
     if (!S.ready && !S.err) { m.innerHTML = '<div class="card"><p class="note">Memuat peta produk…</p></div>'; return; }
-    h += v === 'peta' ? viewPeta() : v === 'produk' ? viewProduk() : viewDemand();
+    h += v === 'peta' ? viewPeta() : v === 'produk' ? viewProduk() : v === 'jalur' ? viewJalur() : viewDemand();
     m.innerHTML = h;
+  }
+
+  // ---------- SCORE ----------
+  const weights = () => ({ ...DEFAULT_W, ...(S.weights || {}) });
+  const levelIdx = (l) => LEVELS.findIndex((x) => x[0] === l);
+  const pname = (id) => S.products.find((x) => x.id === id)?.name || id;
+  function score(p) {
+    const d = p.demandSim;
+    const live = (lvl) => S.products.some((x) => x.level === lvl && x.status === 'Live' && (x.problems || []).includes(p.code));
+    if (!d) return { score: null, conf: 'Belum diukur', notes: ['Demand belum diukur'] };
+    const w = weights();
+    const comp = { bayar: N(d.bayarYa) + 0.5 * N(d.bayarRagu), urgensi: N(d.urgensiTinggi), sadar: N(d.sadar),
+      ladder: p.ladderFit ? (N(p.ladderFit) - 1) / 4 * 100 : null, modal: (live('Gratis') ? 50 : 0) + (live('DIY') ? 50 : 0) };
+    let tw = 0, sum = 0; const notes = [];
+    for (const k of Object.keys(DEFAULT_W)) { if (comp[k] === null) { notes.push('Nilai ladder belum diisi'); continue; } tw += N(w[k]); sum += N(w[k]) * Math.min(100, comp[k]); }
+    const conf = p.demandSource === 'real' ? 'Tinggi' : p.biased ? 'Rendah' : 'Sedang';
+    return { score: tw ? Math.round(sum / tw) : null, conf, comp, notes };
+  }
+  const confCls = (c) => ({ Tinggi: 's-Live', Sedang: 's-Produksi', Rendah: 's-Validasi' }[c] || 's-Ide');
+  function scoreBadge(p) {
+    const sc = score(p);
+    return `<div class="score"><span class="sv">${sc.score === null ? '–' : sc.score}</span><span class="sl">Skor prioritas</span></div><span class="pill ${confCls(sc.conf)}">Keyakinan: ${esc(sc.conf)}</span>${sc.notes.map((n) => `<div class="pn">${esc(n)}</div>`).join('')}`;
   }
 
   // ---------- PETA ----------
@@ -182,7 +216,8 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     return '<div class="pn">Simulasi</div>' + bar('Sadar', d.sadar, '') + bar('Mendesak', d.urgensiTinggi, 'u') + bar('Mau bayar', d.bayarYa, 'p');
   }
   function viewPeta() {
-    const P = probs();
+    let P = probs();
+    if (ui.sort === 'skor') P = P.slice().sort((a, b) => (score(b).score ?? -1) - (score(a).score ?? -1));
     let h = `<div><h1>Satu masalah, banyak produk</h1><p class="lead">Setiap produk masuk ke sini dulu sebelum dibuat. Kolom kiri adalah masalah audiens (M5–M12 masih usulan), kolom kanan adalah produk per level. Klik produk untuk lihat atau ubah end goal, status, dan keputusannya.</p></div>`;
     h += `<section class="card"><h2>Prinsip</h2><div class="principle">
       <div class="pr wide"><b>Massal di bawah</b><span>Gratis & DIY dibuat banyak. Lapisan gratis sekaligus mengukur demand per masalah.</span></div>
@@ -190,9 +225,10 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       <div class="pr"><b>Data dulu, baru naik level</b><span>DIY berbayar dibuat hanya di masalah yang terbukti menarik orang.</span></div>
     </div><div class="legend">Status: ${STATUSES.map(pill).join(' ')}</div></section>`;
     if (!P.length) return h + `<div class="empty">Belum ada masalah. ${canWrite ? 'Tambahkan lewat tab Produk.' : ''}</div>`;
+    h += `<div class="row"><span class="note">Urutkan:</span><button class="btn sm ${ui.sort === 'urutan' ? 'pri' : ''}" data-sort="urutan" aria-pressed="${ui.sort === 'urutan'}">Kode masalah</button><button class="btn sm ${ui.sort === 'skor' ? 'pri' : ''}" data-sort="skor" aria-pressed="${ui.sort === 'skor'}">Skor prioritas</button><span class="note">Skor dari simulasi. Baca bersama label keyakinan. Selama nilai ladder belum diisi, skor dihitung tanpa komponen itu, jadi belum sebanding dengan skor yang sudah lengkap.</span></div>`;
     h += `<div class="card mx-wrap"><table class="mx"><thead><tr><th>Masalah<small>Demand simulasi /100 persona</small></th>${LEVELS.map(([l, s]) => `<th>${l}<small>${s}</small></th>`).join('')}</tr></thead><tbody>`;
     for (const p of P) {
-      h += `<tr><td class="prob"><span class="code">${esc(p.code)}</span> ${p.proposed ? '<span class="pill tag-usulan">Usulan</span>' : ''}<b>${esc(p.name)}</b>${demandMini(p)}${p.demandNote ? `<div class="pn">${esc(p.demandNote)}</div>` : ''}</td>`;
+      h += `<tr><td class="prob"><span class="code">${esc(p.code)}</span> ${p.proposed ? '<span class="pill tag-usulan">Usulan</span>' : ''}<b>${esc(p.name)}</b>${scoreBadge(p)}${demandMini(p)}${p.demandNote ? `<div class="pn">${esc(p.demandNote)}</div>` : ''}</td>`;
       for (const [l] of LEVELS) {
         const items = S.products.filter((x) => x.level === l && (x.problems || []).includes(p.code)).sort((a, b) => STATUSES.indexOf(b.status) - STATUSES.indexOf(a.status));
         h += `<td class="lvl">${items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}${x.price ? `<span>${esc(x.price)}</span>` : ''}</span></button>`).join('')}${canWrite ? `<button class="addc" data-new="${esc(p.code)}|${l}">+ produk</button>` : ''}</td>`;
@@ -224,10 +260,30 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     return h + `</tbody></table></div>`;
   }
 
+  // ---------- JALUR ----------
+  function viewJalur() {
+    const P = probs().slice().sort((a, b) => (score(b).score ?? -1) - (score(a).score ?? -1));
+    let h = `<div><h1>Jalur produk</h1><p class="lead">Jalur utama linear di dalam satu masalah: Gratis → DIY → DWY → DFY. Cross-sell antar masalah hanya dipasang kalau ada alasan pemicu yang jelas. Masalah diurutkan dari skor prioritas tertinggi.</p></div>`;
+    const cross = S.products.flatMap((x) => (x.next || []).filter((n) => n.type === 'cross').map((n) => ({ from: x, ...n })));
+    h += `<section class="card"><div class="row"><h2>Cross-sell</h2><span class="note">${cross.length} jalur</span></div>${cross.length ? `<div class="tbl"><table class="list" style="min-width:560px"><thead><tr><th>Dari</th><th>Ke</th><th>Alasan pemicu</th></tr></thead><tbody>${cross.map((c) => { const to = S.products.find((x) => x.id === c.to); return `<tr class="click" data-open="${esc(c.from.id)}" tabindex="0" role="button"><td><b>${esc(c.from.name)}</b><div class="note">${(c.from.problems || []).map(esc).join(', ')}</div></td><td><b>${esc(pname(c.to))}</b><div class="note">${to ? (to.problems || []).map(esc).join(', ') : 'Produk tidak ditemukan'}</div></td><td>${esc(c.reason || '')}</td></tr>`; }).join('')}</tbody></table></div>` : '<p class="note">Belum ada cross-sell. Tambahkan dari form produk, bagian "Berikutnya".</p>'}</section>`;
+    for (const p of P) {
+      const sc = score(p);
+      h += `<section class="card"><div class="row" style="justify-content:space-between"><div><span class="code-t">${esc(p.code)}</span> <b>${esc(p.name)}</b> ${p.proposed ? '<span class="pill tag-usulan">Usulan</span>' : ''}</div><span class="note">Skor ${sc.score ?? '–'} · Keyakinan ${esc(sc.conf)}</span></div><div class="chain">`;
+      h += LEVELS.map(([l]) => { const items = S.products.filter((x) => x.level === l && (x.problems || []).includes(p.code)); return `<div class="step"><div class="lv">${l}</div>${items.length ? items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}</span></button>`).join('') : '<span class="note">Belum ada</span>'}</div>`; }).join('<div class="arr" aria-hidden="true">→</div>');
+      h += `</div></section>`;
+    }
+    return h;
+  }
+
   // ---------- DEMAND ----------
   function viewDemand() {
     const P = probs();
     let h = `<div><h1>Demand per masalah</h1><p class="lead">Dua sumber dipisah: <span class="src sim">Simulasi</span> dari 100 persona buatan model AI (hipotesis), dan <span class="src real">Data asli</span> dari website dan Mayar (snapshot).</p></div>`;
+    const w = weights(); const tot = Object.values(w).reduce((a, b) => a + N(b), 0);
+    h += `<section class="card"><div class="row"><h2>Skor prioritas</h2></div><p class="note">Skor 0–100 = rata-rata tertimbang komponen di bawah. Komponen yang belum diisi tidak dihitung dan ditandai. Keyakinan: Tinggi = data asli, Sedang = simulasi, Rendah = simulasi bias, Belum diukur = tanpa data.</p>
+      <div class="f2">${Object.keys(DEFAULT_W).map((k) => `<div class="fld"><label for="w-${k}">${esc(W_LABEL[k])} (%)</label><input id="w-${k}" type="number" min="0" max="100" value="${N(w[k])}" ${canWrite ? '' : 'disabled'}></div>`).join('')}</div>
+      <div class="row"><span class="note">Total bobot: ${tot}%</span>${canWrite ? '<button class="btn pri" data-act="save-w">Simpan bobot</button>' : ''}</div>
+      <div class="tbl"><table class="list" style="min-width:720px"><thead><tr><th>Masalah</th><th>Skor</th><th>Keyakinan</th><th>Nyambung ke ujung tangga (1–5)</th><th>Modal yang ada</th></tr></thead><tbody>${probs().map((p) => { const sc = score(p); return `<tr><td><b>${esc(p.code)}</b> ${esc(p.name)}</td><td>${sc.score ?? '–'}</td><td><span class="pill ${confCls(sc.conf)}">${esc(sc.conf)}</span></td><td><select data-ladder="${esc(p.code)}" aria-label="Nilai ladder ${esc(p.code)}" ${canWrite ? '' : 'disabled'}><option value="">Belum diisi</option>${[1, 2, 3, 4, 5].map((v) => `<option ${N(p.ladderFit) === v ? 'selected' : ''}>${v}</option>`).join('')}</select></td><td>${sc.comp ? sc.comp.modal + '%' : '–'}</td></tr>`; }).join('')}</tbody></table></div></section>`;
     h += `<section class="card"><div class="row"><h2>Simulasi</h2><span class="src sim">Simulasi</span></div><p class="note">Persona dibuat untuk kelas Uang & Relasi, jadi M2 kemungkinan terlalu tinggi. Masalah tanpa angka belum diukur.</p><div class="tbl"><table class="list" style="min-width:640px"><thead><tr><th>Masalah</th><th>Sadar</th><th>Urgensi tinggi</th><th>Mau bayar (Ya / Ragu / Tidak)</th><th>Catatan</th></tr></thead><tbody>${P.map((p) => { const d = p.demandSim; return `<tr><td><b>${esc(p.code)}</b> ${esc(p.name)}</td><td>${d ? N(d.sadar) : '–'}</td><td>${d ? N(d.urgensiTinggi) : '–'}</td><td>${d ? `${N(d.bayarYa)} / ${N(d.bayarRagu)} / ${N(d.bayarTidak)}` : 'Belum diukur'}</td><td class="note">${esc(p.demandNote || '')}</td></tr>`; }).join('')}</tbody></table></div></section>`;
     const s = S.snapshot;
     if (!s) return h + `<div class="empty">Belum ada snapshot data asli.</div>`;
@@ -259,6 +315,8 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       <div class="f2"><div class="fld"><label for="e-ev">Bukti demand</label><select id="e-ev" ${dis}>${EVID.map((s) => `<option ${(x.evidence || 'Belum') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
         <div class="fld"><label for="e-owner">Langkah berikutnya: siapa</label><select id="e-owner" ${dis}>${['', 'Philip', 'Claude', 'Bersama'].map((s) => `<option ${(x.nextOwner || '') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div></div>
       <div class="fld"><label for="e-next">Langkah berikutnya</label><input id="e-next" value="${esc(x.nextStep || '')}" ${dis}></div>
+      <div class="fld"><label>Berikutnya (jalur ke produk lain)</label><div id="e-next-list">${(x.next || []).map((n, i) => `<div class="dec" data-i="${i}"><b>${n.type === 'cross' ? 'Cross-sell' : 'Linear'}</b> → ${esc(pname(n.to))}${n.reason ? ` · ${esc(n.reason)}` : ''} ${ro ? '' : `<button type="button" class="btn sm" data-rmnext="${i}">Hapus</button>`}</div>`).join('') || '<p class="note">Belum ada.</p>'}</div>
+        ${ro ? '' : `<div class="f2"><select id="e-nto" aria-label="Produk tujuan"><option value="">Pilih produk tujuan</option>${S.products.filter((o) => o.id !== x.id).sort((a, b) => String(a.name).localeCompare(String(b.name))).map((o) => `<option value="${esc(o.id)}">${esc(o.name)}</option>`).join('')}</select><select id="e-ntype" aria-label="Jenis"><option value="linear">Linear (masalah sama)</option><option value="cross">Cross-sell (masalah lain)</option></select></div><input id="e-nreason" placeholder="Alasan pemicu (wajib untuk cross-sell)" aria-label="Alasan pemicu">`}</div>
       <div class="fld"><label for="e-docs">Dokumen</label><input id="e-docs" value="${esc(x.docs || '')}" placeholder="mis. produk/uang-dan-relasi/PRODUK.md" ${dis}></div>
       <div class="fld"><label for="e-notes">Catatan</label><textarea id="e-notes" ${dis}>${esc(x.notes || '')}</textarea></div>
       <div class="fld"><label>Keputusan</label>${(x.decisions || []).length ? (x.decisions || []).map((d) => `<div class="dec"><time>${esc(d.date)}</time>${esc(d.text)}</div>`).join('') : '<p class="note">Belum ada keputusan.</p>'}${ro ? '' : `<input id="e-dec" placeholder="Tambah keputusan baru (tanggal otomatis hari ini)">`}</div>
@@ -267,6 +325,8 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       <div id="e-confirm" hidden class="banner">Yakin hapus produk ini? <button type="button" class="btn sm danger" id="e-del2">Ya, hapus</button></div>
     </form></div>`;
     const opener = document.activeElement;
+    let nextLinks = (x.next || []).slice();
+    root.querySelector('#dlg').addEventListener('click', (e) => { const b = e.target.closest('[data-rmnext]'); if (!b) return; nextLinks[Number(b.dataset.rmnext)] = null; b.closest('.dec').remove(); });
     setTimeout(() => root.querySelector('#e-name')?.focus(), 0);
     const close = () => { root.innerHTML = ''; render(); try { opener?.focus?.(); } catch {} };
     root.querySelector('#e-cancel').onclick = close;
@@ -277,7 +337,10 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
       e.preventDefault(); if (ro) return;
       const g = (s) => root.querySelector(s).value.trim();
       const decisions = (x.decisions || []).slice(); const nd = g('#e-dec'); if (nd) decisions.push({ date: today(), text: nd });
-      const data = { name: g('#e-name'), level: g('#e-level'), status: g('#e-status'), price: g('#e-price'), problems: [...root.querySelectorAll('input[name=e-prob]:checked')].map((i) => i.value),
+      const nto = root.querySelector('#e-nto')?.value; const ntype = root.querySelector('#e-ntype')?.value; const nreason = root.querySelector('#e-nreason')?.value.trim() || '';
+      if (nto) { if (ntype === 'cross' && !nreason) { toast('Isi alasan pemicu untuk cross-sell'); return; } nextLinks.push({ to: nto, type: ntype, reason: nreason }); }
+      nextLinks = nextLinks.filter(Boolean);
+      const data = { next: nextLinks, name: g('#e-name'), level: g('#e-level'), status: g('#e-status'), price: g('#e-price'), problems: [...root.querySelectorAll('input[name=e-prob]:checked')].map((i) => i.value),
         goalBisnis: g('#e-gb'), goalPembeli: g('#e-gp'), goalLadder: g('#e-gl'), evidence: g('#e-ev'), nextOwner: g('#e-owner'), nextStep: g('#e-next'), docs: g('#e-docs'), notes: g('#e-notes'), decisions, updatedAt: new Date().toISOString() };
       if (!data.name) { toast('Nama produk wajib diisi'); return; }
       try { await db.collection('products').doc(x.id).set(data); toast('Tersimpan'); close(); } catch (err) { toast(err?.code === 'not_granted' || err?.code === 'permission_denied' ? 'Akun ini tidak bisa menyimpan' : 'Gagal menyimpan, coba lagi'); }
@@ -288,6 +351,14 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     const o = e.target.closest('[data-open]'); if (o) { openEditor(o.dataset.open); return; }
     const n = e.target.closest('[data-new]'); if (n) { const [problem, level] = n.dataset.new.split('|'); openEditor(null, { problem, level }); return; }
     if (e.target.id === 'btn-add') openEditor(null);
+    const so = e.target.closest('[data-sort]'); if (so) { ui.sort = so.dataset.sort; render(); return; }
+    if (e.target.closest('[data-act="save-w"]')) { const nw = {}; for (const k of Object.keys(DEFAULT_W)) nw[k] = Math.max(0, Math.min(100, N(document.getElementById('w-' + k)?.value)));
+      if (!Object.values(nw).some((v) => v > 0)) { toast('Minimal satu bobot harus lebih dari 0'); return; } db.doc('settings/scoring').set({ weights: nw, updatedAt: new Date().toISOString() }).then(() => toast('Bobot tersimpan')).catch(() => toast('Gagal menyimpan bobot')); }
+  });
+  document.addEventListener('change', (e) => {
+    const sel = e.target.closest('[data-ladder]'); if (!sel || !canWrite) return;
+    const v = sel.value ? N(sel.value) : null;
+    db.collection('problems').doc(sel.dataset.ladder).update({ ladderFit: v }).then(() => toast('Tersimpan')).catch(() => toast('Gagal menyimpan'));
   });
   document.addEventListener('input', (e) => {
     const map = { 'f-problem': 'problem', 'f-level': 'level', 'f-status': 'status', 'f-q': 'q' };
@@ -303,9 +374,10 @@ table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size
     try { db = await window.claude?.use?.('db'); user = await window.claude?.use?.('user'); } catch { db = null; }
     if (!db) { clearTimeout(timer); S.err = 'Database tidak tersedia di tampilan ini. Buka di claude.ai dalam keadaan login.'; render(); return; }
     try { const c = user ? await user.can('data.write') : false; canWrite = c === null ? true : !!c; } catch { canWrite = false; }
-    let got = 0; const done = () => { if (++got >= 3) { clearTimeout(timer); S.ready = true; S.err = ''; } render(); };
+    let got = 0; const done = () => { if (++got >= 4) { clearTimeout(timer); S.ready = true; S.err = ''; } render(); };
     const fail = () => { clearTimeout(timer); S.err = 'Gagal memuat data. Muat ulang halaman.'; render(); };
-    let a = false, b = false, c = false;
+    let a = false, b = false, c = false, w4 = false;
+    db.doc('settings/scoring').onSnapshot((snap) => { S.weights = snap.exists ? (snap.data().weights || null) : null; if (!w4) { w4 = true; done(); } else render(); }, fail);
     db.collection('problems').onSnapshot((snap) => { S.problems = snap.docs.map((d) => ({ id: d.id, ...d.data() })); if (!a) { a = true; done(); } else render(); }, fail);
     db.collection('products').onSnapshot((snap) => { S.products = snap.docs.map((d) => ({ id: d.id, ...d.data() })); if (!b) { b = true; done(); } else render(); }, fail);
     db.doc('snapshots/data-asli').onSnapshot((snap) => { S.snapshot = snap.exists ? snap.data() : null; if (!c) { c = true; done(); } else render(); }, fail);
