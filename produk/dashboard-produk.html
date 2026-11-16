@@ -1,0 +1,300 @@
+<title>Peta Produk Philip</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: sticky top bar with 3 views (Peta, Produk, Demand); matrix grid problems x levels; edit in a dialog. Brand: black/white + Philip red. */
+:root {
+  --bg: #f4f4f2; --panel: #ffffff; --fg: #121212; --muted: #5e5e5b; --line: #dcdcd8; --soft: #ecece8;
+  --accent: #cc0100; --accent-soft: #fbe5e4;
+  --ok: #1f7a46; --ok-soft: #e1f1e7; --warn: #9a5a00; --warn-soft: #fbefd9; --info: #2f5aa8; --info-soft: #e4ebf7; --off: #8a8a86;
+  --display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  --body: 'Barlow', 'Segoe UI', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f0f10; --panel: #19191b; --fg: #f1f1ef; --muted: #a2a29e; --line: #2f2f32; --soft: #232326;
+  --accent: #ff5250; --accent-soft: #3a1514; --ok: #5cc98a; --ok-soft: #12301f; --warn: #f0a74f; --warn-soft: #3a2810; --info: #8fb0f0; --info-soft: #18233a; --off: #6f6f6b; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f0f10; --panel: #19191b; --fg: #f1f1ef; --muted: #a2a29e; --line: #2f2f32; --soft: #232326;
+  --accent: #ff5250; --accent-soft: #3a1514; --ok: #5cc98a; --ok-soft: #12301f; --warn: #f0a74f; --warn-soft: #3a2810; --info: #8fb0f0; --info-soft: #18233a; --off: #6f6f6b; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.45; }
+button, input, select, textarea { font: inherit; color: inherit; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--panel); border-bottom: 1px solid var(--line); }
+.top-in, .wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 10px; }
+.brand { font-family: var(--display); font-weight: 700; font-size: 24px; letter-spacing: .01em; display: flex; align-items: center; gap: 8px; }
+.brand i { width: 10px; height: 10px; background: var(--accent); display: inline-block; }
+nav { display: flex; gap: 2px; }
+nav a { text-decoration: none; color: var(--muted); padding: 6px 12px; border-radius: 6px; font-weight: 600; }
+nav a:hover { color: var(--fg); background: var(--soft); }
+nav a.on { background: var(--fg); color: var(--panel); }
+.top .sp { flex: 1; }
+.wrap { padding-block: 22px 64px; display: flex; flex-direction: column; gap: 20px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 4vw, 42px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 24px; margin: 0; }
+.lead { color: var(--muted); margin: 4px 0 0; max-width: 72ch; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 6px; padding: 6px 12px; cursor: pointer; font-weight: 600; }
+.btn:hover { border-color: var(--fg); }
+.btn.pri { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.sm { padding: 3px 9px; font-size: 14px; }
+.btn.danger { color: var(--accent); }
+.btn:focus-visible, nav a:focus-visible, .cellprod:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.principle { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
+.pr { border-left: 4px solid var(--fg); padding: 4px 12px; }
+.pr b { font-family: var(--display); font-size: 20px; display: block; }
+.pr span { color: var(--muted); font-size: 14px; }
+.pr.wide { border-color: var(--ok); } .pr.narrow { border-color: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; color: var(--muted); }
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
+.s-Ide { background: var(--soft); color: var(--muted); border-color: var(--line); }
+.s-Validasi { background: var(--warn-soft); color: var(--warn); }
+.s-Produksi { background: var(--info-soft); color: var(--info); }
+.s-Live { background: var(--ok-soft); color: var(--ok); }
+.s-Stop { background: var(--soft); color: var(--off); text-decoration: line-through; }
+.mx-wrap { overflow-x: auto; }
+table.mx { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 980px; }
+.mx th { text-align: left; font-family: var(--display); font-size: 17px; padding: 8px; border-bottom: 2px solid var(--fg); background: var(--panel); position: sticky; top: 0; }
+.mx th small { display: block; font-family: var(--body); font-weight: 500; font-size: 12.5px; color: var(--muted); }
+.mx td { vertical-align: top; padding: 8px; border-bottom: 1px solid var(--line); }
+.mx td.prob { width: 220px; }
+.mx td.prob b { display: block; }
+.mx td.prob .code { font-family: var(--display); color: var(--accent); font-size: 15px; }
+.mx td.lvl { width: 23%; }
+.mx tr:hover td { background: color-mix(in srgb, var(--soft) 40%, transparent); }
+.cellprod { display: block; width: 100%; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; margin-bottom: 6px; cursor: pointer; }
+.cellprod:hover { border-color: var(--fg); }
+.cellprod .nm { font-weight: 600; font-size: 14.5px; display: block; }
+.cellprod .mt { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.addc { border: 1px dashed var(--line); background: none; color: var(--muted); border-radius: 6px; padding: 3px 8px; font-size: 13px; cursor: pointer; }
+.addc:hover { color: var(--fg); border-color: var(--fg); }
+.dbar { display: grid; grid-template-columns: 70px 1fr 36px; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dbar .t { height: 7px; background: var(--soft); border-radius: 4px; overflow: hidden; }
+.dbar .f { height: 100%; background: var(--fg); }
+.dbar .f.u { background: var(--accent); } .dbar .f.p { background: var(--ok); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters select, .filters input { border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; background: var(--panel); }
+.tbl { overflow-x: auto; }
+table.list { width: 100%; border-collapse: collapse; min-width: 860px; font-size: 15px; }
+.list th { text-align: left; font-size: 13px; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.list td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.list tr.click { cursor: pointer; } .list tr.click:hover td { background: var(--soft); }
+.goal { font-size: 13.5px; color: var(--muted); }
+.goal b { color: var(--fg); font-weight: 600; }
+.empty { border: 1px dashed var(--line); border-radius: 8px; padding: 22px; text-align: center; color: var(--muted); }
+.note { font-size: 14px; color: var(--muted); margin: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.tile .v { font-family: var(--display); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tile .k { font-size: 13px; color: var(--muted); }
+.src { font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 4px; }
+.src.sim { background: var(--warn-soft); color: var(--warn); } .src.real { background: var(--ok-soft); color: var(--ok); }
+.funnel { display: flex; flex-direction: column; gap: 6px; }
+.fr { display: grid; grid-template-columns: 150px 1fr 40px; gap: 8px; align-items: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+.fr .t { height: 14px; background: var(--soft); border-radius: 3px; overflow: hidden; } .fr .f { height: 100%; background: var(--fg); }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
+.dlg { background: var(--panel); border-radius: 10px; width: min(640px, 100%); max-height: 92vh; overflow: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.fld { display: flex; flex-direction: column; gap: 3px; font-size: 14px; min-width: 0; }
+.fld label { color: var(--muted); font-weight: 600; }
+.fld input, .fld select, .fld textarea { border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; background: var(--panel); width: 100%; }
+.fld textarea { min-height: 64px; resize: vertical; }
+.f2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 14px; }
+.dec { font-size: 14px; border-left: 3px solid var(--line); padding-left: 8px; }
+.dec time { font-weight: 600; font-variant-numeric: tabular-nums; margin-right: 6px; }
+.banner { background: var(--warn-soft); color: var(--warn); border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+.toast { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--fg); color: var(--panel); padding: 8px 14px; border-radius: 6px; z-index: 60; }
+@media (max-width: 640px) { .mx td.prob { width: 160px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top"><div class="top-in">
+  <div class="brand"><i></i>Peta Produk</div>
+  <nav aria-label="Tampilan">
+    <a href="#peta" data-v="peta">Peta</a>
+    <a href="#produk" data-v="produk">Produk</a>
+    <a href="#demand" data-v="demand">Demand</a>
+  </nav>
+  <span class="sp"></span>
+  <button class="btn pri" id="btn-add" type="button" hidden>Tambah produk</button>
+</div></header>
+<main class="wrap" id="main">
+  <div class="card"><p class="note">Memuat peta produk… Kalau tidak muncul dalam beberapa detik, buka halaman ini di claude.ai dalam keadaan login.</p></div>
+</main>
+<div id="modal-root"></div>
+
+<script>
+(() => {
+  const LEVELS = [
+    ['Gratis', 'Massal · juga alat ukur demand'],
+    ['DIY', 'Massal di masalah yang lolos tes'],
+    ['DWY', 'Sempit · produk payung'],
+    ['DFY', 'Sempit · polis / premium'],
+  ];
+  const STATUSES = ['Ide', 'Validasi', 'Produksi', 'Live', 'Stop'];
+  const EVID = ['Belum', 'Simulasi', 'Data asli'];
+  const S = { problems: [], products: [], snapshot: null, ready: false, err: '' };
+  let db = null, canWrite = false;
+  const ui = { f: { problem: '', level: '', status: '', q: '' } };
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toast = (m) => { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.append(t); setTimeout(() => t.remove(), 2200); };
+  const today = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
+  const uid = () => 'p-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const probs = () => S.problems.slice().sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+  const pill = (s) => `<span class="pill s-${esc(s)}">${esc(s)}</span>`;
+
+  function view() { const h = location.hash.slice(1); return ['peta', 'produk', 'demand'].includes(h) ? h : 'peta'; }
+  window.addEventListener('hashchange', render);
+
+  function render() {
+    if (document.getElementById('modal-root').childElementCount) return;
+    const v = view();
+    document.querySelectorAll('nav a').forEach((a) => a.classList.toggle('on', a.dataset.v === v));
+    document.getElementById('btn-add').hidden = !canWrite;
+    const m = document.getElementById('main');
+    let h = '';
+    if (S.err) h += `<div class="banner">${esc(S.err)}</div>`;
+    else if (S.ready && !canWrite) h += `<div class="banner">Mode baca saja: akun ini tidak bisa mengubah data.</div>`;
+    if (!S.ready && !S.err) { m.innerHTML = '<div class="card"><p class="note">Memuat peta produk…</p></div>'; return; }
+    h += v === 'peta' ? viewPeta() : v === 'produk' ? viewProduk() : viewDemand();
+    m.innerHTML = h;
+  }
+
+  // ---------- PETA ----------
+  function demandMini(p) {
+    const d = p.demandSim; if (!d) return '<span class="note">Demand: belum diukur</span>';
+    const bar = (lbl, v, cls) => `<div class="dbar"><span>${lbl}</span><span class="t"><span class="f ${cls}" style="width:${Math.min(100, v)}%"></span></span><span>${v}</span></div>`;
+    return bar('Sadar', d.sadar, '') + bar('Mendesak', d.urgensiTinggi, 'u') + bar('Mau bayar', d.bayarYa, 'p');
+  }
+  function viewPeta() {
+    const P = probs();
+    let h = `<div><h1>Satu masalah, banyak produk</h1><p class="lead">Setiap produk masuk ke sini dulu sebelum dibuat. Kolom kiri adalah masalah audiens, kolom kanan adalah produk per level. Klik produk untuk lihat atau ubah end goal, status, dan keputusannya.</p></div>`;
+    h += `<section class="card"><h2>Prinsip</h2><div class="principle">
+      <div class="pr wide"><b>Massal di bawah</b><span>Gratis & DIY dibuat banyak. Lapisan gratis sekaligus mengukur demand per masalah.</span></div>
+      <div class="pr narrow"><b>Sempit di atas</b><span>DWY & DFY sedikit, berupa produk payung, karena memakai jam Philip.</span></div>
+      <div class="pr"><b>Data dulu, baru naik level</b><span>DIY berbayar dibuat hanya di masalah yang terbukti menarik orang.</span></div>
+    </div><div class="legend">Status: ${STATUSES.map(pill).join(' ')}</div></section>`;
+    if (!P.length) return h + `<div class="empty">Belum ada masalah. ${canWrite ? 'Tambahkan lewat tab Produk.' : ''}</div>`;
+    h += `<div class="card mx-wrap"><table class="mx"><thead><tr><th>Masalah<small>Demand simulasi /100 persona</small></th>${LEVELS.map(([l, s]) => `<th>${l}<small>${s}</small></th>`).join('')}</tr></thead><tbody>`;
+    for (const p of P) {
+      h += `<tr><td class="prob"><span class="code">${esc(p.code)}</span><b>${esc(p.name)}</b>${demandMini(p)}</td>`;
+      for (const [l] of LEVELS) {
+        const items = S.products.filter((x) => x.level === l && (x.problems || []).includes(p.code)).sort((a, b) => STATUSES.indexOf(b.status) - STATUSES.indexOf(a.status));
+        h += `<td class="lvl">${items.map((x) => `<button class="cellprod" data-open="${esc(x.id)}"><span class="nm">${esc(x.name)}</span><span class="mt">${pill(x.status)}${x.price ? `<span>${esc(x.price)}</span>` : ''}</span></button>`).join('')}${canWrite ? `<button class="addc" data-new="${esc(p.code)}|${l}">+ produk</button>` : ''}</td>`;
+      }
+      h += `</tr>`;
+    }
+    return h + `</tbody></table></div>`;
+  }
+
+  // ---------- PRODUK ----------
+  function viewProduk() {
+    const f = ui.f;
+    let list = S.products.filter((x) => (!f.problem || (x.problems || []).includes(f.problem)) && (!f.level || x.level === f.level) && (!f.status || x.status === f.status) && (!f.q || (x.name || '').toLowerCase().includes(f.q.toLowerCase())));
+    list.sort((a, b) => LEVELS.findIndex((l) => l[0] === a.level) - LEVELS.findIndex((l) => l[0] === b.level) || String(a.name).localeCompare(String(b.name)));
+    const counts = Object.fromEntries(STATUSES.map((s) => [s, S.products.filter((x) => x.status === s).length]));
+    let h = `<div><h1>Semua produk</h1><p class="lead">Tiap produk punya tiga end goal: target bisnis, hasil untuk pembeli, dan tujuannya di value ladder.</p></div>`;
+    h += `<div class="tiles">${STATUSES.map((s) => `<div class="tile"><div class="v">${counts[s]}</div><div class="k">${s}</div></div>`).join('')}</div>`;
+    h += `<div class="filters"><select id="f-problem" aria-label="Filter masalah"><option value="">Semua masalah</option>${probs().map((p) => `<option value="${esc(p.code)}" ${f.problem === p.code ? 'selected' : ''}>${esc(p.code)} ${esc(p.name)}</option>`).join('')}</select>
+      <select id="f-level" aria-label="Filter level"><option value="">Semua level</option>${LEVELS.map(([l]) => `<option ${f.level === l ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      <select id="f-status" aria-label="Filter status"><option value="">Semua status</option>${STATUSES.map((s) => `<option ${f.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      <input id="f-q" type="search" placeholder="Cari nama produk" value="${esc(f.q)}" aria-label="Cari"></div>`;
+    if (!list.length) return h + `<div class="empty">Tidak ada produk yang cocok.</div>`;
+    h += `<div class="card tbl"><table class="list"><thead><tr><th>Produk</th><th>Level</th><th>Masalah</th><th>Status</th><th>End goal</th><th>Bukti demand</th><th>Langkah berikutnya</th></tr></thead><tbody>`;
+    for (const x of list) {
+      h += `<tr class="click" data-open="${esc(x.id)}"><td><b>${esc(x.name)}</b>${x.price ? `<div class="note">${esc(x.price)}</div>` : ''}</td><td>${esc(x.level)}</td><td>${(x.problems || []).map(esc).join(', ')}</td><td>${pill(x.status)}</td>
+        <td class="goal">${x.goalBisnis ? `<div><b>Bisnis:</b> ${esc(x.goalBisnis)}</div>` : ''}${x.goalPembeli ? `<div><b>Pembeli:</b> ${esc(x.goalPembeli)}</div>` : ''}${x.goalLadder ? `<div><b>Ladder:</b> ${esc(x.goalLadder)}</div>` : ''}${!x.goalBisnis && !x.goalPembeli && !x.goalLadder ? '<span class="note">Belum diisi</span>' : ''}</td>
+        <td>${esc(x.evidence || 'Belum')}</td><td>${esc(x.nextStep || '')}${x.nextOwner ? `<div class="note">${esc(x.nextOwner)}</div>` : ''}</td></tr>`;
+    }
+    return h + `</tbody></table></div>`;
+  }
+
+  // ---------- DEMAND ----------
+  function viewDemand() {
+    const P = probs();
+    let h = `<div><h1>Demand per masalah</h1><p class="lead">Dua sumber dipisah: <span class="src sim">Simulasi</span> dari 100 persona buatan model AI (hipotesis), dan <span class="src real">Data asli</span> dari website dan Mayar (snapshot).</p></div>`;
+    h += `<section class="card"><div class="row"><h2>Simulasi</h2><span class="src sim">Simulasi</span></div><p class="note">Persona dibuat untuk kelas Uang & Relasi, jadi M2 kemungkinan terlalu tinggi. Masalah tanpa angka belum diukur.</p><div class="tbl"><table class="list" style="min-width:640px"><thead><tr><th>Masalah</th><th>Sadar</th><th>Urgensi tinggi</th><th>Mau bayar (Ya / Ragu / Tidak)</th><th>Catatan</th></tr></thead><tbody>${P.map((p) => { const d = p.demandSim; return `<tr><td><b>${esc(p.code)}</b> ${esc(p.name)}</td><td>${d ? d.sadar : '–'}</td><td>${d ? d.urgensiTinggi : '–'}</td><td>${d ? `${d.bayarYa} / ${d.bayarRagu} / ${d.bayarTidak}` : 'Belum diukur'}</td><td class="note">${esc(p.demandNote || '')}</td></tr>`; }).join('')}</tbody></table></div></section>`;
+    const s = S.snapshot;
+    if (!s) return h + `<div class="empty">Belum ada snapshot data asli.</div>`;
+    const mx = Math.max(1, ...(s.funnel || []).map((r) => r.n));
+    h += `<div class="grid2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:16px">
+      <section class="card"><div class="row"><h2>Tools proteksi & survival</h2><span class="src real">Data asli</span></div><p class="note">${esc(s.funnelPeriod || '')}. Sesi unik.</p><div class="funnel">${(s.funnel || []).map((r) => `<div class="fr"><span>${esc(r.step)}</span><span class="t"><span class="f" style="width:${r.n / mx * 100}%"></span></span><span>${r.n}</span></div>`).join('')}</div>${(s.funnelNotes || []).map((n) => `<p class="note">• ${esc(n)}</p>`).join('')}</section>
+      <section class="card"><div class="row"><h2>Penjualan Mayar</h2><span class="src real">Data asli</span></div><div class="tbl"><table class="list" style="min-width:320px"><thead><tr><th>Tanggal</th><th>Link</th><th>Nominal</th></tr></thead><tbody>${(s.mayar || []).map((r) => `<tr><td>${esc(r.date)}</td><td>${esc(r.link)}</td><td>${esc(r.amount)}</td></tr>`).join('')}</tbody></table></div>${(s.mayarNotes || []).map((n) => `<p class="note">• ${esc(n)}</p>`).join('')}</section></div>`;
+    h += `<p class="note">Snapshot diambil ${esc(s.takenAt || '')}. ${esc(s.notReadable || '')}</p>`;
+    return h;
+  }
+
+  // ---------- EDIT ----------
+  function openEditor(id, preset) {
+    const x = id ? S.products.find((p) => p.id === id) : { id: uid(), name: '', level: preset?.level || 'Gratis', problems: preset?.problem ? [preset.problem] : [], status: 'Ide', evidence: 'Belum', decisions: [] };
+    if (!x) return;
+    const ro = !canWrite;
+    const dis = ro ? 'disabled' : '';
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-t"><form class="dlg" id="dlg">
+      <h2 id="dlg-t">${id ? esc(x.name) : 'Produk baru'}</h2>
+      <div class="fld"><label for="e-name">Nama produk</label><input id="e-name" required value="${esc(x.name)}" ${dis}></div>
+      <div class="f2"><div class="fld"><label for="e-level">Level</label><select id="e-level" ${dis}>${LEVELS.map(([l]) => `<option ${x.level === l ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+        <div class="fld"><label for="e-status">Status</label><select id="e-status" ${dis}>${STATUSES.map((s) => `<option ${x.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+        <div class="fld"><label for="e-price">Harga</label><input id="e-price" value="${esc(x.price || '')}" placeholder="mis. Rp199rb" ${dis}></div></div>
+      <div class="fld"><label>Masalah</label><div class="checks">${probs().map((p) => `<label><input type="checkbox" name="e-prob" value="${esc(p.code)}" ${(x.problems || []).includes(p.code) ? 'checked' : ''} ${dis}> ${esc(p.code)} ${esc(p.name)}</label>`).join('')}</div></div>
+      <div class="fld"><label for="e-gb">End goal: target bisnis</label><input id="e-gb" value="${esc(x.goalBisnis || '')}" placeholder="mis. 50 pembeli / Rp10jt per bulan" ${dis}></div>
+      <div class="fld"><label for="e-gp">End goal: hasil untuk pembeli</label><input id="e-gp" value="${esc(x.goalPembeli || '')}" ${dis}></div>
+      <div class="fld"><label for="e-gl">End goal: tujuan di value ladder</label><input id="e-gl" value="${esc(x.goalLadder || '')}" placeholder="mis. mengarahkan ke Financial Planning Keluarga" ${dis}></div>
+      <div class="f2"><div class="fld"><label for="e-ev">Bukti demand</label><select id="e-ev" ${dis}>${EVID.map((s) => `<option ${(x.evidence || 'Belum') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+        <div class="fld"><label for="e-owner">Langkah berikutnya: siapa</label><select id="e-owner" ${dis}>${['', 'Philip', 'Claude', 'Bersama'].map((s) => `<option ${(x.nextOwner || '') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div></div>
+      <div class="fld"><label for="e-next">Langkah berikutnya</label><input id="e-next" value="${esc(x.nextStep || '')}" ${dis}></div>
+      <div class="fld"><label for="e-docs">Dokumen</label><input id="e-docs" value="${esc(x.docs || '')}" placeholder="mis. produk/uang-dan-relasi/PRODUK.md" ${dis}></div>
+      <div class="fld"><label for="e-notes">Catatan</label><textarea id="e-notes" ${dis}>${esc(x.notes || '')}</textarea></div>
+      <div class="fld"><label>Keputusan</label>${(x.decisions || []).length ? (x.decisions || []).map((d) => `<div class="dec"><time>${esc(d.date)}</time>${esc(d.text)}</div>`).join('') : '<p class="note">Belum ada keputusan.</p>'}${ro ? '' : `<input id="e-dec" placeholder="Tambah keputusan baru (tanggal otomatis hari ini)">`}</div>
+      <div class="row" style="justify-content:space-between"><span>${id && !ro ? '<button type="button" class="btn danger" id="e-del">Hapus produk</button>' : ''}</span>
+        <span class="row"><button type="button" class="btn" id="e-cancel">${ro ? 'Tutup' : 'Batal'}</button>${ro ? '' : '<button type="submit" class="btn pri">Simpan</button>'}</span></div>
+      <div id="e-confirm" hidden class="banner">Yakin hapus produk ini? <button type="button" class="btn sm danger" id="e-del2">Ya, hapus</button></div>
+    </form></div>`;
+    const close = () => { root.innerHTML = ''; render(); };
+    root.querySelector('#e-cancel').onclick = close;
+    root.querySelector('.modal').addEventListener('click', (e) => { if (e.target.classList.contains('modal')) close(); });
+    const del = root.querySelector('#e-del');
+    if (del) { del.onclick = () => { root.querySelector('#e-confirm').hidden = false; }; root.querySelector('#e-del2').onclick = async () => { try { await db.collection('products').doc(x.id).delete(); toast('Produk dihapus'); close(); } catch { toast('Gagal menghapus, coba lagi'); } }; }
+    root.querySelector('#dlg').onsubmit = async (e) => {
+      e.preventDefault(); if (ro) return;
+      const g = (s) => root.querySelector(s).value.trim();
+      const decisions = (x.decisions || []).slice(); const nd = g('#e-dec'); if (nd) decisions.push({ date: today(), text: nd });
+      const data = { name: g('#e-name'), level: g('#e-level'), status: g('#e-status'), price: g('#e-price'), problems: [...root.querySelectorAll('input[name=e-prob]:checked')].map((i) => i.value),
+        goalBisnis: g('#e-gb'), goalPembeli: g('#e-gp'), goalLadder: g('#e-gl'), evidence: g('#e-ev'), nextOwner: g('#e-owner'), nextStep: g('#e-next'), docs: g('#e-docs'), notes: g('#e-notes'), decisions, updatedAt: new Date().toISOString() };
+      if (!data.name) { toast('Nama produk wajib diisi'); return; }
+      try { await db.collection('products').doc(x.id).set(data); toast('Tersimpan'); close(); } catch (err) { toast(err?.code === 'not_granted' || err?.code === 'permission_denied' ? 'Akun ini tidak bisa menyimpan' : 'Gagal menyimpan, coba lagi'); }
+    };
+  }
+
+  document.addEventListener('click', (e) => {
+    const o = e.target.closest('[data-open]'); if (o) { openEditor(o.dataset.open); return; }
+    const n = e.target.closest('[data-new]'); if (n) { const [problem, level] = n.dataset.new.split('|'); openEditor(null, { problem, level }); return; }
+    if (e.target.id === 'btn-add') openEditor(null);
+  });
+  document.addEventListener('input', (e) => {
+    const map = { 'f-problem': 'problem', 'f-level': 'level', 'f-status': 'status', 'f-q': 'q' };
+    if (map[e.target.id]) { ui.f[map[e.target.id]] = e.target.value; const pos = e.target.selectionStart; render(); const el = document.getElementById(e.target.id); if (el) { el.focus(); if (e.target.id === 'f-q' && pos != null) el.setSelectionRange(pos, pos); } }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('modal-root').childElementCount) { document.getElementById('modal-root').innerHTML = ''; render(); } });
+
+  // ---------- boot ----------
+  render();
+  const timer = setTimeout(() => { if (!S.ready) { S.err = 'Data belum termuat. Buka halaman ini di claude.ai dalam keadaan login.'; render(); } }, 10000);
+  (async () => {
+    db = await window.claude?.use?.('db');
+    const user = await window.claude?.use?.('user');
+    if (!db) { clearTimeout(timer); S.err = 'Database tidak tersedia di tampilan ini. Buka di claude.ai dalam keadaan login.'; render(); return; }
+    try { const c = user ? await user.can('data.write') : false; canWrite = c === null ? true : !!c; } catch { canWrite = false; }
+    let got = 0; const done = () => { if (++got >= 3) { clearTimeout(timer); S.ready = true; S.err = ''; } render(); };
+    const fail = () => { clearTimeout(timer); S.err = 'Gagal memuat data. Muat ulang halaman.'; render(); };
+    let a = false, b = false, c = false;
+    db.collection('problems').onSnapshot((snap) => { S.problems = snap.docs.map((d) => ({ id: d.id, ...d.data() })); if (!a) { a = true; done(); } else render(); }, fail);
+    db.collection('products').onSnapshot((snap) => { S.products = snap.docs.map((d) => ({ id: d.id, ...d.data() })); if (!b) { b = true; done(); } else render(); }, fail);
+    db.doc('snapshots/data-asli').onSnapshot((snap) => { S.snapshot = snap.exists ? snap.data() : null; if (!c) { c = true; done(); } else render(); }, fail);
+  })();
+})();
+</script>
