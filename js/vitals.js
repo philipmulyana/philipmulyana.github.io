@@ -12,14 +12,14 @@ const STORAGE_KEY_VITALS = 'calc_vitals_state_v4';
 
 // --- Constants ---
 const INFLATION_RATE = 0.05;            // 5% p.a. (general)
-const INFLATION_PENDIDIKAN = 0.10;      // 10% p.a.
+const INFLATION_PENDIDIKAN = 0.08;      // 8% p.a. (keputusan Philip 16 Nov 2026)
 const RETIREMENT_AGE = 55;
 const LIFE_EXPECTANCY = 75;
 const RETIREMENT_YEARS = LIFE_EXPECTANCY - RETIREMENT_AGE;
 
 // --- Goal categories ---
 const GOAL_DEFAULTS = {
-    pendidikan: { label: 'Pendidikan Anak', inflationPct: 10 },
+    pendidikan: { label: 'Pendidikan Anak', inflationPct: 8 },
     pensiun:    { label: 'Pensiun',         inflationPct: 5 },
     custom:     { label: 'Custom',          inflationPct: 5 },
 };
@@ -779,7 +779,7 @@ function renderGoalCard(g) {
             <div class="input-row">
                 <div>
                     <label>Total biaya pendidikan (nilai hari ini)</label>
-                    <p class="field-hint">Total estimasi biaya kuliah (4 tahun) dalam Rupiah saat ini. Inflasi pendidikan 10% di-apply otomatis.</p>
+                    <p class="field-hint">Total estimasi biaya kuliah (4 tahun) dalam Rupiah saat ini. Inflasi pendidikan 8% di-apply otomatis.</p>
                 </div>
                 <input type="text" class="formatted-number" inputmode="numeric" data-goal-id="${g.id}" data-field="targetAmount" placeholder="0">
             </div>
@@ -844,7 +844,7 @@ function renderGoalCard(g) {
             <div class="input-row">
                 <div>
                     <label>Inflasi tahunan (%)</label>
-                    <p class="field-hint">Bebas. Default 5%. Lifestyle umum 5%, haji/umroh 6%, properti 8%, pendidikan 10%.</p>
+                    <p class="field-hint">Bebas. Default 5%. Lifestyle umum 5%, haji/umroh 6%, properti 8%, pendidikan 8%.</p>
                 </div>
                 <input type="number" data-goal-id="${g.id}" data-field="inflationPct" min="0" max="20" step="0.5" placeholder="5">
             </div>

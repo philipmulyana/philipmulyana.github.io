@@ -144,9 +144,9 @@ export function twoSentenceParagraphs(text) {
   return out;
 }
 
-// Education costs rise faster than prices; same 10% a year Philip uses on his education plan
+// Education costs rise faster than prices; same 8% a year Philip uses on his education plan
 // calculator (philipmulyana.com/tools/eduplan, js/eduplan.js INFLASI_PENDIDIKAN).
-export const EDUCATION_INFLATION = 0.10;
+export const EDUCATION_INFLATION = 0.08;
 
 /**
  * WhatsApp report Philip sends after a prospect asks for it. It does NOT repeat the page: a two-line
@@ -188,7 +188,7 @@ export function whatsappReport(result, name, opts = {}) {
   if (uni) {
     const yearsLeft = Math.max(1, uni.year - year);
     const future = Math.round(uni.cost * Math.pow(1 + EDUCATION_INFLATION, yearsLeft));
-    extra.push(`Biaya kuliah anak bungsu hari ini sekitar ${rupiah(uni.cost)}. Dengan kenaikan biaya kuliah sekitar 10% per tahun, di ${uni.year} angkanya jadi sekitar ${rupiah(future)}.`);
+    extra.push(`Biaya kuliah anak bungsu hari ini sekitar ${rupiah(uni.cost)}. Dengan kenaikan biaya kuliah sekitar 8% per tahun, di ${uni.year} angkanya jadi sekitar ${rupiah(future)}.`);
     extra.push(`Waktu untuk menyiapkannya tinggal ${yearsLeft} tahun. Setiap tahun yang lewat tanpa rencana, waktunya berkurang satu tahun dan biayanya naik lagi.`);
   }
   if (ev(c, "life_cover_does_not_pay")) {
