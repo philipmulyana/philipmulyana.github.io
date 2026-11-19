@@ -154,6 +154,8 @@ INLINE = [
     (r"dana darurat", "kenapa-butuh-dana-darurat"),
     (r"dana pensiun|pensiun nyaman", "cara-hitung-dana-pensiun-yang-cukup"),
     (r"asuransi jiwa", "asuransi-jiwa-101"),
+    (r"menunggu sisa", "kalau-dana-buat-kamu-selalu-menunggu-sisa"),
+    (r"sulit dibatalkan", "tidak-semua-keinginan-perlu-dipikirkan-seperti-keputusan-seumur-hidup"),
 ]
 IL_A = re.compile(r'<a class="il-inline" href="[^"]*">(.*?)</a>', re.S)
 

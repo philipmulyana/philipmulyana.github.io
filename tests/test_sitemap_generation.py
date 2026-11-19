@@ -85,12 +85,14 @@ class SitemapGenerationContract(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "publish-blogs.yml").read_text(
             encoding="utf-8"
         )
-        publish_command = "python .github/scripts/publish_blogs.py"
+        links_command = "python .github/scripts/internal_links.py"
         sitemap_command = "python .github/scripts/generate_sitemap.py"
 
         self.assertIn(sitemap_command, workflow)
-        self.assertLess(workflow.index(publish_command), workflow.index(sitemap_command))
-        self.assertIn("git add blog/ data/posts.json sitemap.xml", workflow)
+        self.assertLess(workflow.index(links_command), workflow.index(sitemap_command))
+        # Airtable re-render was removed on 2026-11-19; posts come from Content Factory.
+        self.assertNotIn("publish_blogs.py", workflow)
+        self.assertRegex(workflow, r"git add [^\n]*sitemap\.xml")
 
 
 if __name__ == "__main__":
